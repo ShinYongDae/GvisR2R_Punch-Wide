@@ -466,8 +466,19 @@ void CDlgMenu01::OpenReelmap(int nSelRmap)
 		else
 			pDoc->m_pReelMap->m_nLayer = nSelRmap;
 
-		pDoc->m_pReelMap->Open(pView->GetRmapPath(nSelRmap));
-		pDoc->m_pReelMap->SetPathAtBuf(pView->GetRmapPath(nSelRmap));
+		if (pDoc->GetTestMode() == MODE_OUTER)
+		{
+			myBtn[12].SetCheck(FALSE);	// IDC_CHK_DEF_UP
+			myBtn[13].SetCheck(FALSE);	// IDC_CHK_DEF_DN
+			myBtn[14].SetCheck(TRUE);	// IDC_CHK_DEF_ALL
+			pDoc->m_pReelMap->Open(pView->GetRmapPath(RMAP_ITS));
+			pDoc->m_pReelMap->SetPathAtBuf(pView->GetRmapPath(RMAP_ITS));
+		}
+		else
+		{
+			pDoc->m_pReelMap->Open(pView->GetRmapPath(nSelRmap));
+			pDoc->m_pReelMap->SetPathAtBuf(pView->GetRmapPath(nSelRmap));
+		}
 #endif	
 	}
 }

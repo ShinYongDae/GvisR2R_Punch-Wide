@@ -191,6 +191,13 @@ void CDlgMenu06::AtDlgShow()
 	myBtn[21].SetCheck(pDoc->WorkingInfo.Probing[0].bUse);
 	myBtn[22].SetCheck(pDoc->WorkingInfo.Probing[0].bStopOnOpen);
 
+	//if (pDoc->GetTestMode() == MODE_OUTER)
+	//{
+	//	if (pDoc->m_bEngDualTest)
+	//		SelMap(ALL);
+	//	else
+	//		SelMap(UP);
+	//}
 }
 
 void CDlgMenu06::AtDlgHide()
@@ -583,24 +590,24 @@ void CDlgMenu06::SelMap(int nSel)
 			myBtn[12].SetCheck(TRUE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(FALSE);
-			pView->m_nSelRmap = RMAP_UP;
+			pView->m_nSelRmapInner = RMAP_INNER_UP;
 			break;
 		case DN:
 			myBtn[12].SetCheck(FALSE);
 			myBtn[13].SetCheck(TRUE);
 			myBtn[14].SetCheck(FALSE);
-			pView->m_nSelRmap = RMAP_DN;
+			pView->m_nSelRmapInner = RMAP_INNER_DN;
 			break;
 		case ALL:
 			myBtn[12].SetCheck(FALSE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(TRUE);
 			if(pDoc->WorkingInfo.LastJob.nMergingLayer==0)
-				pView->m_nSelRmap = RMAP_ALLUP;
+				pView->m_nSelRmapInner = RMAP_INNER_ALLUP;
 			else if(pDoc->WorkingInfo.LastJob.nMergingLayer==1)
-				pView->m_nSelRmap = RMAP_ALLDN;
+				pView->m_nSelRmapInner = RMAP_INNER_ALLDN;
 			else
-				pView->m_nSelRmap = RMAP_ALLUP;
+				pView->m_nSelRmapInner = RMAP_INNER_ALLUP;
 			break;
 		}
 	}
@@ -609,12 +616,15 @@ void CDlgMenu06::SelMap(int nSel)
 			myBtn[12].SetCheck(TRUE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(FALSE);
-			pView->m_nSelRmap = RMAP_UP;
+			pView->m_nSelRmapInner = RMAP_INNER_UP;
 	}
 
-	sPath = pView->GetRmapPath(pView->m_nSelRmap);
-	OpenReelmap(pView->m_nSelRmap);
-	DispReelmap(m_nSerial);
+	if (pDoc->m_pReelMapInner)
+	{
+		sPath = pView->GetRmapPath(pView->m_nSelRmapInner);
+		OpenReelmap(pView->m_nSelRmapInner);
+		DispReelmap(m_nSerial);
+	}
 #endif
 // 	if(pDoc->m_pReelMapInner)
 // 		pDoc->m_pReelMapInner->ReloadRst();
@@ -677,12 +687,29 @@ void CDlgMenu06::OpenReelmap(int nSelRmap)
 // 			pDoc->m_pReelMapInner->m_nLayer = 3; // [2]:AllDn
 #else
 		if(nSelRmap < 0)
-			pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmap;
+			pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmapInner;
 		else
 			pDoc->m_pReelMapInner->m_nLayer = nSelRmap;
 
-		pDoc->m_pReelMapInner->Open(pView->GetRmapPath(nSelRmap));
-		pDoc->m_pReelMapInner->SetPathAtBuf(pView->GetRmapPath(nSelRmap));
+		if (pDoc->GetTestMode() == MODE_OUTER)
+		{
+			//myBtn[12].SetCheck(FALSE);	// IDC_CHK_DEF_UP
+			//myBtn[13].SetCheck(FALSE);	// IDC_CHK_DEF_DN
+			//myBtn[14].SetCheck(TRUE);	// IDC_CHK_DEF_ALL
+			pDoc->GetCurrentInfoEng();
+			if (pDoc->m_bEngDualTest)
+			{
+				pDoc->m_pReelMapInner->Open(pView->GetRmapPath(RMAP_INNER_ALLUP));
+				pDoc->m_pReelMapInner->SetPathAtBuf(pView->GetRmapPath(RMAP_INNER_ALLUP));
+			}
+			else
+			{
+				pDoc->m_pReelMapInner->Open(pView->GetRmapPath(RMAP_INNER_UP));
+				pDoc->m_pReelMapInner->SetPathAtBuf(pView->GetRmapPath(RMAP_INNER_UP));
+			}
+		}
+		//pDoc->m_pReelMapInner->Open(pView->GetRmapPath(nSelRmap));
+		//pDoc->m_pReelMapInner->SetPathAtBuf(pView->GetRmapPath(nSelRmap));
 #endif	
 	}
 }
@@ -3294,7 +3321,7 @@ void CDlgMenu06::UpdateTotVel(CString sVel)
 		if(pDoc->m_pReelMapInnerAllDn)
 			pDoc->m_pReelMapInnerAllDn->UpdateTotVel(sVel, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		if(pDoc->m_pReelMapInner)
-			pDoc->m_pReelMapInner->UpdateTotVel(sVel, pView->m_nSelRmap); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+			pDoc->m_pReelMapInner->UpdateTotVel(sVel, pView->m_nSelRmapInner); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
@@ -3747,18 +3774,18 @@ void CDlgMenu06::DispDef()
 
 	if(bDualTest)
 	{
-		switch(pView->m_nSelRmap)
+		switch(pView->m_nSelRmapInner)
 		{
-		case RMAP_UP:
+		case RMAP_INNER_UP:
 			pReelMap = pDoc->m_pReelMapInnerUp;
 			break;
-		case RMAP_DN:
+		case RMAP_INNER_DN:
 			pReelMap = pDoc->m_pReelMapInnerDn;
 			break;
-		case RMAP_ALLUP:
+		case RMAP_INNER_ALLUP:
 			pReelMap = pDoc->m_pReelMapInnerAllUp;
 			break;
-		case RMAP_ALLDN:
+		case RMAP_INNER_ALLDN:
 			pReelMap = pDoc->m_pReelMapInnerAllDn;
 			break;
 		}

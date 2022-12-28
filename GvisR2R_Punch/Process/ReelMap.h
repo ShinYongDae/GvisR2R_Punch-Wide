@@ -36,7 +36,7 @@ class CReelMap : public CWnd
 	int m_nStripOut[MAX_STRIP_NUM], m_nTotStOut;
 	CString m_sPathShare, m_sPathBuf;
 	CString m_sPathYield;
-	double m_dAdjRatio; // Master Image의 Pixel 해상도에 따른 Reelmap에서의 식별용 간격 비율.
+	//double m_dAdjRatio; // Master Image의 Pixel 해상도에 따른 Reelmap에서의 식별용 간격 비율.
 	int m_nIdxDefInfo;	// MAX_DEFINFO에 들어가는 정보의 Index.
 	int m_nWritedSerial; // In Share folder Serial.
 	BOOL m_bContFixDef;
@@ -72,6 +72,7 @@ public:
 public:
 	CCriticalSection m_cs;
 
+	double m_dAdjRatio; // Master Image의 Pixel 해상도에 따른 Reelmap에서의 식별용 간격 비율.
 	int m_nLayer;
 	CString m_sMc, m_sUser;
 // 	CString m_sModel, m_sLayer, m_sLot;

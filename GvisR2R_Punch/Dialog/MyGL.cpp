@@ -232,7 +232,7 @@ void CMyGL::SetPcsDef()
 
 void CMyGL::SetPnlNum()
 {
-	if(!m_pReelMap)//pDoc->
+	if(!m_pReelMap || m_pReelMap->m_pPnlNum)//pDoc->
 		return;
 
 	if(!m_pPnlNum)
@@ -588,7 +588,10 @@ void CMyGL::DrawRgn()
 
 void CMyGL::DrawPnlNum()
 {
- 	int k;
+	if (!m_pPnlNum || !m_pReelMap)
+		return;
+
+	int k;
 	//char cPnlNum[MAX_PATH];
 	//TCHAR cPnlNum[MAX_PATH];
 	CString sPnlNum;
@@ -641,7 +644,7 @@ void CMyGL::DrawPnlNum()
 
 void CMyGL::DrawPnlDefNum()
 {
-	if(!m_pPnlDefNum)
+	if(!m_pPnlDefNum || !m_pReelMap)
 		return;
 
  	int k;
@@ -658,7 +661,7 @@ void CMyGL::DrawPnlDefNum()
 		//strcpy(cPnlDefNum, sPnlDefNum);
 		//_stprintf(cPnlDefNum, _T("%s"), sPnlDefNum);
 
-		double dScale = m_pReelMap->GetAdjRatio();//pDoc->
+		double dScale = m_pReelMap->m_dAdjRatio;//m_pReelMap->GetAdjRatio();//pDoc->
 		double fPosX = (m_pReelMap->pFrmRgn[k].left+m_pReelMap->pFrmRgn[k].right-sPnlDefNum.GetLength()*(MYGL_GAP_NUM + MYGL_SIZE_CHAR)*dScale)/2.0;	//pDoc->pDoc->
 		double fPosY = m_pReelMap->pFrmRgn[k].top - MYGL_SIZE_CHAR*dScale; //(MYGL_GAP_NUM + MYGL_SIZE_CHAR) * dScale;	pDoc->
 		GLfloat fFontSize = MYGL_SIZE_DEFNUM * dScale;

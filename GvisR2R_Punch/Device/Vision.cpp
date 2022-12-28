@@ -851,7 +851,10 @@ void CVision::FreeDispDef(HWND hDispCtrl, CRect rtDispCtrl, int nIdx, int nDispl
 void CVision::InitCADBuf(int nLayer)
 {
 	REGION_STRIP *pCellRgn[2];
-	pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+	if(m_nIdx == 0 || m_nIdx == 1)
+		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+	else
+		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
 
 	if(MilCADImgBuf)
 		MbufFree(MilCADImgBuf);
@@ -1019,25 +1022,52 @@ void CVision::ShowDispCad(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef) 
 
 void CVision::CropCadImg(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef)
 {
-	if(!pDoc->m_pPcr[nLayer])
-		return;
 	short cell, cx, cy;
-#ifndef USE_MIL
-	cell = pDoc->m_pPcr[nLayer][TEST_SHOT-1]->m_pCell[0];			// for Test - BufIdx[0], DefIdx[0]
-	cx = pDoc->m_pPcr[nLayer][TEST_SHOT-1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
-	cy = pDoc->m_pPcr[nLayer][TEST_SHOT-1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
-#else
-	int nIdx = pDoc->GetPcrIdx1(nSerial);
-	if(!pDoc->m_pPcr[nLayer][nIdx])
-		return;
-	if(!pDoc->m_pPcr[nLayer][nIdx]->m_pCell || !pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos || 
-		!pDoc->m_Master[nLayer].m_pCellRgn)
-		return;
+	int nIdx;
 
-	cell = pDoc->m_pPcr[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
-	cx = pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_Master[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
-	cy = pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_Master[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
+	if (m_nIdx == 0 || m_nIdx == 1)
+	{
+		if (!pDoc->m_pPcr[nLayer])
+			return;
+#ifndef USE_MIL
+		cell = pDoc->m_pPcr[nLayer][TEST_SHOT - 1]->m_pCell[0];			// for Test - BufIdx[0], DefIdx[0]
+		cx = pDoc->m_pPcr[nLayer][TEST_SHOT - 1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
+		cy = pDoc->m_pPcr[nLayer][TEST_SHOT - 1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
+#else
+		nIdx = pDoc->GetPcrIdx1(nSerial);
+		if (!pDoc->m_pPcr[nLayer][nIdx])
+			return;
+		if (!pDoc->m_pPcr[nLayer][nIdx]->m_pCell || !pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos ||
+			!pDoc->m_Master[nLayer].m_pCellRgn)
+			return;
+
+		cell = pDoc->m_pPcr[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
+		cx = pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_Master[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
+		cy = pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_Master[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
 #endif
+	}
+	else
+	{
+		if (!pDoc->m_pPcrInner[nLayer])
+			return;
+#ifndef USE_MIL
+		cell = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pCell[0];			// for Test - BufIdx[0], DefIdx[0]
+		cx = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
+		cy = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
+#else
+		nIdx = pDoc->GetPcrIdx1(nSerial);
+		if (!pDoc->m_pPcrInner[nLayer][nIdx])
+			return;
+		if (!pDoc->m_pPcrInner[nLayer][nIdx]->m_pCell || !pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos ||
+			!pDoc->m_MasterInner[nLayer].m_pCellRgn)
+			return;
+
+		cell = pDoc->m_pPcrInner[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
+		cx = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_MasterInner[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
+		cy = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_MasterInner[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
+#endif
+	}
+
 	CropCadImg(cell, cx, cy, nIdxMkInfo, nLayer);
 }
 
@@ -1053,10 +1083,21 @@ void CVision::CropCadImg(short cell, short cx, short cy, int BufID, int nLayer)
 	int CelNum;
 
 	REGION_STRIP *pCellRgn[2];
-	pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
 
-	CellX = cell / pDoc->m_Master[nLayer].m_pCellRgn->NodeNumY;
-	CellY = cell % pDoc->m_Master[nLayer].m_pCellRgn->NodeNumY;
+
+	if (m_nIdx == 0 || m_nIdx == 1)
+	{
+		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+		CellX = cell / pDoc->m_Master[nLayer].m_pCellRgn->NodeNumY;
+		CellY = cell % pDoc->m_Master[nLayer].m_pCellRgn->NodeNumY;
+	}
+	else
+	{
+		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
+		CellX = cell / pDoc->m_MasterInner[nLayer].m_pCellRgn->NodeNumY;
+		CellY = cell % pDoc->m_MasterInner[nLayer].m_pCellRgn->NodeNumY;
+	}
+
 
 	dx = DEF_IMG_DISP_SIZEX;
 	dy = DEF_IMG_DISP_SIZEY;
@@ -1495,7 +1536,10 @@ BOOL CVision::SetCADCoord(int CellNum, int StX, int StY, int Coord, int nLayer)
 	long EmpStripThick;
 
 	REGION_STRIP *pCellRgn[2];
-	pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+	if (m_nIdx == 0 || m_nIdx == 1)
+		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+	else
+		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
 
 	switch(Coord) 
 	{
@@ -2235,12 +2279,24 @@ void CVision::LoadCADBuf(int CurrCell, long OrgStX, long OrgStY, long DesStX, lo
 
 #ifdef USE_CAM_MASTER
 	REGION_STRIP *pCellRgn[2];
-	pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+	UCHAR *pCADCellImg;
+
+	if (m_nIdx == 0 || m_nIdx == 1)
+	{
+		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+		pCADCellImg = pDoc->m_Master[nLayer].m_pCADCellImg[pDoc->m_Master[nLayer].CellInspID[CurrCell]];
+	}
+	else
+	{
+		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
+		pCADCellImg = pDoc->m_MasterInner[nLayer].m_pCADCellImg[pDoc->m_MasterInner[nLayer].CellInspID[CurrCell]];
+	}
 
 	if (!MilCADImgBuf)
 		return;
 
-	if(VicFileLoadFromMem(MilCADImgBuf, pDoc->m_Master[nLayer].m_pCADCellImg[pDoc->m_Master[nLayer].CellInspID[CurrCell]], tdat))
+	//if(VicFileLoadFromMem(MilCADImgBuf, pDoc->m_Master[nLayer].m_pCADCellImg[pDoc->m_Master[nLayer].CellInspID[CurrCell]], tdat))
+	if(VicFileLoadFromMem(MilCADImgBuf, pCADCellImg, tdat))
 	{
 		if((OrgStX + SizeX) <= pCellRgn[nLayer]->ProcSizeX && (OrgStY + SizeY) <= pCellRgn[nLayer]->ProcSizeY)
 		{
@@ -2389,23 +2445,51 @@ void CVision::ShowDispDef(int nIdxMkInfo, int nSerial, int nLayer, int nDefPcs) 
 		m_nTest++;
 		sPath.Format(_T("%s%05d.tif"),PATH_DEF_IMG, m_nTest);
 #else
-		if(nLayer==0) // Up
+		if (m_nIdx == 0 || m_nIdx == 1)
 		{
-		sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile, 
-																 pDoc->WorkingInfo.LastJob.sModelUp, 
-																 pDoc->WorkingInfo.LastJob.sLotUp, 
-																 pDoc->WorkingInfo.LastJob.sLayerUp, 
-															 nSerial, 
-															 nDefPcs);
+			if (nLayer == 0) // Up
+			{
+				sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+					pDoc->WorkingInfo.LastJob.sModelUp,
+					pDoc->WorkingInfo.LastJob.sLotUp,
+					pDoc->WorkingInfo.LastJob.sLayerUp,
+					nSerial,
+					nDefPcs);
+			}
+			else if (nLayer == 1) // Dn
+			{
+				sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+					pDoc->WorkingInfo.LastJob.sModelDn,
+					pDoc->WorkingInfo.LastJob.sLotDn,
+					pDoc->WorkingInfo.LastJob.sLayerDn,
+					nSerial,
+					nDefPcs);
+			}
 		}
-		else if(nLayer==1) // Dn
+		else
 		{
-			sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile, 
-																 pDoc->WorkingInfo.LastJob.sModelDn, 
-																 pDoc->WorkingInfo.LastJob.sLotDn, 
-																 pDoc->WorkingInfo.LastJob.sLayerDn, 
-																 nSerial, 
-																 nDefPcs);
+			CString sMsg, sUpPath, sDnPath;
+			if (!pDoc->GetInnerFolderPath(nSerial, sUpPath, sDnPath))
+			{
+				sMsg.Format(_T("GetInnerFolderPath가 설정되지 않았습니다."));
+				pView->MsgBox(sMsg);
+				return;
+			}
+
+			if (nLayer == 0) // Up
+			{
+				sPath.Format(_T("%sDefImage\\%d\\%05d.tif"), 
+					sUpPath,
+					nSerial,
+					nDefPcs);
+			}
+			else if (nLayer == 1) // Dn
+			{
+				sPath.Format(_T("%sDefImage\\%d\\%05d.tif"), 
+					sDnPath,
+					nSerial,
+					nDefPcs);
+			}
 		}
 #endif
 		CFileFind findfile;
@@ -2513,7 +2597,14 @@ void CVision::LoadPinBuf(int nLayer)
 		return;
 
 	TiffData tdat;
-	if(VicFileLoadFromMem(MilPinImgBuf, pDoc->m_Master[nLayer].m_pPinImg, tdat))
+	UCHAR *pPinImg;
+	if (m_nIdx == 0 || m_nIdx == 1)
+		pPinImg = pDoc->m_Master[nLayer].m_pPinImg;
+	else
+		pPinImg = pDoc->m_MasterInner[nLayer].m_pPinImg;
+
+	//if(VicFileLoadFromMem(MilPinImgBuf, pDoc->m_Master[nLayer].m_pPinImg, tdat))
+	if (VicFileLoadFromMem(MilPinImgBuf, pPinImg, tdat))
 	{
 		MIL_ID MilBufPinCld = M_NULL, MilBufPinTempCld = M_NULL;
 // 		MIL_ID  MilOriginDisp = M_NULL;
@@ -2596,9 +2687,27 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[0])
 		return;
 
-	if (pDoc->m_Master[0].m_pAlignImg[0])
+	UCHAR *pAlignImg[4];
+	if (m_nIdx == 0 || m_nIdx == 1)
 	{
-		if (VicFileLoadFromMem(MilAlignImgBuf[0], pDoc->m_Master[0].m_pAlignImg[0], tdat))
+		pAlignImg[0] = pDoc->m_Master[0].m_pAlignImg[0];
+		pAlignImg[1] = pDoc->m_Master[0].m_pAlignImg[1];
+		pAlignImg[2] = pDoc->m_Master[0].m_pAlignImg[2];
+		pAlignImg[3] = pDoc->m_Master[0].m_pAlignImg[3];
+	}
+	else
+	{
+		pAlignImg[0] = pDoc->m_MasterInner[0].m_pAlignImg[0];
+		pAlignImg[1] = pDoc->m_MasterInner[0].m_pAlignImg[1];
+		pAlignImg[2] = pDoc->m_MasterInner[0].m_pAlignImg[2];
+		pAlignImg[3] = pDoc->m_MasterInner[0].m_pAlignImg[3];
+	}
+
+	//if (pDoc->m_Master[0].m_pAlignImg[0])
+	if (pAlignImg[0])
+	{
+		//if (VicFileLoadFromMem(MilAlignImgBuf[0], pDoc->m_Master[0].m_pAlignImg[0], tdat))
+		if (VicFileLoadFromMem(MilAlignImgBuf[0], pAlignImg[0], tdat))
 		{
 
 			MbufChild2d(MilAlignImgBuf[0], (1024 - ALIGN_IMG_DISP_SIZEX) / 2, (1024 - ALIGN_IMG_DISP_SIZEY) / 2, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, &MilBufAlignCld);
@@ -2624,9 +2733,11 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[1])
 		return;
 
-	if (pDoc->m_Master[0].m_pAlignImg[1])
+	//if (pDoc->m_Master[0].m_pAlignImg[1])
+	if (pAlignImg[1])
 	{
-		if (VicFileLoadFromMem(MilAlignImgBuf[1], pDoc->m_Master[0].m_pAlignImg[1], tdat))
+		//if (VicFileLoadFromMem(MilAlignImgBuf[1], pDoc->m_Master[0].m_pAlignImg[1], tdat))
+		if (VicFileLoadFromMem(MilAlignImgBuf[1], pAlignImg[1], tdat))
 		{
 
 			MbufChild2d(MilAlignImgBuf[1], (1024 - ALIGN_IMG_DISP_SIZEX) / 2, (1024 - ALIGN_IMG_DISP_SIZEY) / 2, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, &MilBufAlignCld);
@@ -2652,9 +2763,11 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[2])
 		return;
 
-	if (pDoc->m_Master[0].m_pAlignImg[2])
+	//if (pDoc->m_Master[0].m_pAlignImg[2])
+	if (pAlignImg[2])
 	{
-		if (VicFileLoadFromMem(MilAlignImgBuf[2], pDoc->m_Master[0].m_pAlignImg[2], tdat))
+		//if (VicFileLoadFromMem(MilAlignImgBuf[2], pDoc->m_Master[0].m_pAlignImg[2], tdat))
+		if (VicFileLoadFromMem(MilAlignImgBuf[2], pAlignImg[2], tdat))
 		{
 
 			MbufChild2d(MilAlignImgBuf[2], (1024 - ALIGN_IMG_DISP_SIZEX) / 2, (1024 - ALIGN_IMG_DISP_SIZEY) / 2, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, &MilBufAlignCld);
@@ -2680,9 +2793,11 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[3])
 		return;
 
-	if (pDoc->m_Master[0].m_pAlignImg[3])
+	//if (pDoc->m_Master[0].m_pAlignImg[3])
+	if (pAlignImg[3])
 	{
-		if (VicFileLoadFromMem(MilAlignImgBuf[3], pDoc->m_Master[0].m_pAlignImg[3], tdat))
+		//if (VicFileLoadFromMem(MilAlignImgBuf[3], pDoc->m_Master[0].m_pAlignImg[3], tdat))
+		if (VicFileLoadFromMem(MilAlignImgBuf[3], pAlignImg[3], tdat))
 		{
 
 			MbufChild2d(MilAlignImgBuf[3], (1024 - ALIGN_IMG_DISP_SIZEX) / 2, (1024 - ALIGN_IMG_DISP_SIZEY) / 2, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, &MilBufAlignCld);

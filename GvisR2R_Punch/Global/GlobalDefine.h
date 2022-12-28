@@ -739,7 +739,7 @@ struct stLastJob
 	CString sAoiLastShot[2]; // [Up/Dn]
 	CString sPartialSpd;
 	BOOL bOneMetal, bTwoMetal;
-	BOOL bDualTest, bSampleTest, nTestMode;
+	BOOL bDualTest,  bDualTestInner, bSampleTest, nTestMode;
 	BOOL bCore150Recoiler, bCore150Uncoiler;
 	CString sSampleTestShotNum;
 	BOOL bUse2Layer;
@@ -787,7 +787,7 @@ struct stLastJob
 		sPartialSpd = _T("10");
 
 		bOneMetal = FALSE; bTwoMetal = FALSE;
-		bDualTest = TRUE; bSampleTest = FALSE; nTestMode = 0;
+		bDualTest = TRUE; bDualTestInner = TRUE; bSampleTest = FALSE; nTestMode = 0;
 		bCore150Recoiler = FALSE; bCore150Uncoiler = FALSE;
 		sSampleTestShotNum = _T("");
 		bUseEngraveUltrasonic = FALSE; bUseAoiDnUltrasonic = FALSE;
