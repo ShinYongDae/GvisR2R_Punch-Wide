@@ -3706,26 +3706,58 @@ void CEngrave::SetDef()
 
 	CReelMap* pReelMap=NULL;
 
-	if (bDualTest)
+	//if (bDualTest)
+	//{
+	//	switch (pView->m_nSelRmap)
+	//	{
+	//	case RMAP_UP:
+	//		pReelMap = pDoc->m_pReelMapUp;
+	//		break;
+	//	case RMAP_DN:
+	//		pReelMap = pDoc->m_pReelMapDn;
+	//		break;
+	//	case RMAP_ALLUP:
+	//		pReelMap = pDoc->m_pReelMapAllUp;
+	//		break;
+	//	case RMAP_ALLDN:
+	//		pReelMap = pDoc->m_pReelMapAllDn;
+	//		break;
+	//	}
+	//}
+	//else
+	//	pReelMap = pDoc->m_pReelMapUp;
+
+
+	switch (pView->m_nSelRmap)
 	{
-		switch (pView->m_nSelRmap)
-		{
-		case RMAP_UP:
-			pReelMap = pDoc->m_pReelMapUp;
-			break;
-		case RMAP_DN:
-			pReelMap = pDoc->m_pReelMapDn;
-			break;
-		case RMAP_ALLUP:
-			pReelMap = pDoc->m_pReelMapAllUp;
-			break;
-		case RMAP_ALLDN:
-			pReelMap = pDoc->m_pReelMapAllDn;
-			break;
-		}
-	}
-	else
+	case RMAP_UP:
 		pReelMap = pDoc->m_pReelMapUp;
+		break;
+	case RMAP_DN:
+		pReelMap = pDoc->m_pReelMapDn;
+		break;
+	case RMAP_ALLUP:
+		pReelMap = pDoc->m_pReelMapAllUp;
+		break;
+	case RMAP_ALLDN:
+		pReelMap = pDoc->m_pReelMapAllDn;
+		break;
+	case RMAP_INNER_UP:
+		pReelMap = pDoc->m_pReelMapInnerUp;
+		break;
+	case RMAP_INNER_DN:
+		pReelMap = pDoc->m_pReelMapInnerDn;
+		break;
+	case RMAP_INNER_ALLUP:
+		pReelMap = pDoc->m_pReelMapInnerAllUp;
+		break;
+	case RMAP_INNER_ALLDN:
+		pReelMap = pDoc->m_pReelMapInnerAllDn;
+		break;
+	case RMAP_ITS:
+		pReelMap = pDoc->m_pReelMapIts;
+		break;
+	}
 
 	if(pReelMap)
 	{

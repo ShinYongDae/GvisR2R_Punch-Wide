@@ -535,31 +535,96 @@ void CMyGL::DrawRgn()
 				nTestMode=0;
 			
 			int nIdx = pDoc->GetPcrIdx1(m_pPnlNum[k]);
-			if(pDoc->m_pPcr[nTestMode][nIdx]->m_nErrPnl == -1 || pDoc->m_pPcr[nTestMode][nIdx]->m_nErrPnl == -2)
+
+			if (m_nCtrlId == IDC_STC_REELMAP_IMG)
 			{
-				// Draw Cross....
-				GVertex vtPnt[4];
-				vtPnt[0] = m_pFrmRgn[k][0];
+				if(pDoc->GetTestMode() == MODE_OUTER)
+				{ 
+					if (pDoc->m_pPcrIts[nIdx]->m_nErrPnl == -1 || pDoc->m_pPcrIts[nIdx]->m_nErrPnl == -2)
+					{
+						// Draw Cross....
+						GVertex vtPnt[4];
+						vtPnt[0] = m_pFrmRgn[k][0];
 
-				vtPnt[1].x = m_pFrmRgn[k][0].x;
-				vtPnt[1].y = m_pFrmRgn[k][1].y;
-				vtPnt[1].z = m_pFrmRgn[k][1].z;
+						vtPnt[1].x = m_pFrmRgn[k][0].x;
+						vtPnt[1].y = m_pFrmRgn[k][1].y;
+						vtPnt[1].z = m_pFrmRgn[k][1].z;
 
-				vtPnt[2] = m_pFrmRgn[k][1];
+						vtPnt[2] = m_pFrmRgn[k][1];
 
-				vtPnt[3].x = m_pFrmRgn[k][1].x;
-				vtPnt[3].y = m_pFrmRgn[k][0].y;
-				vtPnt[3].z = m_pFrmRgn[k][0].z;
+						vtPnt[3].x = m_pFrmRgn[k][1].x;
+						vtPnt[3].y = m_pFrmRgn[k][0].y;
+						vtPnt[3].z = m_pFrmRgn[k][0].z;
 
-				GVGLDrawInit(GV_LINE, 3, m_rgbRed);
-				GVGLDrawVertex(vtPnt[0]);
-				GVGLDrawVertex(vtPnt[2]);
-				GVGLDrawShow();
+						GVGLDrawInit(GV_LINE, 3, m_rgbRed);
+						GVGLDrawVertex(vtPnt[0]);
+						GVGLDrawVertex(vtPnt[2]);
+						GVGLDrawShow();
 
-				GVGLDrawInit(GV_LINE, 3, m_rgbRed);
-				GVGLDrawVertex(vtPnt[1]);
-				GVGLDrawVertex(vtPnt[3]);
-				GVGLDrawShow();
+						GVGLDrawInit(GV_LINE, 3, m_rgbRed);
+						GVGLDrawVertex(vtPnt[1]);
+						GVGLDrawVertex(vtPnt[3]);
+						GVGLDrawShow();
+					}
+				}
+				else
+				{
+					if (pDoc->m_pPcr[nTestMode][nIdx]->m_nErrPnl == -1 || pDoc->m_pPcr[nTestMode][nIdx]->m_nErrPnl == -2)
+					{
+						// Draw Cross....
+						GVertex vtPnt[4];
+						vtPnt[0] = m_pFrmRgn[k][0];
+
+						vtPnt[1].x = m_pFrmRgn[k][0].x;
+						vtPnt[1].y = m_pFrmRgn[k][1].y;
+						vtPnt[1].z = m_pFrmRgn[k][1].z;
+
+						vtPnt[2] = m_pFrmRgn[k][1];
+
+						vtPnt[3].x = m_pFrmRgn[k][1].x;
+						vtPnt[3].y = m_pFrmRgn[k][0].y;
+						vtPnt[3].z = m_pFrmRgn[k][0].z;
+
+						GVGLDrawInit(GV_LINE, 3, m_rgbRed);
+						GVGLDrawVertex(vtPnt[0]);
+						GVGLDrawVertex(vtPnt[2]);
+						GVGLDrawShow();
+
+						GVGLDrawInit(GV_LINE, 3, m_rgbRed);
+						GVGLDrawVertex(vtPnt[1]);
+						GVGLDrawVertex(vtPnt[3]);
+						GVGLDrawShow();
+					}
+				}
+			}
+			else if (m_nCtrlId == IDC_STC_REELMAP_INNER)
+			{
+				if (pDoc->m_pPcrInner[nTestMode][nIdx]->m_nErrPnl == -1 || pDoc->m_pPcrInner[nTestMode][nIdx]->m_nErrPnl == -2)
+				{
+					// Draw Cross....
+					GVertex vtPnt[4];
+					vtPnt[0] = m_pFrmRgn[k][0];
+
+					vtPnt[1].x = m_pFrmRgn[k][0].x;
+					vtPnt[1].y = m_pFrmRgn[k][1].y;
+					vtPnt[1].z = m_pFrmRgn[k][1].z;
+
+					vtPnt[2] = m_pFrmRgn[k][1];
+
+					vtPnt[3].x = m_pFrmRgn[k][1].x;
+					vtPnt[3].y = m_pFrmRgn[k][0].y;
+					vtPnt[3].z = m_pFrmRgn[k][0].z;
+
+					GVGLDrawInit(GV_LINE, 3, m_rgbRed);
+					GVGLDrawVertex(vtPnt[0]);
+					GVGLDrawVertex(vtPnt[2]);
+					GVGLDrawShow();
+
+					GVGLDrawInit(GV_LINE, 3, m_rgbRed);
+					GVGLDrawVertex(vtPnt[1]);
+					GVGLDrawVertex(vtPnt[3]);
+					GVGLDrawShow();
+				}
 			}
 		}
 

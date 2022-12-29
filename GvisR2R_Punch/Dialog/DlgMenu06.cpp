@@ -581,7 +581,7 @@ void CDlgMenu06::SelMap(int nSel)
 #else
 	CString str, sPath;
 
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(bDualTest)
 	{
 		switch(nSel)
@@ -631,27 +631,27 @@ void CDlgMenu06::SelMap(int nSel)
 // 	UpdateRst();
 }
 
-BOOL CDlgMenu06::OpenReelmap(CString sPath)
-{
-#ifdef TEST_MODE
-	pDoc->m_pReelMapInnerUp->Open(sPath);
-#else
-	stModelInfo stInfo;
-	if (!pDoc->GetPcrInfo(sPath, stInfo))
-	{
-		pView->DispStsBar(_T("E(1)"), 5);
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Error-GetPcrInfo(1)"));
-		return FALSE;
-	}
-
-	if (pDoc->m_pReelMapInnerUp)
-	{
-		pDoc->m_pReelMapInnerUp->Open(pView->GetRmapPath(RMAP_UP, stInfo), stInfo.sModel, stInfo.sLayer, stInfo.sLot);
-	}
-#endif
-	return TRUE;
-}
+//BOOL CDlgMenu06::OpenReelmap(CString sPath)
+//{
+//#ifdef TEST_MODE
+//	pDoc->m_pReelMapInnerUp->Open(sPath);
+//#else
+//	stModelInfo stInfo;
+//	if (!pDoc->GetPcrInfo(sPath, stInfo))
+//	{
+//		pView->DispStsBar(_T("E(1)"), 5);
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Error-GetPcrInfo(1)"));
+//		return FALSE;
+//	}
+//
+//	if (pDoc->m_pReelMapInnerUp)
+//	{
+//		pDoc->m_pReelMapInnerUp->Open(pView->GetRmapPath(RMAP_INNER_UP, stInfo), stInfo.sModel, stInfo.sLayer, stInfo.sLot);
+//	}
+//#endif
+//	return TRUE;
+//}
 
 void CDlgMenu06::OpenReelmap(int nSelRmap)
 {
@@ -696,8 +696,8 @@ void CDlgMenu06::OpenReelmap(int nSelRmap)
 			//myBtn[12].SetCheck(FALSE);	// IDC_CHK_DEF_UP
 			//myBtn[13].SetCheck(FALSE);	// IDC_CHK_DEF_DN
 			//myBtn[14].SetCheck(TRUE);	// IDC_CHK_DEF_ALL
-			pDoc->GetCurrentInfoEng();
-			if (pDoc->m_bEngDualTest)
+			//pDoc->GetCurrentInfoEng();
+			if (pDoc->WorkingInfo.LastJob.bDualTestInner)
 			{
 				pDoc->m_pReelMapInner->Open(pView->GetRmapPath(RMAP_INNER_ALLUP));
 				pDoc->m_pReelMapInner->SetPathAtBuf(pView->GetRmapPath(RMAP_INNER_ALLUP));
@@ -767,7 +767,7 @@ void CDlgMenu06::SetPnlDefNum()
 
 void CDlgMenu06::DispMkInfo()	// m_bTIM_DISP_DEF_IMG == FALSE 일때까지 계속 호출함.
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	if(bDualTest)
 	{
@@ -806,7 +806,7 @@ void CDlgMenu06::DispMkInfo()	// m_bTIM_DISP_DEF_IMG == FALSE 일때까지 계속 호출
 
 void CDlgMenu06::DispMkInfoUp()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	int nIdx = pDoc->GetPcrIdx0(m_nSerial);
 	m_nDef[0] = 0;	
@@ -849,7 +849,7 @@ void CDlgMenu06::DispMkInfoUp()
 
 void CDlgMenu06::DispMkInfoDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -898,7 +898,7 @@ void CDlgMenu06::SelDisp()
 		return;
 #endif
 
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	HWND hW;
 	CRect rt;
@@ -1088,8 +1088,8 @@ void CDlgMenu06::InitMkInfoUp()
 #else
 	return;
 #endif
-	pDoc->GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	//pDoc->GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	HWND hW;
 	CRect rt;
@@ -1213,7 +1213,7 @@ void CDlgMenu06::InitMkInfoUp()
 
 void CDlgMenu06::InitMkInfoDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1467,7 +1467,7 @@ void CDlgMenu06::ResetMkInfoUp()
 
 void CDlgMenu06::ResetMkInfoDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1480,7 +1480,7 @@ void CDlgMenu06::ResetMkInfoDn()
 
 void CDlgMenu06::InitCadImg()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 #ifdef USE_VISION
 	if(pView->m_pVisionInner[0])
 	{
@@ -1512,7 +1512,7 @@ void CDlgMenu06::InitCadImgUp()
 
 void CDlgMenu06::InitCadImgDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1527,7 +1527,7 @@ void CDlgMenu06::InitCadImgDn()
 
 void CDlgMenu06::InitDefImg()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 #ifdef USE_VISION
 	if(pView->m_pVisionInner[0])
@@ -1551,7 +1551,7 @@ void CDlgMenu06::InitDefImgUp()
 
 void CDlgMenu06::InitDefImgDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1572,7 +1572,7 @@ void CDlgMenu06::InitDefInfo()
 
 void CDlgMenu06::InitDefInfoUp()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	if(bDualTest)
 	{
@@ -1594,7 +1594,7 @@ void CDlgMenu06::InitDefInfoUp()
 
 void CDlgMenu06::InitDefInfoDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1607,7 +1607,7 @@ void CDlgMenu06::InitDefInfoDn()
 
 void CDlgMenu06::ClrCadImg()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 #ifdef USE_VISION
 	if(pView->m_pVisionInner[0])
@@ -1631,7 +1631,7 @@ void CDlgMenu06::ClrCadImgUp()
 
 void CDlgMenu06::ClrCadImgDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1643,7 +1643,7 @@ void CDlgMenu06::ClrCadImgDn()
 
 void CDlgMenu06::ClrDefImg()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 #ifdef USE_VISION
 	if(pView->m_pVisionInner[0])
@@ -1667,7 +1667,7 @@ void CDlgMenu06::ClrDefImgUp()
 
 void CDlgMenu06::ClrDefImgDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1691,7 +1691,7 @@ void CDlgMenu06::DispMkInfo(int nSerial)
 		return;
 	}
 
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	DispMkInfoUp(nSerial);
 	if(bDualTest)
@@ -1707,7 +1707,7 @@ void CDlgMenu06::DispMkInfoUp(int nSerial)
 		return;
 	}
 
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	
 #ifdef USE_VISION
 	if(bDualTest)
@@ -1795,7 +1795,7 @@ void CDlgMenu06::DispMkInfoUp(int nSerial)
 
 void CDlgMenu06::DispMkInfoDn(int nSerial)
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1855,7 +1855,7 @@ void CDlgMenu06::ShiftDefInfoUp()
 
 	pView->m_pVisionInner[0]->ShiftDisp();
 
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	CString str;
 	COLORREF rgbDef;
@@ -1885,7 +1885,7 @@ void CDlgMenu06::ShiftDefInfoUp()
 
 void CDlgMenu06::ShiftDefInfoDn()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -1958,7 +1958,7 @@ void CDlgMenu06::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 
 void CDlgMenu06::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -3091,7 +3091,7 @@ int CDlgMenu06::GetSerial()
 
 void CDlgMenu06::ResetSerial()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	m_nSerial = 0;
 
 	if(myBtn[3].GetCheck())
@@ -3130,7 +3130,7 @@ void CDlgMenu06::UpdateData()
 	CString sVal;
 
 	myStcData[0].SetText(pDoc->WorkingInfo.LastJob.sSelUserName);	// 운용자
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(bDualTest)
 	{
 		//myStcData[1].SetText(pDoc->WorkingInfo.LastJob.sModelDn);		// 모델
@@ -3269,7 +3269,7 @@ void CDlgMenu06::UpdateWorking()
 	myStcData[12].SetText(sVal);			// 마킹부 : Distance (FdDone)
 	pDoc->SetMkMenu01(_T("Info"), _T("DoneLengthMk"), sVal);
 
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(bDualTest)
 	{
 		sVal.Format(_T("%.2f"), pView->GetAoiDnFdLen() / 1000.0);	// [M]
@@ -3309,7 +3309,7 @@ void CDlgMenu06::UpdateWorking()
 
 void CDlgMenu06::UpdateTotVel(CString sVel)
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(pDoc->m_pReelMapInnerUp)
 		pDoc->m_pReelMapInnerUp->UpdateTotVel(sVel, 0); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	if(bDualTest)
@@ -3353,7 +3353,7 @@ void CDlgMenu06::DispTotRatio()
 	int nGood=0, nBad=0, nTot=0, nVal;
 	int nPnl = m_nSerial - 1;
 	double dRatio=0.0;
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	// < 전체 수율 >
 	// 상면
@@ -3464,7 +3464,7 @@ void CDlgMenu06::DispStripRatio()
 	int nMer[4];
 	int nPnl = m_nSerial - 1;
 	double dRatio=0.0;
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	for(int i=0; i<2; i++)
 	{
@@ -3768,7 +3768,7 @@ void CDlgMenu06::DispDef()
 {
 	CString str, sItem;
 	int nNum=0;
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	CReelMap* pReelMap;
 
@@ -4007,7 +4007,7 @@ BOOL CDlgMenu06::PreTranslateMessage(MSG* pMsg)
 
 void CDlgMenu06::LotEnd() 
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	if(m_bLastProc)
 	{
@@ -4331,7 +4331,7 @@ void CDlgMenu06::OnChkDefUp()
 void CDlgMenu06::OnChkDefDn() 
 {
 	// TODO: Add your control notification handler code here
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -4379,7 +4379,7 @@ void CDlgMenu06::OnStcUp()
 void CDlgMenu06::OnStcDn() 
 {
 	// TODO: Add your control notification handler code here
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(!bDualTest)
 		return;
 
@@ -4728,8 +4728,8 @@ void CDlgMenu06::OnChkElecStop()
 
 void CDlgMenu06::SetDualTest(BOOL bOn)
 {
-	pDoc->GetCurrentInfoEng();
-	bOn = pDoc->m_bEngDualTest;
+	//pDoc->GetCurrentInfoEng();
+	bOn = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	if(bOn)
 	{

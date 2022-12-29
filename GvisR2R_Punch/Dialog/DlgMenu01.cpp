@@ -397,6 +397,9 @@ void CDlgMenu01::SelMap(int nSel)
 			pView->m_nSelRmap = RMAP_UP;
 	}
 
+	if (pDoc->GetTestMode() == MODE_OUTER)
+		pView->m_nSelRmap = RMAP_ITS;
+
 	sPath = pView->GetRmapPath(pView->m_nSelRmap);
 	OpenReelmap(pView->m_nSelRmap);
 	DispReelmap(m_nSerial);
@@ -406,27 +409,27 @@ void CDlgMenu01::SelMap(int nSel)
 // 	UpdateRst();
 }
 
-BOOL CDlgMenu01::OpenReelmap(CString sPath)
-{
-#ifdef TEST_MODE
-	pDoc->m_pReelMapUp->Open(sPath);
-#else
-	stModelInfo stInfo;
-	if (!pDoc->GetPcrInfo(sPath, stInfo))
-	{
-		pView->DispStsBar(_T("E(1)"), 5);
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Error-GetPcrInfo(1)"));
-		return FALSE;
-	}
-
-	if (pDoc->m_pReelMapUp)
-	{
-		pDoc->m_pReelMapUp->Open(pView->GetRmapPath(RMAP_UP, stInfo), stInfo.sModel, stInfo.sLayer, stInfo.sLot);
-	}
-#endif
-	return TRUE;
-}
+//BOOL CDlgMenu01::OpenReelmap(CString sPath)
+//{
+//#ifdef TEST_MODE
+//	pDoc->m_pReelMapUp->Open(sPath);
+//#else
+//	stModelInfo stInfo;
+//	if (!pDoc->GetPcrInfo(sPath, stInfo))
+//	{
+//		pView->DispStsBar(_T("E(1)"), 5);
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Error-GetPcrInfo(1)"));
+//		return FALSE;
+//	}
+//
+//	if (pDoc->m_pReelMapUp)
+//	{
+//		pDoc->m_pReelMapUp->Open(pView->GetRmapPath(RMAP_UP, stInfo), stInfo.sModel, stInfo.sLayer, stInfo.sLot);
+//	}
+//#endif
+//	return TRUE;
+//}
 
 void CDlgMenu01::OpenReelmap(int nSelRmap)
 {
@@ -495,10 +498,21 @@ BOOL CDlgMenu01::DispReelmap(int nSerial, BOOL bDumy)
 		SaveLog(strData);
 	}
 
-	if (pDoc->m_pReelMap)
+	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
-		if (!pDoc->m_pReelMap->Disp(nSerial, bDumy))
-			return FALSE;
+		if (pDoc->m_pReelMapIts)
+		{
+			if (!pDoc->m_pReelMapIts->Disp(nSerial, bDumy))
+				return FALSE;
+		}
+	}
+	else
+	{
+		if (pDoc->m_pReelMap)
+		{
+			if (!pDoc->m_pReelMap->Disp(nSerial, bDumy))
+				return FALSE;
+		}
 	}
  	SetPnlNum();
  	SetPnlDefNum();
@@ -586,7 +600,7 @@ void CDlgMenu01::DispMkInfoUp()
 	else
 		nMaxMaxDispDefImg = _tstoi(pDoc->WorkingInfo.System.sMaxDispDefImg);
 
-	if(nMaxMaxDispDefImg > 0 && pDoc->m_pPcr[0][nIdx]->m_nTotDef - nMaxMaxDispDefImg > 0)
+	if (nMaxMaxDispDefImg > 0 && pDoc->m_pPcr[0][nIdx]->m_nTotDef - nMaxMaxDispDefImg > 0)
 		m_nIdxDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef - nMaxMaxDispDefImg; // 불량이미지 인덱스.
 	else
 		m_nIdxDef[0] = 0; // 불량이미지 인덱스.
@@ -1788,7 +1802,10 @@ void CDlgMenu01::InitGL()
 	if(!m_pMyGL)
 	{
 		m_pMyGL = new CMyGL(this);
-		m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMap);
+		if(pDoc->GetTestMode() == MODE_OUTER)
+			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMapIts);
+		else
+			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMap);
 	}
 // 	m_pMyGL->ResetRgn();
 	m_pMyGL->SetRgn();
@@ -3538,26 +3555,58 @@ void CDlgMenu01::DispDef()
 
 	CReelMap* pReelMap;
 
-	if(bDualTest)
+	//if(bDualTest)
+	//{
+	//	switch(pView->m_nSelRmap)
+	//	{
+	//	case RMAP_UP:
+	//		pReelMap = pDoc->m_pReelMapUp;
+	//		break;
+	//	case RMAP_DN:
+	//		pReelMap = pDoc->m_pReelMapDn;
+	//		break;
+	//	case RMAP_ALLUP:
+	//		pReelMap = pDoc->m_pReelMapAllUp;
+	//		break;
+	//	case RMAP_ALLDN:
+	//		pReelMap = pDoc->m_pReelMapAllDn;
+	//		break;
+	//	}
+	//}
+	//else
+	//	pReelMap = pDoc->m_pReelMapUp;
+
+	switch (pView->m_nSelRmap)
 	{
-		switch(pView->m_nSelRmap)
-		{
-		case RMAP_UP:
-			pReelMap = pDoc->m_pReelMapUp;
-			break;
-		case RMAP_DN:
-			pReelMap = pDoc->m_pReelMapDn;
-			break;
-		case RMAP_ALLUP:
-			pReelMap = pDoc->m_pReelMapAllUp;
-			break;
-		case RMAP_ALLDN:
-			pReelMap = pDoc->m_pReelMapAllDn;
-			break;
-		}
-	}
-	else
+	case RMAP_UP:
 		pReelMap = pDoc->m_pReelMapUp;
+		break;
+	case RMAP_DN:
+		pReelMap = pDoc->m_pReelMapDn;
+		break;
+	case RMAP_ALLUP:
+		pReelMap = pDoc->m_pReelMapAllUp;
+		break;
+	case RMAP_ALLDN:
+		pReelMap = pDoc->m_pReelMapAllDn;
+		break;
+	case RMAP_INNER_UP:
+		pReelMap = pDoc->m_pReelMapInnerUp;
+		break;
+	case RMAP_INNER_DN:
+		pReelMap = pDoc->m_pReelMapInnerDn;
+		break;
+	case RMAP_INNER_ALLUP:
+		pReelMap = pDoc->m_pReelMapInnerAllUp;
+		break;
+	case RMAP_INNER_ALLDN:
+		pReelMap = pDoc->m_pReelMapInnerAllDn;
+		break;
+	case RMAP_ITS:
+		pReelMap = pDoc->m_pReelMapIts;
+		break;
+	}
+
 
 	nNum = pReelMap->GetDefNum(DEF_OPEN);
 	str.Format(_T("%d"), nNum);

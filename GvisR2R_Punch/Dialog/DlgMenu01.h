@@ -110,7 +110,7 @@ public:
 	void SetTitleStcDef();
 
 	void SelMap(int nSel);
-	BOOL OpenReelmap(CString sPath); // for Test
+	//BOOL OpenReelmap(CString sPath); // for Test
 	void OpenReelmap(int nSelRmap);
 	BOOL DispReelmap(int nSerial, BOOL bDumy=FALSE);
 	void DispMain(CString sMsg, COLORREF rgb=RGB_GREEN);

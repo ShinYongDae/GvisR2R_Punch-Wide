@@ -10343,7 +10343,15 @@ BOOL CGvisR2R_PunchView::SetSerial(int nSerial, BOOL bDumy)
 	if (nPrevSerial == nSerial)
 		return TRUE;
 
-	return m_pDlgMenu01->SetSerial(nSerial, bDumy);
+	BOOL bRtn[2] = {1};
+	bRtn[0] = m_pDlgMenu01->SetSerial(nSerial, bDumy);
+	if (pDoc->GetTestMode() == MODE_OUTER)
+	{
+		if (!m_pDlgMenu06)
+			bRtn[1] = m_pDlgMenu06->SetSerial(nSerial, bDumy);
+	}
+
+	return (bRtn[0] && bRtn[1]);
 }
 
 BOOL CGvisR2R_PunchView::SetSerialReelmap(int nSerial, BOOL bDumy)
@@ -10964,6 +10972,7 @@ void CGvisR2R_PunchView::ResetMkInfo(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn , 2 : 
 			}
 		}
 
+		OpenReelmap();
 		SetAlignPosUp();
 
 		if (m_pDlgMenu02)
@@ -21913,6 +21922,12 @@ void CGvisR2R_PunchView::OpenReelmap()
 			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
 		pDoc->m_pReelMap->Open(GetRmapPath(pDoc->m_pReelMap->m_nLayer));
 	}
+
+	//if (pDoc->GetTestMode() == MODE_OUTER)
+	//{
+	//	if (pDoc->m_pReelMapIts)
+	//		pDoc->m_pReelMapIts->Open(GetRmapPath(pDoc->m_pReelMapIts->m_nLayer));
+	//}
 }
 
 void CGvisR2R_PunchView::OpenReelmapUp()
@@ -28470,8 +28485,8 @@ BOOL CGvisR2R_PunchView::ReloadRstInner()
 	dlg.Create(sVal);
 	//dlg.SetRange(0, 500);
 
-	GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bInnerDualTest;
+	//GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 
 	BOOL bRtn[7];
@@ -28641,8 +28656,8 @@ BOOL CGvisR2R_PunchView::ReloadRstInner()
 
 BOOL CGvisR2R_PunchView::ReloadRstInner(int nSerial)
 {
-	GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bInnerDualTest;
+	//GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	BOOL bRtn[7] = { 0 };
 	if (pDoc->m_pReelMapInner)
@@ -28689,8 +28704,8 @@ BOOL CGvisR2R_PunchView::ReloadRstInner(int nSerial)
 
 void CGvisR2R_PunchView::OpenReelmapInner()
 {
-	GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bInnerDualTest;
+	//GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	if (pDoc->m_pReelMapInnerUp)
 		pDoc->m_pReelMapInnerUp->Open(GetRmapPath(RMAP_INNER_UP));
@@ -28728,8 +28743,8 @@ void CGvisR2R_PunchView::OpenReelmapInner()
 
 void CGvisR2R_PunchView::OpenReelmapInnerUp()
 {
-	GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bInnerDualTest;
+	//GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	if (pDoc->m_pReelMapInnerUp)
 		pDoc->m_pReelMapInnerUp->Open(GetRmapPath(RMAP_UP));
@@ -28760,8 +28775,8 @@ void CGvisR2R_PunchView::OpenReelmapInnerUp()
 
 void CGvisR2R_PunchView::OpenReelmapInnerDn()
 {
-	GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->m_bEngDualTest; //pDoc->WorkingInfo.LastJob.bInnerDualTest;
+	//GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	if (!bDualTest)
 		return;
@@ -28825,8 +28840,8 @@ void CGvisR2R_PunchView::InitReelmapInnerUp()
 
 void CGvisR2R_PunchView::InitReelmapInnerDn()
 {
-	pDoc->GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->m_bEngDualTest;//pDoc->WorkingInfo.LastJob.bDualTest;
+	//pDoc->GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	//if (!bDualTest)
 	//	return;
 
@@ -28842,7 +28857,7 @@ void CGvisR2R_PunchView::InitReelmapInnerDn()
 
 void CGvisR2R_PunchView::DispDefImgInner()
 {
-	BOOL bDualTest = pDoc->m_bEngDualTest; // pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
 	CString sNewLot;
 	BOOL bNewModel = FALSE;
