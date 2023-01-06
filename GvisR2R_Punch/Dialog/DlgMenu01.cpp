@@ -436,34 +436,6 @@ void CDlgMenu01::OpenReelmap(int nSelRmap)
 	CString sPath;
 	if(pDoc->m_pReelMap)
 	{
-#ifdef TEST_MODE
-		switch(nSelRmap)
-		{
-		case RMAP_UP:
-			sPath = PATH_REELMAP_UP;
-			break;
-		case RMAP_DN:
-			sPath = PATH_REELMAP_DN;
-			break;
-		case RMAP_ALLUP:
-			sPath = PATH_REELMAP_ALL_UP;
-			break;
-		case RMAP_ALLDN:
-			sPath = PATH_REELMAP_ALL_DN;
-			break;
-		}
-		pDoc->m_pReelMap->m_nLayer = nSelRmap;
-		pDoc->m_pReelMap->Open(sPath);
-// #else
-// 		if(sPath == PATH_REELMAP_UP)
-// 			pDoc->m_pReelMap->m_nLayer = 0; // [0]:Up
-// 		else if(sPath == PATH_REELMAP_DN)
-// 			pDoc->m_pReelMap->m_nLayer = 1; // [1]:Dn
-// 		else if(sPath == PATH_REELMAP_ALL_UP)
-// 			pDoc->m_pReelMap->m_nLayer = 2; // [2]:AllUp
-// 		else if(sPath == PATH_REELMAP_ALL_DN)
-// 			pDoc->m_pReelMap->m_nLayer = 3; // [2]:AllDn
-#else
 		if(nSelRmap < 0)
 			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
 		else
@@ -482,7 +454,6 @@ void CDlgMenu01::OpenReelmap(int nSelRmap)
 			pDoc->m_pReelMap->Open(pView->GetRmapPath(nSelRmap));
 			pDoc->m_pReelMap->SetPathAtBuf(pView->GetRmapPath(nSelRmap));
 		}
-#endif	
 	}
 }
 
@@ -1802,9 +1773,9 @@ void CDlgMenu01::InitGL()
 	if(!m_pMyGL)
 	{
 		m_pMyGL = new CMyGL(this);
-		if(pDoc->GetTestMode() == MODE_OUTER)
-			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMapIts);
-		else
+		//if(pDoc->GetTestMode() == MODE_OUTER)
+		//	m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMapIts);
+		//else
 			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMap);
 	}
 // 	m_pMyGL->ResetRgn();

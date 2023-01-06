@@ -1860,13 +1860,13 @@ struct stPcrShare
 {
 	BOOL bExist;
 	int nSerial;
-	CString sModel, sLayer, sLot, sPrcsCode;
+	CString sModel, sLayer, sLot, sItsCode, sPrcsCode;
 
 	stPcrShare()
 	{
 		bExist = FALSE;
 		nSerial = 0;
-		sModel = _T(""); sLayer = _T(""); sLot = _T(""); sPrcsCode = _T("");
+		sModel = _T(""); sLayer = _T(""); sLot = _T(""); sItsCode = _T(""); sPrcsCode = _T("");
 	}
 };
 
@@ -1976,13 +1976,14 @@ struct stPcrMerge
 
 struct stModelInfo
 {
-	CString sModel, sLayer, sLot;
+	CString sModel, sLayer, sLot, sItsCode;
 
 	stModelInfo()
 	{
 		sModel = _T("");
 		sLayer = _T("");
 		sLot = _T("");
+		sItsCode = _T("");
 	}
 };
 

@@ -3623,6 +3623,9 @@ BOOL CDlgMenu03::DoReset()
 		{
 			pDoc->m_bDoneChgLot = FALSE;
 			pView->m_nNewLot = 0;
+
+			if (pView->m_pDlgMenu01)
+				pView->m_pDlgMenu01->ClrInfo();
 		}
 
 		if(!bInit)

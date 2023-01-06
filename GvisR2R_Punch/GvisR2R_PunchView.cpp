@@ -12398,7 +12398,8 @@ CString CGvisR2R_PunchView::GetRmapPath(int nRmap)
 		str = _T("ReelmapIts.txt");
 		sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
 			pDoc->WorkingInfo.LastJob.sModelUp,
-			pDoc->m_sItsCode,
+			pDoc->WorkingInfo.LastJob.sEngItsCode,
+			//pDoc->m_sItsCode,
 			str);
 		break;
 	}
@@ -12776,11 +12777,29 @@ BOOL CGvisR2R_PunchView::UpdateReelmap(int nSerial)
 void CGvisR2R_PunchView::UpdateRMapUp()
 {
 	pDoc->m_pReelMapUp->Write(m_nSerialRmapUpdate, 0, m_sPathRmapUpdate[0]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+
+	if (pDoc->GetTestMode() == MODE_INNER)
+	{
+		pDoc->m_pReelMapUp->MakeItsFile(m_nSerialRmapUpdate, RMAP_INNER_UP);
+	}
+	else if (pDoc->GetTestMode() == MODE_OUTER)
+	{
+		pDoc->m_pReelMapUp->MakeItsFile(m_nSerialRmapUpdate, RMAP_UP);
+	}
 }
 
 void CGvisR2R_PunchView::UpdateRMapDn()
 {
 	pDoc->m_pReelMapDn->Write(m_nSerialRmapUpdate, 1, m_sPathRmapUpdate[1]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+
+	if (pDoc->GetTestMode() == MODE_INNER)
+	{
+		pDoc->m_pReelMapDn->MakeItsFile(m_nSerialRmapUpdate, RMAP_INNER_DN);
+	}
+	else if (pDoc->GetTestMode() == MODE_OUTER)
+	{
+		pDoc->m_pReelMapDn->MakeItsFile(m_nSerialRmapUpdate, RMAP_DN);
+	}
 }
 
 void CGvisR2R_PunchView::UpdateRMapAllUp()
@@ -17734,33 +17753,6 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 				InitInfo();
 				ResetMkInfo(0); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn	
 
-				// 20220502 - start
-#ifdef TEST_MODE
-				pDoc->GetCamPxlRes();
-				if (IsLastJob(0)) // Up
-				{
-					pDoc->m_Master[0].Init(pDoc->WorkingInfo.System.sPathCamSpecDir,
-						pDoc->WorkingInfo.LastJob.sModelUp,
-						pDoc->WorkingInfo.LastJob.sLayerUp);
-					pDoc->m_Master[0].LoadMstInfo();
-				}
-				if (IsLastJob(1)) // Dn
-				{
-					pDoc->m_Master[1].Init(pDoc->WorkingInfo.System.sPathCamSpecDir,
-						pDoc->WorkingInfo.LastJob.sModelDn,
-						pDoc->WorkingInfo.LastJob.sLayerDn,
-						pDoc->WorkingInfo.LastJob.sLayerUp);
-					pDoc->m_Master[1].LoadMstInfo();
-				}
-
-				// 			pDoc->LoadMasterSpec();
-				// 			pDoc->LoadPinImg();
-				// 			pDoc->GetCamPxlRes();
-				// 			pDoc->LoadStripRgnFromCam();
-				// 			pDoc->LoadPcsRgnFromCam();
-				// 			pDoc->LoadPcsImg();
-				// 			pDoc->LoadCadImg();
-#else
 				pDoc->GetCamPxlRes();
 
 				if (IsLastJob(0)) // Up
@@ -17802,7 +17794,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 				}
 
 				SetAlignPos();
-#endif
+
 				// 20220502 - end
 				InitReelmap();	// 20220421
 				if (pDoc->m_Master[0].IsMstSpec(pDoc->WorkingInfo.System.sPathCamSpecDir, pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sInnerLayerUp))
@@ -18206,10 +18198,17 @@ void CGvisR2R_PunchView::Mk2PtReady()
 					m_nMkStAuto++;
 
 					m_nBufDnSerial[0] = pDoc->m_ListBuf[1].Pop();
+					m_nBufUpSerial[0] = m_nBufDnSerial[0];
 					if (pDoc->m_ListBuf[1].nTot > 0) // AOI-Dn
+					{
 						m_nBufDnSerial[1] = pDoc->m_ListBuf[1].Pop();
+						m_nBufUpSerial[1] = m_nBufDnSerial[1];
+					}
 					else
+					{
 						m_nBufDnSerial[1] = 0;
+						m_nBufUpSerial[1] = 0;
+					}
 				}
 				else
 				{
@@ -18541,7 +18540,17 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 		case MK_ST + (Mk2PtIdx::Move0Cam1) :	// Move - Cam1 - Pt0
 			if (bDualTest)
 			{
-				if (m_bLastProc && m_nBufDnSerial[0] + 1 > m_nLotEndSerial)	// AOI하면 Serial
+				if (m_bLastProc && m_nBufDnSerial[1] > m_nLotEndSerial)	// AOI하면 Serial
+				{
+					m_bSkipAlign[1][0] = TRUE;
+					m_bSkipAlign[1][1] = TRUE;
+					m_bSkipAlign[1][2] = TRUE;
+					m_bSkipAlign[1][3] = TRUE;
+					m_bDoMk[1] = FALSE;
+					m_bDoneMk[1] = TRUE;
+					m_nMkStAuto++;
+				}
+				else if (m_nBufDnSerial[1] == 0)
 				{
 					m_bSkipAlign[1][0] = TRUE;
 					m_bSkipAlign[1][1] = TRUE;
@@ -18559,7 +18568,17 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 			}
 			else
 			{
-				if (m_bLastProc && m_nBufUpSerial[0] + 1 > m_nLotEndSerial)	// AOI상면 Serial
+				if (m_bLastProc && m_nBufUpSerial[1] > m_nLotEndSerial)	// AOI상면 Serial
+				{
+					m_bSkipAlign[1][0] = TRUE;
+					m_bSkipAlign[1][1] = TRUE;
+					m_bSkipAlign[1][2] = TRUE;
+					m_bSkipAlign[1][3] = TRUE;
+					m_bDoMk[1] = FALSE;
+					m_bDoneMk[1] = TRUE;
+					m_nMkStAuto++;
+				}
+				else if (m_nBufUpSerial[1] == 0)
 				{
 					m_bSkipAlign[1][0] = TRUE;
 					m_bSkipAlign[1][1] = TRUE;
@@ -18778,7 +18797,17 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 		case MK_ST + (Mk2PtIdx::Move1Cam1) :
 			if (bDualTest)
 			{
-				if (m_bLastProc && m_nBufDnSerial[0] + 1 > m_nLotEndSerial)	// AOI하면 Serial
+				if (m_bLastProc && m_nBufDnSerial[1] > m_nLotEndSerial)	// AOI하면 Serial
+				{
+					m_bSkipAlign[1][0] = TRUE;
+					m_bSkipAlign[1][1] = TRUE;
+					m_bSkipAlign[1][2] = TRUE;
+					m_bSkipAlign[1][3] = TRUE;
+					m_bDoMk[1] = FALSE;
+					m_bDoneMk[1] = TRUE;
+					m_nMkStAuto++;
+				}
+				else if (m_nBufDnSerial[1] == 0)
 				{
 					m_bSkipAlign[1][0] = TRUE;
 					m_bSkipAlign[1][1] = TRUE;
@@ -18796,7 +18825,17 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 			}
 			else
 			{
-				if (m_bLastProc && m_nBufUpSerial[0] + 1 > m_nLotEndSerial)	// AOI상면 Serial
+				if (m_bLastProc && m_nBufUpSerial[1] > m_nLotEndSerial)	// AOI상면 Serial
+				{
+					m_bSkipAlign[1][0] = TRUE;
+					m_bSkipAlign[1][1] = TRUE;
+					m_bSkipAlign[1][2] = TRUE;
+					m_bSkipAlign[1][3] = TRUE;
+					m_bDoMk[1] = FALSE;
+					m_bDoneMk[1] = TRUE;
+					m_nMkStAuto++;
+				}
+				else if ( m_nBufUpSerial[1] == 0)
 				{
 					m_bSkipAlign[1][0] = TRUE;
 					m_bSkipAlign[1][1] = TRUE;
@@ -19179,6 +19218,17 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			break;
 
 		case MK_ST + (Mk2PtIdx::DoneMk) :	 // Align변수 초기화
+			if (m_nBufUpSerial[0] == 0)
+			{
+				m_bSkipAlign[0][0] = TRUE;
+				m_bSkipAlign[0][1] = TRUE;
+			}
+			if (m_nBufUpSerial[1] == 0)
+			{
+				m_bSkipAlign[1][0] = TRUE;
+				m_bSkipAlign[1][1] = TRUE;
+			}
+
 			if( (!m_bSkipAlign[0][0] && !m_bSkipAlign[0][1]) && (!m_bSkipAlign[1][0] && !m_bSkipAlign[1][1]) )
 				CompletedMk(2); // 0: Only Cam0, 1: Only Cam1, 2: Cam0 and Cam1, 3: None
 			else if( (m_bSkipAlign[0][0] || m_bSkipAlign[0][1]) && (!m_bSkipAlign[1][0] && !m_bSkipAlign[1][1]) )
@@ -19752,10 +19802,17 @@ void CGvisR2R_PunchView::Mk4PtReady()
 					m_nMkStAuto++;
 
 					m_nBufDnSerial[0] = pDoc->m_ListBuf[1].Pop();
+					m_nBufUpSerial[0] = m_nBufDnSerial[0];
 					if (pDoc->m_ListBuf[1].nTot > 0) // AOI-Dn
+					{
 						m_nBufDnSerial[1] = pDoc->m_ListBuf[1].Pop();
+						m_nBufUpSerial[1] = m_nBufDnSerial[1];
+					}
 					else
+					{
 						m_nBufDnSerial[1] = 0;
+						m_nBufUpSerial[1] = 0;
+					}
 				}
 				else
 				{
@@ -21029,7 +21086,10 @@ void CGvisR2R_PunchView::Mk4PtElecChk()
 				if (m_pMotion->IsEnable(MS_X0) && m_pMotion->IsEnable(MS_Y0) &&
 					m_pMotion->IsEnable(MS_X1) && m_pMotion->IsEnable(MS_Y1))
 				{
-					m_nMkStAuto++;
+					if (MODE_INNER != pDoc->GetTestMode())
+						m_nMkStAuto = MK_ST + (Mk4PtIdx::DoMk); 	// Mk 마킹 시작
+					else
+						m_nMkStAuto = MK_ST + (Mk4PtIdx::Shift2Mk);
 				}
 				else
 				{
@@ -26470,7 +26530,7 @@ BOOL CGvisR2R_PunchView::GetDtsPieceOut(int nSerial, int* pPcsOutIdx, int& nTotP
 	return bRtn;
 }
 
-UINT CGvisR2R_PunchView::ThreadProc18(LPVOID lpContext)
+UINT CGvisR2R_PunchView::ThreadProc18(LPVOID lpContext) // WriteReelmapIts()
 {
 	// Turn the passed in 'this' pointer back into a CProgressMgr instance
 	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
@@ -26501,7 +26561,7 @@ UINT CGvisR2R_PunchView::ThreadProc18(LPVOID lpContext)
 }
 
 
-UINT CGvisR2R_PunchView::ThreadProc19(LPVOID lpContext)
+UINT CGvisR2R_PunchView::ThreadProc19(LPVOID lpContext) // DispDefImgInner()
 {
 	// Turn the passed in 'this' pointer back into a CProgressMgr instance
 	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
@@ -29140,4 +29200,28 @@ BOOL CGvisR2R_PunchView::SetSerialMkInfoInner(int nSerial, BOOL bDumy)
 	if (!m_pDlgMenu06)
 		return FALSE;
 	return m_pDlgMenu06->SetSerialMkInfo(nSerial, bDumy);
+}
+
+CString CGvisR2R_PunchView::GetTimeIts()
+{
+	stLotTime ItsTime;
+
+	CString strVal;
+	time_t osBinTime;			// C run-time time (defined in <time.h>)
+	time(&osBinTime);		// Get the current time from the 
+							// operating system.
+	CTime Tim(osBinTime);
+
+	ItsTime.nYear = Tim.GetYear();
+	ItsTime.nMonth = Tim.GetMonth();
+	ItsTime.nDay = Tim.GetDay();
+	ItsTime.nHour = Tim.GetHour();
+	ItsTime.nMin = Tim.GetMinute();
+	ItsTime.nSec = Tim.GetSecond();
+
+	strVal.Format(_T("%04d%02d%02d%02d%02d%02d"),
+		ItsTime.nYear, ItsTime.nMonth, ItsTime.nDay,
+		ItsTime.nHour, ItsTime.nMin, ItsTime.nSec);
+
+	return strVal;
 }

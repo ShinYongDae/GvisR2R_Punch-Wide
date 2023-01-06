@@ -16,6 +16,10 @@ static char THIS_FILE[] = __FILE__;
 
 CDataMarking::CDataMarking(CWnd* pParent /*=NULL*/)
 {
+	m_sModel = _T("");
+	m_sLayer = _T(""); 
+	m_sLot = _T("");
+
 	m_pLayer = NULL;
 	m_pDefPcs = NULL;
 	m_pDefPos = NULL;

@@ -2025,6 +2025,7 @@ void CDlgMenu06::InitGL()
 		m_pMyGL->Init(IDC_STC_REELMAP_INNER, pDoc->m_pReelMapInner);
 	}
 // 	m_pMyGL->ResetRgn();
+
 	m_pMyGL->SetRgn();
 	m_pMyGL->SetPcsDef();
 }

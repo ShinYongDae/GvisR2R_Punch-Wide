@@ -1884,7 +1884,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 			if (pDoc->WorkingInfo.LastJob.sEngItsCode != CharToString(SockData.strData))
 			{
 				m_bGetOpInfo = TRUE;
-				pDoc->WorkingInfo.LastJob.sEngItsCode = CharToString(SockData.strData);
+				pDoc->m_sItsCode = pDoc->WorkingInfo.LastJob.sEngItsCode = CharToString(SockData.strData);
 				pDoc->SetEngItsCode(pDoc->WorkingInfo.LastJob.sEngItsCode);
 
 				//::WritePrivateProfileString(_T("Last Job"), _T("Engrave Order Num"), pDoc->WorkingInfo.LastJob.sEngOrderNum, PATH_WORKING_INFO);

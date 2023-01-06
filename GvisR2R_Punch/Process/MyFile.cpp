@@ -627,7 +627,7 @@ BOOL CMyFile::ChkLotEnd(CString sPath)
 	else
 		return FALSE;
 
-	CString strHeaderErrorInfo, strModel, strLayer, strLot, strTotalBadPieceNum;
+	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
 	
 	//strHeaderErrorInfo
 	nTemp = strFileData.Find(',', 0);
@@ -648,9 +648,15 @@ BOOL CMyFile::ChkLotEnd(CString sPath)
 	nFileSize = nFileSize - nTemp - 1;
 
 	// Lot
-	nTemp = strFileData.Find('\n', 0);
+	nTemp = strFileData.Find(',', 0);
 	strLot = strFileData.Left(nTemp);
 	strFileData.Delete(0, nTemp+1);
+	nFileSize = nFileSize - nTemp - 1;
+
+	// Its Code
+	nTemp = strFileData.Find('\n', 0);
+	sItsCode = strFileData.Left(nTemp);
+	strFileData.Delete(0, nTemp + 1);
 	nFileSize = nFileSize - nTemp - 1;
 
 	//strTotalBadPieceNum = strFileData;

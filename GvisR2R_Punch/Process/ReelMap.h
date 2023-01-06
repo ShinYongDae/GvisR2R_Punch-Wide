@@ -194,6 +194,10 @@ public:
 	CString GetPathReelmapIts();
 	BOOL MakeItsReelmapHeader();	// ³»¿ÜÃþ ¸ÓÂ¡µÈ ¸±¸Ê Çìµå
 	BOOL WriteIts(int nItsSerial);
+	BOOL MakeItsFile(int nSerial, int nLayer);		// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
+	CString GetItsFileData(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
+	BOOL MakeDirIts();
+	void ResetReelmapPath();
 
 	//short ***m_pPnlBufIts;		// DefCode 3D Array : [nSerial-1][nRow][nCol] on File -> [nSerial-1][NodeX][NodeY] : Rotated Cw 90 
 	//int m_nPnlBufIts;			// ¸Þ¸ð¸®¿¡ ÇÒ´çµÈ ÃÑ Shot¼ö
