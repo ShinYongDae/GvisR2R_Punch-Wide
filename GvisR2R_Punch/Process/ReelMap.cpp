@@ -655,8 +655,9 @@ BOOL CReelMap::OpenUser(CString sPath)
 //	return TRUE;
 }
 
-BOOL CReelMap::Open(CString sPath, CString sModel, CString sLayer, CString sLot)
+BOOL CReelMap::Open()
 {
+	CString sPath = GetRmapPath(m_nLayer);
 	//m_sPathShare = sPath;
 	if (pDoc->GetTestMode() == MODE_OUTER)
 		MakeItsReelmapHeader();
@@ -1630,6 +1631,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 		return FALSE;
 	}
 
+	m_sPathBuf = GetRmapPath(m_nLayer);
 
 	CDataFile *pDataFile = new CDataFile;
 	CString sMsg;
@@ -2235,118 +2237,134 @@ CString CReelMap::GetYieldPath(int nRmap)
 		{
 		case RMAP_UP:
 			str = _T("YieldUp.txt");
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->WorkingInfo.LastJob.sLotUp,
-					pDoc->WorkingInfo.LastJob.sLayerUp,
-					str);
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->Status.PcrShare[0].sLot,
-					pDoc->WorkingInfo.LastJob.sLayerUp,
-					str);
-			}
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerUp,
+				str);
+			//if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->WorkingInfo.LastJob.sLotUp,
+			//		pDoc->WorkingInfo.LastJob.sLayerUp,
+			//		str);
+			//}
+			//else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->Status.PcrShare[0].sLot,
+			//		pDoc->WorkingInfo.LastJob.sLayerUp,
+			//		str);
+			//}
 			break;
 		case RMAP_ALLUP:
 			str = _T("YieldAll.txt");
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->WorkingInfo.LastJob.sLotUp,
-					pDoc->WorkingInfo.LastJob.sLayerUp,
-					str);
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->Status.PcrShare[0].sLot,
-					pDoc->WorkingInfo.LastJob.sLayerUp,
-					str);
-			}
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerUp,
+				str);
+			//if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->WorkingInfo.LastJob.sLotUp,
+			//		pDoc->WorkingInfo.LastJob.sLayerUp,
+			//		str);
+			//}
+			//else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->Status.PcrShare[0].sLot,
+			//		pDoc->WorkingInfo.LastJob.sLayerUp,
+			//		str);
+			//}
 			break;
 		case RMAP_DN:
 			str = _T("YieldDn.txt");
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					//pDoc->WorkingInfo.LastJob.sModelDn,
-					//pDoc->WorkingInfo.LastJob.sLotDn,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->WorkingInfo.LastJob.sLotUp,
-					pDoc->WorkingInfo.LastJob.sLayerDn,
-					str);
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					//pDoc->WorkingInfo.LastJob.sModelDn,
-					//pDoc->Status.PcrShare[1].sLot,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->Status.PcrShare[0].sLot,
-					pDoc->WorkingInfo.LastJob.sLayerDn,
-					str);
-			}
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerDn,
+				str);
+			//if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		//pDoc->WorkingInfo.LastJob.sModelDn,
+			//		//pDoc->WorkingInfo.LastJob.sLotDn,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->WorkingInfo.LastJob.sLotUp,
+			//		pDoc->WorkingInfo.LastJob.sLayerDn,
+			//		str);
+			//}
+			//else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		//pDoc->WorkingInfo.LastJob.sModelDn,
+			//		//pDoc->Status.PcrShare[1].sLot,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->Status.PcrShare[0].sLot,
+			//		pDoc->WorkingInfo.LastJob.sLayerDn,
+			//		str);
+			//}
 			break;
 		case RMAP_ALLDN:
 			str = _T("YieldAll.txt");
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					//pDoc->WorkingInfo.LastJob.sModelDn,
-					//pDoc->WorkingInfo.LastJob.sLotDn,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->WorkingInfo.LastJob.sLotUp,
-					pDoc->WorkingInfo.LastJob.sLayerDn,
-					str);
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
-			{
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					//pDoc->WorkingInfo.LastJob.sModelDn,
-					//pDoc->Status.PcrShare[1].sLot,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->Status.PcrShare[0].sLot,
-					pDoc->WorkingInfo.LastJob.sLayerDn,
-					str);
-			}
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerDn,
+				str);
+		//if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		//pDoc->WorkingInfo.LastJob.sModelDn,
+			//		//pDoc->WorkingInfo.LastJob.sLotDn,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->WorkingInfo.LastJob.sLotUp,
+			//		pDoc->WorkingInfo.LastJob.sLayerDn,
+			//		str);
+			//}
+			//else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
+			//{
+			//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			//		//pDoc->WorkingInfo.LastJob.sModelDn,
+			//		//pDoc->Status.PcrShare[1].sLot,
+			//		pDoc->WorkingInfo.LastJob.sModelUp,
+			//		pDoc->Status.PcrShare[0].sLot,
+			//		pDoc->WorkingInfo.LastJob.sLayerDn,
+			//		str);
+			//}
 			break;
 		case RMAP_INNER_UP:
 			str = _T("YieldUp.txt");
-				sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-					pDoc->WorkingInfo.LastJob.sModelUp,
-					pDoc->WorkingInfo.LastJob.sInnerLotUp,
-					pDoc->WorkingInfo.LastJob.sInnerLayerUp,
+				sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+					pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+					pDoc->WorkingInfo.LastJob.sInnerLotUp, pDoc->WorkingInfo.LastJob.sInnerLayerUp,
 					str);
 			break;
 		case RMAP_INNER_DN:
-			str = _T("YieldUp.txt");
-			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-				pDoc->WorkingInfo.LastJob.sModelUp,
-				pDoc->WorkingInfo.LastJob.sInnerLotUp,
-				pDoc->WorkingInfo.LastJob.sInnerLayerDn,
+			str = _T("YieldDn.txt");
+			sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+				pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+				pDoc->WorkingInfo.LastJob.sInnerLotUp, pDoc->WorkingInfo.LastJob.sInnerLayerDn,
 				str);
 			break;
 		case RMAP_INNER_ALLUP:
 			str = _T("YieldAll.txt");
-			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-				pDoc->WorkingInfo.LastJob.sModelUp,
-				pDoc->WorkingInfo.LastJob.sInnerLotUp,
-				pDoc->WorkingInfo.LastJob.sInnerLayerUp,
+			sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+				pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+				pDoc->WorkingInfo.LastJob.sInnerLotUp, pDoc->WorkingInfo.LastJob.sInnerLayerUp,
 				str);
 			break;
 		case RMAP_INNER_ALLDN:
 			str = _T("YieldAll.txt");
-			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-				pDoc->WorkingInfo.LastJob.sModelUp,
-				pDoc->WorkingInfo.LastJob.sInnerLotUp,
-				pDoc->WorkingInfo.LastJob.sInnerLayerDn,
+			sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+				pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+				pDoc->WorkingInfo.LastJob.sInnerLotUp, pDoc->WorkingInfo.LastJob.sInnerLayerDn,
 				str);
 			break;
 		case RMAP_INOUTER_UP:
@@ -2356,9 +2374,8 @@ CString CReelMap::GetYieldPath(int nRmap)
 		case RMAP_ITS:
 			//pDoc->GetCurrentInfoEng();
 			str = _T("YieldIts.txt");
-			sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-				pDoc->WorkingInfo.LastJob.sModelUp,
-				pDoc->WorkingInfo.LastJob.sEngItsCode, //pDoc->m_sItsCode,
+			sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+				pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode, //pDoc->m_sItsCode,
 				str);
 			break;
 		}
@@ -2845,7 +2862,8 @@ BOOL CReelMap::UpdateYield(int nSerial)
 		return 0;
 	}
 
-	CString sPath = m_sPathYield;// = GetYieldPath(m_nLayer);
+	m_sPathYield = GetYieldPath(m_nLayer);
+	CString sPath = m_sPathYield;
 
 	BOOL bExist = FALSE;
 	CFileFind findfile;
@@ -2924,28 +2942,34 @@ BOOL CReelMap::UpdateRst()
 
 int CReelMap::GetDefNum(int nDefCode)
 {
-	return m_nDef[nDefCode];
+	return m_stYield.nDefA[nDefCode];
+	//return m_nDef[nDefCode];
 }
 
 int CReelMap::GetDefStrip(int nStrip)
 {
-	return m_nDefStrip[nStrip];
+	return m_stYield.nDefStrip[nStrip];
+	//return m_nDefStrip[nStrip];
 }
 
 int CReelMap::GetDefStrip(int nStrip, int nDefCode)
 {
-	return m_nDefPerStrip[nStrip][nDefCode];
+	return m_stYield.nDefPerStrip[nStrip][nDefCode];
+	//return m_nDefPerStrip[nStrip][nDefCode];
 }
 
 int CReelMap::GetStripOut(int nStrip)
 {
-	return m_nStripOut[nStrip];
+	return m_stYield.nStripOut[nStrip];
+	//return m_nStripOut[nStrip];
 }
 
 void CReelMap::GetPcsNum(int &nGood, int &nBad)
 {
-	nGood = m_nGoodPcs;
-	nBad = m_nBadPcs;
+	nGood = m_stYield.nGood;
+	nBad = m_stYield.nDef;
+	//nGood = m_nGoodPcs;
+	//nBad = m_nBadPcs;
 }
 
 void CReelMap::Clear()
@@ -3162,413 +3186,980 @@ BOOL CReelMap::IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot) // nTot : 
 
 BOOL CReelMap::MakeDir()
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//#ifndef TEST_MODE
+//	CFileFind finder;
+//	CString str, sPath, Path[4];
+//
+//	if(bDualTest)
+//	{
+//		switch(m_nLayer)
+//		{
+//		case RMAP_UP:
+//			str = _T("ReelMapDataUp.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			break;
+//		case RMAP_ALLUP:
+//			str = _T("ReelMapDataAll.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			break;
+//		case RMAP_DN:
+//			str = _T("ReelMapDataDn.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			break;
+//		case RMAP_ALLDN:
+//			str = _T("ReelMapDataAll.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			break;
+//		}
+//	}
+//	else
+//	{
+//		str = _T("ReelMapDataUp.txt");
+//		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//	}
+//#endif
 
-#ifndef TEST_MODE
-	CFileFind finder;
-	CString str, sPath, Path[4];
+	CString str, sPath, Path[5];
 
-	if(bDualTest)
+	switch(m_nLayer)
 	{
-		switch(m_nLayer)
-		{
-		case RMAP_UP:
-			str = _T("ReelMapDataUp.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_ALLUP:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_DN:
-			str = _T("ReelMapDataDn.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		case RMAP_ALLDN:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		}
-	}
-	else
-	{
+	case RMAP_UP:
 		str = _T("ReelMapDataUp.txt");
 		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
 		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_INNER_UP:
+		str = _T("ReelMapDataUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INOUTER_UP:
+		break;
+	case RMAP_INOUTER_DN:
+		break;
+	case RMAP_ITS:
+		str = _T("ReelMapDataIts.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = _T("");
+		Path[4] = _T("");
+		break;
 	}
 
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	if (!Path[0].IsEmpty() && !Path[1].IsEmpty())
+	{
+		sPath.Format(_T("%s%s"), Path[0], Path[1]);
+		if (!pDoc->DirectoryExists(sPath))
+			CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+		if (!Path[2].IsEmpty())
+		{
+			sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+			if (!pDoc->DirectoryExists(sPath))
+				CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-#endif
+			if (!Path[3].IsEmpty())
+			{
+				sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+				if (!pDoc->DirectoryExists(sPath))
+					CreateDirectory(sPath, NULL);
+
+				if (!Path[4].IsEmpty())
+				{
+					sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
+				}
+			}
+		}
+	}
+
 	return TRUE;
 }
 
 BOOL CReelMap::MakeDirRmap()
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//#ifndef TEST_MODE
+//	CFileFind finder;
+//	CString str, sPath, Path[4];
+//
+//	if(bDualTest)
+//	{
+//		switch(m_nLayer)
+//		{
+//		case RMAP_UP:
+//			str = _T("ReelMapDataUp.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			break;
+//		case RMAP_ALLUP:
+//			str = _T("ReelMapDataAll.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			break;
+//		case RMAP_DN:
+//			str = _T("ReelMapDataDn.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			break;
+//		case RMAP_ALLDN:
+//			str = _T("ReelMapDataAll.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			break;
+//		}
+//	}
+//	else
+//	{
+//		str = _T("ReelMapDataUp.txt");
+//		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//	}
+//
+//	sPath.Format(_T("%s%s"), Path[0], Path[1]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//#endif
 
-#ifndef TEST_MODE
-	CFileFind finder;
-	CString str, sPath, Path[4];
+	CString str, sPath, Path[5];
 
-	if(bDualTest)
+	switch (m_nLayer)
 	{
-		switch(m_nLayer)
-		{
-		case RMAP_UP:
-			str = _T("ReelMapDataUp.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_ALLUP:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_DN:
-			str = _T("ReelMapDataDn.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		case RMAP_ALLDN:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		}
-	}
-	else
-	{
+	case RMAP_UP:
 		str = _T("ReelMapDataUp.txt");
 		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
 		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_INNER_UP:
+		str = _T("YieldUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_DN:
+		str = _T("YieldDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INOUTER_UP:
+		break;
+	case RMAP_INOUTER_DN:
+		break;
+	case RMAP_ITS:
+		str = _T("YieldIts.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = _T("");
+		Path[4] = _T("");
+		break;
 	}
 
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	if (!Path[0].IsEmpty() && !Path[1].IsEmpty())
+	{
+		sPath.Format(_T("%s%s"), Path[0], Path[1]);
+		if (!pDoc->DirectoryExists(sPath))
+			CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+		if (!Path[2].IsEmpty())
+		{
+			sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+			if (!pDoc->DirectoryExists(sPath))
+				CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+			if (!Path[3].IsEmpty())
+			{
+				sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+				if (!pDoc->DirectoryExists(sPath))
+					CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-#endif
+				if (!Path[4].IsEmpty())
+				{
+					sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
+				}
+			}
+		}
+	}
+
 	return TRUE;
 }
 
 CString CReelMap::MakeDirRmapRestore()
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	CString sPath=_T("");
-	
-#ifndef TEST_MODE
-	CFileFind finder;
-	CString str, Path[4];
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	CString sPath=_T("");
+//	
+//#ifndef TEST_MODE
+//	CFileFind finder;
+//	CString str, Path[4];
+//
+//	if(bDualTest)
+//	{
+//		switch(m_nLayer)
+//		{
+//		case RMAP_UP:
+//			str = _T("ReelMapDataUp.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			break;
+//		case RMAP_ALLUP:
+//			str = _T("ReelMapDataAll.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			break;
+//		case RMAP_DN:
+//			str = _T("ReelMapDataDn.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			break;
+//		case RMAP_ALLDN:
+//			str = _T("ReelMapDataAll.txt");
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			break;
+//		}
+//	}
+//	else
+//	{
+//		str = _T("ReelMapDataUp.txt");
+//		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//	}
+//
+//	sPath.Format(_T("%s%s"), Path[0], Path[1]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap\\Restore"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//#endif
 
-	if(bDualTest)
+	CString str, sPath, Path[5];
+
+	switch (m_nLayer)
 	{
-		switch(m_nLayer)
-		{
-		case RMAP_UP:
-			str = _T("ReelMapDataUp.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_ALLUP:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_DN:
-			str = _T("ReelMapDataDn.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		case RMAP_ALLDN:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		}
-	}
-	else
-	{
+	case RMAP_UP:
 		str = _T("ReelMapDataUp.txt");
 		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
 		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_INNER_UP:
+		str = _T("YieldUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_DN:
+		str = _T("YieldDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INOUTER_UP:
+		break;
+	case RMAP_INOUTER_DN:
+		break;
+	case RMAP_ITS:
+		str = _T("YieldIts.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = _T("");
+		Path[4] = _T("");
+		break;
 	}
 
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	if (!Path[0].IsEmpty() && !Path[1].IsEmpty())
+	{
+		sPath.Format(_T("%s%s"), Path[0], Path[1]);
+		if (!pDoc->DirectoryExists(sPath))
+			CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+		if (!Path[2].IsEmpty())
+		{
+			sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+			if (!pDoc->DirectoryExists(sPath))
+				CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+			if (!Path[3].IsEmpty())
+			{
+				sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+				if (!pDoc->DirectoryExists(sPath))
+					CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+				if (!Path[4].IsEmpty())
+				{
+					sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap\\Restore"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-#endif
+					sPath.Format(_T("%s%s\\%s\\%s\\%s\\Restore"), Path[0], Path[1], Path[2], Path[3], Path[4]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
+				}
+				else
+				{
+					sPath.Format(_T("%s%s\\%s\\%s\\Restore"), Path[0], Path[1], Path[2], Path[3]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
+				}
+			}
+			else
+			{
+				sPath.Format(_T("%s%s\\%s\\Restore"), Path[0], Path[1], Path[2]);
+				if (!pDoc->DirectoryExists(sPath))
+					CreateDirectory(sPath, NULL);
+			}
+		}
+		else
+		{
+			sPath.Format(_T("%s%s\\Restore"), Path[0], Path[1]);
+			if (!pDoc->DirectoryExists(sPath))
+				CreateDirectory(sPath, NULL);
+		}
+	}
+	else
+	{
+		pView->MsgBox(_T("Error- Path[0].IsEmpty() || Path[1].IsEmpty()"));
+		sPath = _T("");
+	}
+
 	return sPath;
 }
 
 BOOL CReelMap::MakeDir(CString sModel, CString sLayer, CString sLot)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-#ifndef TEST_MODE
-	CFileFind finder;
-	CString str, sPath, Path[4];
-
-	if(bDualTest)
-	{
-		switch(m_nLayer)
-		{
-		case RMAP_UP:
-			str = _T("ReelMapDataUp.txt");
-			break;
-		case RMAP_ALLUP:
-			str = _T("ReelMapDataAll.txt");
-			break;
-		case RMAP_DN:
-			str = _T("ReelMapDataDn.txt");
-			break;
-		case RMAP_ALLDN:
-			str = _T("ReelMapDataAll.txt");
-			break;
-		}
-	}
-	else
-		str = _T("ReelMapDataUp.txt");
-	
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-	Path[1] = sModel;
-	Path[2] = sLot;
-	Path[3] = sLayer;
-
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-#endif
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//#ifndef TEST_MODE
+//	CFileFind finder;
+//	CString str, sPath, Path[4];
+//
+//	if(bDualTest)
+//	{
+//		switch(m_nLayer)
+//		{
+//		case RMAP_UP:
+//			str = _T("ReelMapDataUp.txt");
+//			break;
+//		case RMAP_ALLUP:
+//			str = _T("ReelMapDataAll.txt");
+//			break;
+//		case RMAP_DN:
+//			str = _T("ReelMapDataDn.txt");
+//			break;
+//		case RMAP_ALLDN:
+//			str = _T("ReelMapDataAll.txt");
+//			break;
+//		}
+//	}
+//	else
+//		str = _T("ReelMapDataUp.txt");
+//	
+//	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//	Path[1] = sModel;
+//	Path[2] = sLot;
+//	Path[3] = sLayer;
+//
+//	sPath.Format(_T("%s%s"), Path[0], Path[1]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//#endif
 	return TRUE;
 }
 
 BOOL CReelMap::MakeDirRmap(CString sModel, CString sLayer, CString sLot)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	CString str, sPath, Path[5];
 
-#ifndef TEST_MODE
-	CFileFind finder;
-	CString str, sPath, Path[4];
-
-	if(bDualTest)
+	switch (m_nLayer)
 	{
-		switch(m_nLayer)
+	case RMAP_UP:
+		str = _T("ReelMapDataUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_INNER_UP:
+		str = _T("YieldUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INNER_DN:
+		str = _T("YieldDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INOUTER_UP:
+		break;
+	case RMAP_INOUTER_DN:
+		break;
+	case RMAP_ITS:
+		str = _T("YieldIts.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = _T("");
+		Path[4] = _T("");
+		break;
+	}
+
+	if (!Path[0].IsEmpty() && !Path[1].IsEmpty())
+	{
+		sPath.Format(_T("%s%s"), Path[0], Path[1]);
+		if (!pDoc->DirectoryExists(sPath))
+			CreateDirectory(sPath, NULL);
+
+		if (!Path[2].IsEmpty())
 		{
-		case RMAP_UP:
-			str = _T("ReelMapDataUp.txt");
-			break;
-		case RMAP_ALLUP:
-			str = _T("ReelMapDataAll.txt");
-			break;
-		case RMAP_DN:
-			str = _T("ReelMapDataDn.txt");
-			break;
-		case RMAP_ALLDN:
-			str = _T("ReelMapDataAll.txt");
-			break;
+			sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+			if (!pDoc->DirectoryExists(sPath))
+				CreateDirectory(sPath, NULL);
+
+			if (!Path[3].IsEmpty())
+			{
+				sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+				if (!pDoc->DirectoryExists(sPath))
+					CreateDirectory(sPath, NULL);
+
+				if (!Path[4].IsEmpty())
+				{
+					sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
+				}
+			}
 		}
 	}
-	else
-		str = _T("ReelMapDataUp.txt");
-	
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-	Path[1] = sModel;
-	Path[2] = sLot;
-	Path[3] = sLayer;
 
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-#endif
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//#ifndef TEST_MODE
+//	CFileFind finder;
+//	CString str, sPath, Path[4];
+//
+//	if(bDualTest)
+//	{
+//		switch(m_nLayer)
+//		{
+//		case RMAP_UP:
+//			str = _T("ReelMapDataUp.txt");
+//			break;
+//		case RMAP_ALLUP:
+//			str = _T("ReelMapDataAll.txt");
+//			break;
+//		case RMAP_DN:
+//			str = _T("ReelMapDataDn.txt");
+//			break;
+//		case RMAP_ALLDN:
+//			str = _T("ReelMapDataAll.txt");
+//			break;
+//		}
+//	}
+//	else
+//		str = _T("ReelMapDataUp.txt");
+//	
+//	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//	Path[1] = sModel;
+//	Path[2] = sLot;
+//	Path[3] = sLayer;
+//
+//	sPath.Format(_T("%s%s"), Path[0], Path[1]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//#endif
 	return TRUE;
 }
 
 CString CReelMap::MakeDirRmapRestore(CString sModel, CString sLayer, CString sLot)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	CString sPath;
-#ifndef TEST_MODE
-	CFileFind finder;
-	CString str, Path[4];
+	CString str, sPath, Path[5];
 
-	if(bDualTest)
+	switch (m_nLayer)
 	{
-		switch(m_nLayer)
+	case RMAP_UP:
+		str = _T("ReelMapDataUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = sModel;
+		Path[2] = sLot;
+		Path[3] = sLayer;
+		Path[4] = _T("");
+		break;
+	case RMAP_INNER_UP:
+		str = _T("YieldUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INNER_DN:
+		str = _T("YieldDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = sLot;
+		Path[4] = sLayer;
+		break;
+	case RMAP_INOUTER_UP:
+		break;
+	case RMAP_INOUTER_DN:
+		break;
+	case RMAP_ITS:
+		str = _T("YieldIts.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = Path[1] = sModel;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = _T("");
+		Path[4] = _T("");
+		break;
+	}
+
+	if (!Path[0].IsEmpty() && !Path[1].IsEmpty())
+	{
+		sPath.Format(_T("%s%s"), Path[0], Path[1]);
+		if (!pDoc->DirectoryExists(sPath))
+			CreateDirectory(sPath, NULL);
+
+		if (!Path[2].IsEmpty())
 		{
-		case RMAP_UP:
-			str = _T("ReelMapDataUp.txt");
-			break;
-		case RMAP_ALLUP:
-			str = _T("ReelMapDataAll.txt");
-			break;
-		case RMAP_DN:
-			str = _T("ReelMapDataDn.txt");
-			break;
-		case RMAP_ALLDN:
-			str = _T("ReelMapDataAll.txt");
-			break;
+			sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+			if (!pDoc->DirectoryExists(sPath))
+				CreateDirectory(sPath, NULL);
+
+			if (!Path[3].IsEmpty())
+			{
+				sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+				if (!pDoc->DirectoryExists(sPath))
+					CreateDirectory(sPath, NULL);
+
+				if (!Path[4].IsEmpty())
+				{
+					sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
+				}
+			}
 		}
 	}
-	else
-		str = _T("ReelMapDataUp.txt");
-	
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-	Path[1] = sModel;
-	Path[2] = sLot;
-	Path[3] = sLayer;
 
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap\\Restore"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-#endif
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	CString sPath;
+//#ifndef TEST_MODE
+//	CFileFind finder;
+//	CString str, Path[4];
+//
+//	if(bDualTest)
+//	{
+//		switch(m_nLayer)
+//		{
+//		case RMAP_UP:
+//			str = _T("ReelMapDataUp.txt");
+//			break;
+//		case RMAP_ALLUP:
+//			str = _T("ReelMapDataAll.txt");
+//			break;
+//		case RMAP_DN:
+//			str = _T("ReelMapDataDn.txt");
+//			break;
+//		case RMAP_ALLDN:
+//			str = _T("ReelMapDataAll.txt");
+//			break;
+//		}
+//	}
+//	else
+//		str = _T("ReelMapDataUp.txt");
+//	
+//	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//	Path[1] = sModel;
+//	Path[2] = sLot;
+//	Path[3] = sLayer;
+//
+//	sPath.Format(_T("%s%s"), Path[0], Path[1]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap\\Restore"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//#endif
 	return sPath;
 }
 
-void CReelMap::SetPathAtBuf(CString sPath)
+void CReelMap::SetPathAtBuf()
 {
-	m_sPathBuf = sPath;
+	m_sPathBuf = GetRmapPath(m_nLayer);
 }
 
 //CString CReelMap::GetRmapPath(int nRmap)
@@ -3706,7 +4297,7 @@ void CReelMap::SetPathAtBuf(CString sPath)
 CString CReelMap::GetRmapPath(int nRmap)
 {
 	CString sPath = _T("");
-	CString Path[4], str;
+	CString Path[5], str;
 
 	switch (nRmap)
 	{
@@ -3753,8 +4344,6 @@ CString CReelMap::GetRmapPath(int nRmap)
 		if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
 		{
 			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-				//pDoc->WorkingInfo.LastJob.sModelDn,
-				//pDoc->WorkingInfo.LastJob.sLotDn,
 				pDoc->WorkingInfo.LastJob.sModelUp,
 				pDoc->WorkingInfo.LastJob.sLotUp,
 				pDoc->WorkingInfo.LastJob.sLayerDn,
@@ -3763,8 +4352,6 @@ CString CReelMap::GetRmapPath(int nRmap)
 		else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
 		{
 			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-				//pDoc->WorkingInfo.LastJob.sModelDn,
-				//pDoc->Status.PcrShare[1].sLot,
 				pDoc->WorkingInfo.LastJob.sModelUp,
 				pDoc->Status.PcrShare[0].sLot,
 				pDoc->WorkingInfo.LastJob.sLayerDn,
@@ -3778,8 +4365,6 @@ CString CReelMap::GetRmapPath(int nRmap)
 			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
 				pDoc->WorkingInfo.LastJob.sModelUp,
 				pDoc->WorkingInfo.LastJob.sLotUp,
-				//pDoc->WorkingInfo.LastJob.sModelDn,
-				//pDoc->WorkingInfo.LastJob.sLotDn,
 				pDoc->WorkingInfo.LastJob.sLayerDn,
 				str);
 		}
@@ -3788,70 +4373,64 @@ CString CReelMap::GetRmapPath(int nRmap)
 			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
 				pDoc->WorkingInfo.LastJob.sModelUp,
 				pDoc->Status.PcrShare[0].sLot,
-				//pDoc->WorkingInfo.LastJob.sModelDn,
-				//pDoc->Status.PcrShare[1].sLot,
 				pDoc->WorkingInfo.LastJob.sLayerDn,
 				str);
 		}
 		break;
 	case RMAP_INNER_UP:
 		str = _T("ReelMapDataUp.txt");
-		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-		Path[2] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
-		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
-		sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], str);
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
 		break;
 	case RMAP_INNER_DN:
 		str = _T("ReelMapDataDn.txt");
-		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-		//Path[1] = pDoc->WorkingInfo.LastJob.sInnerModelDn;
-		//Path[2] = pDoc->WorkingInfo.LastJob.sInnerLotDn;
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-		Path[2] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
-		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
-		sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], str);
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
 		break;
 	case RMAP_INNER_ALLUP:
 		str = _T("ReelMapDataAll.txt");
-		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-		Path[2] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
-		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
-		sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], str);
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
 		break;
 	case RMAP_INNER_ALLDN:
 		str = _T("ReelMapDataAll.txt");
-		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-		//Path[1] = pDoc->WorkingInfo.LastJob.sInnerModelDn;
-		//Path[2] = pDoc->WorkingInfo.LastJob.sInnerLotDn;
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-		Path[2] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
-		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
-		sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], str);
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
 		break;
 	case RMAP_INOUTER_UP:
 		str = _T("ReelMapDataIO.txt");
-		sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-			pDoc->WorkingInfo.LastJob.sModelUp,
-			pDoc->WorkingInfo.LastJob.sLotUp,
-			pDoc->WorkingInfo.LastJob.sLayerUp,
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+			pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp,
 			str);
 		break;
 	case RMAP_INOUTER_DN:
 		str = _T("ReelMapDataIO.txt");
-		sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-			//pDoc->WorkingInfo.LastJob.sModelDn,
-			//pDoc->WorkingInfo.LastJob.sLotDn,
-			pDoc->WorkingInfo.LastJob.sModelUp,
-			pDoc->WorkingInfo.LastJob.sLotUp,
-			pDoc->WorkingInfo.LastJob.sLayerDn,
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+			pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn,
 			str);
 		break;
 	case RMAP_ITS:
 		pDoc->GetCurrentInfoEng();
-		str = _T("ReelmapIts.txt");
-		sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+		str = _T("ReelMapDataIts.txt");
+		sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
 			pDoc->WorkingInfo.LastJob.sModelUp,
 			pDoc->WorkingInfo.LastJob.sEngItsCode,	//pDoc->m_sItsCode,
 			str);
@@ -4165,64 +4744,204 @@ void CReelMap::RestoreReelmap()
 	sUserRestoreDir.Format(_T("%s\\%d"), sPath, nLastDir+1);
 	
 	CFileFind finder;
-	//if(!finder.FindFile(sUserRestoreDir))
 	if (!pDoc->DirectoryExists(sUserRestoreDir))
 		CreateDirectory(sUserRestoreDir, NULL);
 
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	CString str, Path[4], sSrc, sDest;
+	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	if(bDualTest)
+	//CString str, Path[4], sSrc, sDest;
+
+	//if(bDualTest)
+	//{
+	//	switch(m_nLayer)
+	//	{
+	//	case RMAP_UP:
+	//		str = _T("ReelMapDataUp.txt");
+	//		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	//		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	//		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+	//		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+	//		break;
+	//	case RMAP_ALLUP:
+	//		str = _T("ReelMapDataAll.txt");
+	//		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	//		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	//		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+	//		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+	//		break;
+	//	case RMAP_DN:
+	//		str = _T("ReelMapDataDn.txt");
+	//		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	//		//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+	//		//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+	//		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	//		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+	//		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+	//		break;
+	//	case RMAP_ALLDN:
+	//		str = _T("ReelMapDataAll.txt");
+	//		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	//		//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+	//		//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+	//		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	//		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+	//		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+	//		break;
+	//	}
+	//}
+	//else
+	//{
+	//	str = _T("ReelMapDataUp.txt");
+	//	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	//	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	//	Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+	//	Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+	//}
+
+	//CString sPath = _T("");
+	CString Path[5], str, sSrc, sDest;
+
+	switch (m_nLayer)
 	{
-		switch(m_nLayer)
-		{
-		case RMAP_UP:
-			str = _T("ReelMapDataUp.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_ALLUP:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			break;
-		case RMAP_DN:
-			str = _T("ReelMapDataDn.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		case RMAP_ALLDN:
-			str = _T("ReelMapDataAll.txt");
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-			//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			break;
-		}
-	}
-	else
-	{
+	case RMAP_UP:
 		str = _T("ReelMapDataUp.txt");
-		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerUp,
+				str);
+		}
+		else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->Status.PcrShare[0].sLot,
+				pDoc->WorkingInfo.LastJob.sLayerUp,
+				str);
+		}
+		break;
+	case RMAP_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerUp,
+				str);
+		}
+		else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->Status.PcrShare[0].sLot,
+				pDoc->WorkingInfo.LastJob.sLayerUp,
+				str);
+		}
+		break;
+	case RMAP_DN:
+		str = _T("ReelMapDataDn.txt");
+		if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerDn,
+				str);
+		}
+		else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->Status.PcrShare[0].sLot,
+				pDoc->WorkingInfo.LastJob.sLayerDn,
+				str);
+		}
+		break;
+	case RMAP_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->WorkingInfo.LastJob.sLotUp,
+				pDoc->WorkingInfo.LastJob.sLayerDn,
+				str);
+		}
+		else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
+		{
+			sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+				pDoc->WorkingInfo.LastJob.sModelUp,
+				pDoc->Status.PcrShare[0].sLot,
+				pDoc->WorkingInfo.LastJob.sLayerDn,
+				str);
+		}
+		break;
+	case RMAP_INNER_UP:
+		str = _T("ReelMapDataUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INNER_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INOUTER_UP:
+		str = _T("ReelMapDataIO.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+			pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp,
+			str);
+		break;
+	case RMAP_INOUTER_DN:
+		str = _T("ReelMapDataIO.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+			pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn,
+			str);
+		break;
+	case RMAP_ITS:
+		pDoc->GetCurrentInfoEng();
+		str = _T("ReelMapDataIts.txt");
+		sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,	//pDoc->m_sItsCode,
+			str);
+		break;
 	}
 
-	sSrc.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], str);
-	sDest.Format(_T("%s\\%d\\%s"), sPath, nLastDir+1, str);
-	
+	sSrc = sPath;
+	sDest.Format(_T("%s\\%s"), sUserRestoreDir, str);
+
 	CMyFile *pFile;
 	pFile = new CMyFile();
 
@@ -4531,141 +5250,252 @@ void CReelMap::StrToChar(CString str, char* pCh) // char* returned must be delet
 
 BOOL CReelMap::MakeDirYield(CString sPath)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	CFileFind finder;
-	CString str, Path[4];
+	CString str, Path[5];
 
-
-	if (bDualTest)
+	switch (m_nLayer)
 	{
-		switch (m_nLayer)
-		{
-		case RMAP_UP:
-			str = _T("YieldUp.txt");
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->Status.PcrShare[0].sLot;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			}
-			break;
-		case RMAP_ALLUP:
-#ifdef TEST_MODE
-			str = _T("YieldAllUp.txt");
-#else
-			str = _T("YieldAll.txt");
-#endif
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->Status.PcrShare[0].sLot;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-			}
-			break;
-		case RMAP_DN:
-			str = _T("YieldDn.txt");
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-				//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->Status.PcrShare[0].sLot;
-				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-				//Path[2] = pDoc->Status.PcrShare[1].sLot;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			}
-			break;
-		case RMAP_ALLDN:
-#ifdef TEST_MODE
-			str = _T("YieldAllDn.txt");
-#else
-			str = _T("YieldAll.txt");
-#endif
-			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-				//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			}
-			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
-			{
-				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-				Path[2] = pDoc->Status.PcrShare[0].sLot;
-				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
-				//Path[2] = pDoc->Status.PcrShare[1].sLot;
-				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
-			}
-			break;
-		}
-	}
-	else
-	{
+	case RMAP_UP:
 		str = _T("YieldUp.txt");
-		if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
-		{
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-		}
-		else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
-		{
-			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-			Path[2] = pDoc->Status.PcrShare[0].sLot;
-			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
-		}
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLUP:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+		Path[4] = _T("");
+		break;
+	case RMAP_DN:
+		str = _T("YieldDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_ALLDN:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+		Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+		Path[4] = _T("");
+		break;
+	case RMAP_INNER_UP:
+		str = _T("YieldUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_DN:
+		str = _T("YieldDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("YieldAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		break;
+	case RMAP_INOUTER_UP:
+		break;
+	case RMAP_INOUTER_DN:
+		break;
+	case RMAP_ITS:
+		str = _T("YieldIts.txt");
+		Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = _T("");
+		Path[4] = _T("");
+		break;
 	}
 
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	if (!Path[0].IsEmpty() && !Path[1].IsEmpty())
+	{
+		sPath.Format(_T("%s%s"), Path[0], Path[1]);
+		if (!pDoc->DirectoryExists(sPath))
+			CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+		if (!Path[2].IsEmpty())
+		{
+			sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+			if (!pDoc->DirectoryExists(sPath))
+				CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+			if (!Path[3].IsEmpty())
+			{
+				sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+				if (!pDoc->DirectoryExists(sPath))
+					CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
-	//if(!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+				if (!Path[4].IsEmpty())
+				{
+					sPath.Format(_T("%s%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4]);
+					if (!pDoc->DirectoryExists(sPath))
+						CreateDirectory(sPath, NULL);
+				}
+			}
+		}
+	}
 
 	return TRUE;
+
+
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	CFileFind finder;
+//	CString str, Path[4];
+//
+//
+//	if (bDualTest)
+//	{
+//		switch (m_nLayer)
+//		{
+//		case RMAP_UP:
+//			str = _T("YieldUp.txt");
+//			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			}
+//			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->Status.PcrShare[0].sLot;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			}
+//			break;
+//		case RMAP_ALLUP:
+//#ifdef TEST_MODE
+//			str = _T("YieldAllUp.txt");
+//#else
+//			str = _T("YieldAll.txt");
+//#endif
+//			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			}
+//			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->Status.PcrShare[0].sLot;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//			}
+//			break;
+//		case RMAP_DN:
+//			str = _T("YieldDn.txt");
+//			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//				//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			}
+//			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->Status.PcrShare[0].sLot;
+//				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//				//Path[2] = pDoc->Status.PcrShare[1].sLot;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			}
+//			break;
+//		case RMAP_ALLDN:
+//#ifdef TEST_MODE
+//			str = _T("YieldAllDn.txt");
+//#else
+//			str = _T("YieldAll.txt");
+//#endif
+//			if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[1])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//				//Path[2] = pDoc->WorkingInfo.LastJob.sLotDn;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			}
+//			else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[1])
+//			{
+//				Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//				Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//				Path[2] = pDoc->Status.PcrShare[0].sLot;
+//				//Path[1] = pDoc->WorkingInfo.LastJob.sModelDn;
+//				//Path[2] = pDoc->Status.PcrShare[1].sLot;
+//				Path[3] = pDoc->WorkingInfo.LastJob.sLayerDn;
+//			}
+//			break;
+//		}
+//	}
+//	else
+//	{
+//		str = _T("YieldUp.txt");
+//		if (pDoc->m_bDoneChgLot || !pDoc->m_bNewLotShare[0])
+//		{
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->WorkingInfo.LastJob.sLotUp;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//		}
+//		else if (!pDoc->m_bDoneChgLot && pDoc->m_bNewLotShare[0])
+//		{
+//			Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//			Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//			Path[2] = pDoc->Status.PcrShare[0].sLot;
+//			Path[3] = pDoc->WorkingInfo.LastJob.sLayerUp;
+//		}
+//	}
+//
+//	sPath.Format(_T("%s%s"), Path[0], Path[1]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\Reelmap"), Path[0], Path[1], Path[2], Path[3]);
+//	//if(!finder.FindFile(sPath))
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
 }
 
 
@@ -4905,7 +5735,7 @@ BOOL CReelMap::MakeHeader(CString sPath)
 	MakeDirRmap();
 	StrToChar(sPath, FileName);
 
-	fp = fopen(FileName, "a+");
+	fp = fopen(FileName, "w+");
 	if (fp == NULL)
 	{
 		pView->MsgBox(_T("It is trouble to open ReelMap.txt"));
@@ -4998,11 +5828,11 @@ BOOL CReelMap::MakeHeader(CString sPath)
 
 CString CReelMap::GetPathReelmapIts()
 {
-	CString sName = _T("ReelmapIts.txt");
+	CString sName = _T("ReelMapDataIts.txt");
 	CString str, sPath, Path[3];
 
 	sPath = _T("");
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode; // pDoc->m_sItsCode;
 
@@ -5018,11 +5848,11 @@ BOOL CReelMap::MakeItsReelmapHeader()
 	FILE *fp = NULL;
 	char FileName[MAX_PATH];
 	BOOL bExist = FALSE;
-	CString sName = _T("ReelmapIts.txt");
+	CString sName = _T("ReelMapDataIts.txt");
 	CString str, sPath, Path[3];
 
 	sPath = _T("");
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode; // pDoc->m_sItsCode;
 
@@ -5673,28 +6503,28 @@ CString CReelMap::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN, R
 		break;
 	case RMAP_INNER_UP:
 		sSide = _T("T");
-		if (pDoc->m_pPcr[nLayer])
+		if (pDoc->m_pPcrInner[0])
 		{
-			if (pDoc->m_pPcr[nLayer][nIdx])
-				nTotDefPcs = pDoc->m_pPcr[nLayer][nIdx]->m_nTotDef;
+			if (pDoc->m_pPcrInner[0][nIdx])
+				nTotDefPcs = pDoc->m_pPcrInner[0][nIdx]->m_nTotDef;
 		}
-		//if (pDoc->m_pPcrInner[nLayer - RMAP_INNER_UP])
+		//if (pDoc->m_pPcr[nLayer])
 		//{
-		//	if (pDoc->m_pPcrInner[nLayer - RMAP_INNER_UP][nIdx])
-		//		nTotDefPcs = pDoc->m_pPcrInner[nLayer - RMAP_INNER_UP][nIdx]->m_nTotDef;
+		//	if (pDoc->m_pPcr[nLayer][nIdx])
+		//		nTotDefPcs = pDoc->m_pPcr[nLayer][nIdx]->m_nTotDef;
 		//}
 		break;
 	case RMAP_INNER_DN:
 		sSide = _T("B");
-		if (pDoc->m_pPcr[nLayer])
+		if (pDoc->m_pPcrInner[1])
 		{
-			if (pDoc->m_pPcr[nLayer][nIdx])
-				nTotDefPcs = pDoc->m_pPcr[nLayer][nIdx]->m_nTotDef;
+			if (pDoc->m_pPcrInner[1][nIdx])
+				nTotDefPcs = pDoc->m_pPcrInner[1][nIdx]->m_nTotDef;
 		}
-		//if (pDoc->m_pPcrInner[nLayer - RMAP_INNER_UP])
+		//if (pDoc->m_pPcr[nLayer])
 		//{
-		//	if (pDoc->m_pPcrInner[nLayer - RMAP_INNER_UP][nIdx])
-		//		nTotDefPcs = pDoc->m_pPcrInner[nLayer - RMAP_INNER_UP][nIdx]->m_nTotDef;
+		//	if (pDoc->m_pPcr[nLayer][nIdx])
+		//		nTotDefPcs = pDoc->m_pPcr[nLayer][nIdx]->m_nTotDef;
 		//}
 		break;
 	}
@@ -5806,7 +6636,7 @@ BOOL CReelMap::MakeDirIts()
 	CString  Path[3];
 	CString sPath = _T("");
 
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
 	//Path[2] = pDoc->m_sItsCode;

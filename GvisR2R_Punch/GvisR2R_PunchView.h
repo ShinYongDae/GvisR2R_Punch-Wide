@@ -80,7 +80,7 @@
 #define TIM_CAMMASTER_UPDATE	22
 #define TIM_START_UPDATE		100
 
-#define MAX_THREAD				20
+#define MAX_THREAD				30
 
 namespace Read2dIdx
 {
@@ -413,12 +413,16 @@ public:
 	BOOL m_bTHREAD_UPDATE_RST_DN, m_bTHREAD_UPDATE_RST_ALLDN;
 	BOOL m_bTHREAD_RELOAD_RST_UP, m_bTHREAD_RELOAD_RST_ALLUP;
 	BOOL m_bTHREAD_RELOAD_RST_DN, m_bTHREAD_RELOAD_RST_ALLDN;
+	BOOL m_bTHREAD_RELOAD_RST_UP_INNER, m_bTHREAD_RELOAD_RST_ALLUP_INNER;
+	BOOL m_bTHREAD_RELOAD_RST_DN_INNER, m_bTHREAD_RELOAD_RST_ALLDN_INNER;
+	BOOL m_bTHREAD_RELOAD_RST_ITS, m_bTHREAD_UPDATE_RST_ITS;
 	// 	BOOL m_bTIM_MK_START;
 
 	void UpdateRstUp();
 	void UpdateRstAllUp();
 	void UpdateRstDn();
 	void UpdateRstAllDn();
+	void UpdateRstIts();
 
 	BOOL m_bSwRun, m_bSwRunF;
 	BOOL m_bSwStop, m_bSwStopF;
@@ -515,6 +519,9 @@ public:
 	CString m_sPathRmapUpdate[4];
 	int m_nSerialRmapUpdate;
 
+	CString m_sPathRmapInnerUpdate[4];
+	int m_nSerialRmapInnerUpdate;
+
 // 작업입니다.
 public:
 	BOOL m_bShift2Mk;
@@ -532,8 +539,8 @@ public:
 	void RestoreReelmap();
 	CString GetProcessNum();
 
-	CString GetRmapPath(int nRmap, stModelInfo stInfo);
-	CString GetRmapPath(int nRmap);
+	//CString GetRmapPath(int nRmap, stModelInfo stInfo);
+	//CString GetRmapPath(int nRmap);
 	void DispMain(CString sMsg, COLORREF rgb = RGB(0, 255, 0));
 	int DoDispMain();
 	//	CString GetDispMain();
@@ -600,34 +607,50 @@ public:
 	void DispLotStTime();
 	void SetListBuf();
 
-	static UINT ThreadProc0(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc1(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc2(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc3(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc4(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc5(LPVOID lpContext); // Safety check thread procedure
+	static UINT ThreadProc0(LPVOID lpContext); // DoMark0(), DoMark1()
+	static UINT ThreadProc1(LPVOID lpContext); // ChkCollision()
+	static UINT ThreadProc2(LPVOID lpContext); // DispDefImg()
+	static UINT ThreadProc3(LPVOID lpContext); // UpdateYield()
+	static UINT ThreadProc4(LPVOID lpContext); // RunShift2Mk()
+	static UINT ThreadProc5(LPVOID lpContext); // GetCurrentInfoSignal()
 
-	static UINT ThreadProc6(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc7(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc8(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc9(LPVOID lpContext); // Safety check thread procedure
+	static UINT ThreadProc6(LPVOID lpContext); // UpdateRMapUp()
+	static UINT ThreadProc7(LPVOID lpContext); // UpdateRMapDn()
+	static UINT ThreadProc8(LPVOID lpContext); // UpdateRMapAllUp()
+	static UINT ThreadProc9(LPVOID lpContext); // UpdateRMapAllDn()
 
-	static UINT ThreadProc10(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc11(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc12(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc13(LPVOID lpContext); // Safety check thread procedure
+	static UINT ThreadProc10(LPVOID lpContext); // UpdateRstUp()
+	static UINT ThreadProc11(LPVOID lpContext); // UpdateRstDn()
+	static UINT ThreadProc12(LPVOID lpContext); // UpdateRstAllUp()
+	static UINT ThreadProc13(LPVOID lpContext); // UpdateRstAllDn()
 
-	static UINT ThreadProc14(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc15(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc16(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc17(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc18(LPVOID lpContext); // Safety check thread procedure
-	static UINT ThreadProc19(LPVOID lpContext); // Safety check thread procedure
+	static UINT ThreadProc14(LPVOID lpContext); // ReloadRstUp()
+	static UINT ThreadProc15(LPVOID lpContext); // ReloadRstDn()
+	static UINT ThreadProc16(LPVOID lpContext); // ReloadRstAllUp()
+	static UINT ThreadProc17(LPVOID lpContext); // ReloadRstAllDn()
+	static UINT ThreadProc18(LPVOID lpContext); // WriteReelmapIts()
+	static UINT ThreadProc19(LPVOID lpContext); // DispDefImgInner()
+	static UINT ThreadProc20(LPVOID lpContext); // UpdateRstIts()
+	static UINT ThreadProc21(LPVOID lpContext); // ReloadRstUpInner()
+	static UINT ThreadProc22(LPVOID lpContext); // ReloadRstDnInner()
+	static UINT ThreadProc23(LPVOID lpContext); // ReloadRstAllUpInner()
+	static UINT ThreadProc24(LPVOID lpContext); // ReloadRstAllDnInner()
+	static UINT ThreadProc25(LPVOID lpContext); // ReloadRstIts()
+
+	static UINT ThreadProc26(LPVOID lpContext); // UpdateRMapInnerUp()
+	static UINT ThreadProc27(LPVOID lpContext); // UpdateRMapInnerDn()
+	static UINT ThreadProc28(LPVOID lpContext); // UpdateRMapInnerAllUp()
+	static UINT ThreadProc29(LPVOID lpContext); // UpdateRMapInnerAllDn()
 
 	void UpdateRMapUp();
 	void UpdateRMapAllUp();
 	void UpdateRMapDn();
 	void UpdateRMapAllDn();
+
+	void UpdateRMapInnerUp();
+	void UpdateRMapInnerAllUp();
+	void UpdateRMapInnerDn();
+	void UpdateRMapInnerAllDn();
 
 
 	// Auto Sequence
@@ -776,6 +799,8 @@ public:
 	BOOL IsMoveDone1();
 	void Ink(BOOL bOn = TRUE);
 	BOOL UpdateReelmap(int nSerial);
+	BOOL UpdateReelmapInner(int nSerial);
+
 	// 	void LoadMstInfo();
 	void InitInfo();
 	void InitReelmap();
@@ -1044,6 +1069,12 @@ public:
 	void ReloadRstDn();
 	void ReloadRstAllDn();
 
+	void ReloadRstUpInner();
+	void ReloadRstAllUpInner();
+	void ReloadRstDnInner();
+	void ReloadRstAllDnInner();
+	void ReloadRstIts();
+
 	BOOL m_bSetSig, m_bSetSigF, m_bSetData, m_bSetDataF;
 	BOOL m_bLoadMstInfo, m_bLoadMstInfoF;
 	BOOL m_bTIM_START_UPDATE;
@@ -1051,6 +1082,8 @@ public:
 
 	BOOL m_bEscape;
 	// ITS
+	BOOL m_bTHREAD_UPDATE_REELMAP_INNER_UP, m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP;
+	BOOL m_bTHREAD_UPDATE_REELMAP_INNER_DN, m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN;
 	BOOL m_bTHREAD_UPDATE_REELMAP_ITS;
 	BOOL WriteReelmapIts();
 

@@ -465,6 +465,7 @@ public:
 	void SetReelmapInner(int nDir = ROT_NONE);
 	CString GetItsPath(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 	int GetItsDefCode(int nDefCode);				// return to [Sapp3Code]
+	BOOL MakeItsDir(CString sModel, CString sLot, CString sLayer);
 
 
 // 재정의입니다.

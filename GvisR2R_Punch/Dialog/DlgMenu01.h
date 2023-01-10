@@ -52,6 +52,7 @@ class CDlgMenu01 : public CDialog
 	BOOL m_bTIM_WINK_MK_L, m_bTIM_WINK_MK_R;
 	BOOL m_bLowPartialSpd;
 	int m_nSerialDispMkInfo;
+	int m_nSelRmapPrev;
 
 	void LoadImg();
 	void DelImg();
@@ -191,6 +192,9 @@ public:
 	void SwMyBtnUp(int nCtrlID);
 
 	void ChkTpStop();
+	void EnableItsMode(BOOL bEnable=TRUE);
+	void DispTotRatioIts();
+	void DispStripRatioIts();
 
 // Dialog Data
 	//{{AFX_DATA(CDlgMenu01)

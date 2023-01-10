@@ -652,7 +652,7 @@ struct stSystem
 	CString sPathEng, sPathEngCurrInfo, sPathEngOffset, sPathMkCurrInfo, sPathMkCurrInfoBuf;
 	CString sPathMkMenu01, sPathMkMenu03, sPathMkInfo, sPathMonDispMain;
 
-	CString sPathOldFile;
+	CString sPathOldFile, sPathItsFile;
 	CString sPathSapp3;
 	BOOL bSaveLog;
 	BOOL bNoMk;	// 0 : 마킹모드, 1 : 비젼모드
@@ -689,6 +689,7 @@ struct stSystem
 		sPathMkCurrInfoBuf = _T(""); sPathMkMenu01 = _T(""); sPathMkMenu03 = _T(""); sPathMkInfo = _T(""); sPathMonDispMain = _T("");
 
 		sPathOldFile = _T("");
+		sPathItsFile = _T("");
 		bSaveLog = FALSE;
 		bNoMk = FALSE;	// 0 : 마킹모드, 1 : 비젼모드
 		sReViewMkLen = _T("");
@@ -1648,6 +1649,7 @@ struct stBtnStatus
 
 struct stMenu01Info
 {
+	CString sOperator, sModel, sLot, sLayerUp, sLayerDn;
 	int nTotShot, nVerifyImgNum;
 	double dTotWorkRto, dLotWorkRto, dTotSpd, dPartSpd, dDoneLenMk, dDoneLenAoiUp, dDoneLengthAoiDn, dDoneLengthEng;
 
@@ -1658,6 +1660,7 @@ struct stMenu01Info
 
 	void _Init()
 	{
+		sOperator = _T(""); sModel = _T(""); sLot = _T(""); sLayerUp = _T(""); sLayerDn = _T("");
 		nTotShot = 0; dTotWorkRto = 0.0; dLotWorkRto = 0.0; dTotSpd = 0.0; dPartSpd = 0.0; dDoneLenMk = 0.0;
 		dDoneLenAoiUp = 0.0; dDoneLengthAoiDn = 0.0; dDoneLengthEng = 0.0; nVerifyImgNum = 0;
 	}

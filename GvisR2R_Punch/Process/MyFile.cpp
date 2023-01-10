@@ -551,6 +551,18 @@ int CMyFile::CopyPcrAll(CString sSrc, CString sDest)  // return : Serial
 	return 0;
 }
 
+BOOL CMyFile::IsPcrExist(CString strPath)
+{
+	CFileFind cFile;
+	BOOL bExist;
+
+	bExist = cFile.FindFile(strPath + _T("*.pcr"));
+	if (!bExist)
+		return FALSE;
+
+	return TRUE;
+}
+
 void CMyFile::DelPcrAll(CString strPath)
 {
 	CString strFileName;

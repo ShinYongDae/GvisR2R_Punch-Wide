@@ -549,37 +549,9 @@ BOOL CDlgMenu06::OnInitDialog()
 
 void CDlgMenu06::SelMap(int nSel)
 {
-#ifdef TEST_MODE
-	switch(nSel)
-	{
-	case UP:
-		myBtn[12].SetCheck(TRUE);
-		myBtn[13].SetCheck(FALSE);
-		myBtn[14].SetCheck(FALSE);
-		pView->m_nSelRmap = RMAP_UP;
-		break;
-	case DN:
-		myBtn[12].SetCheck(FALSE);
-		myBtn[13].SetCheck(TRUE);
-		myBtn[14].SetCheck(FALSE);
-		pView->m_nSelRmap = RMAP_DN;
-		break;
-	case ALL:
-		myBtn[12].SetCheck(FALSE);
-		myBtn[13].SetCheck(FALSE);
-		myBtn[14].SetCheck(TRUE);
-		if(pDoc->WorkingInfo.LastJob.nMergingLayer==0)
-			pView->m_nSelRmap = RMAP_ALLUP;
-		else if(pDoc->WorkingInfo.LastJob.nMergingLayer==1)
-			pView->m_nSelRmap = RMAP_ALLDN;
-		else
-			pView->m_nSelRmap = RMAP_ALLUP;
-		break;
-	}
-	OpenReelmap(pView->m_nSelRmap);
-	DispReelmap(TEST_SHOT);	
-#else
-	CString str, sPath;
+	return;
+
+	CString str;
 
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 	if(bDualTest)
@@ -621,11 +593,9 @@ void CDlgMenu06::SelMap(int nSel)
 
 	if (pDoc->m_pReelMapInner)
 	{
-		sPath = pView->GetRmapPath(pView->m_nSelRmapInner);
 		OpenReelmap(pView->m_nSelRmapInner);
 		DispReelmap(m_nSerial);
 	}
-#endif
 // 	if(pDoc->m_pReelMapInner)
 // 		pDoc->m_pReelMapInner->ReloadRst();
 // 	UpdateRst();
@@ -699,13 +669,13 @@ void CDlgMenu06::OpenReelmap(int nSelRmap)
 			//pDoc->GetCurrentInfoEng();
 			if (pDoc->WorkingInfo.LastJob.bDualTestInner)
 			{
-				pDoc->m_pReelMapInner->Open(pView->GetRmapPath(RMAP_INNER_ALLUP));
-				pDoc->m_pReelMapInner->SetPathAtBuf(pView->GetRmapPath(RMAP_INNER_ALLUP));
+				pDoc->m_pReelMapInner->Open();
+				pDoc->m_pReelMapInner->SetPathAtBuf();
 			}
 			else
 			{
-				pDoc->m_pReelMapInner->Open(pView->GetRmapPath(RMAP_INNER_UP));
-				pDoc->m_pReelMapInner->SetPathAtBuf(pView->GetRmapPath(RMAP_INNER_UP));
+				pDoc->m_pReelMapInner->Open();
+				pDoc->m_pReelMapInner->SetPathAtBuf();
 			}
 		}
 		//pDoc->m_pReelMapInner->Open(pView->GetRmapPath(nSelRmap));

@@ -119,7 +119,7 @@ public:
 
 	BOOL Open(CString sPath);
 	BOOL OpenUser(CString sPath);
-	BOOL Open(CString sPath, CString sModel, CString sLayer, CString sLot);
+	BOOL Open();
 	BOOL OpenUser(CString sPath, CString sModel, CString sLayer, CString sLot);
 	int Read(CString &sRead);
 	BOOL Write(int nSerial, int nLayer);
@@ -152,7 +152,7 @@ public:
 	BOOL IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot);
 
 	BOOL Write(int nSerial, int nLayer, CString sPath);
-	void SetPathAtBuf(CString sPath);
+	void SetPathAtBuf();
 	CString GetRmapPath(int nRmap);
 	CString GetYieldPath(int nRmap);
 

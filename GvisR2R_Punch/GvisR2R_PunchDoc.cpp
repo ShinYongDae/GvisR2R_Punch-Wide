@@ -1260,6 +1260,14 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.sPathOldFile = CString(_T(""));
 	}
 
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("ItsOldFileDirPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathItsFile = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("VRS 완료 파일 Path가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathItsFile = CString(_T(""));
+	}
+
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("Sapp3Path"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.System.sPathSapp3 = CString(szData);
 	else
@@ -7727,15 +7735,25 @@ void CGvisR2R_PunchDoc::DelSharePcrUp()
 	CString sPath = WorkingInfo.System.sPathVrsShareUp;
 
 	if (m_pFile)
-		m_pFile->DelPcrAll(sPath);
+	{
+		while(m_pFile->IsPcrExist(sPath))
+		{
+			m_pFile->DelPcrAll(sPath);
+			Sleep(30);
+		}
+	}
 }
 
 void CGvisR2R_PunchDoc::DelSharePcrDn()
 {
 	CString sPath = WorkingInfo.System.sPathVrsShareDn;
 
-	if (m_pFile)
-		m_pFile->DelPcrAll(sPath);
+	while (m_pFile->IsPcrExist(sPath))
+	{
+		if (m_pFile)
+			m_pFile->DelPcrAll(sPath);
+		Sleep(30);
+	}
 }
 
 void CGvisR2R_PunchDoc::DelPcrAll()
@@ -8120,125 +8138,128 @@ BOOL CGvisR2R_PunchDoc::MakeMkDir(CString sModel, CString sLot, CString sLayer)
 
 BOOL CGvisR2R_PunchDoc::MakeMkDir()
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	BOOL b0, b1;
+	pView->OpenReelmap();
+	pView->OpenReelmapInner();
 
-	if (bDualTest)
-	{
-		b0 = MakeMkDirUp();
-		b1 = MakeMkDirDn();
-		if (!b0 || !b1)
-			return FALSE;
-	}
-	else
-	{
-		b0 = MakeMkDirUp();
-		if (!b0)
-			return FALSE;
-	}
+	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	//BOOL b0, b1;
+
+	//if (bDualTest)
+	//{
+	//	b0 = MakeMkDirUp();
+	//	b1 = MakeMkDirDn();
+	//	if (!b0 || !b1)
+	//		return FALSE;
+	//}
+	//else
+	//{
+	//	b0 = MakeMkDirUp();
+	//	if (!b0)
+	//		return FALSE;
+	//}
 
 	return TRUE;
 }
 
 BOOL CGvisR2R_PunchDoc::MakeMkDirUp()
 {
-	CString sMsg = _T("");
-	CFileFind finder;
-	CString sPath;
+	//CString sMsg = _T("");
+	//CFileFind finder;
+	//CString sPath;
 
-	sPath.Format(_T("%s"), pDoc->WorkingInfo.System.sPathOldFile);
-	int pos = sPath.ReverseFind('\\');
-	if (pos != -1)
-		sPath.Delete(pos, sPath.GetLength() - pos);
+	//sPath.Format(_T("%s"), pDoc->WorkingInfo.System.sPathOldFile);
+	//int pos = sPath.ReverseFind('\\');
+	//if (pos != -1)
+	//	sPath.Delete(pos, sPath.GetLength() - pos);
 
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	if (WorkingInfo.LastJob.sModelUp.IsEmpty() || WorkingInfo.LastJob.sLotUp.IsEmpty() || WorkingInfo.LastJob.sLayerUp.IsEmpty())
-	{
-		sMsg.Format(_T("모델이나 로뜨 또는 레이어명이 없습니다."));
-		pView->ClrDispMsg();
-		AfxMessageBox(sMsg);
-		return FALSE;
-	}
+	//if (WorkingInfo.LastJob.sModelUp.IsEmpty() || WorkingInfo.LastJob.sLotUp.IsEmpty() || WorkingInfo.LastJob.sLayerUp.IsEmpty())
+	//{
+	//	sMsg.Format(_T("모델이나 로뜨 또는 레이어명이 없습니다."));
+	//	pView->ClrDispMsg();
+	//	AfxMessageBox(sMsg);
+	//	return FALSE;
+	//}
 
-	sPath.Format(_T("%s%s"), pDoc->WorkingInfo.System.sPathOldFile,
-		WorkingInfo.LastJob.sModelUp);
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s"), pDoc->WorkingInfo.System.sPathOldFile,
+	//	WorkingInfo.LastJob.sModelUp);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-		WorkingInfo.LastJob.sModelUp,
-		WorkingInfo.LastJob.sLotUp);
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+	//	WorkingInfo.LastJob.sModelUp,
+	//	WorkingInfo.LastJob.sLotUp);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-		WorkingInfo.LastJob.sModelUp,
-		WorkingInfo.LastJob.sLotUp,
-		WorkingInfo.LastJob.sLayerUp);
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+	//	WorkingInfo.LastJob.sModelUp,
+	//	WorkingInfo.LastJob.sLotUp,
+	//	WorkingInfo.LastJob.sLayerUp);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
 	return TRUE;
 }
 
 BOOL CGvisR2R_PunchDoc::MakeMkDirDn()
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return TRUE;
+	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	//if (!bDualTest)
+	//	return TRUE;
 
-	CString sMsg = _T("");
-	CFileFind finder;
-	CString sPath;
+	//CString sMsg = _T("");
+	//CFileFind finder;
+	//CString sPath;
 
-	sPath.Format(_T("%s"), pDoc->WorkingInfo.System.sPathOldFile);
-	int pos = sPath.ReverseFind('\\');
-	if (pos != -1)
-		sPath.Delete(pos, sPath.GetLength() - pos);
+	//sPath.Format(_T("%s"), pDoc->WorkingInfo.System.sPathOldFile);
+	//int pos = sPath.ReverseFind('\\');
+	//if (pos != -1)
+	//	sPath.Delete(pos, sPath.GetLength() - pos);
 
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	if (WorkingInfo.LastJob.sModelDn.IsEmpty() || WorkingInfo.LastJob.sLotDn.IsEmpty() || WorkingInfo.LastJob.sLayerDn.IsEmpty())
-	{
-		sMsg.Format(_T("모델이나 로뜨 또는 레이어명이 없습니다."));
-		pView->ClrDispMsg();
-		AfxMessageBox(sMsg);
-		return FALSE;
-	}
+	//if (WorkingInfo.LastJob.sModelDn.IsEmpty() || WorkingInfo.LastJob.sLotDn.IsEmpty() || WorkingInfo.LastJob.sLayerDn.IsEmpty())
+	//{
+	//	sMsg.Format(_T("모델이나 로뜨 또는 레이어명이 없습니다."));
+	//	pView->ClrDispMsg();
+	//	AfxMessageBox(sMsg);
+	//	return FALSE;
+	//}
 
-	sPath.Format(_T("%s%s"), pDoc->WorkingInfo.System.sPathOldFile,
-		WorkingInfo.LastJob.sModelUp);
-		//WorkingInfo.LastJob.sModelDn);
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s"), pDoc->WorkingInfo.System.sPathOldFile,
+	//	WorkingInfo.LastJob.sModelUp);
+	//	//WorkingInfo.LastJob.sModelDn);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-		WorkingInfo.LastJob.sModelUp,
-		WorkingInfo.LastJob.sLotUp);
-		//WorkingInfo.LastJob.sModelDn,
-		//WorkingInfo.LastJob.sLotDn);
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+	//	WorkingInfo.LastJob.sModelUp,
+	//	WorkingInfo.LastJob.sLotUp);
+	//	//WorkingInfo.LastJob.sModelDn,
+	//	//WorkingInfo.LastJob.sLotDn);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
-		WorkingInfo.LastJob.sModelUp,
-		WorkingInfo.LastJob.sLotUp,
-		//WorkingInfo.LastJob.sModelDn,
-		//WorkingInfo.LastJob.sLotDn,
-		WorkingInfo.LastJob.sLayerDn);
-	//if (!finder.FindFile(sPath))
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+	//	WorkingInfo.LastJob.sModelUp,
+	//	WorkingInfo.LastJob.sLotUp,
+	//	//WorkingInfo.LastJob.sModelDn,
+	//	//WorkingInfo.LastJob.sLotDn,
+	//	WorkingInfo.LastJob.sLayerDn);
+	////if (!finder.FindFile(sPath))
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
 	return TRUE;
 }
@@ -9444,6 +9465,17 @@ void CGvisR2R_PunchDoc::GetMkMenu01()
 	if (sPath.IsEmpty())
 		return;
 
+	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Operator"), NULL, szData, sizeof(szData), sPath))
+		pDoc->WorkingInfo.LastJob.sSelUserName = pDoc->Menu01Status.Info.sOperator = CString(szData);
+	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Model"), NULL, szData, sizeof(szData), sPath))
+		pDoc->WorkingInfo.LastJob.sModelUp = pDoc->Menu01Status.Info.sModel = CString(szData);
+	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Lot"), NULL, szData, sizeof(szData), sPath))
+		pDoc->WorkingInfo.LastJob.sLotUp = pDoc->Menu01Status.Info.sLot = CString(szData);
+	if (0 < ::GetPrivateProfileString(_T("Info"), _T("LayerUp"), NULL, szData, sizeof(szData), sPath))
+		pDoc->WorkingInfo.LastJob.sLayerUp = pDoc->Menu01Status.Info.sLayerUp = CString(szData);
+	if (0 < ::GetPrivateProfileString(_T("Info"), _T("LayerDn"), NULL, szData, sizeof(szData), sPath))
+		pDoc->WorkingInfo.LastJob.sLayerDn = pDoc->Menu01Status.Info.sLayerDn = CString(szData);
+
 	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Total Shot"), NULL, szData, sizeof(szData), sPath))
 		pDoc->Menu01Status.Info.nTotShot = _ttoi(szData);
 	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Total Work Ratio"), NULL, szData, sizeof(szData), sPath))
@@ -10064,121 +10096,121 @@ int CGvisR2R_PunchDoc::Rotate180(int nPcsId) // 180도 회전
 
 BOOL CGvisR2R_PunchDoc::MakeLayerMappingHeader()
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	FILE *fp = NULL;
-	char FileName[MAX_PATH];
-	BOOL bExist = FALSE;
-	CString sName = _T("");
-	CString str, sPath, Path[4];
+	//FILE *fp = NULL;
+	//char FileName[MAX_PATH];
+	//BOOL bExist = FALSE;
+	//CString sName = _T("");
+	//CString str, sPath, Path[4];
 
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	//Path[1] = pDoc->m_sEngModel;
-	Path[2] = pDoc->m_sItsCode;
-	Path[3] = pDoc->m_sEngLotNum;
+	//Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+	//Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	////Path[1] = pDoc->m_sEngModel;
+	//Path[2] = pDoc->m_sItsCode;
+	//Path[3] = pDoc->m_sEngLotNum;
 
-	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty() || Path[3].IsEmpty())
-		return FALSE;
+	//if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty() || Path[3].IsEmpty())
+	//	return FALSE;
 
-	if (bDualTest)
-	{
-		if (pDoc->m_sEngLayerUp.IsEmpty() || pDoc->m_sEngLayerDn.IsEmpty())
-			return FALSE;
-	}
-	else
-	{
-		if (pDoc->m_sEngLayerUp.IsEmpty())
-			return FALSE;
-	}
+	//if (bDualTest)
+	//{
+	//	if (pDoc->m_sEngLayerUp.IsEmpty() || pDoc->m_sEngLayerDn.IsEmpty())
+	//		return FALSE;
+	//}
+	//else
+	//{
+	//	if (pDoc->m_sEngLayerUp.IsEmpty())
+	//		return FALSE;
+	//}
 
-	sName.Format(_T("%s.txt"), pDoc->m_sEngLotNum);
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // 로트명.txt
+	//sName.Format(_T("%s.txt"), pDoc->m_sEngLotNum);
+	//sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // 로트명.txt
 
-	CFileFind findfile;
-	if (findfile.FindFile(sPath))
-	{
-		bExist = TRUE;
-		return TRUE;
-	}
+	//CFileFind findfile;
+	//if (findfile.FindFile(sPath))
+	//{
+	//	bExist = TRUE;
+	//	return TRUE;
+	//}
 
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);					// 모델 폴더
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s"), Path[0], Path[1]);					// 모델 폴더
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);	// ITS 코드 폴더
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
+	//sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);	// ITS 코드 폴더
+	//if (!pDoc->DirectoryExists(sPath))
+	//	CreateDirectory(sPath, NULL);
 
-	// 로트명.txt 파일의 정보
-	str.Format(_T("%d"), pDoc->GetTestMode());
-	::WritePrivateProfileString(_T("Infomation"), _T("Test Mode"), str, sPath);
-	str.Format(_T("%d"), (bDualTest ? 1 : 0));
-	::WritePrivateProfileString(_T("Infomation"), _T("Dual Test"), str, sPath);
-	::WritePrivateProfileString(_T("Infomation"), _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
-	::WritePrivateProfileString(_T("Infomation"), _T("Current Model"), pDoc->m_sEngModel, sPath);
-	::WritePrivateProfileString(_T("Infomation"), _T("Its Code"), pDoc->m_sItsCode, sPath);
-	::WritePrivateProfileString(_T("Infomation"), _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
-	::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
+	//// 로트명.txt 파일의 정보
+	//str.Format(_T("%d"), pDoc->GetTestMode());
+	//::WritePrivateProfileString(_T("Infomation"), _T("Test Mode"), str, sPath);
+	//str.Format(_T("%d"), (bDualTest ? 1 : 0));
+	//::WritePrivateProfileString(_T("Infomation"), _T("Dual Test"), str, sPath);
+	//::WritePrivateProfileString(_T("Infomation"), _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
+	//::WritePrivateProfileString(_T("Infomation"), _T("Current Model"), pDoc->m_sEngModel, sPath);
+	//::WritePrivateProfileString(_T("Infomation"), _T("Its Code"), pDoc->m_sItsCode, sPath);
+	//::WritePrivateProfileString(_T("Infomation"), _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
+	//::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
 
-	if (bDualTest)
-		::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
-	else
-		::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Dn"), _T(""), sPath);
+	//if (bDualTest)
+	//	::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
+	//else
+	//	::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Dn"), _T(""), sPath);
 
-	::WritePrivateProfileString(_T("Infomation"), _T("Last Its Serial"), pDoc->m_sEngLayerUp, sPath);
+	//::WritePrivateProfileString(_T("Infomation"), _T("Last Its Serial"), pDoc->m_sEngLayerUp, sPath);
 
 	return TRUE;
 }
 
 BOOL CGvisR2R_PunchDoc::MakeLayerMappingSerial(int nIdx, int nItsSerial)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	FILE *fp = NULL;
-	char FileName[MAX_PATH];
-	BOOL bExist = FALSE;
-	CString sName = _T("");
-	CString str, sPath, Path[4];
+	//FILE *fp = NULL;
+	//char FileName[MAX_PATH];
+	//BOOL bExist = FALSE;
+	//CString sName = _T("");
+	//CString str, sPath, Path[4];
 
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	//Path[1] = pDoc->m_sEngModel;
-	Path[2] = pDoc->m_sItsCode;
-	Path[3] = pDoc->m_sEngLotNum;
+	//Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+	//Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	////Path[1] = pDoc->m_sEngModel;
+	//Path[2] = pDoc->m_sItsCode;
+	//Path[3] = pDoc->m_sEngLotNum;
 
-	sName.Format(_T("%s.txt"), pDoc->m_sEngLotNum);
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // 로트명.txt
+	//sName.Format(_T("%s.txt"), pDoc->m_sEngLotNum);
+	//sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // 로트명.txt
 
-	CFileFind findfile;
-	if (!findfile.FindFile(sPath))
-	{
-		if (!MakeLayerMappingHeader())
-		{
-			str.Format(_T("ITS를 위한 로트연결 파일을 생성하지 못했습니다.\r\n %s"), sPath);
-			AfxMessageBox(str);
-			return FALSE;
-		}
-	}
-	
-	CString sItsSerail;
-	sItsSerail.Format(_T("%d"), nItsSerial);
+	//CFileFind findfile;
+	//if (!findfile.FindFile(sPath))
+	//{
+	//	if (!MakeLayerMappingHeader())
+	//	{
+	//		str.Format(_T("ITS를 위한 로트연결 파일을 생성하지 못했습니다.\r\n %s"), sPath);
+	//		AfxMessageBox(str);
+	//		return FALSE;
+	//	}
+	//}
+	//
+	//CString sItsSerail;
+	//sItsSerail.Format(_T("%d"), nItsSerial);
 
-	// ITS_Code.txt 파일의 정보
-	str.Format(_T("%d"), pDoc->GetTestMode());
-	::WritePrivateProfileString(sItsSerail, _T("Test Mode"), str, sPath);
-	str.Format(_T("%d"), (bDualTest ? 1 : 0));
-	::WritePrivateProfileString(sItsSerail, _T("Dual Test"), str, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Current Model"), pDoc->m_sEngModel, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Its Code"), pDoc->m_sItsCode, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
+	//// ITS_Code.txt 파일의 정보
+	//str.Format(_T("%d"), pDoc->GetTestMode());
+	//::WritePrivateProfileString(sItsSerail, _T("Test Mode"), str, sPath);
+	//str.Format(_T("%d"), (bDualTest ? 1 : 0));
+	//::WritePrivateProfileString(sItsSerail, _T("Dual Test"), str, sPath);
+	//::WritePrivateProfileString(sItsSerail, _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
+	//::WritePrivateProfileString(sItsSerail, _T("Current Model"), pDoc->m_sEngModel, sPath);
+	//::WritePrivateProfileString(sItsSerail, _T("Its Code"), pDoc->m_sItsCode, sPath);
+	//::WritePrivateProfileString(sItsSerail, _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
+	//::WritePrivateProfileString(sItsSerail, _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
 
-	if (bDualTest)
-		::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
-	else
-		::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), _T(""), sPath);
+	//if (bDualTest)
+	//	::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
+	//else
+	//	::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), _T(""), sPath);
 
 
 	return TRUE;
@@ -10192,7 +10224,7 @@ BOOL CGvisR2R_PunchDoc::SetItsSerialInfo(int nItsSerial)
 	CString sName = _T("");
 	CString str, sPath, Path[6];
 
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->m_sEngModel;
 	Path[2] = pDoc->m_sItsCode;
 	Path[3] = pDoc->m_sEngLotNum;
@@ -10251,7 +10283,7 @@ BOOL CGvisR2R_PunchDoc::GetItsSerialInfo(int nItsSerial, BOOL &bDualTest, CStrin
 	TCHAR szData[512];
 	CString str, sName, sPath, Path[3];
 
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 	//Path[1] = pDoc->m_sEngModel;
 	Path[2] = pDoc->m_sItsCode;
@@ -10401,7 +10433,7 @@ CString CGvisR2R_PunchDoc::GetItsFolderPath()
 	CString  Path[3];
 	CString sPath = _T("");
 
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 	//Path[1] = pDoc->m_sEngModel;
 	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
@@ -10419,9 +10451,9 @@ CString CGvisR2R_PunchDoc::GetItsReelmapPath()
 {
 	CString  Path[3];
 	CString sPath = _T("");
-	CString sName = _T("ReelmapIts.txt");
+	CString sName = _T("ReelMapDataIts.txt");
 
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 	//Path[1] = pDoc->m_sEngModel;
 	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
@@ -12131,19 +12163,19 @@ CString CGvisR2R_PunchDoc::GetItsPath(int nSerial, int nLayer)	// RMAP_UP, RMAP_
 	switch (nLayer)
 	{
 	case RMAP_UP: // 외층 Top
-		str.Format(_T("%s_L1_%04d_T_Operator_BAO07_AVR01_%s.dat"), m_sItsCode, nSerial, sTime);
+		str.Format(_T("%s_L1_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
 		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
 		break;
 	case RMAP_DN: // 외층 Bottom
-		str.Format(_T("%s_L4_%04d_B_Operator_BAO07_AVR01_%s.dat"), m_sItsCode, nSerial, sTime);
+		str.Format(_T("%s_L4_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
 		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
 		break;
 	case RMAP_INNER_UP: // 내층 Top
-		str.Format(_T("%s_L2_%04d_T_Operator_BAO07_AVR01_%s.dat"), m_sItsCode, nSerial, sTime);
+		str.Format(_T("%s_L2_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
 		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
 		break;
 	case RMAP_INNER_DN: // 내층 Bottom
-		str.Format(_T("%s_L3_%04d_B_Operator_BAO07_AVR01_%s.dat"), m_sItsCode, nSerial, sTime);
+		str.Format(_T("%s_L3_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
 		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
 		break;
 	}
@@ -12209,4 +12241,46 @@ int CGvisR2R_PunchDoc::GetItsDefCode(int nDefCode)
 		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
 
 	return 0;
+}
+
+BOOL CGvisR2R_PunchDoc::MakeItsDir(CString sModel, CString sLot, CString sLayer)
+{
+	CString sMsg = _T("");
+	CFileFind finder;
+	CString sPath;
+
+	sPath.Format(_T("%s"), pDoc->WorkingInfo.System.sPathItsFile);
+	int pos = sPath.ReverseFind('\\');
+	if (pos != -1)
+		sPath.Delete(pos, sPath.GetLength() - pos);
+
+	if (!pDoc->DirectoryExists(sPath))
+		CreateDirectory(sPath, NULL);
+
+	if (sModel.IsEmpty() || sLot.IsEmpty() || sLayer.IsEmpty())
+	{
+		sMsg.Format(_T("모델이나 로뜨 또는 레이어명이 없습니다."));
+		pView->ClrDispMsg();
+		AfxMessageBox(sMsg);
+		return FALSE;
+	}
+
+	sPath.Format(_T("%s%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel);
+
+	if (!pDoc->DirectoryExists(sPath))
+		CreateDirectory(sPath, NULL);
+	
+	sPath.Format(_T("%s%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode);
+	if (!pDoc->DirectoryExists(sPath))
+		CreateDirectory(sPath, NULL);
+
+	sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode, sLot);
+	if (!pDoc->DirectoryExists(sPath))
+		CreateDirectory(sPath, NULL);
+
+	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode, sLot, sLayer);
+	if (!pDoc->DirectoryExists(sPath))
+		CreateDirectory(sPath, NULL);
+
+	return TRUE;
 }

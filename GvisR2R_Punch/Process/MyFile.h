@@ -53,6 +53,7 @@ public:
 	void DelSharePcr();
 	int CopyPcrAll(CString sSrc, CString sDest);  // return : Serial
 	BOOL ChkLotEnd(CString sPath);
+	BOOL IsPcrExist(CString strPath);
 
 
 // Overrides

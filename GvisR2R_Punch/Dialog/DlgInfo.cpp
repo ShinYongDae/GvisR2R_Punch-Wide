@@ -681,19 +681,25 @@ void CDlgInfo::Disp()
 	else
 		myBtn[22].SetCheck(FALSE);
 
-	switch (pDoc->WorkingInfo.LastJob.nTestMode)
+	switch (pDoc->WorkingInfo.LastJob.nTestMode) // GetTestMode()
 	{
 	case MODE_NONE:		// 0 
 		myBtn[23].SetCheck(FALSE); // IDC_CHK_USE_AOI_INNER
 		myBtn[24].SetCheck(FALSE); // IDC_CHK_USE_AOI_OUTER
+		if (pView->m_pDlgMenu01)
+			pView->m_pDlgMenu01->EnableItsMode(FALSE);
 		break;
 	case MODE_INNER:	// 1 
 		myBtn[23].SetCheck(TRUE); // IDC_CHK_USE_AOI_INNER
 		myBtn[24].SetCheck(FALSE); // IDC_CHK_USE_AOI_OUTER
+		if (pView->m_pDlgMenu01)
+			pView->m_pDlgMenu01->EnableItsMode(FALSE);
 		break;
 	case MODE_OUTER:	// 2 
 		myBtn[23].SetCheck(FALSE); // IDC_CHK_USE_AOI_INNER
 		myBtn[24].SetCheck(TRUE); // IDC_CHK_USE_AOI_OUTER
+		if(pView->m_pDlgMenu01)
+			pView->m_pDlgMenu01->EnableItsMode();
 		break;
 	}
 
@@ -1450,6 +1456,8 @@ void CDlgInfo::SetTestMode(int nMode)
 			pView->m_pMpe->Write(_T("MB440176"), 0);// 외층 검사 사용/미사용
 			pDoc->SetMkInfo(_T("Signal"), _T("Inner Test On"), TRUE);
 			pDoc->SetMkInfo(_T("Signal"), _T("Outer Test On"), FALSE);
+			if (pView->m_pDlgMenu01)
+				pView->m_pDlgMenu01->EnableItsMode(FALSE);
 		}
 		else if (pDoc->GetTestMode() == MODE_OUTER)
 		{
@@ -1457,6 +1465,8 @@ void CDlgInfo::SetTestMode(int nMode)
 			pView->m_pMpe->Write(_T("MB440176"), 1);// 외층 검사 사용/미사용
 			pDoc->SetMkInfo(_T("Signal"), _T("Inner Test On"), FALSE);
 			pDoc->SetMkInfo(_T("Signal"), _T("Outer Test On"), TRUE);
+			if (pView->m_pDlgMenu01)
+				pView->m_pDlgMenu01->EnableItsMode();
 		}
 		else
 		{
@@ -1464,6 +1474,8 @@ void CDlgInfo::SetTestMode(int nMode)
 			pView->m_pMpe->Write(_T("MB440176"), 0);// 외층 검사 사용/미사용
 			pDoc->SetMkInfo(_T("Signal"), _T("Inner Test On"), FALSE);
 			pDoc->SetMkInfo(_T("Signal"), _T("Outer Test On"), FALSE);
+			if (pView->m_pDlgMenu01)
+				pView->m_pDlgMenu01->EnableItsMode(FALSE);
 		}
 	}
 #endif
