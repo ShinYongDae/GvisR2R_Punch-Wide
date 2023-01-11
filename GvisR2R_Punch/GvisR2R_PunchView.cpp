@@ -25740,7 +25740,7 @@ void CGvisR2R_PunchView::UpdateYield()
 			m_nSerialTHREAD_UPDATAE_YIELD[1] = m_nBufUpSerial[1];
 			m_bTHREAD_UPDATAE_YIELD[1] = TRUE;
 		}
-		else
+		else if(m_nBufUpSerial[1] < 0)
 		{
 			Stop();
 			MsgBox(_T("Error-UpdateYield() : m_nBufUpSerial[1] < 1"));
