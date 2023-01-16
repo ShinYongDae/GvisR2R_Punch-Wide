@@ -21,6 +21,50 @@
 #pragma warning(disable: 4996)
 #pragma warning(disable: 4477)
 
+
+
+struct stResult
+{
+	CString sMachin, sOpName, sProcessNum;
+	CString sModel, sLot, sLayerUp, sLayerDn;
+	CString strLotStartTime, strLotEndTime, strLotWorkingTime;
+	int nEntirePieceNum, nEntireStripNum;
+	int nEntireStripDef[MAX_STRIP];
+	int nGoodPieceNum, nDefectPieceNum;
+	int nDefStrip[MAX_STRIP], nDefPerStrip[MAX_STRIP][MAX_DEF];
+	int nEntireAddedDefect[MAX_DEF];
+	int nSerialSt, nSerialEd;
+	int nStripOut[MAX_STRIP], nTotStOut;
+	double dEntireSpeed;
+
+	stResult()
+	{
+		sMachin = _T(""); sOpName = _T(""); sProcessNum = _T("");
+		sModel = _T(""); sLot = _T(""); sLayerUp = _T(""); sLayerDn = _T("");
+		strLotStartTime = _T(""); strLotEndTime = _T(""); strLotWorkingTime = _T("");
+		nEntirePieceNum = 0; nEntireStripNum = 0;
+		nGoodPieceNum = 0; nDefectPieceNum = 0;
+		nSerialSt = 0; nSerialEd = 0;
+		nTotStOut = 0;
+		dEntireSpeed = 0.0;
+
+		for (int nStrip = 0; nStrip < MAX_STRIP; nStrip++)
+		{
+			nEntireStripDef[nStrip] = 0;
+			nDefStrip[nStrip] = 0;
+			nStripOut[nStrip] = 0;
+
+			for (int nDef = 0; nDef < MAX_DEF; nDef++)
+			{
+				nDefPerStrip[nStrip][nDef] = 0;
+				if(!nStrip)
+					nEntireAddedDefect[nDef] = 0;
+			}
+		}
+	}
+};
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CReelMap window
 
@@ -122,7 +166,7 @@ public:
 	BOOL Open();
 	BOOL OpenUser(CString sPath, CString sModel, CString sLayer, CString sLot);
 	int Read(CString &sRead);
-	BOOL Write(int nSerial, int nLayer);
+	BOOL Write(int nSerial);
 	BOOL Disp(int nMkPnl, BOOL bDumy=FALSE);
 	void SetLastSerial(int nSerial);
 	void SetCompletedSerial(int nSerial);
@@ -151,7 +195,7 @@ public:
 	BOOL IsFixPcs(int nSerial, int &Col, int &Row);
 	BOOL IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot);
 
-	BOOL Write(int nSerial, int nLayer, CString sPath);
+	//BOOL Write(int nSerial, int nLayer, CString sPath);
 	void SetPathAtBuf();
 	CString GetRmapPath(int nRmap);
 	CString GetYieldPath(int nRmap);
@@ -168,7 +212,6 @@ public:
 	CString m_sPathOnThread;
 	CThreadTask m_ThreadTaskRemakeReelmap; // CThreadTask class, handles the threading code
 	BOOL RemakeReelmap();
-	void RemakeReelmap(CString sPath);
 	void StartThreadRemakeReelmap();
 	static BOOL ThreadProcRemakeReelmap(LPVOID lpContext);
 	void StopThreadRemakeReelmap();
@@ -190,6 +233,8 @@ public:
 	BOOL UpdateRst();
 	BOOL MakeHeader(CString sPath);
 
+	BOOL GetNodeXYonRmap(int &nNodeX, int &nNodeY, CString sPath);
+
 	// ITS
 	CString GetPathReelmapIts();
 	BOOL MakeItsReelmapHeader();	// ³»¿ÜÃþ ¸ÓÂ¡µÈ ¸±¸Ê Çìµå
@@ -197,7 +242,12 @@ public:
 	BOOL MakeItsFile(int nSerial, int nLayer);		// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 	CString GetItsFileData(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 	BOOL MakeDirIts();
+
+	stResult m_stResult;
 	void ResetReelmapPath();
+	BOOL GetResult(); // TRUE: Make Result, FALSE: Load Result or Failed.
+	CString GetResultTxt();
+	CString GetSapp3Txt();
 
 	//short ***m_pPnlBufIts;		// DefCode 3D Array : [nSerial-1][nRow][nCol] on File -> [nSerial-1][NodeX][NodeY] : Rotated Cw 90 
 	//int m_nPnlBufIts;			// ¸Þ¸ð¸®¿¡ ÇÒ´çµÈ ÃÑ Shot¼ö

@@ -22,7 +22,8 @@ class CDlgMenu05 : public CDialog
 	int m_nEntirePieceNum, m_nGoodPieceNum, m_nDefectPieceNum, m_nEntireStripDef[4];
 	int m_nEntireStripNum;
 
-	CString m_strDefectTitle[MAX_DEF];
+	//CString m_strDefectTitle[MAX_DEF];
+
 	int m_nDefStrip[4], m_nDefPerStrip[4][MAX_DEF];
 	int m_nStripOut[4], m_nTotStOut;
 	int m_nEntireAddedDefect[MAX_DEF];
@@ -47,7 +48,7 @@ class CDlgMenu05 : public CDialog
 	CString DisplayData();
 	BOOL ShowKeypad(int nCtlID, CPoint ptSt=(0, 0), int nDir=TO_NONE);
 	void InitStc();
-	CString TxtData();
+	//CString TxtData();
 	BOOL ShowMyKeypad(int nCtlID, CPoint ptSt=(0, 0), int nDir=TO_NONE);
 	BOOL ReloadRst();
 	void InsertLine(CString sPath);
@@ -69,7 +70,7 @@ public:
 	void AtDlgShow();
 	void AtDlgHide();
 	void InitModel();
-	BOOL MakeResult();
+	BOOL GetResult();
 	void MakeSapp3();
 	CString Sapp3Data();
 	CString TxtDataMDS();

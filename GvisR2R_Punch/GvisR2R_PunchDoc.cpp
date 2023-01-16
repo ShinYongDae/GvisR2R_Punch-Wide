@@ -8713,7 +8713,7 @@ void CGvisR2R_PunchDoc::UpdateProcessNum(CString sProcessNum)
 		pDoc->m_pReelMapAllUp->UpdateProcessNum(sProcessNum, 2); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		pDoc->m_pReelMapAllDn->UpdateProcessNum(sProcessNum, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
-	pDoc->m_pReelMap->UpdateProcessNum(sProcessNum, pView->m_nSelRmap); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+	//pDoc->m_pReelMap->UpdateProcessNum(sProcessNum, pView->m_nSelRmap); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 }
 
 
@@ -8993,30 +8993,15 @@ void CGvisR2R_PunchDoc::WriteElecData(CString sData)
 	CString strDestPath, sLot, sPnl;
 	int nSerial;
 
-	if (bDualTest)
-	{
-		sLot = WorkingInfo.LastJob.sLotDn;
-		if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-			strDestPath.Format(_T("%s\\%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelUp,
-			//strDestPath.Format(_T("%s\\%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelDn,
-				sLot, sLot);
-		else
-			strDestPath.Format(_T("%s%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelUp,
-			//strDestPath.Format(_T("%s%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelDn,
-				sLot, sLot);
-		nSerial = pView->m_nBufDnSerial[0] + 1;
-	}
+	sLot = WorkingInfo.LastJob.sLotUp;
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strDestPath.Format(_T("%s\\%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelUp,
+			sLot, sLot);
 	else
-	{
-		sLot = WorkingInfo.LastJob.sLotUp;
-		if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-			strDestPath.Format(_T("%s\\%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelUp,
-				sLot, sLot);
-		else
-			strDestPath.Format(_T("%s%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelUp,
-				sLot, sLot);
-		nSerial = pView->m_nBufUpSerial[0] + 1;
-	}
+		strDestPath.Format(_T("%s%s\\%s\\%s.txt"), WorkingInfo.System.sPathOldFile, WorkingInfo.LastJob.sModelUp,
+			sLot, sLot);
+	nSerial = pView->m_nBufUpSerial[1];
+	//nSerial = pView->m_nBufUpSerial[0] + 1;
 
 	sPnl.Format(_T("%04d"), nSerial);
 	::WritePrivateProfileString( sLot, sPnl, sData, strDestPath );

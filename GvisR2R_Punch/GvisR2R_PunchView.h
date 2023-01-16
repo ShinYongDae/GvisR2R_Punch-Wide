@@ -433,7 +433,7 @@ public:
 	DWORD m_dwLotSt, m_dwLotEd;
 	long m_lFuncId;
 	BOOL m_bDrawGL;
-	BOOL m_bCont;
+	BOOL m_bCont;	// 이어가기
 	DWORD m_dwStMkDn[2];
 	BOOL m_bInit;
 	BOOL m_bSwStopNow;
@@ -516,10 +516,10 @@ public:
 	int m_nNewLot;
 	int m_nSaveMk0Img, m_nSaveMk1Img;
 
-	CString m_sPathRmapUpdate[4];
+	//CString m_sPathRmapUpdate[4];
 	int m_nSerialRmapUpdate;
 
-	CString m_sPathRmapInnerUpdate[4];
+	//CString m_sPathRmapInnerUpdate[4];
 	int m_nSerialRmapInnerUpdate;
 
 // 작업입니다.
@@ -995,8 +995,12 @@ public:
 
 	BOOL RemakeReelmap();
 	BOOL IsDoneRemakeReelmap();
+	BOOL RemakeReelmapInner();
+	BOOL IsDoneRemakeReelmapInner();
 	void MakeSapp3();
+	void GetResult();
 	void MakeResult();
+	void MakeResultIts();
 	void MakeResultMDS();
 
 	BOOL MoveMeasPos(int nId); // Elec Chk
