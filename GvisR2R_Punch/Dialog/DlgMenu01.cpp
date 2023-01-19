@@ -1500,11 +1500,13 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 									ShiftDefInfoUp();
  								pView->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
 								pView->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
-								nDefImg = pDoc->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]];
+								nDefImg = pDoc->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]]; // 화면에 표시할 불량이미지 인덱스
 								pView->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
-								ShowDefInfoUp(nIdxMkInfo);
-								m_nIdxMkInfo[0]++;
-								m_nIdxDef[0]++;
+								ShowDefInfoUp(nIdxMkInfo); // 화면의 IDC 인덱스
+								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
+								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
+								m_nIdxMkInfo[0]++; // 화면의 IDC 인덱스
+								m_nIdxDef[0]++; // 화면에 표시할 불량피스 인덱스 ( 0 ~ TotalDef )
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
 							}
 							else
@@ -1543,6 +1545,8 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								nDefImg = pDoc->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]];
 								pView->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
 								ShowDefInfoUp(nIdxMkInfo);
+								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg);
+								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++;
 								m_nIdxDef[0]++;
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
@@ -1598,6 +1602,8 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 							nDefImg = pDoc->m_pPcr[1][nIdx]->m_pImg[m_nIdxDef[1]];
 							pView->m_pVision[1]->ShowDispDef(nIdxMkInfo, nSerial, 1, nDefImg);
 							ShowDefInfoDn(nIdxMkInfo);
+							WriteDefInfoDn(nSerial, nIdxMkInfo, m_nIdxDef[1], nDefImg);
+							SaveCadImgDn(nSerial, nIdxMkInfo, nDefImg);
 							m_nIdxMkInfo[1]++;
 							m_nIdxDef[1]++;
 							(pDoc->m_pPcr[1][nIdx]->m_nTotRealDef)++;
@@ -1773,6 +1779,96 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 #endif
 	myStcDefInfo[MENU01_STC_DEFINFO_HARF+nIdx].SetText(str);
 	myStcDefInfo[MENU01_STC_DEFINFO_HARF+nIdx].SetBkColor(rgbDef);
+}
+
+void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
+{
+	CString sPath;
+	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+		pDoc->WorkingInfo.LastJob.sModelUp,
+		pDoc->WorkingInfo.LastJob.sLotUp,
+		pDoc->WorkingInfo.LastJob.sLayerUp,
+		nSerial,
+		nIdxImg);
+
+	if(pView->m_pVision[0])
+		pView->m_pVision[0]->SaveCadImg(nIdxMkInfo, sPath);
+}
+
+void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
+{
+	CString sPath;
+	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+		pDoc->WorkingInfo.LastJob.sModelUp,
+		pDoc->WorkingInfo.LastJob.sLotUp,
+		pDoc->WorkingInfo.LastJob.sLayerDn,
+		nSerial,
+		nIdxImg);
+
+	if (pView->m_pVision[1])
+		pView->m_pVision[1]->SaveCadImg(nIdxMkInfo, sPath);
+}
+
+void CDlgMenu01::WriteDefInfoUp(int nSerial, int nIdxText, int nIdxDef, int nIdxImg)
+{
+	CString sText = myStcDefInfo[nIdxText].GetText();
+	COLORREF rgbDef = myStcDefInfo[nIdxText].GetBkColor();
+
+	CString sPath;
+	sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\Disp.txt"), pDoc->WorkingInfo.System.sPathOldFile,
+		pDoc->WorkingInfo.LastJob.sModelUp,
+		pDoc->WorkingInfo.LastJob.sLotUp,
+		pDoc->WorkingInfo.LastJob.sLayerUp,
+		nSerial);
+
+	CString sItem, sData;
+	sData.Format(_T("%d"), m_nDef[0]);
+	::WritePrivateProfileString(_T("Info"), _T("TotalDef"), sData, sPath);
+
+	int nMaxMaxDispDefImg = 0;
+	if (!pDoc->WorkingInfo.System.sMaxDispDefImg.IsEmpty())
+		nMaxMaxDispDefImg = _tstoi(pDoc->WorkingInfo.System.sMaxDispDefImg);
+
+	sData.Format(_T("%d"), nMaxMaxDispDefImg);
+	::WritePrivateProfileString(_T("Info"), _T("MaxDisp"), sData, sPath);
+
+	sItem.Format(_T("%d"), nIdxDef);
+	sData.Format(_T("%d"), nIdxImg);
+	::WritePrivateProfileString(sItem, _T("nImg"), sData, sPath);
+	::WritePrivateProfileString(sItem, _T("Text"), sText, sPath);
+	sData.Format(_T("%d"), rgbDef);
+	::WritePrivateProfileString(sItem, _T("Text"), sData, sPath);
+}
+
+void CDlgMenu01::WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdxImg)
+{
+	CString sText = myStcDefInfo[MENU01_STC_DEFINFO_HARF + nIdxText].GetText();
+	COLORREF rgbDef = myStcDefInfo[MENU01_STC_DEFINFO_HARF + nIdxText].GetBkColor();
+
+	CString sPath;
+	sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\Disp.txt"), pDoc->WorkingInfo.System.sPathOldFile,
+		pDoc->WorkingInfo.LastJob.sModelUp,
+		pDoc->WorkingInfo.LastJob.sLotUp,
+		pDoc->WorkingInfo.LastJob.sLayerDn,
+		nSerial);
+
+	CString sItem, sData;
+	sData.Format(_T("%d"), m_nDef[0]);
+	::WritePrivateProfileString(_T("Info"), _T("TotalDef"), sData, sPath);
+
+	int nMaxMaxDispDefImg = 0;
+	if (!pDoc->WorkingInfo.System.sMaxDispDefImg.IsEmpty())
+		nMaxMaxDispDefImg = _tstoi(pDoc->WorkingInfo.System.sMaxDispDefImg);
+
+	sData.Format(_T("%d"), nMaxMaxDispDefImg);
+	::WritePrivateProfileString(_T("Info"), _T("MaxDisp"), sData, sPath);
+
+	sItem.Format(_T("%d"), nIdxDef);
+	sData.Format(_T("%d"), nIdxImg);
+	::WritePrivateProfileString(sItem, _T("nImg"), sData, sPath);
+	::WritePrivateProfileString(sItem, _T("Text"), sText, sPath);
+	sData.Format(_T("%d"), rgbDef);
+	::WritePrivateProfileString(sItem, _T("Text"), sData, sPath);
 }
 
 void CDlgMenu01::InitGL()

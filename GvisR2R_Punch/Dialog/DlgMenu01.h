@@ -69,6 +69,10 @@ class CDlgMenu01 : public CDialog
 	void FreeMkInfoDn();
 	void SelDisp();
 
+	void SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
+	void SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
+	void WriteDefInfoUp(int nSerial, int nIdxText, int nIdxDef, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
+	void WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
 	void ShowDefInfoUp(int nIdx); // nIdx : 0 ~ 11 (12ea)
 	void ShowDefInfoDn(int nIdx); // nIdx : 0 ~ 11 (12ea)
 	void DispMkInfo();

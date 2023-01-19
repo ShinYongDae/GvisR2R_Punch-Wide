@@ -210,6 +210,7 @@ public:
 	void GetIRaypleSize(int &nX, int &nY);
 
 	BOOL SaveMkImg(CString sPath);
+	void SaveCadImg(int nIdxMkInfo, CString sPath); // (화면의 IDC 인덱스, 저장할 파일 Path)
 
 	// ITS
 	//CLibMilBuf *m_pMilBufCad[DEF_VIEW_IMG_NUMBER], *m_pMilBufDef[DEF_VIEW_IMG_NUMBER];

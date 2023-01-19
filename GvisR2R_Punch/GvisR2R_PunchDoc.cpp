@@ -4083,6 +4083,9 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 	if (!pMkInfo)
 		pMkInfo = new CString[nTotPcs];
 
+	CString sPath = m_pReelMap->GetPath();
+	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+
 	return TRUE;
 }
 
@@ -4169,6 +4172,9 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 				m_pReelMap = m_pReelMapIts;
 		}
 	}
+
+	CString sPath = m_pReelMap->GetPath();
+	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 
 	return TRUE;
 }
@@ -6026,7 +6032,6 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 	else
 		sLot = sNewLot;
 
-	//if (pView->m_pDts->IsUseDts())
 	if (WorkingInfo.System.bUseDTS)
 		strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiUpDts);
 	else
@@ -6040,7 +6045,6 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 		strMakeFolderPath.Format(_T("%s%s"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp);
 
-	//if (!finder.FindFile(strMakeFolderPath))
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6052,7 +6056,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 		strMakeFolderPath.Format(_T("%s%s\\%s"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp,
 			sLot);
-	//if (!finder.FindFile(strMakeFolderPath))
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6066,7 +6070,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 			WorkingInfo.LastJob.sModelUp,
 			sLot,
 			WorkingInfo.LastJob.sLayerUp);
-	//if (!finder.FindFile(strMakeFolderPath))
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6081,7 +6085,21 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 			WorkingInfo.LastJob.sModelUp,
 			sLot,
 			WorkingInfo.LastJob.sLayerUp);
-	//if (!finder.FindFile(strMakeFolderPath))
+
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp);
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6097,7 +6115,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 			sLot,
 			WorkingInfo.LastJob.sLayerUp,
 			nSerial);
-	//if (!finder.FindFile(strMakeFolderPath))
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6210,7 +6228,6 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 	else
 		sLot = sNewLot;
 
-	//if (pView->m_pDts->IsUseDts())
 	if(WorkingInfo.System.bUseDTS)
 		strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiDnDts);
 	else
@@ -6224,7 +6241,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 		strMakeFolderPath.Format(_T("%s%s"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp);
 			//WorkingInfo.LastJob.sModelDn);
-	//if (!finder.FindFile(strMakeFolderPath))
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6238,7 +6255,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 			WorkingInfo.LastJob.sModelUp,
 			//WorkingInfo.LastJob.sModelDn,
 			sLot);
-	//if (!finder.FindFile(strMakeFolderPath))
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6254,7 +6271,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 			//WorkingInfo.LastJob.sModelDn,
 			sLot,
 			WorkingInfo.LastJob.sLayerDn);
-	//if (!finder.FindFile(strMakeFolderPath))
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6270,7 +6287,21 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 			//WorkingInfo.LastJob.sModelDn,
 			sLot,
 			WorkingInfo.LastJob.sLayerDn);
-	//if (!finder.FindFile(strMakeFolderPath))
+
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn);
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -6288,7 +6319,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 			sLot,
 			WorkingInfo.LastJob.sLayerDn,
 			nSerial);
-	//if (!finder.FindFile(strMakeFolderPath))
+
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
@@ -11879,6 +11910,9 @@ BOOL CGvisR2R_PunchDoc::InitReelmapInner()
 	{
 		if(m_pReelMapIts)
 			m_pReelMap = m_pReelMapIts;
+
+		CString sPath = m_pReelMap->GetPath();
+		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 	}
 
 	//if (pMkInfo)
@@ -11976,7 +12010,12 @@ BOOL CGvisR2R_PunchDoc::InitReelmapInnerUp()
 	}
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
+	{
 		m_pReelMap = m_pReelMapIts;
+
+		CString sPath = m_pReelMap->GetPath();
+		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+	}
 
 	return TRUE;
 }

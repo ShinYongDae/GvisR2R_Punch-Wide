@@ -4339,4 +4339,18 @@ BOOL CVision::SaveMkImg(CString sPath)
 	return TRUE;
 }
 
+
+void CVision::SaveCadImg(int nIdxMkInfo, CString sPath)
+{
+	if (m_pMilBufCad[nIdxMkInfo])
+	{
+		MbufSave(sPath, m_pMilBufCad[nIdxMkInfo]->m_MilImage);
+	}
+	else
+	{
+		pView->ClrDispMsg();
+		AfxMessageBox(_T("SaveCadImg() Fail !!"));
+	}
+}
+
 #endif

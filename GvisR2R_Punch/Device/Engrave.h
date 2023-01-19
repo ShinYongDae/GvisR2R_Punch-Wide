@@ -588,6 +588,7 @@ public:
 
 	void SwMenu01UpdateWorking(BOOL bOn);
 	void IsSwMenu01UpdateWorking(BOOL bOn);
+	void SwMenu01DispDefImg(BOOL bOn);
 
 protected:
 	afx_msg LRESULT wmClientReceived(WPARAM wParam, LPARAM lParam);

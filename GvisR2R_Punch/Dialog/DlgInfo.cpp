@@ -1452,7 +1452,7 @@ void CDlgInfo::SetTestMode(int nMode)
 	{
 		if (pDoc->GetTestMode() == MODE_INNER)
 		{
-			pView->m_pMpe->Write(_T("MB440172"), 1);// 내층 검사 사용/미사용
+			pView->m_pMpe->Write(_T("MB440172"), 1);// 내층 검사 사용/미사용 
 			pView->m_pMpe->Write(_T("MB440176"), 0);// 외층 검사 사용/미사용
 			pDoc->SetMkInfo(_T("Signal"), _T("Inner Test On"), TRUE);
 			pDoc->SetMkInfo(_T("Signal"), _T("Outer Test On"), FALSE);

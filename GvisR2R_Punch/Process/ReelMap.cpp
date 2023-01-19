@@ -7244,3 +7244,8 @@ CString CReelMap::GetSapp3Txt()
 
 	return strFileData;
 }
+
+CString CReelMap::GetPath()
+{
+	return m_sPathBuf;
+}

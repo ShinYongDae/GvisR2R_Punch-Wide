@@ -10686,6 +10686,8 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 	m_nStepTHREAD_DISP_DEF_INNER = 0;
 	m_bTHREAD_DISP_DEF_INNER = FALSE;		// DispDefImg Stop
 
+	pDoc->SetMkMenu01(_T("Signal"), _T("DispDefImg"), _T("0"));
+
 	pView->m_nDebugStep = 11; pView->DispThreadTick();
 	for (int a = 0; a<2; a++)
 	{
@@ -16748,6 +16750,7 @@ void CGvisR2R_PunchView::DispDefImg()
 	int nSerialL = m_nBufUpSerial[0]; // 좌측 Camera
 	int nSerialR = m_nBufUpSerial[1]; // 우측 Camera
 	CString sNewLot = m_sNewLotUp;;
+	CString str;
 	BOOL bNewModel = FALSE;
 	int nNewLot = 0;
 	int nBreak = 0;
@@ -16804,6 +16807,10 @@ void CGvisR2R_PunchView::DispDefImg()
 	case 1:
 		Sleep(300);
 		m_nStepTHREAD_DISP_DEF++;
+		str.Format(_T("%d"), nSerialL);
+		pDoc->SetMkMenu01(_T("DispDefImg"), _T("SerialL"), str);
+		str.Format(_T("%d"), nSerialR);
+		pDoc->SetMkMenu01(_T("DispDefImg"), _T("SerialR"), str);
 		break;
 	case 2:
 		if (IsDoneDispMkInfo())	 // Check 불량이미지 Display End
@@ -16941,6 +16948,10 @@ void CGvisR2R_PunchView::DispDefImg()
 		break;
 	case 12:
 		m_bTHREAD_DISP_DEF = FALSE;
+		pDoc->SetMkMenu01(_T("Signal"), _T("DispDefImg"), _T("0"));
+		if (m_pEngrave)
+			m_pEngrave->SwMenu01DispDefImg(TRUE);
+
 		break;
 		// CopyDefImg End ============================================
 	}
@@ -18364,6 +18375,8 @@ void CGvisR2R_PunchView::Mk2PtChkSerial()
 
 						m_bTHREAD_DISP_DEF = TRUE;				// DispDefImg() : CopyDefImg Start -> Disp Reelmap Start
 						m_bTHREAD_DISP_DEF_INNER = TRUE;		// DispDefImgInner() : Disp Reelmap Start
+
+						pDoc->SetMkMenu01(_T("Signal"), _T("DispDefImg"), _T("1"));
 					}
 				}
 			}
@@ -18377,6 +18390,7 @@ void CGvisR2R_PunchView::Mk2PtChkSerial()
 						m_nStepTHREAD_DISP_DEF = 0;
 
 						m_bTHREAD_DISP_DEF = TRUE;		// DispDefImg() : CopyDefImg Start -> Disp Reelmap Start
+						pDoc->SetMkMenu01(_T("Signal"), _T("DispDefImg"), _T("1"));
 					}
 				}
 			}
@@ -19436,8 +19450,8 @@ void CGvisR2R_PunchView::Mk2PtShift2Mk() // MODE_INNER
 			if (!m_bTHREAD_SHIFT2MK)
 			{
 				SetListBuf();
-			ChkLotCutPos();
-			m_nMkStAuto++;
+				ChkLotCutPos();
+				m_nMkStAuto++;
 			}
 			break;
 		case MK_ST + (Mk2PtIdx::Shift2Mk) + 5:
@@ -19878,6 +19892,7 @@ void CGvisR2R_PunchView::Mk4PtChkSerial()
 				m_nMkStAuto++;
 				m_nStepTHREAD_DISP_DEF = 0;
 				m_bTHREAD_DISP_DEF = TRUE;		// DispDefImg() : CopyDefImg Start
+				pDoc->SetMkMenu01(_T("Signal"), _T("DispDefImg"), _T("1"));
 			}
 			break;
 
@@ -25300,8 +25315,8 @@ void CGvisR2R_PunchView::UpdateYield()
 		}
 		else if(m_nBufUpSerial[1] < 0)
 		{
-			Stop();
-			MsgBox(_T("Error-UpdateYield() : m_nBufUpSerial[1] < 1"));
+			//Stop();
+			//MsgBox(_T("Error-UpdateYield() : m_nBufUpSerial[1] < 1"));
 			return;
 		}
 	}

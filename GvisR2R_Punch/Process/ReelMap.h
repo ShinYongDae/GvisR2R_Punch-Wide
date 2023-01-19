@@ -248,6 +248,7 @@ public:
 	BOOL GetResult(); // TRUE: Make Result, FALSE: Load Result or Failed.
 	CString GetResultTxt();
 	CString GetSapp3Txt();
+	CString GetPath();
 
 	//short ***m_pPnlBufIts;		// DefCode 3D Array : [nSerial-1][nRow][nCol] on File -> [nSerial-1][NodeX][NodeY] : Rotated Cw 90 
 	//int m_nPnlBufIts;			// 메모리에 할당된 총 Shot수

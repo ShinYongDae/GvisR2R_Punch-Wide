@@ -8699,12 +8699,23 @@ void CEngrave::SwMenu01UpdateWorking(BOOL bOn)
 	SendCommand(SocketData);
 }
 
+
 void CEngrave::IsSwMenu01UpdateWorking(BOOL bOn)
 {
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetSig;
 
 	SocketData.nMsgID = _SigInx::_IsUpdateWork;
+	SocketData.nData1 = bOn ? 1 : 0;
+	SendCommand(SocketData);
+}
+
+void CEngrave::SwMenu01DispDefImg(BOOL bOn)
+{
+	SOCKET_DATA SocketData;
+	SocketData.nCmdCode = _SetSig;
+
+	SocketData.nMsgID = _SigInx::_DispDefImg;
 	SocketData.nData1 = bOn ? 1 : 0;
 	SendCommand(SocketData);
 }
