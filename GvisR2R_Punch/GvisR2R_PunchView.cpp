@@ -19251,25 +19251,28 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			m_nSaveMk0Img = 0;
 			m_nSaveMk1Img = 0;
 
-			m_nMkStAuto++;
-			break;
-
-		case MK_ST + (Mk2PtIdx::DoneMk) + 2:
 			m_pMpe->Write(_T("MB440150"), 0);	// 마킹부 마킹중 ON (PC가 ON, OFF)
 			m_pMpe->Write(_T("MB440170"), 1);	// 마킹완료(PLC가 확인하고 Reset시킴.)-20141029
 			if (IsNoMk() || IsShowLive())
 				ShowLive(FALSE);
 
-			if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
+			m_nMkStAuto++;
+			break;
+
+		case MK_ST + (Mk2PtIdx::DoneMk) + 2:
+			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
-				UpdateYield();
-				m_nMkStAuto++;
+				if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
+				{
+					UpdateYield();
+					m_nMkStAuto++;
+				}
 			}
 			break;
 
 		case MK_ST + (Mk2PtIdx::DoneMk) + 3:
 #ifdef USE_MPE
-			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
+			//if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
 				if (!m_bTHREAD_SHIFT2MK)
 				{
@@ -19405,16 +19408,19 @@ void CGvisR2R_PunchView::Mk2PtShift2Mk() // MODE_INNER
 			break;
 
 		case MK_ST + (Mk2PtIdx::Shift2Mk) + 1:
-			if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
+			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
-				UpdateYield();
-				m_nMkStAuto++;
+				if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
+				{
+					UpdateYield();
+					m_nMkStAuto++;
+				}
 			}
 			break;
 
 		case MK_ST + (Mk2PtIdx::Shift2Mk) + 2:
 #ifdef USE_MPE
-			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
+			//if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
 				if (!m_bTHREAD_SHIFT2MK)
 				{

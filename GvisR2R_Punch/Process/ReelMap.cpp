@@ -5040,8 +5040,6 @@ BOOL CReelMap::ReloadRst(int nTo)
 
 	int nPnl, nRow, nCol, nDefCode, nStrip, nC, nR;
 	CString sPnl, sRow, sVal;
-	//char sep[] = {",/;\r\n\t"};
-	//char szData[MAX_PATH];
 	TCHAR sep[] = { _T(",/;\r\n\t") };
 	TCHAR szData[MAX_PATH];
 
