@@ -33,6 +33,7 @@ public:
 	BOOL m_bBufEmptyF[2]; // [0]: Up, [1]: Dn
 
 	// R2R Y Meander Adjusting....
+	BOOL m_bUseDts;
 	BOOL m_bUseRTRYShiftAdjust;
 	double m_dRTRShiftVal;
 	double m_dShiftAdjustRatio;
@@ -467,6 +468,7 @@ public:
 	int GetItsDefCode(int nDefCode);				// return to [Sapp3Code]
 	BOOL MakeItsDir(CString sModel, CString sLot, CString sLayer);
 
+	int m_nEjectBufferLastShot;
 
 // 재정의입니다.
 public:

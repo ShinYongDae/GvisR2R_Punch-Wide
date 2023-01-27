@@ -88,6 +88,7 @@ class CDlgMenu01 : public CDialog
 	void InitDefImgUp();
 	void InitDefImgDn();
 	BOOL ShowKeypad(int nCtlID, CPoint ptSt=(0, 0), int nDir=TO_NONE);
+	CString ShowKeypad1();
 
 	BOOL IsWinkMkL();
 	void WinkMkL(BOOL bOn);

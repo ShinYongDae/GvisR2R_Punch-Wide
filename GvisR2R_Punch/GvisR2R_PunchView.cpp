@@ -1673,9 +1673,12 @@ BOOL CGvisR2R_PunchView::TcpIpInit()
 void CGvisR2R_PunchView::DtsInit()
 {
 #ifdef USE_DTS
-	if (!m_pDts)
+	if (pDoc->m_bUseDts)
 	{
-		m_pDts = new CDts(this);
+		if (!m_pDts)
+		{
+			m_pDts = new CDts(this);
+		}
 	}
 #endif
 }
@@ -10755,31 +10758,7 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 	m_bTHREAD_UPDATE_RST_ALLDN = FALSE;
 	m_bTHREAD_UPDATE_RST_ITS = FALSE;
 
-	// 	if(pDoc->m_pReelMap)
-	// 		pDoc->m_pReelMap->ClrFixPcs();
-	// 	else
-	// 		AfxMessageBox(_T("Not exist m_pReelMap."));
-	// 	if(pDoc->m_pReelMapUp)
-	// 		pDoc->m_pReelMapUp->ClrFixPcs();
-	// 	else
-	// 		AfxMessageBox(_T("Not exist m_pReelMapUp."));
-	// 
-	// 	if(bDualTest)
-	// 	{
-	// 		if(pDoc->m_pReelMapDn)
-	// 			pDoc->m_pReelMapDn->ClrFixPcs();
-	// 		else
-	// 			AfxMessageBox(_T("Not exist m_pReelMapDn."));
-	// 		if(pDoc->m_pReelMapAllUp)
-	// 			pDoc->m_pReelMapAllUp->ClrFixPcs();
-	// 		else
-	// 			AfxMessageBox(_T("Not exist m_pReelMapAllUp."));
-	// 		if(pDoc->m_pReelMapAllDn)
-	// 			pDoc->m_pReelMapAllDn->ClrFixPcs();
-	// 		else
-	// 			AfxMessageBox(_T("Not exist m_pReelMapAllDn."));
-	// 	}
-	pView->m_nDebugStep = 19; pView->DispThreadTick();
+	pDoc->m_nEjectBufferLastShot = -1;
 
 	if (bInit) // 이어가기가 아닌경우.
 	{
@@ -16805,8 +16784,13 @@ void CGvisR2R_PunchView::DispDefImg()
 		sNewLot.Empty();
 		break;
 	case 1:
-		Sleep(300);
+		//Sleep(300);
 		m_nStepTHREAD_DISP_DEF++;
+		if (pDoc->m_pReelMap)
+		{
+			str = pDoc->m_pReelMap->GetIpPath();
+			pDoc->SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), str);
+		}
 		str.Format(_T("%d"), nSerialL);
 		pDoc->SetMkMenu01(_T("DispDefImg"), _T("SerialL"), str);
 		str.Format(_T("%d"), nSerialR);
@@ -19286,6 +19270,8 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 					SetCycTime();
 					m_dwCycSt = GetTickCount();
 
+					UpdateRst();
+					UpdateWorking();	// Update Working Info...
 					m_nMkStAuto++;
 				}
 			}
@@ -19301,8 +19287,8 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 				}
 
 				m_nMkStAuto++;
-				UpdateRst();
-				UpdateWorking();	// Update Working Info...
+				//UpdateRst();
+				//UpdateWorking();	// Update Working Info...
 				ChkYield();
 			}
 			break;
@@ -21917,12 +21903,12 @@ void CGvisR2R_PunchView::OpenReelmap()
 			pDoc->m_pReelMapAllDn->Open();
 	}
 
-	if (pDoc->m_pReelMap)
-	{
-		if (pDoc->m_pReelMap->m_nLayer < 0)
-			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
-		pDoc->m_pReelMap->Open();
-	}
+	//if (pDoc->m_pReelMap)
+	//{
+	//	if (pDoc->m_pReelMap->m_nLayer < 0)
+	//		pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//	pDoc->m_pReelMap->Open();
+	//}
 
 	//if (pDoc->GetTestMode() == MODE_OUTER)
 	//{
@@ -21944,22 +21930,22 @@ void CGvisR2R_PunchView::OpenReelmapUp()
 			pDoc->m_pReelMapAllUp->Open();
 	}
 
-	if (pDoc->m_pReelMap)
-	{
-		if (pDoc->m_pReelMap->m_nLayer < 0)
-			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//if (pDoc->m_pReelMap)
+	//{
+	//	if (pDoc->m_pReelMap->m_nLayer < 0)
+	//		pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
-		if (bDualTest)
-		{
-			if (pDoc->m_pReelMap->m_nLayer == RMAP_UP || pDoc->m_pReelMap->m_nLayer == RMAP_ALLUP)
-				pDoc->m_pReelMap->Open();
-		}
-		else
-		{
-			if (pDoc->m_pReelMap->m_nLayer == RMAP_UP)
-				pDoc->m_pReelMap->Open();
-		}
-	}
+	//	if (bDualTest)
+	//	{
+	//		if (pDoc->m_pReelMap->m_nLayer == RMAP_UP || pDoc->m_pReelMap->m_nLayer == RMAP_ALLUP)
+	//			pDoc->m_pReelMap->Open();
+	//	}
+	//	else
+	//	{
+	//		if (pDoc->m_pReelMap->m_nLayer == RMAP_UP)
+	//			pDoc->m_pReelMap->Open();
+	//	}
+	//}
 }
 
 void CGvisR2R_PunchView::OpenReelmapDn()
@@ -21973,14 +21959,14 @@ void CGvisR2R_PunchView::OpenReelmapDn()
 	if (pDoc->m_pReelMapAllDn)
 		pDoc->m_pReelMapAllDn->Open();
 
-	if (pDoc->m_pReelMap)
-	{
-		if (pDoc->m_pReelMap->m_nLayer < 0)
-			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//if (pDoc->m_pReelMap)
+	//{
+	//	if (pDoc->m_pReelMap->m_nLayer < 0)
+	//		pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
-		if (pDoc->m_pReelMap->m_nLayer == RMAP_DN || pDoc->m_pReelMap->m_nLayer == RMAP_ALLDN)
-			pDoc->m_pReelMap->Open();
-	}
+	//	if (pDoc->m_pReelMap->m_nLayer == RMAP_DN || pDoc->m_pReelMap->m_nLayer == RMAP_ALLDN)
+	//		pDoc->m_pReelMap->Open();
+	//}
 }
 
 void CGvisR2R_PunchView::EStop()
@@ -23861,13 +23847,13 @@ void CGvisR2R_PunchView::SetPathAtBuf()
 			pDoc->m_pReelMapAllDn->SetPathAtBuf();
 	}
 
-	if (pDoc->m_pReelMap)
-	{
-		if (pDoc->m_pReelMap->m_nLayer < 0)
-			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//if (pDoc->m_pReelMap)
+	//{
+	//	if (pDoc->m_pReelMap->m_nLayer < 0)
+	//		pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
-		pDoc->m_pReelMap->SetPathAtBuf();
-	}
+	//	pDoc->m_pReelMap->SetPathAtBuf();
+	//}
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
@@ -23890,14 +23876,14 @@ void CGvisR2R_PunchView::SetPathAtBufUp()
 			pDoc->m_pReelMapAllUp->SetPathAtBuf();
 	}
 
-	if (pDoc->m_pReelMap)
-	{
-		if (pDoc->m_pReelMap->m_nLayer < 0)
-			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//if (pDoc->m_pReelMap)
+	//{
+	//	if (pDoc->m_pReelMap->m_nLayer < 0)
+	//		pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
-		if (pDoc->m_pReelMap->m_nLayer == RMAP_UP || pDoc->m_pReelMap->m_nLayer == RMAP_ALLUP)
-			pDoc->m_pReelMap->SetPathAtBuf();
-	}
+	//	if (pDoc->m_pReelMap->m_nLayer == RMAP_UP || pDoc->m_pReelMap->m_nLayer == RMAP_ALLUP)
+	//		pDoc->m_pReelMap->SetPathAtBuf();
+	//}
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
@@ -23916,14 +23902,14 @@ void CGvisR2R_PunchView::SetPathAtBufDn()
 	if (pDoc->m_pReelMapAllDn)
 		pDoc->m_pReelMapAllDn->SetPathAtBuf();
 
-	if (pDoc->m_pReelMap)
-	{
-		if (pDoc->m_pReelMap->m_nLayer < 0)
-			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//if (pDoc->m_pReelMap)
+	//{
+	//	if (pDoc->m_pReelMap->m_nLayer < 0)
+	//		pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
-		if (pDoc->m_pReelMap->m_nLayer == RMAP_DN || pDoc->m_pReelMap->m_nLayer == RMAP_ALLDN)
-			pDoc->m_pReelMap->SetPathAtBuf();
-	}
+	//	if (pDoc->m_pReelMap->m_nLayer == RMAP_DN || pDoc->m_pReelMap->m_nLayer == RMAP_ALLDN)
+	//		pDoc->m_pReelMap->SetPathAtBuf();
+	//}
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{

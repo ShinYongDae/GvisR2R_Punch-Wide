@@ -78,7 +78,7 @@ class CReelMap : public CWnd
 	int m_nTotPcs, m_nGoodPcs, m_nBadPcs, m_nDef[MAX_DEF];	// [DefCode] : Total Num.
 	int m_nDefStrip[MAX_STRIP_NUM], m_nDefPerStrip[MAX_STRIP_NUM][MAX_DEF];
 	int m_nStripOut[MAX_STRIP_NUM], m_nTotStOut;
-	CString m_sPathShare, m_sPathBuf;
+	CString m_sPathShare, m_sPathBuf, m_sIpPath;
 	CString m_sPathYield;
 	//double m_dAdjRatio; // Master Image의 Pixel 해상도에 따른 Reelmap에서의 식별용 간격 비율.
 	int m_nIdxDefInfo;	// MAX_DEFINFO에 들어가는 정보의 Index.
@@ -249,6 +249,7 @@ public:
 	CString GetResultTxt();
 	CString GetSapp3Txt();
 	CString GetPath();
+	CString GetIpPath();
 
 	//short ***m_pPnlBufIts;		// DefCode 3D Array : [nSerial-1][nRow][nCol] on File -> [nSerial-1][NodeX][NodeY] : Rotated Cw 90 
 	//int m_nPnlBufIts;			// 메모리에 할당된 총 Shot수

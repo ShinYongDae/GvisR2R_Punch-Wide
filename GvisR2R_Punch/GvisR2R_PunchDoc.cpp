@@ -211,6 +211,7 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 // 		m_cSmallDefCode[i] = '?';
 // 	}
 
+	m_bUseDts = FALSE;
 	// 20160926-syd
 	m_bUseRTRYShiftAdjust = FALSE;
 	m_dRTRShiftVal = 0.0;
@@ -256,6 +257,8 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 	m_sEngLayerUp = _T("");
 	m_sEngLayerDn = _T("");
 	m_nWritedItsSerial = 0;
+
+	m_nEjectBufferLastShot = -1;
 }
 
 CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
@@ -1002,6 +1005,11 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 
 	// [System]
 
+	if (0 < ::GetPrivateProfileString(_T("DTS"), _T("UseDts"), NULL, szData, sizeof(szData), PATH_WORKING_INFO))
+		m_bUseDts = _ttoi(szData) ? TRUE : FALSE;
+	else
+		m_bUseDts = FALSE;
+
 	// 20160926 - syd
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("USE_RTR_SHIFT_ADJUST"), NULL, szData, sizeof(szData), sPath))
 	{
@@ -1266,6 +1274,22 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	{
 		AfxMessageBox(_T("VRS 완료 파일 Path가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.System.sPathItsFile = CString(_T(""));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("VrsOldFileDirIpPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sIpPathOldFile = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("VRS 완료 파일 IpPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sIpPathOldFile = CString(_T(""));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("ItsOldFileDirIpPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sIpPathItsFile = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("ITS 완료 파일 IpPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sIpPathItsFile = CString(_T(""));
 	}
 
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("Sapp3Path"), NULL, szData, sizeof(szData), sPath))
@@ -4083,7 +4107,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 	if (!pMkInfo)
 		pMkInfo = new CString[nTotPcs];
 
-	CString sPath = m_pReelMap->GetPath();
+	CString sPath = m_pReelMap->GetIpPath();
 	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 
 	return TRUE;
@@ -4112,8 +4136,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
 
 
-	if (m_pReelMap->m_nLayer < 0)
-		m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//if (m_pReelMap->m_nLayer < 0)
+	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
 	if (m_pReelMap->m_nLayer == RMAP_UP || m_pReelMap->m_nLayer == RMAP_ALLUP)
 	{
@@ -4173,7 +4197,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 		}
 	}
 
-	CString sPath = m_pReelMap->GetPath();
+	CString sPath = m_pReelMap->GetIpPath();
 	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 
 	return TRUE;
@@ -4205,8 +4229,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapDn()
 	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
 
 
-	if (m_pReelMap->m_nLayer < 0)
-		m_pReelMap->m_nLayer = pView->m_nSelRmap;
+	//if (m_pReelMap->m_nLayer < 0)
+	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
 	if (m_pReelMap->m_nLayer == RMAP_DN || m_pReelMap->m_nLayer == RMAP_ALLDN)
 	{
@@ -5542,33 +5566,10 @@ int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Fai
 					m_pReelMapInnerAllDn->ResetReelmapPath();
 			}
 		}
+
+		CString sPath = m_pReelMap->GetIpPath();
+		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 	}
-
-	//if (!strModel.IsEmpty() && !strLot.IsEmpty() && !strLayer.IsEmpty())
-	//{
-	//	if (WorkingInfo.LastJob.sModelUp.IsEmpty() || WorkingInfo.LastJob.sLotUp.IsEmpty() || WorkingInfo.LastJob.sLayerUp.IsEmpty())
-	//	{
-	//		WorkingInfo.LastJob.sModelUp = strModel;
-	//		WorkingInfo.LastJob.sLotUp = strLot;
-	//		WorkingInfo.LastJob.sLayerUp = strLayer;
-
-	//		if (!WorkingInfo.LastJob.bDualTest)
-	//		{
-	//			pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//		}
-	//	}
-	//	else if (WorkingInfo.LastJob.sModelUp != strModel || WorkingInfo.LastJob.sLayerUp != strLayer /*|| WorkingInfo.LastJob.sLotUp != strLot*/)
-	//	{
-	//		WorkingInfo.LastJob.sModelUp = strModel;
-	//		WorkingInfo.LastJob.sLotUp = strLot;
-	//		WorkingInfo.LastJob.sLayerUp = strLayer;
-
-	//		if (!WorkingInfo.LastJob.bDualTest)
-	//		{
-	//			pView->ResetMkInfo(0); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//		}
-	//	}
-	//}
 
 	int nTotDef = _tstoi(strTotalBadPieceNum);
 
@@ -6119,6 +6120,23 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
 
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp,
+			nSerial);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp,
+			nSerial);
+
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
+
 
 	int nIdx = GetIdxPcrBufUp(nSerial);
 	if (nIdx < 0)
@@ -6314,6 +6332,24 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 			nSerial);
 	else
 		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			//WorkingInfo.LastJob.sModelDn,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn,
+			nSerial);
+
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			//WorkingInfo.LastJob.sModelDn,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn,
+			nSerial);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp,
 			//WorkingInfo.LastJob.sModelDn,
 			sLot,
@@ -11911,7 +11947,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmapInner()
 		if(m_pReelMapIts)
 			m_pReelMap = m_pReelMapIts;
 
-		CString sPath = m_pReelMap->GetPath();
+		CString sPath = m_pReelMap->GetIpPath();
 		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 	}
 
@@ -12013,7 +12049,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmapInnerUp()
 	{
 		m_pReelMap = m_pReelMapIts;
 
-		CString sPath = m_pReelMap->GetPath();
+		CString sPath = m_pReelMap->GetIpPath();
 		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 	}
 

@@ -104,6 +104,7 @@
 #define IDD_DIALOG2                     352
 #define IDD_DLG_UTIL_07                 352
 #define IDD_DLG_MENU_06                 353
+#define IDD_DLG_KEY_NUM1                354
 #define IDC_SVR_PORT                    374
 #define IDC_TXT_MESSAGE                 376
 #define IDC_BTN_START                   486
@@ -645,6 +646,7 @@
 #define IDC_CHK_MK_POS1_1               1203
 #define IDC_CHK_42                      1203
 #define IDC_STC_28                      1203
+#define IDC_STC_MSG                     1203
 #define IDC_CHK_006                     1204
 #define IDC_CHK_MK_POS1_2               1204
 #define IDC_STC_02_                     1204
@@ -1312,7 +1314,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        354
 #define _APS_NEXT_COMMAND_VALUE         32779
-#define _APS_NEXT_CONTROL_VALUE         1203
+#define _APS_NEXT_CONTROL_VALUE         1204
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

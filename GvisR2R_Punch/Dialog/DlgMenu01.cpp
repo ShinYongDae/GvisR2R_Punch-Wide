@@ -5,6 +5,7 @@
 #include "../GvisR2R_Punch.h"
 #include "DlgMenu01.h"
 #include "DlgKeyNum.h"
+#include "DlgKeyNum1.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -449,10 +450,10 @@ void CDlgMenu01::OpenReelmap(int nSelRmap)
 	CString sPath;
 	if(pDoc->m_pReelMap)
 	{
-		if(nSelRmap < 0)
-			pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
-		else
-			pDoc->m_pReelMap->m_nLayer = nSelRmap;
+		//if(nSelRmap < 0)
+		//	pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+		//else
+		//	pDoc->m_pReelMap->m_nLayer = nSelRmap;
 
 		if (pDoc->GetTestMode() == MODE_OUTER)
 		{
@@ -1814,6 +1815,15 @@ void CDlgMenu01::WriteDefInfoUp(int nSerial, int nIdxText, int nIdxDef, int nIdx
 	CString sText = myStcDefInfo[nIdxText].GetText();
 	COLORREF rgbDef = myStcDefInfo[nIdxText].GetBkColor();
 
+	CString sPos = _T(""), sDef = _T("");
+	int nPos = -1;
+
+	nPos = sText.Find(_T('\r'));
+	sDef = sText.Left(nPos);
+	sDef.Trim();
+	sPos = sText.Right(sText.GetLength() - nPos - 2);
+	sPos.Trim();
+
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\Disp.txt"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
@@ -1835,15 +1845,26 @@ void CDlgMenu01::WriteDefInfoUp(int nSerial, int nIdxText, int nIdxDef, int nIdx
 	sItem.Format(_T("%d"), nIdxDef);
 	sData.Format(_T("%d"), nIdxImg);
 	::WritePrivateProfileString(sItem, _T("nImg"), sData, sPath);
-	::WritePrivateProfileString(sItem, _T("Text"), sText, sPath);
+	::WritePrivateProfileString(sItem, _T("TextDef"), sDef, sPath);
+	::WritePrivateProfileString(sItem, _T("TextPos"), sPos, sPath);
 	sData.Format(_T("%d"), rgbDef);
-	::WritePrivateProfileString(sItem, _T("Text"), sData, sPath);
+	::WritePrivateProfileString(sItem, _T("TextRGB"), sData, sPath);
 }
 
 void CDlgMenu01::WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdxImg)
 {
 	CString sText = myStcDefInfo[MENU01_STC_DEFINFO_HARF + nIdxText].GetText();
 	COLORREF rgbDef = myStcDefInfo[MENU01_STC_DEFINFO_HARF + nIdxText].GetBkColor();
+
+	CString sPos = _T(""), sDef = _T("");
+	int nPos = -1;
+
+	nPos = sText.Find(_T('\r'));
+	sDef = sText.Left(nPos);
+	sDef.Trim();
+	sPos = sText.Right(sText.GetLength() - nPos - 2);
+	sPos.Trim();
+
 
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\Disp.txt"), pDoc->WorkingInfo.System.sPathOldFile,
@@ -1853,7 +1874,7 @@ void CDlgMenu01::WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdx
 		nSerial);
 
 	CString sItem, sData;
-	sData.Format(_T("%d"), m_nDef[0]);
+	sData.Format(_T("%d"), m_nDef[1]);
 	::WritePrivateProfileString(_T("Info"), _T("TotalDef"), sData, sPath);
 
 	int nMaxMaxDispDefImg = 0;
@@ -1866,9 +1887,10 @@ void CDlgMenu01::WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdx
 	sItem.Format(_T("%d"), nIdxDef);
 	sData.Format(_T("%d"), nIdxImg);
 	::WritePrivateProfileString(sItem, _T("nImg"), sData, sPath);
-	::WritePrivateProfileString(sItem, _T("Text"), sText, sPath);
+	::WritePrivateProfileString(sItem, _T("TextDef"), sDef, sPath);
+	::WritePrivateProfileString(sItem, _T("TextPos"), sPos, sPath);
 	sData.Format(_T("%d"), rgbDef);
-	::WritePrivateProfileString(sItem, _T("Text"), sData, sPath);
+	::WritePrivateProfileString(sItem, _T("TextRGB"), sData, sPath);
 }
 
 void CDlgMenu01::InitGL()
@@ -3959,7 +3981,9 @@ BOOL CDlgMenu01::IsLastProc()
 void CDlgMenu01::OnChkEjectBuffer() 
 {
 	// TODO: Add your control notification handler code here
+	CString sLastShot = _T("");
 	BOOL bOn = myBtn[3].GetCheck();
+
 	if(bOn && !m_bLastProc && pView->IsBuffer())
 	{
 		if(IDNO == pView->MsgBox(_T("잔량처리를 하시겠습니까?"), 0, MB_YESNO))
@@ -3987,6 +4011,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 						pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->m_pMpe->Write(_T("MB440181"), 1);					// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
+						sLastShot = ShowKeypad1();
 					}
 				}
 				else // AOI 상면부터 잔량처리
@@ -3997,6 +4022,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 					pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 					pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
+					sLastShot = ShowKeypad1();
 				}
 			}
 			else // MODE_INNER
@@ -4018,6 +4044,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 							pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 							pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
+							sLastShot = ShowKeypad1();
 						}
 					}
 					else // AOI 상면부터 잔량처리 
@@ -4028,6 +4055,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 						pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
+						sLastShot = ShowKeypad1();
 					}
 				}
 				else // 각인부부터 잔량처리
@@ -4040,6 +4068,8 @@ void CDlgMenu01::OnChkEjectBuffer()
 #endif
 					pView->m_pMpe->Write(_T("MB440185"), 0);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 					pView->m_pMpe->Write(_T("MB440186"), 0);				// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+
+					sLastShot = ShowKeypad1();
 				}
 
 			}
@@ -4054,11 +4084,21 @@ void CDlgMenu01::OnChkEjectBuffer()
 			if(IDYES == pView->MsgBox(_T("잔량처리를 해제 하시겠습니까?"), 0, MB_YESNO))
 			{
 				ResetLastProc();
+				sLastShot = _T("");
 			}
 			else
 				myBtn[3].SetCheck(TRUE);
 		}
 	}
+
+	if (!sLastShot.IsEmpty() && m_bLastProc)
+	{
+		pDoc->m_nEjectBufferLastShot = _ttoi(sLastShot);
+		pView->SetLotEnd(pDoc->m_nEjectBufferLastShot);
+	}
+	else
+		pDoc->m_nEjectBufferLastShot = -1;
+
 	this->MoveWindow(m_pRect, TRUE);
 }
 
@@ -5832,4 +5872,17 @@ void CDlgMenu01::DispStripRatioIts()
 	str.Format(_T("%.1f"), dRatio);
 	myStcData[73].SetText(str); // IDC_STC_GD_RA_ALL_ALL
 	pDoc->SetMkMenu01(_T("Yield Total"), _T("Total"), str);
+}
+
+CString CDlgMenu01::ShowKeypad1()
+{
+	BOOL bAdj = TRUE;
+	CString strData, strPrev;
+
+	CRect rect(0, 0, 0, 0);
+	CDlgKeyNum1 *pDlg = new CDlgKeyNum1(&strData, this);
+	pDlg->DoModal();
+	delete pDlg;
+
+	return strData;
 }

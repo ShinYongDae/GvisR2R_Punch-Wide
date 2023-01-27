@@ -900,8 +900,10 @@ int CReelMap::Read(CString &sRead)
 	int nFileSize, nRSize, i;
 	CString sMsg;
 
+	CString sPath = GetRmapPath(m_nLayer);
+	StrToChar(sPath, FileD);
 	//_tcscpy(FileD, m_sPathShare);
-	StrToChar(m_sPathShare, FileD);
+	//StrToChar(m_sPathShare, FileD);
 
 	if((fp = fopen(FileD, "r")) != NULL)
 	{
@@ -928,7 +930,8 @@ int CReelMap::Read(CString &sRead)
 	}
 	else
 	{
-		sMsg.Format(_T("릴맵파일을 찾지 못했습니다.\r\n%s"), m_sPathShare);
+		sMsg.Format(_T("릴맵파일을 찾지 못했습니다.\r\n%s"), sPath);
+		//sMsg.Format(_T("릴맵파일을 찾지 못했습니다.\r\n%s"), m_sPathShare);
 		pView->MsgBox(sMsg);
 // 		AfxMessageBox(sMsg);
 		return 0;
@@ -951,7 +954,8 @@ BOOL CReelMap::Write(int nSerial)
 	if (pDoc->GetTestMode() == MODE_OUTER)
 		MakeItsReelmapHeader();
 
-	MakeHeader(m_sPathShare);
+	CString sPath = GetRmapPath(m_nLayer);
+	MakeHeader(sPath);
 
 	if (pDoc->GetTestMode() == MODE_INNER)
 		pDoc->SetItsSerialInfo(nSerial);
@@ -1139,7 +1143,8 @@ BOOL CReelMap::Write(int nSerial)
 	i = 0;
 	sPnl.Format(_T("%d"), nSerial);
 	strData.Format(_T("%d"), nTotDefPcs);
-	::WritePrivateProfileString(sPnl, _T("Total Defects"), strData, m_sPathShare);
+	::WritePrivateProfileString(sPnl, _T("Total Defects"), strData, sPath);
+	//::WritePrivateProfileString(sPnl, _T("Total Defects"), strData, m_sPathShare);
 
 	for(int nRow=0; nRow<nNodeX; nRow++)			// 릴맵 Text(90도 시계방향으로 회전한 모습) 상의 Row : Shot의 첫번째 Col부터 시작해서 밑으로 내려감.
 	{
@@ -1211,7 +1216,8 @@ BOOL CReelMap::Write(int nSerial)
 
 		int nPos = strData.ReverseFind(',');		// 릴맵 Text 맨 우측의 ','를 삭제
 		strData.Delete(nPos, 1);
-		::WritePrivateProfileString(sPnl, sRow, strData, m_sPathShare); // 한 라인씩 릴맵 Text를 기록.
+		::WritePrivateProfileString(sPnl, sRow, strData, sPath); // 한 라인씩 릴맵 Text를 기록.
+		//::WritePrivateProfileString(sPnl, sRow, strData, m_sPathShare); // 한 라인씩 릴맵 Text를 기록.
 	}	// 릴맵 Text(90도 시계방향으로 회전한 모습) 상의 Row : Shot의 마지막 Col까지 기록하고 끝남.
 
 	for(i=0; i<nNodeY; i++)
@@ -2054,6 +2060,7 @@ void CReelMap::SetLastSerial(int nSerial) 	// 릴맵 텍스트 파일의 수율정보를 업데
 	}
 
 	m_nLastShot = nSerial;
+	m_sPathBuf = GetRmapPath(m_nLayer);
 
 	CString sData;
 	sData.Format(_T("%d"), nSerial);
@@ -5556,7 +5563,7 @@ BOOL CReelMap::MakeHeader(CString sPath)
 		return TRUE;
 	}
 
-	m_sPathShare = sPath;
+	//m_sPathShare = sPath;
 
 	MakeDirRmap();
 	StrToChar(sPath, FileName);
@@ -6498,7 +6505,7 @@ void CReelMap::ResetReelmapPath()
 
 BOOL CReelMap::RemakeReelmap()
 {
-	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	CString sPath = GetRmapPath(m_nLayer);
 
 	FILE *fp = NULL;
@@ -6551,7 +6558,7 @@ BOOL CReelMap::RemakeReelmap()
 		return FALSE;
 	}
 
-	//if (bDualTest)
+	if (bDualTest)
 	{
 		if (0 < ::GetPrivateProfileString(_T("Info"), _T("하면레이어"), NULL, szData, sizeof(szData), sPath))
 			sLayer[1] = CString(szData);
@@ -6564,9 +6571,6 @@ BOOL CReelMap::RemakeReelmap()
 	}
 
 	MakeDirRmap();
-	//MakeDirRmap(sModel, sLayer[0], sLot);
-	//if (bDualTest)
-	//	MakeDirRmap(sModel, sLayer[1], sLot);
 
 	CString sFile = _T(""), sRmapPath = sPath;
 
@@ -6578,6 +6582,11 @@ BOOL CReelMap::RemakeReelmap()
 	}
 
 	CString sPathRmapF = sRmapPath + _T("\\Reelmap");
+
+	if (!pDoc->DirectoryExists(sPathRmapF))
+		CreateDirectory(sPathRmapF, NULL);
+
+
 
 	sFile.MakeUpper();
 
@@ -7246,4 +7255,108 @@ CString CReelMap::GetSapp3Txt()
 CString CReelMap::GetPath()
 {
 	return m_sPathBuf;
+}
+
+CString CReelMap::GetIpPath()
+{
+	//return m_sIpPath;
+	CString sPath = _T("");
+	CString Path[5], str;
+
+	switch (m_nLayer)
+	{
+	case RMAP_UP:
+		str = _T("ReelMapDataUp.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sIpPathOldFile,
+			pDoc->WorkingInfo.LastJob.sModelUp,
+			pDoc->WorkingInfo.LastJob.sLotUp,
+			pDoc->WorkingInfo.LastJob.sLayerUp,
+			str);
+		break;
+	case RMAP_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sIpPathOldFile,
+			pDoc->WorkingInfo.LastJob.sModelUp,
+			pDoc->WorkingInfo.LastJob.sLotUp,
+			pDoc->WorkingInfo.LastJob.sLayerUp,
+			str);
+		break;
+	case RMAP_DN:
+		str = _T("ReelMapDataDn.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sIpPathOldFile,
+			pDoc->WorkingInfo.LastJob.sModelUp,
+			pDoc->WorkingInfo.LastJob.sLotUp,
+			pDoc->WorkingInfo.LastJob.sLayerDn,
+			str);
+		break;
+	case RMAP_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sIpPathOldFile,
+			pDoc->WorkingInfo.LastJob.sModelUp,
+			pDoc->WorkingInfo.LastJob.sLotUp,
+			pDoc->WorkingInfo.LastJob.sLayerDn,
+			str);
+		break;
+	case RMAP_INNER_UP:
+		str = _T("ReelMapDataUp.txt");
+		Path[0] = pDoc->WorkingInfo.System.sIpPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INNER_DN:
+		str = _T("ReelMapDataDn.txt");
+		Path[0] = pDoc->WorkingInfo.System.sIpPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INNER_ALLUP:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sIpPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerUp;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INNER_ALLDN:
+		str = _T("ReelMapDataAll.txt");
+		Path[0] = pDoc->WorkingInfo.System.sIpPathItsFile;
+		Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+		Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+		Path[3] = pDoc->WorkingInfo.LastJob.sInnerLotUp;
+		Path[4] = pDoc->WorkingInfo.LastJob.sInnerLayerDn;
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), Path[0], Path[1], Path[2], Path[3], Path[4], str);
+		break;
+	case RMAP_INOUTER_UP:
+		str = _T("ReelMapDataIO.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sIpPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+			pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp,
+			str);
+		break;
+	case RMAP_INOUTER_DN:
+		str = _T("ReelMapDataIO.txt");
+		sPath.Format(_T("%s%s\\%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sIpPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sEngItsCode,
+			pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn,
+			str);
+		break;
+	case RMAP_ITS:
+		pDoc->GetCurrentInfoEng();
+		str = _T("ReelMapDataIts.txt");
+		sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sIpPathItsFile,
+			pDoc->WorkingInfo.LastJob.sModelUp,
+			pDoc->WorkingInfo.LastJob.sEngItsCode,	//pDoc->m_sItsCode,
+			str);
+		break;
+	}
+
+	m_sIpPath = sPath;
+	return sPath;
 }
