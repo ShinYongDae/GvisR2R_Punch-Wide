@@ -1873,7 +1873,12 @@ void CDlgMenu01::WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdx
 		pDoc->WorkingInfo.LastJob.sLayerDn,
 		nSerial);
 
+	int nIdx = pDoc->GetPcrIdx0(m_nSerial);
 	CString sItem, sData;
+
+	sData.Format(_T("%d"), pDoc->m_pPcr[2][nIdx]->m_nTotDef);
+	::WritePrivateProfileString(_T("Info"), _T("MergedTotalDef"), sData, sPath);
+
 	sData.Format(_T("%d"), m_nDef[1]);
 	::WritePrivateProfileString(_T("Info"), _T("TotalDef"), sData, sPath);
 
@@ -2168,13 +2173,25 @@ void CDlgMenu01::InitStcData()
 
 	myStcData[83].SubclassDlgItem(IDC_STC_ENG, this);
 
+	myStcData[84].SubclassDlgItem(IDC_STC_LAST_SHOT, this);
+
 	for(int i=0; i<MAX_MENU01_STC_DATA; i++)
 	{
 		myStcData[i].SetFontName(_T("Arial"));
-		myStcData[i].SetFontSize(12);
-		myStcData[i].SetFontBold(FALSE);
-		myStcData[i].SetTextColor(RGB_BLACK);
-		myStcData[i].SetBkColor(RGB_WHITE);
+		if (i == 84)
+		{
+			myStcData[i].SetFontSize(20);
+			myStcData[i].SetFontBold(TRUE);
+			myStcData[i].SetTextColor(RGB_RED);
+			myStcData[i].SetBkColor(RGB_BLACK);
+		}
+		else
+		{
+			myStcData[i].SetFontSize(12);
+			myStcData[i].SetFontBold(FALSE);
+			myStcData[i].SetTextColor(RGB_BLACK);
+			myStcData[i].SetBkColor(RGB_WHITE);
+		}
 	}
 }
 
@@ -4079,8 +4096,6 @@ void CDlgMenu01::OnChkEjectBuffer()
 	{
 		if(m_bLastProc && pView->IsBuffer())
 		{
-			//pView->MyMsgBox(_T("현재 잔량처리를 하고 있는 중입니다.");
-//			if(IDYES == pView->DoMyMsgBox(_T("잔량처리를 해제 하시겠습니까?"), MB_YESNO))
 			if(IDYES == pView->MsgBox(_T("잔량처리를 해제 하시겠습니까?"), 0, MB_YESNO))
 			{
 				ResetLastProc();
@@ -5575,9 +5590,11 @@ void CDlgMenu01::DispTotRatioIts()
 	// < 전체 수율 >
 	// 외층
 	if(bDualTest)
-		pDoc->m_pReelMapAllUp->GetPcsNum(nGood, nBad);
+		if(pDoc->m_pReelMapAllUp)
+			pDoc->m_pReelMapAllUp->GetPcsNum(nGood, nBad);
 	else
-		pDoc->m_pReelMapUp->GetPcsNum(nGood, nBad);
+		if (pDoc->m_pReelMapUp)
+			pDoc->m_pReelMapUp->GetPcsNum(nGood, nBad);
 
 	nTot = nGood + nBad;
 
@@ -5611,9 +5628,11 @@ void CDlgMenu01::DispTotRatioIts()
 
 	// 내층
 	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
-		pDoc->m_pReelMapInnerAllUp->GetPcsNum(nGood, nBad);
+		if (pDoc->m_pReelMapInnerAllUp)
+			pDoc->m_pReelMapInnerAllUp->GetPcsNum(nGood, nBad);
 	else
-		pDoc->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
+		if (pDoc->m_pReelMapInnerUp)
+			pDoc->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
 
 	nTot = nGood + nBad;
 
@@ -5646,7 +5665,8 @@ void CDlgMenu01::DispTotRatioIts()
 	pDoc->SetMkMenu01(_T("Total Test"), _T("Dn"), str);
 
 	// 전체
-	pDoc->m_pReelMapIts->GetPcsNum(nGood, nBad);
+	if (pDoc->m_pReelMapIts)
+		pDoc->m_pReelMapIts->GetPcsNum(nGood, nBad);
 	nTot = nGood + nBad;
 
 	str.Format(_T("%d"), nBad);
@@ -5886,3 +5906,14 @@ CString CDlgMenu01::ShowKeypad1()
 
 	return strData;
 }
+
+void CDlgMenu01::DispLotEndSerial(int nLotEndSerial)
+{
+	CString str = _T("");
+
+	if(nLotEndSerial > 0)
+		str.Format(_T("%d"), nLotEndSerial);
+
+	myStcData[84].SetWindowText(str);
+}
+

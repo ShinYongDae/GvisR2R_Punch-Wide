@@ -11,11 +11,11 @@
 #include "MyBtn.h"
 #include "MyGL.h"
 
-#define MAX_MENU01_STC_DEFINFO		12
+#define MAX_MENU06_STC_DEFINFO		12
 
-#define MAX_MENU01_STC_TITLE		67
-#define MAX_MENU01_STC_DATA			84
-#define MAX_MENU01_BTN				23
+#define MAX_MENU06_STC_TITLE		67
+#define MAX_MENU06_STC_DATA			84
+#define MAX_MENU06_BTN				23
 
 #define TIM_DISP_DEF_IMG			100
 #define TIM_DISP_MK_INFO			101
@@ -29,10 +29,10 @@
 class CDlgMenu06 : public CDialog
 {
 	CMyStatic myStcReelmap;
-	CMyStatic myStcDefInfo[MAX_MENU01_STC_DEFINFO];
-	CMyStatic myStcTitle[MAX_MENU01_STC_TITLE];
-	CMyStatic myStcData[MAX_MENU01_STC_DATA];
-	CMyBtn myBtn[MAX_MENU01_BTN];
+	CMyStatic myStcDefInfo[MAX_MENU06_STC_DEFINFO];
+	CMyStatic myStcTitle[MAX_MENU06_STC_TITLE];
+	CMyStatic myStcData[MAX_MENU06_STC_DATA];
+	CMyBtn myBtn[MAX_MENU06_BTN];
 
 	CRect m_RectTitle[2];
 	CRect m_RectCAD[12];

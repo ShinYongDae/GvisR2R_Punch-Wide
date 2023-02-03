@@ -212,7 +212,7 @@ void CDlgMenu06::LoadImg()
 	m_bLoadImg = TRUE;
 
 	int i;
-	for(i=0; i<MAX_MENU01_BTN; i++)
+	for(i=0; i<MAX_MENU06_BTN; i++)
 	{
 		if(i==7 || i==8 || i==9 || i==10 || i==11)
 		{
@@ -244,7 +244,7 @@ void CDlgMenu06::DelImg()
 	m_bLoadImg = FALSE;
 
 	int i;
-	for(i=0; i<MAX_MENU01_BTN; i++)
+	for(i=0; i<MAX_MENU06_BTN; i++)
 		myBtn[i].DelImgList();
 }
 
@@ -2098,7 +2098,7 @@ void CDlgMenu06::InitBtn()
 	myBtn[22].ShowWindow(SW_HIDE);
 
 	int i;
-	for(i=0; i<MAX_MENU01_BTN; i++)
+	for(i=0; i<MAX_MENU06_BTN; i++)
 	{
 		if(i==1 || i==2)
 			myBtn[i].SetFont(_T("±¼¸²Ã¼"),12,TRUE);
@@ -2148,7 +2148,7 @@ void CDlgMenu06::InitStcDefInf()
 	myStcDefInfo[10].SubclassDlgItem(IDC_EDIT_DEF_INFO_011, this);
 	myStcDefInfo[11].SubclassDlgItem(IDC_EDIT_DEF_INFO_012, this);
 
-	for(int i=0; i<MAX_MENU01_STC_DEFINFO; i++)
+	for(int i=0; i<MAX_MENU06_STC_DEFINFO; i++)
 	{
 		myStcDefInfo[i].SetFontName(_T("Arial"));
 		myStcDefInfo[i].SetFontSize(12);
@@ -2254,7 +2254,7 @@ void CDlgMenu06::InitStcData()
 
 	myStcData[83].SubclassDlgItem(IDC_STC_ENG, this);
 
-	for(int i=0; i<MAX_MENU01_STC_DATA; i++)
+	for(int i=0; i<MAX_MENU06_STC_DATA; i++)
 	{
 		myStcData[i].SetFontName(_T("Arial"));
 		myStcData[i].SetFontSize(12);
@@ -2450,7 +2450,7 @@ void CDlgMenu06::InitStcTitle()
 
 	myStcTitle[65].SubclassDlgItem(IDC_STC_MK_L, this);
 	myStcTitle[66].SubclassDlgItem(IDC_STC_MK_R, this);
-	for(i=65; i<MAX_MENU01_STC_TITLE; i++)
+	for(i=65; i<MAX_MENU06_STC_TITLE; i++)
 	{
 		myStcTitle[i].SetFontName(_T("Arial"));
 		myStcTitle[i].SetFontSize(12);

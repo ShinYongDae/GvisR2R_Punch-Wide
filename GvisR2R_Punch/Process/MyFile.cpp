@@ -15,6 +15,12 @@ static char THIS_FILE[] = __FILE__;
 
 
 
+#include "../GvisR2R_PunchDoc.h"
+#include "../GvisR2R_PunchView.h"
+
+extern CGvisR2R_PunchDoc* pDoc;
+extern CGvisR2R_PunchView* pView;
+
 
 //************************************************************************************************************
 
@@ -659,17 +665,28 @@ BOOL CMyFile::ChkLotEnd(CString sPath)
 	strFileData.Delete(0, nTemp+1);
 	nFileSize = nFileSize - nTemp - 1;
 
-	// Lot
-	nTemp = strFileData.Find(',', 0);
-	strLot = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp+1);
-	nFileSize = nFileSize - nTemp - 1;
+	if (pDoc->WorkingInfo.System.bUseITS)
+	{
+		// Lot
+		nTemp = strFileData.Find(',', 0);
+		strLot = strFileData.Left(nTemp);
+		strFileData.Delete(0, nTemp + 1);
+		nFileSize = nFileSize - nTemp - 1;
 
-	// Its Code
-	nTemp = strFileData.Find('\n', 0);
-	sItsCode = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
+		// Its Code
+		nTemp = strFileData.Find('\n', 0);
+		sItsCode = strFileData.Left(nTemp);
+		strFileData.Delete(0, nTemp + 1);
+		nFileSize = nFileSize - nTemp - 1;
+	}
+	else
+	{
+		// Lot
+		nTemp = strFileData.Find('\n', 0);
+		strLot = strFileData.Left(nTemp);
+		strFileData.Delete(0, nTemp + 1);
+		nFileSize = nFileSize - nTemp - 1;
+	}
 
 	//strTotalBadPieceNum = strFileData;
 	nTemp = strFileData.Find('\n', 0);

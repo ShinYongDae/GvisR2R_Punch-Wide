@@ -640,11 +640,11 @@ struct stSystem
 	CString sMcName;
 	CString sPathCamSpecDir;
 
-	CString sPathAoiUp, sPathAoiUpDts, sPathAoiUpCurrInfo, sPathAoiUpVrsData, sPathAoiUpOffset;
+	CString sPathAoiUp, sPathAoiUpDts, sPathAoiUpCurrInfo, sPathAoiUpVrsData, sPathAoiUpOffset, sPathAoiUpDefImg;
 	CString sPathAoiUpLocalSpec;
 	CString sPathVrsShareUp, sPathVrsBufUp;
 	CString sPathVsShareUp;
-	CString sPathAoiDn, sPathAoiDnDts, sPathAoiDnCurrInfo, sPathAoiDnVrsData, sPathAoiDnOffset;
+	CString sPathAoiDn, sPathAoiDnDts, sPathAoiDnCurrInfo, sPathAoiDnVrsData, sPathAoiDnOffset, sPathAoiDnDefImg;
 	CString sPathAoiDnLocalSpec;
 	CString sPathVrsShareDn, sPathVrsBufDn;
 	CString sPathVsShareDn;
@@ -668,19 +668,19 @@ struct stSystem
 	CString sPort[3];		// ID_SR1000W, ID_MDX2500, ID_ENGRAVE(ID_PUNCH)
 	BOOL bSaveMkImg;
 	BOOL bStripPcsRgnBin;
-	BOOL bUseDTS;
+	BOOL bUseDTS, bUseITS;
 
 	stSystem()
 	{
 		sMcName = _T("");
 		sPathCamSpecDir = _T("");
 
-		sPathAoiUp = _T(""); sPathAoiUpDts = _T(""); sPathAoiUpCurrInfo = _T("");
+		sPathAoiUp = _T(""); sPathAoiUpDts = _T(""); sPathAoiUpCurrInfo = _T(""); sPathAoiUpDefImg = _T("");
 		sPathAoiUpOffset = _T(""); sPathAoiUpVrsData = _T("");
 		sPathAoiUpLocalSpec = _T("");
 		sPathVrsShareUp = _T(""); sPathVrsBufUp = _T("");
 		sPathVsShareUp = _T("");
-		sPathAoiDn = _T(""); sPathAoiDnDts = _T(""); sPathAoiDnCurrInfo = _T("");
+		sPathAoiDn = _T(""); sPathAoiDnDts = _T(""); sPathAoiDnCurrInfo = _T(""); sPathAoiDnDefImg = _T("");
 		sPathAoiDnOffset = _T(""); sPathAoiDnVrsData = _T("");
 		sPathAoiDnLocalSpec = _T("");
 		sPathVrsShareDn = _T(""); sPathVrsBufDn = _T("");
@@ -709,6 +709,7 @@ struct stSystem
 		bSaveMkImg = FALSE;
 		bStripPcsRgnBin = FALSE;
 		bUseDTS = FALSE;
+		bUseITS = FALSE;
 	}
 };
 

@@ -5476,7 +5476,7 @@ BOOL CReelMap::WriteYield(int nSerial, CString sPath)
 	}
 	
 	// [Serial]
-
+/*
 	fprintf(fp, "[%d]\n", nSerial);
 	fprintf(fp, "Total Pcs = %d\n", m_stYield.nTot);
 	fprintf(fp, "Good Pcs = %d\n", m_stYield.nGood);
@@ -5500,17 +5500,24 @@ BOOL CReelMap::WriteYield(int nSerial, CString sPath)
 			fprintf(fp, "Strip%d_%d = %d\n", k, i, m_stYield.nDefPerStrip[k][i]);
 		fprintf(fp, "\n");
 	}
-
+*/
 	fclose(fp);
 
+	strMenu.Format(_T("%d"), nSerial);
 
 	for (i = 1; i < MAX_DEF; i++)
 	{
 		sCode.Format(_T("%d"), i);
 		sDefNum.Format(_T("%d"), m_stYield.nDefA[i]);
+
+		// [Info]
 		::WritePrivateProfileString(_T("Info"), sCode, sDefNum, sPath);
+
+		// [Serial]
+		::WritePrivateProfileString(strMenu, sCode, sDefNum, sPath);
 	}
 
+	// [Info]
 	strData.Format(_T("%d"), nSerial);
 	::WritePrivateProfileString(_T("Info"), _T("End Shot"), strData, sPath);
 
@@ -5526,26 +5533,49 @@ BOOL CReelMap::WriteYield(int nSerial, CString sPath)
 	strData.Format(_T("%d"), m_stYield.nDef);
 	::WritePrivateProfileString(_T("Info"), _T("Bad Pcs"), strData, sPath);
 
+	// [Serial]
+	strData.Format(_T("%d"), m_stYield.nTot);
+	::WritePrivateProfileString(strMenu, _T("Total Pcs"), strData, sPath);
+
+	strData.Format(_T("%d"), m_stYield.nGood);
+	::WritePrivateProfileString(strMenu, _T("Good Pcs"), strData, sPath);
+
+	strData.Format(_T("%d"), m_stYield.nDef);
+	::WritePrivateProfileString(strMenu, _T("Bad Pcs"), strData, sPath);
+
 	for (k = 0; k < MAX_STRIP; k++)
 	{
 		strItem.Format(_T("Strip%d"), k);
 		strData.Format(_T("%d"), m_stYield.nDefStrip[k]);
+		// [Info]
 		::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+		// [Serial]
+		::WritePrivateProfileString(strMenu, strItem, strData, sPath);
 
 		strItem.Format(_T("StripOut_%d"), k);
 		strData.Format(_T("%d"), m_stYield.nStripOut[k]);
+		// [Info]
 		::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+		// [Serial]
+		::WritePrivateProfileString(strMenu, strItem, strData, sPath);
 
 		for (i = 1; i < MAX_DEF; i++)
 		{
 			strItem.Format(_T("Strip%d_%d"), k, i);
 			strData.Format(_T("%d"), m_stYield.nDefPerStrip[k][i]);
+			// [Info]
 			::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+			// [Serial]
+			::WritePrivateProfileString(strMenu, strItem, strData, sPath);
 		}
 	}
 
 	strData.Format(_T("%d"), m_stYield.nTotSriptOut);
+	// [Info]
 	::WritePrivateProfileString(_T("Info"), _T("StripOut_Total"), strData, sPath);
+	// [Serial]
+	::WritePrivateProfileString(strMenu, _T("StripOut_Total"), strData, sPath);
+
 
 	return TRUE;
 }
@@ -6542,33 +6572,33 @@ BOOL CReelMap::RemakeReelmap()
 		return FALSE;
 	}
 
-	if (0 < ::GetPrivateProfileString(_T("Info"), _T("로      트"), NULL, szData, sizeof(szData), sPath))
-		sLot = CString(szData);
-	else
-	{
-		pView->MsgBox(_T("Lot 정보가 없습니다."));
-		return FALSE;
-	}
+	//if (0 < ::GetPrivateProfileString(_T("Info"), _T("로      트"), NULL, szData, sizeof(szData), sPath))
+	//	sLot = CString(szData);
+	//else
+	//{
+	//	pView->MsgBox(_T("Lot 정보가 없습니다."));
+	//	return FALSE;
+	//}
 
-	if (0 < ::GetPrivateProfileString(_T("Info"), _T("상면레이어"), NULL, szData, sizeof(szData), sPath))
-		sLayer[0] = CString(szData);
-	else
-	{
-		pView->MsgBox(_T("상면레이어 정보가 없습니다."));
-		return FALSE;
-	}
+	//if (0 < ::GetPrivateProfileString(_T("Info"), _T("상면레이어"), NULL, szData, sizeof(szData), sPath))
+	//	sLayer[0] = CString(szData);
+	//else
+	//{
+	//	pView->MsgBox(_T("상면레이어 정보가 없습니다."));
+	//	return FALSE;
+	//}
 
-	if (bDualTest)
-	{
-		if (0 < ::GetPrivateProfileString(_T("Info"), _T("하면레이어"), NULL, szData, sizeof(szData), sPath))
-			sLayer[1] = CString(szData);
-		else
-		{
-			sLayer[1] = _T("");
-			//pView->MsgBox(_T("하면레이어 정보가 없습니다."));
-			//return FALSE;
-		}
-	}
+	//if (bDualTest)
+	//{
+	//	if (0 < ::GetPrivateProfileString(_T("Info"), _T("하면레이어"), NULL, szData, sizeof(szData), sPath))
+	//		sLayer[1] = CString(szData);
+	//	else
+	//	{
+	//		sLayer[1] = _T("");
+	//		//pView->MsgBox(_T("하면레이어 정보가 없습니다."));
+	//		//return FALSE;
+	//	}
+	//}
 
 	MakeDirRmap();
 

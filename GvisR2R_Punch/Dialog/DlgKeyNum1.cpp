@@ -29,8 +29,9 @@ CDlgKeyNum1::CDlgKeyNum1(CString *strFileName, CWnd* pParent/*=NULL*/)
 	
 	//}}AFX_DATA_INIT
 	m_pParent = pParent;
+	m_pstrEdit = strFileName;
 
-	m_strM = _T("");
+	m_strM = _T("상부 Last Shot 번호 입력");
 	m_strCurr = _T("");
 	m_strMin = _T("");
 	m_strMax = _T("");
@@ -347,7 +348,7 @@ void CDlgKeyNum1::OnButtonEnter()
 	CString strDisplay=_T("");
 	GetDlgItemText(IDC_EDIT_DISPLAY,strDisplay);
 	m_bTIM_DLG_KEYBDNUM = FALSE;
-	if(strDisplay==_T("")) 
+	if (strDisplay == _T(""))
 	{
 		OnOK();
 		return;
@@ -564,14 +565,14 @@ BOOL CDlgKeyNum1::OnInitDialog()
 		break;	
 	}
 
-	if(m_nDir != TO_NONE)
-	{
-		m_Rect->top = rt.top;
-		m_Rect->bottom = rt.bottom;
-		m_Rect->left = rt.left;
-		m_Rect->right = rt.right;
-		MoveWindow(rt);
-	}
+	//if(m_nDir != TO_NONE)
+	//{
+	//	m_Rect->top = rt.top;
+	//	m_Rect->bottom = rt.bottom;
+	//	m_Rect->left = rt.left;
+	//	m_Rect->right = rt.right;
+	//	MoveWindow(rt);
+	//}
 	//MoveWindow(1280-nWidth-5,78,nWidth,nHeight,TRUE);
 
 	InitBtn();
@@ -597,28 +598,29 @@ void CDlgKeyNum1::DispVal()
 	else
 		GetDlgItem(IDC_STC_MSG)->SetWindowText(m_strM);
 
-	if(m_strMin.IsEmpty() && m_strMax.IsEmpty())
-		GetDlgItem(IDC_STC_SEP)->ShowWindow(SW_HIDE);
+	//if(m_strMin.IsEmpty() && m_strMax.IsEmpty())
+	//	GetDlgItem(IDC_STC_SEP)->ShowWindow(SW_HIDE);
 }
 
 void CDlgKeyNum1::LoadImg()
 {
-	myLabel.LoadBkImage(IMG_BK_BLACK);
+	//myLabel.LoadBkImage(IMG_BK_BLACK);
 }
 
 void CDlgKeyNum1::DelImg()
 {
-	myLabel.DelImgList();
+	//myLabel.DelImgList();
 }
 
 
 void CDlgKeyNum1::InitLabel()
 {
-	myLabel.SubclassDlgItem(IDC_STC_SEP, this);
-	myLabel.SetFontName(_T("Arial"));
-	myLabel.SetFontSize(32);
-	myLabel.SetFontBold(TRUE);
-	myLabel.SetTextColor(RGB_YELLOW);
+	//myLabel.SubclassDlgItem(IDC_STC_SEP, this);
+	//myLabel.SetFontName(_T("Arial"));
+	//myLabel.SetFontSize(32);
+	//myLabel.SetFontBold(TRUE);
+	//myLabel.SetTextColor(RGB_YELLOW);
+
 	//myLabel.DrawBoarder(0,0);
 }
 
@@ -996,12 +998,12 @@ void CDlgKeyNum1::OnMove(int x, int y)
 	CDialog::OnMove(x, y);
 	
 	// TODO: Add your message handler code here
-//	if(m_Rect && m_bInit)
-	{
-		CRect rect(0,0,0,0);
-		GetWindowRect(&rect);
-		*m_Rect = rect;
-	}
+	//if(m_Rect && m_bInit)
+	//{
+	//	CRect rect(0,0,0,0);
+	//	GetWindowRect(&rect);
+	//	*m_Rect = rect;
+	//}
 }
 
 void CDlgKeyNum1::OnPaint() 

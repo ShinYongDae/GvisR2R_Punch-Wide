@@ -3613,16 +3613,6 @@ BOOL CGvisR2R_PunchView::ChkBufUp(int* pSerial, int &nTot)
 		if (!cFile.IsDirectory())
 		{
 			sFileName = cFile.GetFileName();
-			//nPos = sFileName.ReverseFind('.');
-			//if (nPos > 0)
-			//	sSerial = sFileName.Left(nPos);
-
-			//nSerial = _tstoi(sSerial);
-			//if (nSerial > 0)
-			//{
-			//	pSerial[nTot] = nSerial;
-			//	nTot++;
-			//}
 
 			if (!SortingInUp(pDoc->WorkingInfo.System.sPathVrsBufUp + sFileName, nTot))
 				return FALSE;
@@ -3639,7 +3629,6 @@ BOOL CGvisR2R_PunchView::ChkBufUp(int* pSerial, int &nTot)
 		pDoc->m_bBufEmpty[0] = FALSE;
 
 	return (bRtn);
-	//return TRUE;
 }
 
 BOOL CGvisR2R_PunchView::ChkBufDn(int* pSerial, int &nTot)
@@ -8550,23 +8539,15 @@ void CGvisR2R_PunchView::Shift2Buf()	// 버퍼폴더의 마지막 시리얼과 Share폴더의 �
 	int nLastListBuf;
 	if (m_nShareUpS > 0)
 	{
-		// 		nLastListBuf = pDoc->m_ListBuf[0].GetLast();
-		// 		if(nLastListBuf > 0 && nLastListBuf < 5)
-		// 		{
-		// 			if(nLastListBuf > m_nShareUpS)
-		// 				pDoc->m_ListBuf[0].Clear();
-		// 		}
-		// 
-
-		nLastListBuf = pDoc->m_ListBuf[0].GetLast();
-		if (nLastListBuf > 0 && m_nShareUpS > 1)
-		{
-			if (nLastListBuf != m_nShareUpS - 1)
-			{
-				Stop();
-				DispMsg(_T("시리얼 연속성 오류"), _T("경고"), RGB_RED, DELAY_TIME_MSG);
-			}
-		}
+		//nLastListBuf = pDoc->m_ListBuf[0].GetLast();
+		//if (nLastListBuf > 0 && m_nShareUpS > 1)
+		//{
+		//	if (nLastListBuf != m_nShareUpS - 1)
+		//	{
+		//		Stop();
+		//		DispMsg(_T("시리얼 연속성 오류"), _T("경고"), RGB_RED, DELAY_TIME_MSG);
+		//	}
+		//}
 
 		m_bLoadShare[0] = TRUE;
 		pDoc->m_ListBuf[0].Push(m_nShareUpS);
@@ -8578,22 +8559,15 @@ void CGvisR2R_PunchView::Shift2Buf()	// 버퍼폴더의 마지막 시리얼과 Share폴더의 �
 	{
 		if (m_nShareDnS > 0)
 		{
-			// 			nLastListBuf = pDoc->m_ListBuf[1].GetLast();
-			// 			if(nLastListBuf > 0 && nLastListBuf < 5)
-			// 			{
-			// 				if(nLastListBuf > m_nShareDnS)
-			// 					pDoc->m_ListBuf[1].Clear();
-			// 			}
-			nLastListBuf = pDoc->m_ListBuf[1].GetLast();
-			if (nLastListBuf > 0 && m_nShareDnS > 1)
-			{
-				if(nLastListBuf != m_nShareDnS-1)
-				{
-					Stop();
-					DispMsg(_T("시리얼 연속성 오류"), _T("경고"), RGB_RED, DELAY_TIME_MSG);
-				}
-			}
-
+			//nLastListBuf = pDoc->m_ListBuf[1].GetLast();
+			//if (nLastListBuf > 0 && m_nShareDnS > 1)
+			//{
+			//	if(nLastListBuf != m_nShareDnS-1)
+			//	{
+			//		Stop();
+			//		DispMsg(_T("시리얼 연속성 오류"), _T("경고"), RGB_RED, DELAY_TIME_MSG);
+			//	}
+			//}
 
 			m_bLoadShare[1] = TRUE;
 			pDoc->m_ListBuf[1].Push(m_nShareDnS);
@@ -10547,6 +10521,8 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 	m_bAoiLdRunF = FALSE;
 	m_bNewModel = FALSE;
 	m_nLotEndSerial = 0;
+	if(m_pDlgMenu01)
+		m_pDlgMenu01->DispLotEndSerial(0);
 	m_bCam = FALSE;
 	m_bReview = FALSE;
 	m_bChkBufIdx[0] = TRUE;
@@ -10759,6 +10735,7 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 	m_bTHREAD_UPDATE_RST_ITS = FALSE;
 
 	pDoc->m_nEjectBufferLastShot = -1;
+
 
 	if (bInit) // 이어가기가 아닌경우.
 	{
@@ -13824,6 +13801,8 @@ void CGvisR2R_PunchView::SetLotEnd(int nSerial)
 	CString str;
 	str.Format(_T("%d"), m_nLotEndSerial);
 	DispStsBar(str, 0);
+	if (m_pDlgMenu01)
+		m_pDlgMenu01->DispLotEndSerial(m_nLotEndSerial);
 }
 
 int CGvisR2R_PunchView::GetLotEndSerial()
@@ -17573,8 +17552,16 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 				nSerial = GetShareUp();
 				if (nSerial > 0)
 				{
-					m_nShareUpS = nSerial;
-					bPcrInShare[0] = TRUE;
+					if (m_nLotEndSerial > 0 && nSerial > m_nLotEndSerial)
+					{
+						// Delete PCR File
+						pDoc->DelSharePcrUp();
+					}
+					else
+					{
+						m_nShareUpS = nSerial;
+						bPcrInShare[0] = TRUE;
+					}
 				}
 				else
 				{
@@ -17593,8 +17580,16 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 					nSerial = GetShareDn();
 					if (nSerial > 0)
 					{
-						m_nShareDnS = nSerial;
-						bPcrInShare[1] = TRUE;
+						if (m_nLotEndSerial > 0 && nSerial > m_nLotEndSerial)
+						{
+							// Delete PCR File
+							pDoc->DelSharePcrDn();
+						}
+						else
+						{
+							m_nShareDnS = nSerial;
+							bPcrInShare[1] = TRUE;
+						}
 					}
 					else
 					{
@@ -24716,7 +24711,7 @@ BOOL CGvisR2R_PunchView::ChkLightErr()
 
 	nSerial = m_nBufUpSerial[0]; // Cam0
 
-	if (nSerial > 0)
+	if (nSerial > 0 && nSerial <= m_nLotEndSerial)
 	{
 		if ((nErrCode = GetErrCode0(nSerial)) != 1)
 		{
@@ -24727,7 +24722,7 @@ BOOL CGvisR2R_PunchView::ChkLightErr()
 
 	nSerial = m_nBufUpSerial[1]; // Cam1
 
-	if (nSerial > 0)
+	if (nSerial > 0 && nSerial <= m_nLotEndSerial)
 	{
 		if ((nErrCode = GetErrCode1(nSerial)) != 1)
 		{
@@ -25459,7 +25454,8 @@ void CGvisR2R_PunchView::DoShift2Mk()
 	if (m_bLastProc && m_nBufUpSerial[0] == m_nLotEndSerial)
 	{
 		nSerial = m_nBufUpSerial[0];
-		if (nSerial > 0 && (nSerial % 2))
+		//if (nSerial > 0 && (nSerial % 2)) // First Shot number must be odd.
+		if (nSerial > 0) // 20130202
 			m_bTHREAD_SHIFT2MK = TRUE;
 	}
 	else
@@ -25467,7 +25463,8 @@ void CGvisR2R_PunchView::DoShift2Mk()
 		nSerial = m_nBufUpSerial[0];
 		if (!m_bCont)
 		{
-			if (nSerial > 0 && (nSerial % 2)) // First Shot number must be odd.
+			//if (nSerial > 0 && (nSerial % 2)) // First Shot number must be odd.
+			if (nSerial > 0)
 				m_bTHREAD_SHIFT2MK = TRUE;
 			else
 				Stop();
@@ -29578,20 +29575,20 @@ BOOL CGvisR2R_PunchView::RemakeReelmapInner()
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	CString sReelmapSrc, str;
 
-	if (pDoc->m_pReelMapInnerUp)
-		pDoc->m_pReelMapInnerUp->StartThreadRemakeReelmap();
+	//if (pDoc->m_pReelMapInnerUp)
+	//	pDoc->m_pReelMapInnerUp->StartThreadRemakeReelmap();
 
 	if (pDoc->m_pReelMapIts)
 		pDoc->m_pReelMapIts->StartThreadRemakeReelmap();
 
-	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
-	{
-		if (pDoc->m_pReelMapInnerDn)
-			pDoc->m_pReelMapInnerDn->StartThreadRemakeReelmap();
+	//if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+	//{
+	//	if (pDoc->m_pReelMapInnerDn)
+	//		pDoc->m_pReelMapInnerDn->StartThreadRemakeReelmap();
 
-		if (pDoc->m_pReelMapInnerAllUp)
-			pDoc->m_pReelMapInnerAllUp->StartThreadRemakeReelmap();
-	}
+	//	if (pDoc->m_pReelMapInnerAllUp)
+	//		pDoc->m_pReelMapInnerAllUp->StartThreadRemakeReelmap();
+	//}
 
 	return TRUE;
 }

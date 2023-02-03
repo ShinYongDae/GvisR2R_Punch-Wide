@@ -33,7 +33,7 @@ public:
 	BOOL m_bBufEmptyF[2]; // [0]: Up, [1]: Dn
 
 	// R2R Y Meander Adjusting....
-	BOOL m_bUseDts;
+	BOOL m_bUseDts, m_bUseIts;
 	BOOL m_bUseRTRYShiftAdjust;
 	double m_dRTRShiftVal;
 	double m_dShiftAdjustRatio;

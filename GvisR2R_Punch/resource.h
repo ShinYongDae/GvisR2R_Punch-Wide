@@ -642,6 +642,8 @@
 #define IDC_STC_10_                     1202
 #define IDC_STC_27                      1202
 #define IDC_STC_REELMAP_INNER           1202
+#define IDC_STC_REVIEW_LEN2             1202
+#define IDC_STC_LAST_SHOT               1202
 #define IDC_CHK_002                     1203
 #define IDC_CHK_MK_POS1_1               1203
 #define IDC_CHK_42                      1203

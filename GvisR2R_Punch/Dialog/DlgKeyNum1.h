@@ -76,7 +76,7 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(CDlgKeyNum1)
-	enum { IDD = IDD_DLG_KEY_NUM };
+	enum { IDD = IDD_DLG_KEY_NUM1 };
 		// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 

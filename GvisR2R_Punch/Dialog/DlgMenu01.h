@@ -14,7 +14,7 @@
 #define MAX_MENU01_STC_DEFINFO		12
 
 #define MAX_MENU01_STC_TITLE		67
-#define MAX_MENU01_STC_DATA			84
+#define MAX_MENU01_STC_DATA			85
 #define MAX_MENU01_BTN				23
 
 #define TIM_DISP_DEF_IMG			100
@@ -200,6 +200,8 @@ public:
 	void EnableItsMode(BOOL bEnable=TRUE);
 	void DispTotRatioIts();
 	void DispStripRatioIts();
+
+	void DispLotEndSerial(int nLotEndSerial);
 
 // Dialog Data
 	//{{AFX_DATA(CDlgMenu01)
