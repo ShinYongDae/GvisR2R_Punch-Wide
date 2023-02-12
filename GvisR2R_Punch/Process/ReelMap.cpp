@@ -1723,30 +1723,60 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 			}
 		}
 
-
-		if( nLoadPnl > (pView->m_nLotEndSerial+pDoc->AoiDummyShot[0]) && pView->m_nLotEndSerial > 0)
+		if (pView->m_bSerialDecrese)
 		{
-			for(int bb=k; bb>=0; bb--)
+			if (nLoadPnl < (pView->m_nLotEndSerial - pDoc->AoiDummyShot[0]) && pView->m_nLotEndSerial > 0)
 			{
-				m_pPnlNum[bb] = nLoadPnl = -1;
-				m_pPnlDefNum[bb] = -1;
+				for (int bb = k; bb >= 0; bb--)
+				{
+					m_pPnlNum[bb] = nLoadPnl = -1;
+					m_pPnlDefNum[bb] = -1;
+				}
+				break;
 			}
-			break;
-		}
-		else if(pView->ChkLastProc() && (nLoadPnl > pView->m_nLotEndSerial && pView->m_nLotEndSerial > 0))
-		{
-			for(int bb=k; bb>=0; bb--)
+			else if (pView->ChkLastProc() && (nLoadPnl < pView->m_nLotEndSerial && pView->m_nLotEndSerial > 0))
 			{
-				m_pPnlNum[bb] = nLoadPnl = -1;
-				m_pPnlDefNum[bb] = -1;
+				for (int bb = k; bb >= 0; bb--)
+				{
+					m_pPnlNum[bb] = nLoadPnl = -1;
+					m_pPnlDefNum[bb] = -1;
+				}
+				break;
 			}
-			break;
-		}
-		else if(nLoadPnl > pView->m_nLotEndSerial && pView->m_nLotEndSerial > 0)
-		{
-			for(int cc=k; cc>=0; cc--)
+			else if (nLoadPnl < pView->m_nLotEndSerial && pView->m_nLotEndSerial > 0)
 			{
-				m_pPnlDefNum[cc] = -1;
+				for (int cc = k; cc >= 0; cc--)
+				{
+					m_pPnlDefNum[cc] = -1;
+				}
+			}
+		}
+		else
+		{
+			if (nLoadPnl > (pView->m_nLotEndSerial + pDoc->AoiDummyShot[0]) && pView->m_nLotEndSerial > 0)
+			{
+				for (int bb = k; bb >= 0; bb--)
+				{
+					m_pPnlNum[bb] = nLoadPnl = -1;
+					m_pPnlDefNum[bb] = -1;
+				}
+				break;
+			}
+			else if (pView->ChkLastProc() && (nLoadPnl > pView->m_nLotEndSerial && pView->m_nLotEndSerial > 0))
+			{
+				for (int bb = k; bb >= 0; bb--)
+				{
+					m_pPnlNum[bb] = nLoadPnl = -1;
+					m_pPnlDefNum[bb] = -1;
+				}
+				break;
+			}
+			else if (nLoadPnl > pView->m_nLotEndSerial && pView->m_nLotEndSerial > 0)
+			{
+				for (int cc = k; cc >= 0; cc--)
+				{
+					m_pPnlDefNum[cc] = -1;
+				}
 			}
 		}
 
@@ -1760,30 +1790,61 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 		}
 		else
 		{
-			if(pDoc->WorkingInfo.LastJob.bLotSep && nLoadPnl > pDoc->m_nLotLastShot && !pDoc->m_bDoneChgLot)
+			if (pView->m_bSerialDecrese)
 			{
-				m_pPnlNum[k] = 0;
-				m_pPnlDefNum[k] = -1;
-				break;
-			}
-			else if (nLoadPnl > pDoc->m_ListBuf[0].GetLast())
-			{
-				m_pPnlNum[k] = 0;
-				m_pPnlDefNum[k] = -1;
-				break;
-			}
+				if (pDoc->WorkingInfo.LastJob.bLotSep && nLoadPnl < pDoc->m_nLotLastShot && !pDoc->m_bDoneChgLot)
+				{
+					m_pPnlNum[k] = 0;
+					m_pPnlDefNum[k] = -1;
+					break;
+				}
+				else if (nLoadPnl < pDoc->m_ListBuf[0].GetLast())
+				{
+					m_pPnlNum[k] = 0;
+					m_pPnlDefNum[k] = -1;
+					break;
+				}
 
-			m_pPnlNum[k] = nLoadPnl; // 3 ~ 10
-			if (nLoadPnl <= pView->m_nLotEndSerial || pView->m_nLotEndSerial == 0)
+				m_pPnlNum[k] = nLoadPnl; // 3 ~ 10
+				if (nLoadPnl >= pView->m_nLotEndSerial || pView->m_nLotEndSerial == 0)
+				{
+					if (m_nLayer == RMAP_UP || m_nLayer == RMAP_DN || m_nLayer == RMAP_ALLUP || m_nLayer == RMAP_ALLDN)
+						m_pPnlDefNum[k] = pDoc->m_pPcr[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					else if (m_nLayer == RMAP_INNER_UP || m_nLayer == RMAP_INNER_DN || m_nLayer == RMAP_INNER_ALLUP || m_nLayer == RMAP_INNER_ALLDN)
+						m_pPnlDefNum[k] = pDoc->m_pPcrInner[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					else if (m_nLayer == RMAP_ITS)
+						m_pPnlDefNum[k] = pDoc->m_pPcrIts[pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					else
+						return 0;
+				}
+			}
+			else
 			{
-				if (m_nLayer == RMAP_UP || m_nLayer == RMAP_DN || m_nLayer == RMAP_ALLUP || m_nLayer == RMAP_ALLDN)
-					m_pPnlDefNum[k] = pDoc->m_pPcr[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
-				else if (m_nLayer == RMAP_INNER_UP || m_nLayer == RMAP_INNER_DN || m_nLayer == RMAP_INNER_ALLUP || m_nLayer == RMAP_INNER_ALLDN)
-					m_pPnlDefNum[k] = pDoc->m_pPcrInner[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
-				else if (m_nLayer == RMAP_ITS)
-					m_pPnlDefNum[k] = pDoc->m_pPcrIts[pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
-				else
-					return 0;
+				if (pDoc->WorkingInfo.LastJob.bLotSep && nLoadPnl > pDoc->m_nLotLastShot && !pDoc->m_bDoneChgLot)
+				{
+					m_pPnlNum[k] = 0;
+					m_pPnlDefNum[k] = -1;
+					break;
+				}
+				else if (nLoadPnl > pDoc->m_ListBuf[0].GetLast())
+				{
+					m_pPnlNum[k] = 0;
+					m_pPnlDefNum[k] = -1;
+					break;
+				}
+
+				m_pPnlNum[k] = nLoadPnl; // 3 ~ 10
+				if (nLoadPnl <= pView->m_nLotEndSerial || pView->m_nLotEndSerial == 0)
+				{
+					if (m_nLayer == RMAP_UP || m_nLayer == RMAP_DN || m_nLayer == RMAP_ALLUP || m_nLayer == RMAP_ALLDN)
+						m_pPnlDefNum[k] = pDoc->m_pPcr[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					else if (m_nLayer == RMAP_INNER_UP || m_nLayer == RMAP_INNER_DN || m_nLayer == RMAP_INNER_ALLUP || m_nLayer == RMAP_INNER_ALLDN)
+						m_pPnlDefNum[k] = pDoc->m_pPcrInner[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					else if (m_nLayer == RMAP_ITS)
+						m_pPnlDefNum[k] = pDoc->m_pPcrIts[pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					else
+						return 0;
+				}
 			}
 
 			for(nR=0; nR<nNodeX; nR++)  // nR = 0 ~ 5
@@ -1878,17 +1939,24 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 						{
 							if (!pView->m_bLastProc && !pDoc->WorkingInfo.LastJob.bSampleTest)
 							{
-								pView->Stop();
-								sMsg.Format(_T("릴맵 데이타를 불러 오지 못했습니다. - [Pnl: %s] [Row: %d]\r\n%s"), sPnl, nR, m_sPathBuf);
-								//sMsg.Format(_T("ReelmapData missed. - [Pnl: %d] [Row: %d]"), k, nR);
-								pView->MsgBox(sMsg); // 20160725-Temp
-								if (pDataFile)
 								{
-									delete pDataFile;
-									pDataFile = NULL;
+									m_pPnlNum[k] = -1;
+									m_pPnlDefNum[k] = -1;
+									for (i = 0; i < nTotPcs; i++)
+										pPcsDef[k][i] = DEF_NONE;
 								}
-								//AfxMessageBox(sMsg);
-								return FALSE;
+
+								//pView->Stop();
+								//sMsg.Format(_T("릴맵 데이타를 불러 오지 못했습니다. - [Pnl: %s] [Row: %d]\r\n%s"), sPnl, nR, m_sPathBuf);
+								////sMsg.Format(_T("ReelmapData missed. - [Pnl: %d] [Row: %d]"), k, nR);
+								//pView->MsgBox(sMsg); // 20160725-Temp
+								//if (pDataFile)
+								//{
+								//	delete pDataFile;
+								//	pDataFile = NULL;
+								//}
+								////AfxMessageBox(sMsg);
+								//return FALSE;
 							}
 							else
 							{

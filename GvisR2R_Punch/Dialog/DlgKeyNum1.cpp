@@ -21,7 +21,7 @@ extern CGvisR2R_PunchView* pView;
 // CDlgKeyNum1 dialog
 
 
-CDlgKeyNum1::CDlgKeyNum1(CString *strFileName, CWnd* pParent/*=NULL*/)
+CDlgKeyNum1::CDlgKeyNum1(CString *strFileName, CString sMsg/*=_T("")*/, CWnd* pParent/*=NULL*/)
 	: CDialog(CDlgKeyNum1::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CDlgKeyNum1)
@@ -31,7 +31,11 @@ CDlgKeyNum1::CDlgKeyNum1(CString *strFileName, CWnd* pParent/*=NULL*/)
 	m_pParent = pParent;
 	m_pstrEdit = strFileName;
 
-	m_strM = _T("상부 Last Shot 번호 입력");
+	if (sMsg.IsEmpty())
+		m_strM = _T("상부 Last Shot 번호 입력");
+	else
+		m_strM = sMsg;
+
 	m_strCurr = _T("");
 	m_strMin = _T("");
 	m_strMax = _T("");
