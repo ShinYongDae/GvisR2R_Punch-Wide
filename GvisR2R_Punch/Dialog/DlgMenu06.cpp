@@ -2988,17 +2988,28 @@ BOOL CDlgMenu06::SetSerial(int nSerial, BOOL bDumy)
 			if(nSerial == pView->m_nLotEndSerial)
 				int nBreak = 1;
 			
-			//if(nSerial < pView->GetLotEndSerial() || !pView->GetLotEndSerial())
-			if(pView->m_nLotEndSerial%2)
+			if (pView->m_bSerialDecrese)
 			{
-				if(nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+				if (nSerial >= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
 					DispMkInfo();
 			}
 			else
 			{
-				if(nSerial < pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+				if (nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
 					DispMkInfo();
 			}
+
+			//if(nSerial < pView->GetLotEndSerial() || !pView->GetLotEndSerial())
+			//if(pView->m_nLotEndSerial%2)
+			//{
+			//	if(nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+			//		DispMkInfo();
+			//}
+			//else
+			//{
+			//	if(nSerial < pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+			//		DispMkInfo();
+			//}
 		}
 		return TRUE;
 	}
@@ -3045,8 +3056,16 @@ BOOL CDlgMenu06::SetSerialMkInfo(int nSerial, BOOL bDumy)
 				int nBreak = 1;
 
 			//if(nSerial < pView->GetLotEndSerial() || !pView->GetLotEndSerial())
-			if(nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
-				DispMkInfo();
+			if (pView->m_bSerialDecrese)
+			{
+				if (nSerial >= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+					DispMkInfo();
+			}
+			else
+			{
+				if (nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+					DispMkInfo();
+			}
 		}
 		return TRUE;
 	}

@@ -526,31 +526,35 @@ void CEngrave::GetSignalMain(SOCKET_DATA SockData)
 		{
 		case _SigInx::_Ready:
 			pDoc->BtnStatus.Main.Ready = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB005503"), (long)SockData.nData1);
+			//pView->m_pMpe->Write(_T("MB005503"), (long)SockData.nData1);
+			pView->m_pMpe->Write(_T("MB440162"), 0);
 			break;
 		case _SigInx::_Run:
 			pDoc->BtnStatus.Main.Run = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Stop = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Stop;
-			pView->m_pMpe->Write(_T("MB005501"), (long)SockData.nData1);
+			//pView->m_pMpe->Write(_T("MB005501"), (long)SockData.nData1);
+			pView->m_pMpe->Write(_T("MB440162"), 0);
 			break;
 		case _SigInx::_Reset:
 			pDoc->BtnStatus.Main.Reset = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB005504"), (long)SockData.nData1);
+			//pView->m_pMpe->Write(_T("MB005504"), (long)SockData.nData1);
+			pView->m_pMpe->Write(_T("MB440162"), 0);
 			break;
 		case _SigInx::_Stop:
 			pDoc->BtnStatus.Main.Stop = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Run = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Run;
-			pView->m_pMpe->Write(_T("MB005502"), (long)SockData.nData1);
+			//pView->m_pMpe->Write(_T("MB005502"), (long)SockData.nData1);
+			pView->m_pMpe->Write(_T("MB440162"), (long)SockData.nData1);
 			break;
 		case _SigInx::_Auto:
 			pDoc->BtnStatus.Main.Auto = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Manual = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Manual;
-			pView->m_pMpe->Write(_T("MB005505"), (long)SockData.nData1);
+			//pView->m_pMpe->Write(_T("MB005505"), (long)SockData.nData1);
 			break;
 		case _SigInx::_Manual:
 			pDoc->BtnStatus.Main.Manual = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Auto = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Auto;
-			pView->m_pMpe->Write(_T("MB005505"), (long)SockData.nData1);
+			//pView->m_pMpe->Write(_T("MB005505"), (long)SockData.nData1);
 			break;
 			// Is
 		case _SigInx::_IsReady:
@@ -1761,8 +1765,11 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				::WritePrivateProfileString(_T("Motion"), _T("MARKING_FEEDING_SERVO_DIST"), pDoc->WorkingInfo.Motion.sMkFdDist, PATH_WORKING_INFO);
 				::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_DIST"), pDoc->WorkingInfo.Motion.sMkFdDist, PATH_WORKING_INFO);
 #ifdef USE_MPE
-				lData = (long)(pDoc->m_pReelMap->m_dPnlLen * 1000.0);
-				pView->m_pMpe->Write(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
+				if (pDoc->m_pReelMap)
+				{
+					lData = (long)(pDoc->m_pReelMap->m_dPnlLen * 1000.0);
+					pView->m_pMpe->Write(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
+				}
 #endif
 			}
 			break;
@@ -3515,6 +3522,15 @@ void CEngrave::SetStripRatio()
 	double dRatio = 0.0;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
+	if (!pDoc->m_pReelMapUp)
+		return;
+
+	if (bDualTest)
+	{
+		if (!pDoc->m_pReelMapDn || !pDoc->m_pReelMapAllUp)
+			return;
+	}
+
 	for (int i = 0; i < 2; i++)
 	{
 		for (int k = 0; k < 4; k++)
@@ -3731,31 +3747,58 @@ void CEngrave::SetDef()
 	switch (pView->m_nSelRmap)
 	{
 	case RMAP_UP:
-		pReelMap = pDoc->m_pReelMapUp;
+		if (pDoc->m_pReelMapUp)
+			pReelMap = pDoc->m_pReelMapUp;
+		else
+			AfxMessageBox(_T("m_pReelMapUp is NULL."));
 		break;
 	case RMAP_DN:
-		pReelMap = pDoc->m_pReelMapDn;
+		if (pDoc->m_pReelMapDn)
+			pReelMap = pDoc->m_pReelMapDn;
+		else
+			AfxMessageBox(_T("m_pReelMapDn is NULL."));
 		break;
 	case RMAP_ALLUP:
-		pReelMap = pDoc->m_pReelMapAllUp;
+		if (pDoc->m_pReelMapAllUp)
+			pReelMap = pDoc->m_pReelMapAllUp;
+		else
+			AfxMessageBox(_T("m_pReelMapAllUp is NULL."));
 		break;
 	case RMAP_ALLDN:
-		pReelMap = pDoc->m_pReelMapAllDn;
+		if (pDoc->m_pReelMapAllDn)
+			pReelMap = pDoc->m_pReelMapAllDn;
+		else
+			AfxMessageBox(_T("m_pReelMapAllDn is NULL."));
 		break;
 	case RMAP_INNER_UP:
-		pReelMap = pDoc->m_pReelMapInnerUp;
+		if (pDoc->m_pReelMapInnerUp)
+			pReelMap = pDoc->m_pReelMapInnerUp;
+		else
+			AfxMessageBox(_T("m_pReelMapInnerUp is NULL."));
 		break;
 	case RMAP_INNER_DN:
-		pReelMap = pDoc->m_pReelMapInnerDn;
+		if (pDoc->m_pReelMapInnerDn)
+			pReelMap = pDoc->m_pReelMapInnerDn;
+		else
+			AfxMessageBox(_T("m_pReelMapInnerDn is NULL."));
 		break;
 	case RMAP_INNER_ALLUP:
-		pReelMap = pDoc->m_pReelMapInnerAllUp;
+		if (pDoc->m_pReelMapInnerAllUp)
+			pReelMap = pDoc->m_pReelMapInnerAllUp;
+		else
+			AfxMessageBox(_T("m_pReelMapInnerAllUp is NULL."));
 		break;
 	case RMAP_INNER_ALLDN:
-		pReelMap = pDoc->m_pReelMapInnerAllDn;
+		if (pDoc->m_pReelMapInnerAllDn)
+			pReelMap = pDoc->m_pReelMapInnerAllDn;
+		else
+			AfxMessageBox(_T("m_pReelMapInnerAllDn is NULL."));
 		break;
 	case RMAP_ITS:
-		pReelMap = pDoc->m_pReelMapIts;
+		if (pDoc->m_pReelMapIts)
+			pReelMap = pDoc->m_pReelMapIts;
+		else
+			AfxMessageBox(_T("m_pReelMapIts is NULL."));
 		break;
 	}
 

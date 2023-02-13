@@ -1467,6 +1467,8 @@ void CDlgInfo::SetTestMode(int nMode)
 			pDoc->SetMkInfo(_T("Signal"), _T("Outer Test On"), TRUE);
 			if (pView->m_pDlgMenu01)
 				pView->m_pDlgMenu01->EnableItsMode();
+
+			pView->m_bLoadMstInfo = TRUE; // LoadMstInfo()
 		}
 		else
 		{

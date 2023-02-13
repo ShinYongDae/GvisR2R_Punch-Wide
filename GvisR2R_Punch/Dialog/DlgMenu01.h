@@ -71,6 +71,8 @@ class CDlgMenu01 : public CDialog
 
 	void SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 	void SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
+	BOOL SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
+	BOOL SaveDefImgPosDn(int nSerial, int nIdxMkInfo, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 	void WriteDefInfoUp(int nSerial, int nIdxText, int nIdxDef, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
 	void WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdxImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
 	void ShowDefInfoUp(int nIdx); // nIdx : 0 ~ 11 (12ea)
@@ -89,6 +91,7 @@ class CDlgMenu01 : public CDialog
 	void InitDefImgDn();
 	BOOL ShowKeypad(int nCtlID, CPoint ptSt=(0, 0), int nDir=TO_NONE);
 	CString ShowKeypad1();
+	CString ShowKeypad1(CString sMsg);
 
 	BOOL IsWinkMkL();
 	void WinkMkL(BOOL bOn);
@@ -202,6 +205,7 @@ public:
 	void DispStripRatioIts();
 
 	void DispLotEndSerial(int nLotEndSerial);
+	void DispChangedModel();
 
 // Dialog Data
 	//{{AFX_DATA(CDlgMenu01)

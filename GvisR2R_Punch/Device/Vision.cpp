@@ -4313,8 +4313,21 @@ BOOL CVision::SaveMkImg(CString sPath)
 
 	//if(MilGrabImg && MilOriginDisp->m_MilImage)
 	//	MbufSave(sPath, MilOriginDisp->m_MilImage);
-	if(MilGrabImg && MilGrabImg->m_MilImage)
-		MbufSave(sPath, MilGrabImg->m_MilImage);
+	if (MilGrabImg && MilGrabImg->m_MilImage)
+	{
+		//MbufSave(sPath, MilGrabImg->m_MilImage);
+
+		MIL_ID MilGrabImgCld = M_NULL;
+		MbufChild2d(MilGrabImg->m_MilImage, (640 - DEF_IMG_DISP_SIZEX) / 2, (480 - DEF_IMG_DISP_SIZEX) / 2, DEF_IMG_DISP_SIZEX, DEF_IMG_DISP_SIZEX, &MilGrabImgCld);
+
+		MbufSave(sPath, MilGrabImgCld);
+
+		if (MilGrabImgCld)
+		{
+			MbufFree(MilGrabImgCld);
+			MilGrabImgCld = M_NULL;
+		}
+	}
 	else
 	{
 		pView->ClrDispMsg();

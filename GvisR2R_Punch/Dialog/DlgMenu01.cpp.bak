@@ -1506,7 +1506,6 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								ShowDefInfoUp(nIdxMkInfo); // 화면의 IDC 인덱스
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
-								SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++; // 화면의 IDC 인덱스
 								m_nIdxDef[0]++; // 화면에 표시할 불량피스 인덱스 ( 0 ~ TotalDef )
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
@@ -1549,7 +1548,6 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								ShowDefInfoUp(nIdxMkInfo);
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg);
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
-								SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++;
 								m_nIdxDef[0]++;
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
@@ -1607,7 +1605,6 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 							ShowDefInfoDn(nIdxMkInfo);
 							WriteDefInfoDn(nSerial, nIdxMkInfo, m_nIdxDef[1], nDefImg);
 							SaveCadImgDn(nSerial, nIdxMkInfo, nDefImg);
-							SaveDefImgPosDn(nSerial, nIdxMkInfo, nDefImg);
 							m_nIdxMkInfo[1]++;
 							m_nIdxDef[1]++;
 							(pDoc->m_pPcr[1][nIdx]->m_nTotRealDef)++;
@@ -1811,94 +1808,6 @@ void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSer
 
 	if (pView->m_pVision[1])
 		pView->m_pVision[1]->SaveCadImg(nIdxMkInfo, sPath);
-}
-
-BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
-{
-	int nStrip=-1, nCol=-1, nRow=-1;
-	int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
-	int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]];
-	int nDefCode = pDoc->m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
-	if (pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
-
-	CString strDefImgPathS, strDefImgPathD, strTemp;
-
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
-		pDoc->WorkingInfo.LastJob.sModelUp,
-		pDoc->WorkingInfo.LastJob.sLotUp,
-		pDoc->WorkingInfo.LastJob.sLayerUp,
-		nSerial,
-		nIdxImg);
-
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
-		pDoc->WorkingInfo.LastJob.sModelUp,
-		pDoc->WorkingInfo.LastJob.sLotUp,
-		pDoc->WorkingInfo.LastJob.sLayerUp,
-		nSerial,
-		nIdxImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
-
-	CFileFind finder;
-	if (finder.FindFile(strDefImgPathS))
-	{
-		if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-		{
-			if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-			{
-				strTemp.Format(_T("%s \r\n: Defect Image Up Position File Copy Fail"), strDefImgPathS);
-				pView->MsgBox(strTemp);
-				return FALSE;
-			}
-		}
-	}
-	else
-		return FALSE;
-
-	return TRUE;
-}
-
-BOOL CDlgMenu01::SaveDefImgPosDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
-{
-	int nStrip = -1, nCol = -1, nRow = -1;
-	int nPcrIdx = pDoc->GetPcrIdx1(nSerial);
-	int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]];
-	int nDefCode = pDoc->m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
-	if (pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
-
-	CString strDefImgPathS, strDefImgPathD, strTemp;
-
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
-		pDoc->WorkingInfo.LastJob.sModelUp,
-		pDoc->WorkingInfo.LastJob.sLotUp,
-		pDoc->WorkingInfo.LastJob.sLayerUp,
-		nSerial,
-		nIdxImg);
-
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
-		pDoc->WorkingInfo.LastJob.sModelUp,
-		pDoc->WorkingInfo.LastJob.sLotUp,
-		pDoc->WorkingInfo.LastJob.sLayerDn,
-		nSerial,
-		nIdxImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
-
-	CFileFind finder;
-	if (finder.FindFile(strDefImgPathS))
-	{
-		if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-		{
-			if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-			{
-				strTemp.Format(_T("%s \r\n: Defect Image Dn Position File Copy Fail"), strDefImgPathS);
-				pView->MsgBox(strTemp);
-				return FALSE;
-			}
-		}
-	}
-	else
-		return FALSE;
-
-	return TRUE;
 }
 
 void CDlgMenu01::WriteDefInfoUp(int nSerial, int nIdxText, int nIdxDef, int nIdxImg)
@@ -4196,7 +4105,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 					pView->m_pMpe->Write(_T("MB440185"), 0);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 					pView->m_pMpe->Write(_T("MB440186"), 0);				// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 
-					sLastShot = ShowKeypad1(_T("각인부 Last Shot 번호 입력"));
+					sLastShot = ShowKeypad1();
 				}
 
 			}
@@ -6010,20 +5919,7 @@ CString CDlgMenu01::ShowKeypad1()
 	CString strData, strPrev;
 
 	CRect rect(0, 0, 0, 0);
-	CDlgKeyNum1 *pDlg = new CDlgKeyNum1(&strData, _T(""), this);
-	pDlg->DoModal();
-	delete pDlg;
-
-	return strData;
-}
-
-CString CDlgMenu01::ShowKeypad1(CString sMsg)
-{
-	BOOL bAdj = TRUE;
-	CString strData, strPrev;
-
-	CRect rect(0, 0, 0, 0);
-	CDlgKeyNum1 *pDlg = new CDlgKeyNum1(&strData, sMsg, this);
+	CDlgKeyNum1 *pDlg = new CDlgKeyNum1(&strData, this);
 	pDlg->DoModal();
 	delete pDlg;
 

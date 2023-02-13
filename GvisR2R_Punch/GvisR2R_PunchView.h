@@ -398,7 +398,7 @@ public:
 
 	BOOL m_bProbDn[2]; // аб/©Л .
 
-					   // Auto Sequence
+	// Auto Sequence
 	BOOL m_bAuto, m_bManual, m_bOneCycle;
 	BOOL m_bMkTmpStop, m_bAoiLdRun, m_bAoiLdRunF;
 	BOOL m_bTHREAD_MK[4];	// [0] Auto-Left, [1] Auto-Right, [2] Manual-Left, [3] Manual-Right
@@ -1146,6 +1146,7 @@ public:
 
 
 	// DTS
+	BOOL m_bSerialDecrese;
 	BOOL GetDtsPieceOut(int nSerial, int* pPcsOutIdx, int& nTotPcsOut);
 	CString GetCurrentDBName();
 

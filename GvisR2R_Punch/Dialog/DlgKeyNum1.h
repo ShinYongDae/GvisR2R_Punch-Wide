@@ -67,7 +67,7 @@ class CDlgKeyNum1 : public CDialog
 public:
 	int strPosition;
 	CString* m_pstrEdit, m_strM, m_strCurr, m_strMin, m_strMax;
-	CDlgKeyNum1(CString *strFileName, CWnd* pParent=NULL);  // standard constructor
+	CDlgKeyNum1(CString *strFileName, CString sMsg=_T(""), CWnd* pParent=NULL);  // standard constructor
 	~CDlgKeyNum1();
 
 	BOOL SetCtrlColor(const UINT nID, CString strText, COLORREF bgColor, COLORREF fgColor);

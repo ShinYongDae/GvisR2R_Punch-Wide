@@ -4778,6 +4778,8 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) /
 
 	if (bUpdate)
 	{
+		WriteChangedModel();
+
 		if (pView->m_pDlgMenu01)
 			pView->m_pDlgMenu01->UpdateData();
 
@@ -4964,6 +4966,8 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) /
 
 	if (bUpdate)
 	{
+		WriteChangedModel();
+
 		if (pView->m_pDlgMenu01)
 			pView->m_pDlgMenu01->UpdateData();
 
@@ -5612,6 +5616,8 @@ int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Fai
 
 	if (bUpdate)
 	{
+		WriteChangedModel();
+
 		if (pView->m_pDlgMenu01)
 			pView->m_pDlgMenu01->UpdateData();
 
@@ -5925,6 +5931,8 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 
 	if (bUpdate)
 	{
+		WriteChangedModel();
+
 		if (pView->m_pDlgMenu01)
 			pView->m_pDlgMenu01->UpdateData();
 	}
@@ -6189,6 +6197,20 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 		CreateDirectory(strMakeFolderPath, NULL);
 
 	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp);
+
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
 		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp,
 			sLot,
@@ -6210,6 +6232,19 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 			nSerial);
 	else
 		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp,
+			nSerial);
+
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			sLot,
+			WorkingInfo.LastJob.sLayerUp,
+			nSerial);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp,
 			sLot,
 			WorkingInfo.LastJob.sLayerUp,
@@ -6284,6 +6319,26 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 					WorkingInfo.LastJob.sLayerUp,
 					nSerial,
 					nDefImg);
+
+			//if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+			//{
+			//	int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
+			//	int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]];
+
+			//	strDefImgPosPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+			//		WorkingInfo.LastJob.sModelUp,
+			//		sLot,
+			//		WorkingInfo.LastJob.sLayerUp,
+			//		nSerial,
+			//		nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+			//}
+			//else
+			//	strDefImgPosPathD.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d\\%05d_.tif"), WorkingInfo.System.sPathOldFile,
+			//		WorkingInfo.LastJob.sModelUp,
+			//		sLot,
+			//		WorkingInfo.LastJob.sLayerUp,
+			//		nSerial,
+			//		nDefImg);
 
 			if (finder.FindFile(strDefImgPathS))
 			{
@@ -12483,4 +12538,34 @@ BOOL CGvisR2R_PunchDoc::MakeItsDir(CString sModel, CString sLot, CString sLayer)
 		CreateDirectory(sPath, NULL);
 
 	return TRUE;
+}
+
+void CGvisR2R_PunchDoc::WriteChangedModel()
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	CString sData, sPath = PATH_WORKING_INFO;
+
+	sData = WorkingInfo.LastJob.sModelUp;
+	::WritePrivateProfileString(_T("Last Job"), _T("ModelUp Name"), sData, sPath);
+	SetMkMenu01(_T("Info"), _T("Model"), sData);
+
+	sData = WorkingInfo.LastJob.sLayerUp;
+	::WritePrivateProfileString(_T("Last Job"), _T("LayerUp Name"), sData, sPath);
+	SetMkMenu01(_T("Info"), _T("Lot"), sData);
+
+	sData = WorkingInfo.LastJob.sLotUp;
+	::WritePrivateProfileString(_T("Last Job"), _T("LotUp No"), sData, sPath);
+	SetMkMenu01(_T("Info"), _T("LayerUp"), sData);
+
+
+	if (bDualTest)
+	{
+		sData = WorkingInfo.LastJob.sLayerDn;
+		::WritePrivateProfileString(_T("Last Job"), _T("LayerDn Name"), sData, sPath);
+		SetMkMenu01(_T("Info"), _T("LayerDn"), sData);
+	}
+
+	if (pView->m_pDlgMenu01)
+		pView->m_pDlgMenu01->DispChangedModel();
 }
