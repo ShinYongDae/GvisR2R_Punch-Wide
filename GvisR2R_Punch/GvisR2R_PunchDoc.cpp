@@ -6237,6 +6237,9 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 			WorkingInfo.LastJob.sLayerUp,
 			nSerial);
 
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
 	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
 		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp,
@@ -6463,6 +6466,23 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 		CreateDirectory(strMakeFolderPath, NULL);
 
 	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			//WorkingInfo.LastJob.sModelDn,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			//WorkingInfo.LastJob.sModelDn,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn);
+
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
+
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
 		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp,
 			sLot,
@@ -6493,6 +6513,25 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
+
+	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			//WorkingInfo.LastJob.sModelDn,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn,
+			nSerial);
+	else
+		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
+			WorkingInfo.LastJob.sModelUp,
+			//WorkingInfo.LastJob.sModelDn,
+			sLot,
+			WorkingInfo.LastJob.sLayerDn,
+			nSerial);
+
+	if (!pDoc->DirectoryExists(strMakeFolderPath))
+		CreateDirectory(strMakeFolderPath, NULL);
+
 
 	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
 		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,

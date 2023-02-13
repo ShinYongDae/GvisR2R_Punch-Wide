@@ -1824,7 +1824,7 @@ BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 
 	CString strDefImgPathS, strDefImgPathD, strTemp;
 
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+	strDefImgPathS.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		pDoc->WorkingInfo.LastJob.sLotUp,
 		pDoc->WorkingInfo.LastJob.sLayerUp,
@@ -1868,10 +1868,10 @@ BOOL CDlgMenu01::SaveDefImgPosDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 
 	CString strDefImgPathS, strDefImgPathD, strTemp;
 
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+	strDefImgPathS.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		pDoc->WorkingInfo.LastJob.sLotUp,
-		pDoc->WorkingInfo.LastJob.sLayerUp,
+		pDoc->WorkingInfo.LastJob.sLayerDn,
 		nSerial,
 		nIdxImg);
 
@@ -2266,6 +2266,9 @@ void CDlgMenu01::InitStcData()
 
 	myStcData[84].SubclassDlgItem(IDC_STC_LAST_SHOT, this);
 
+	myStcData[85].SubclassDlgItem(IDC_STC_TQ_VAL_L, this);
+	myStcData[86].SubclassDlgItem(IDC_STC_TQ_VAL_R, this);
+
 	for(int i=0; i<MAX_MENU01_STC_DATA; i++)
 	{
 		myStcData[i].SetFontName(_T("Arial"));
@@ -2472,6 +2475,10 @@ void CDlgMenu01::InitStcTitle()
 
 	myStcTitle[65].SubclassDlgItem(IDC_STC_MK_L, this);
 	myStcTitle[66].SubclassDlgItem(IDC_STC_MK_R, this);
+
+	myStcTitle[67].SubclassDlgItem(IDC_STC_TQ_L, this);
+	myStcTitle[68].SubclassDlgItem(IDC_STC_TQ_R, this);
+
 	for(i=65; i<MAX_MENU01_STC_TITLE; i++)
 	{
 		myStcTitle[i].SetFontName(_T("Arial"));
@@ -2695,6 +2702,7 @@ void CDlgMenu01::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_DISP_MK_CNT);
 		DispMkCnt();
+		DispTqVal();
 		ChkMkLimit();
 		ChkPartialSpd();
 		if(m_bTIM_DISP_MK_CNT)
@@ -4580,6 +4588,20 @@ void CDlgMenu01::DispMkCnt()
 
 }
 
+
+void CDlgMenu01::DispTqVal()
+{
+	CString str;
+
+	str.Format(_T("%.1f"), pDoc->GetMarkingToq1());
+	myStcData[85].SetText(str);
+	//pDoc->SetMkMenu01(_T("Data"), _T("MkNumLf"), str);
+
+	str.Format(_T("%.1f"), pDoc->GetMarkingToq2());
+	myStcData[86].SetText(str);
+	//pDoc->SetMkMenu01(_T("Data"), _T("MkNumRt"), str);
+
+}
 void CDlgMenu01::ChkMkLimit()
 {
 	int nCurrL = pDoc->GetMkCntL();
