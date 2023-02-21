@@ -306,6 +306,8 @@ public:
 	BOOL CopyDefImg(int nSerial, CString sNewLot);
 	BOOL CopyDefImgUp(int nSerial, CString sNewLot = _T(""));
 	BOOL CopyDefImgDn(int nSerial, CString sNewLot = _T(""));
+	void MakeImageDirUp(int nSerial);
+	void MakeImageDirDn(int nSerial);
 	double GetFdJogVel();
 	double GetFdJogAcc();
 	void SetModelInfoUp();
@@ -401,7 +403,7 @@ public:
 	void SetCurrentInfoSignal(int nIdxSig, BOOL bOn);
 	BOOL GetCurrentInfoSignal(int nIdxSig);
 	void SetLastSerialEng(int nSerial);
-	void GetCurrentInfoEng();
+	BOOL GetCurrentInfoEng();
 	int GetCurrentInfoEngShotNum();
 	void SetCurrentInfoBufUpTot(int nTotal);
 	void SetCurrentInfoBufUp(int nIdx, int nData);
@@ -435,6 +437,7 @@ public:
 	BOOL MakeLayerMappingHeader();
 	BOOL MakeLayerMappingSerial(int nIdx, int nItsSerial);
 
+	int SearchFirstShotOnIts();
 	BOOL GetItsSerialInfo(int nItsSerial, BOOL &bDualTest, CString &sLot, CString &sLayerUp, CString &sLayerDn, int nOption=0);		// 내층에서의 ITS 시리얼의 정보
 	BOOL SetItsSerialInfo(int nItsSerial);																							// 내층에서의 ITS 시리얼의 정보
 	//BOOL WriteReelmapIts(int nItsSerial);																							// 내외층 머징된 릴맵 데이타

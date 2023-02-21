@@ -584,13 +584,13 @@ void CDlgMenu02::InitCadImg()
 
 		hWin = GetDlgItem(IDC_STC_PIN_IMG_2)->GetSafeHwnd();
 		GetDlgItem(IDC_STC_PIN_IMG_2)->GetWindowRect(&rect);
-		pView->m_pVision[1]->SelDispPin(hWin, rect, 0);
+		pView->m_pVision[1]->SelDispPin(hWin, rect, 1);
 		pView->m_pVision[1]->ShowDispPin(0);
 //		pView->m_pVision[1]->DrawCrossOnPin(PIN_IMG_DISP_SIZEX/2, PIN_IMG_DISP_SIZEY/2, 10);
 
 // 		hWin = GetDlgItem(IDC_STC_PIN_IMG_2)->GetSafeHwnd();
 // 		GetDlgItem(IDC_STC_PIN_IMG_2)->GetWindowRect(&rect);
- 		pView->m_pVision[1]->SelDispAlign(hWin, rect, 0);
+ 		pView->m_pVision[1]->SelDispAlign(hWin, rect, 1);
 		pView->m_pVision[1]->ShowDispAlign();
 
 		pView->m_pVision[1]->SetDispAxisPos();

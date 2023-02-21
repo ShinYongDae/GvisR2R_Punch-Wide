@@ -966,6 +966,8 @@ public:
 	int GetMkStripIdx1(int nDefPcsId); // 0 : Fail , 1~4 : Strip Idx
 	int GetMkStripIdx0(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
 	int GetMkStripIdx1(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
+	CString GetMkInfo0(int nSerial, int nMkPcs);
+	CString GetMkInfo1(int nSerial, int nMkPcs);
 
 	BOOL IsMkStrip(int nStripIdx);
 	void CycleStop();
@@ -1057,7 +1059,7 @@ public:
 
 	BOOL GetCurrentInfoSignal();
 	void InitAutoEngSignal();
-	void GetCurrentInfoEng();
+	BOOL GetCurrentInfoEng();
 	BOOL IsConnectedSr();
 	BOOL IsConnectedEng();
 
@@ -1144,6 +1146,13 @@ public:
 
 	CString GetTimeIts();
 
+	int GetAoiUpAutoStep();
+	void SetAoiUpAutoStep(int nStep);
+	CString GetAoiUpAlarmRestartMsg();
+
+	int GetAoiDnAutoStep();
+	void SetAoiDnAutoStep(int nStep);
+	CString GetAoiDnAlarmRestartMsg();
 
 	// DTS
 	BOOL m_bSerialDecrese;

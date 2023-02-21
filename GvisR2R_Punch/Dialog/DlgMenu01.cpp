@@ -1506,7 +1506,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								ShowDefInfoUp(nIdxMkInfo); // È­¸éÀÇ IDC ÀÎµ¦½º
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg); // (nSerial, È­¸éÀÇ IDC ÀÎµ¦½º, ºÒ·®ÇÇ½º ÀÎµ¦½º, ºÒ·®ÀÌ¹ÌÁö ÀÎµ¦½º)
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
-								SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
+								//SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++; // È­¸éÀÇ IDC ÀÎµ¦½º
 								m_nIdxDef[0]++; // È­¸é¿¡ Ç¥½ÃÇÒ ºÒ·®ÇÇ½º ÀÎµ¦½º ( 0 ~ TotalDef )
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
@@ -1549,7 +1549,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								ShowDefInfoUp(nIdxMkInfo);
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg);
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
-								SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
+								//SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++;
 								m_nIdxDef[0]++;
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
@@ -1607,7 +1607,7 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 							ShowDefInfoDn(nIdxMkInfo);
 							WriteDefInfoDn(nSerial, nIdxMkInfo, m_nIdxDef[1], nDefImg);
 							SaveCadImgDn(nSerial, nIdxMkInfo, nDefImg);
-							SaveDefImgPosDn(nSerial, nIdxMkInfo, nDefImg);
+							//SaveDefImgPosDn(nSerial, nIdxMkInfo, nDefImg);
 							m_nIdxMkInfo[1]++;
 							m_nIdxDef[1]++;
 							(pDoc->m_pPcr[1][nIdx]->m_nTotRealDef)++;
@@ -1787,6 +1787,8 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 
 void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, È­¸éÀÇ IDC ÀÎµ¦½º, ºÒ·®ÀÌ¹ÌÁö ÀÎµ¦½º)
 {
+	pDoc->MakeImageDirUp(nSerial);
+
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
@@ -1801,6 +1803,8 @@ void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSer
 
 void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, È­¸éÀÇ IDC ÀÎµ¦½º, ºÒ·®ÀÌ¹ÌÁö ÀÎµ¦½º)
 {
+	pDoc->MakeImageDirDn(nSerial);
+
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
@@ -4593,11 +4597,13 @@ void CDlgMenu01::DispTqVal()
 {
 	CString str;
 
-	str.Format(_T("%.1f"), pDoc->GetMarkingToq1());
+	str.Format(_T("%d"), int(pDoc->GetMarkingToq1()));
+	//str.Format(_T("%.1f"), pDoc->GetMarkingToq1());
 	myStcData[85].SetText(str);
 	//pDoc->SetMkMenu01(_T("Data"), _T("MkNumLf"), str);
 
-	str.Format(_T("%.1f"), pDoc->GetMarkingToq2());
+	str.Format(_T("%d"), int(pDoc->GetMarkingToq2()));
+	//str.Format(_T("%.1f"), pDoc->GetMarkingToq2());
 	myStcData[86].SetText(str);
 	//pDoc->SetMkMenu01(_T("Data"), _T("MkNumRt"), str);
 
@@ -5760,11 +5766,19 @@ void CDlgMenu01::DispTotRatioIts()
 
 	// ³»Ãþ
 	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+	{
 		if (pDoc->m_pReelMapInnerAllUp)
 			pDoc->m_pReelMapInnerAllUp->GetPcsNum(nGood, nBad);
+		else
+			return;
+	}
 	else
+	{
 		if (pDoc->m_pReelMapInnerUp)
 			pDoc->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
+		else
+			return;
+	}
 
 	nTot = nGood + nBad;
 
@@ -5799,6 +5813,9 @@ void CDlgMenu01::DispTotRatioIts()
 	// ÀüÃ¼
 	if (pDoc->m_pReelMapIts)
 		pDoc->m_pReelMapIts->GetPcsNum(nGood, nBad);
+	else
+		return; 
+
 	nTot = nGood + nBad;
 
 	str.Format(_T("%d"), nBad);
@@ -5838,6 +5855,17 @@ void CDlgMenu01::DispStripRatioIts()
 	int nPnl = m_nSerial - 1;
 	double dRatio = 0.0;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if (bDualTest)
+	{
+		if (!pDoc->m_pReelMapAllUp)
+			return;
+	}
+	else
+	{
+		if (!pDoc->m_pReelMapUp)
+			return;
+	}
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -5916,6 +5944,9 @@ void CDlgMenu01::DispStripRatioIts()
 	// ³»Ãþ
 	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
 	{
+		if (!pDoc->m_pReelMapInnerAllUp)
+			return;
+
 		nVal[1][0] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(0);
 		nVal[1][1] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(1);
 		nVal[1][2] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(2);
@@ -5923,6 +5954,9 @@ void CDlgMenu01::DispStripRatioIts()
 	}
 	else
 	{
+		if (!pDoc->m_pReelMapInnerUp)
+			return;
+
 		nVal[1][0] = pDoc->m_pReelMapInnerUp->GetDefStrip(0);
 		nVal[1][1] = pDoc->m_pReelMapInnerUp->GetDefStrip(1);
 		nVal[1][2] = pDoc->m_pReelMapInnerUp->GetDefStrip(2);
@@ -5976,6 +6010,9 @@ void CDlgMenu01::DispStripRatioIts()
 	nSum = 0;
 
 	// ¿ÜÃþ + ³»Ãþ
+	if (!pDoc->m_pReelMapIts || !pDoc->m_pReelMapAllUp)
+		return;
+
 	nMer[0] = pDoc->m_pReelMapIts->GetDefStrip(0);
 	nMer[1] = pDoc->m_pReelMapAllUp->GetDefStrip(1);
 	nMer[2] = pDoc->m_pReelMapAllUp->GetDefStrip(2);

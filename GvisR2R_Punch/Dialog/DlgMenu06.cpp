@@ -3345,6 +3345,9 @@ void CDlgMenu06::DispTotRatio()
 	double dRatio=0.0;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
+	if (!pDoc->m_pReelMapInnerUp)
+		return;
+
 	// < 전체 수율 >
 	// 상면
 	pDoc->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
@@ -3380,6 +3383,9 @@ void CDlgMenu06::DispTotRatio()
 
 	if(bDualTest)
 	{
+		if (!pDoc->m_pReelMapInnerDn)
+			return;
+
 		// 하면
 		pDoc->m_pReelMapInnerDn->GetPcsNum(nGood, nBad);
 
@@ -3412,6 +3418,9 @@ void CDlgMenu06::DispTotRatio()
 		str.Format(_T("%d"), nTot);
 		myStcData[53].SetText(str); // IDC_STC_TOTAL_NUM_DN
 		pDoc->SetMkMenu01(_T("Total Test"), _T("Dn"), str);
+
+		if (!pDoc->m_pReelMapInnerAllDn)
+			return;
 
 		// 전체
 		pDoc->m_pReelMapInnerAllDn->GetPcsNum(nGood, nBad);
@@ -3461,6 +3470,9 @@ void CDlgMenu06::DispStripRatio()
 		for(int k=0; k<4; k++)
 			nVal[i][k] = 0;
 	}
+
+	if (!pDoc->m_pReelMapInnerUp)
+		return;
 
 	// < 스트립 별 수율 >
 	pDoc->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
@@ -3520,6 +3532,9 @@ void CDlgMenu06::DispStripRatio()
 
 	if(bDualTest)
 	{
+		if (!pDoc->m_pReelMapInnerDn)
+			return;
+
 		// 하면
 		nVal[1][0] = pDoc->m_pReelMapInnerDn->GetDefStrip(0);
 		nSum += nVal[1][0];
@@ -3570,6 +3585,9 @@ void CDlgMenu06::DispStripRatio()
 		pDoc->SetMkMenu01(_T("Yield Total"), _T("Dn"), str);
 
 		nSum = 0;
+
+		if (!pDoc->m_pReelMapInnerAllUp)
+			return;
 
 		// 상면 + 하면
 		nMer[0] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(0);
@@ -3782,6 +3800,9 @@ void CDlgMenu06::DispDef()
 	}
 	else
 		pReelMap = pDoc->m_pReelMapInnerUp;
+
+	if (!pReelMap)
+		return;
 
 	nNum = pReelMap->GetDefNum(DEF_OPEN);
 	str.Format(_T("%d"), nNum);
@@ -4269,10 +4290,13 @@ int CDlgMenu06::GetCurSerial()
 void CDlgMenu06::UpdateLotTime()
 {
 	CString sData;
- 	sData = pDoc->m_pReelMapInner->GetLotSt();
-	myStcData[21].SetText(sData);
- 	sData = pDoc->m_pReelMapInner->GetLotEd();
-	myStcData[23].SetText(sData);
+	if (pDoc->m_pReelMapInner)
+	{
+		sData = pDoc->m_pReelMapInner->GetLotSt();
+		myStcData[21].SetText(sData);
+		sData = pDoc->m_pReelMapInner->GetLotEd();
+		myStcData[23].SetText(sData);
+	}
 }
 
 void CDlgMenu06::OnChkLotEnd() 

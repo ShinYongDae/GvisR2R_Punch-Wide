@@ -1070,12 +1070,44 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.sPathEngCurrInfo = CString(_T(""));
 	}
 
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("EngraveSignalInfoPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathEngSignalInfo = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("EngraveSignalInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathEngSignalInfo = CString(_T(""));
+	}
+
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("PunchingCurrentInfoPath"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.System.sPathMkCurrInfo = CString(szData);
 	else
 	{
 		AfxMessageBox(_T("PunchingCurrentInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.System.sPathMkCurrInfo = CString(_T("C:\\PunchWork\\CurrentInfo.ini"));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("PunchingSignalInfoPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathMkSignalInfo = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("PunchingSignalInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathMkSignalInfo = CString(_T("C:\\PunchWork\\SignalInfo.ini"));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("AoiUpStatusInfoPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathAoiUpStatusInfo = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("AoiUpStatusInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathMkCurrInfo = CString(_T("C:\\AOIWork\\Statusini"));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("AoiDnStatusInfoPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathAoiDnStatusInfo = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("AoiDnStatusInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathMkCurrInfo = CString(_T("C:\\AOIWork\\Statusini"));
 	}
 
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("MonDispMainPath"), NULL, szData, sizeof(szData), sPath))
@@ -6118,31 +6150,10 @@ BOOL CGvisR2R_PunchDoc::CopyDefImg(int nSerial, CString sNewLot)
 	return TRUE;
 }
 
-BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
+void CGvisR2R_PunchDoc::MakeImageDirUp(int nSerial)
 {
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.18"));
-		return 0;
-	}
-
 	CString strDefImgPathS, strDefImgPathD, strMakeFolderPath;
-	int i;
-	CString strAOIImgDataPath;
-	CFileFind finder;
-	CString strTemp;
-	CString sLot;
-
-	if (sNewLot.IsEmpty())
-		sLot = WorkingInfo.LastJob.sLotUp;
-	else
-		sLot = sNewLot;
-
-	//if (WorkingInfo.System.bUseDTS)
-		strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiUpDefImg);
-	//else
-	//	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiUp);
+	CString sLot = WorkingInfo.LastJob.sLotUp;
 
 
 	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
@@ -6271,8 +6282,32 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
+}
 
+BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
+{
+	if (nSerial <= 0)
+	{
+		pView->ClrDispMsg();
+		AfxMessageBox(_T("Serial Error.18"));
+		return 0;
+	}
 
+	CString strDefImgPathS, strDefImgPathD;// , strMakeFolderPath;
+	int i;
+	CFileFind finder;
+	CString strTemp;
+	CString sLot;
+
+	CString strAOIImgDataPath;
+	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiUpDefImg);
+
+	if (sNewLot.IsEmpty())
+		sLot = WorkingInfo.LastJob.sLotUp;
+	else
+		sLot = sNewLot;
+
+	MakeImageDirUp(nSerial);
 
 	int nIdx = GetIdxPcrBufUp(nSerial);
 	if (nIdx < 0)
@@ -6323,26 +6358,6 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 					nSerial,
 					nDefImg);
 
-			//if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-			//{
-			//	int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
-			//	int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]];
-
-			//	strDefImgPosPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
-			//		WorkingInfo.LastJob.sModelUp,
-			//		sLot,
-			//		WorkingInfo.LastJob.sLayerUp,
-			//		nSerial,
-			//		nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
-			//}
-			//else
-			//	strDefImgPosPathD.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d\\%05d_.tif"), WorkingInfo.System.sPathOldFile,
-			//		WorkingInfo.LastJob.sModelUp,
-			//		sLot,
-			//		WorkingInfo.LastJob.sLayerUp,
-			//		nSerial,
-			//		nDefImg);
-
 			if (finder.FindFile(strDefImgPathS))
 			{
 				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
@@ -6371,50 +6386,84 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 					i--;
 				}
 			}
+
+
+			int nStrip = -1, nCol = -1, nRow = -1;
+			int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
+			int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[i];
+			int nDefCode = pDoc->m_pPcr[0][nPcrIdx]->m_pDefType[i];
+			if (pDoc->m_Master[0].m_pPcsRgn)
+				pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+
+			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+			{
+				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+					WorkingInfo.LastJob.sModelUp,
+					sLot,
+					WorkingInfo.LastJob.sLayerUp,
+					nSerial,
+					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+			}
+			else
+			{
+				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+					WorkingInfo.LastJob.sModelUp,
+					sLot,
+					WorkingInfo.LastJob.sLayerUp,
+					nSerial,
+					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+			}
+
+			if (finder.FindFile(strDefImgPathS))
+			{
+				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+				{
+					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+					{
+						strTemp.Format(_T("%s \r\n: Defect Image Position File Copy Fail"), strDefImgPathS);
+						pView->MsgBox(strTemp);
+						return FALSE;
+					}
+				}
+			}
+			else
+			{
+				Sleep(30);
+				if (nErrorCnt > 10)
+				{
+					nErrorCnt = 0;
+					strTemp.Format(_T("%s \r\n: Defect Image Position File Not Exist"), strDefImgPathS);
+					//AfxMessageBox(strTemp);
+					return TRUE;
+				}
+				else
+				{
+					nErrorCnt++;
+					i--;
+				}
+			}
+
+
+
 		}
 	}
 
 	return TRUE;
 }
 
-BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
+
+void CGvisR2R_PunchDoc::MakeImageDirDn(int nSerial)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 0;
-
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.19"));
-		return 0;
-	}
-
 	CString strDefImgPathS, strDefImgPathD, strMakeFolderPath;
-	int i;
-	CString strAOIImgDataPath;
-	CFileFind finder;
-	CString strTemp;
-	CString sLot;
-
-	if (sNewLot.IsEmpty())
-		sLot = WorkingInfo.LastJob.sLotDn;
-	else
-		sLot = sNewLot;
-
-	//if (WorkingInfo.System.bUseDTS)
-		strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiDnDefImg);
-	//else
-	//	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiDn);
-
+	CString sLot = WorkingInfo.LastJob.sLotDn;
 	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
 		strMakeFolderPath.Format(_T("%s\\%s"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp);
-			//WorkingInfo.LastJob.sModelDn);
+	//WorkingInfo.LastJob.sModelDn);
 	else
 		strMakeFolderPath.Format(_T("%s%s"), WorkingInfo.System.sPathOldFile,
 			WorkingInfo.LastJob.sModelUp);
-			//WorkingInfo.LastJob.sModelDn);
+	//WorkingInfo.LastJob.sModelDn);
 
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
@@ -6550,6 +6599,36 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 
 	if (!pDoc->DirectoryExists(strMakeFolderPath))
 		CreateDirectory(strMakeFolderPath, NULL);
+}
+
+BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	if (!bDualTest)
+		return 0;
+
+	if (nSerial <= 0)
+	{
+		pView->ClrDispMsg();
+		AfxMessageBox(_T("Serial Error.19"));
+		return 0;
+	}
+
+	CString strDefImgPathS, strDefImgPathD;// , strMakeFolderPath;
+	int i;
+	CFileFind finder;
+	CString strTemp;
+	CString sLot;
+
+	if (sNewLot.IsEmpty())
+		sLot = WorkingInfo.LastJob.sLotDn;
+	else
+		sLot = sNewLot;
+
+	CString strAOIImgDataPath;
+	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiDnDefImg);
+
+	MakeImageDirDn(nSerial);
 
 	int nIdx = GetIdxPcrBufDn(nSerial);
 	if (nIdx < 0)
@@ -6633,6 +6712,64 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 					i--;
 				}
 			}
+
+
+			int nStrip = -1, nCol = -1, nRow = -1;
+			int nPcrIdx = pDoc->GetPcrIdx1(nSerial);
+			int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[i];
+			int nDefCode = pDoc->m_pPcr[1][nPcrIdx]->m_pDefType[i];
+			if (pDoc->m_Master[0].m_pPcsRgn)
+				pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+
+			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+			{
+				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+					WorkingInfo.LastJob.sModelUp,
+					sLot,
+					WorkingInfo.LastJob.sLayerDn,
+					nSerial,
+					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+			}
+			else
+			{
+				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+					WorkingInfo.LastJob.sModelUp,
+					sLot,
+					WorkingInfo.LastJob.sLayerDn,
+					nSerial,
+					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+			}
+
+			if (finder.FindFile(strDefImgPathS))
+			{
+				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+				{
+					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+					{
+						strTemp.Format(_T("%s \r\n: Defect Image Position File Copy Fail"), strDefImgPathS);
+						pView->MsgBox(strTemp);
+						return FALSE;
+					}
+				}
+			}
+			else
+			{
+				Sleep(30);
+				if (nErrorCnt > 10)
+				{
+					nErrorCnt = 0;
+					strTemp.Format(_T("%s \r\n: Defect Image Position File Not Exist"), strDefImgPathS);
+					//AfxMessageBox(strTemp);
+					return TRUE;
+				}
+				else
+				{
+					nErrorCnt++;
+					i--;
+				}
+			}
+
+
 		}
 	}
 
@@ -9480,6 +9617,14 @@ void CGvisR2R_PunchDoc::SetTestMode(int nMode)
 //	if (pView && pView->m_pEngrave)
 //		pView->m_pEngrave->SetTestMode();	//_ItemInx::_TestMode
 //#endif
+
+	CString sPath = WorkingInfo.System.sPathMkCurrInfo;
+
+	if (sPath.IsEmpty())
+		return;
+
+	::WritePrivateProfileString(_T("Infomation"), _T("Test Mode"), sData, sPath);
+
 }
 
 
@@ -9524,7 +9669,7 @@ void CGvisR2R_PunchDoc::SetEngItsCode(CString sItsCode)
 
 void CGvisR2R_PunchDoc::SetCurrentInfoSignal(int nIdxSig, BOOL bOn)
 {
-	CString sData, sIdx, sPath = WorkingInfo.System.sPathMkCurrInfo;
+	CString sData, sIdx, sPath = WorkingInfo.System.sPathMkSignalInfo;
 
 	if (sPath.IsEmpty())
 		return;
@@ -9538,7 +9683,7 @@ void CGvisR2R_PunchDoc::SetCurrentInfoSignal(int nIdxSig, BOOL bOn)
 BOOL CGvisR2R_PunchDoc::GetCurrentInfoSignal(int nIdxSig)
 {
 	TCHAR szData[200];
-	CString sData, sIdx, sPath = WorkingInfo.System.sPathEngCurrInfo;
+	CString sData, sIdx, sPath = WorkingInfo.System.sPathEngSignalInfo;
 
 	if (sPath.IsEmpty())
 		return FALSE;
@@ -9569,14 +9714,14 @@ void CGvisR2R_PunchDoc::SetLastSerialEng(int nSerial)
 }
 
 
-void CGvisR2R_PunchDoc::GetCurrentInfoEng()
+BOOL CGvisR2R_PunchDoc::GetCurrentInfoEng()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	CString sPath = WorkingInfo.System.sPathEngCurrInfo;
 	TCHAR szData[512];
 
 	if (sPath.IsEmpty() || (GetTestMode() != MODE_INNER && GetTestMode() != MODE_OUTER))
-		return;
+		return FALSE;
 
 	if (0 < ::GetPrivateProfileString(_T("Infomation"), _T("Dual Test"), NULL, szData, sizeof(szData), sPath))
 		m_bEngDualTest = _ttoi(szData) > 0 ? TRUE : FALSE;
@@ -9611,6 +9756,8 @@ void CGvisR2R_PunchDoc::GetCurrentInfoEng()
 			m_sEngLayerDn = CString(szData);
 		//WorkingInfo.LastJob.sLayerDn = CString(szData);
 	}
+
+	return TRUE;
 }
 
 int CGvisR2R_PunchDoc::GetCurrentInfoEngShotNum()
@@ -10540,6 +10687,50 @@ BOOL CGvisR2R_PunchDoc::SetItsSerialInfo(int nItsSerial)
 	return TRUE;
 }
 
+int CGvisR2R_PunchDoc::SearchFirstShotOnIts()
+{
+	CString sName, sPath, Path[3], sMsg;
+
+	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+	//Path[1] = pDoc->m_sEngModel;
+	Path[2] = pDoc->m_sItsCode;
+
+	sName.Format(_T("%s.txt"), pDoc->m_sItsCode);
+	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
+
+	CDataFile *pDataFile = new CDataFile;
+
+	if (!pDataFile->Open(sPath))
+	{
+		sMsg.Format(_T("%s File not found."), sPath);
+		pView->MsgBox(sMsg);
+		delete pDataFile;
+		return 0;
+	}
+
+	int i = 0, nLastShot = 0; 
+	CString sLine;
+	int nTotLine = pDataFile->GetTotalLines();
+	for (i = 1; i <= nTotLine; i++)
+	{
+		sLine = pDataFile->GetLineString(i);
+		int nPos = sLine.Find(_T('['), 0);
+		if (nPos >= 0)
+		{
+			sLine.Delete(0, nPos+1);
+			nPos = sLine.ReverseFind(_T(']'));
+			sLine = sLine.Left(nPos);
+			nLastShot = _ttoi(sLine);
+			break;
+		}
+	}
+
+	delete pDataFile;
+
+	return nLastShot;
+}
+
 BOOL CGvisR2R_PunchDoc::GetItsSerialInfo(int nItsSerial, BOOL &bDualTest, CString &sLot, CString &sLayerUp, CString &sLayerDn, int nOption)		// 내층에서의 ITS 시리얼의 정보
 {
 	TCHAR szData[512];
@@ -10555,6 +10746,18 @@ BOOL CGvisR2R_PunchDoc::GetItsSerialInfo(int nItsSerial, BOOL &bDualTest, CStrin
 
 	if (sPath.IsEmpty())
 		return FALSE;
+
+	CString strTemp;
+	CFileFind finder;
+	if (finder.FindFile(sPath) == FALSE)
+	{
+		strTemp.Format(_T("GetItsSerialInfo - Didn't find file.\r\n%s"), sPath);
+		pView->MsgBox(strTemp);
+		return FALSE;
+	}
+
+	if (nItsSerial == 0)
+		nItsSerial = SearchFirstShotOnIts();
 
 	CString sItsSerail;
 	sItsSerail.Format(_T("%d"), nItsSerial);

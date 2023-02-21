@@ -945,31 +945,34 @@ void CVision::SelDispPin(HWND hDispCtrl, CRect rtDispCtrl, int nDisplayFitMode)
 		m_pMilBufPin = m_pMil->AllocBuf(3, PIN_IMG_DISP_SIZEX, PIN_IMG_DISP_SIZEY, 1L+M_UNSIGNED , M_IMAGE+M_DISP+M_PROC);
 	}
 
-	// Mil Display set
-	if(m_pMilDispPin == NULL)
+	if (nDisplayFitMode == 0)
 	{
-		m_pMilDispPin = m_pMil->AllocDisp();
-		m_pMil->DisplaySelect(m_pMilDispPin, m_pMilBufPin, hDispCtrl, rtDispCtrl.Width(), rtDispCtrl.Height(), DISPLAY_FIT_MODE_CENTERVIEW);
-	}
-	// Create Overlay
-	if(m_pMilDispPin)
-	{
-		m_pMil->CreateOverlay(m_pMilDispPin, M_COLOR_GREEN);
-		Sleep(30);
-	}
-	
-	// Draw
-	if(!m_pMilPinOverlay)
-	{
-		m_pMilPinOverlay = m_pMil->AllocDraw(m_pMilDispPin);
- 		m_pMilPinOverlay->SetDrawColor(M_COLOR_GREEN);
- 		m_pMilPinOverlay->SetDrawBackColor(m_pMilDispPin->m_lOverlayColor);
-	}
-	if(!m_pMilPinOverlayDelete)
-	{
-		m_pMilPinOverlayDelete = m_pMil->AllocDraw(m_pMilDispPin);
- 		m_pMilPinOverlayDelete->SetDrawColor(m_pMilDispPin->m_lOverlayColor);
- 		m_pMilPinOverlayDelete->SetDrawBackColor(m_pMilDispPin->m_lOverlayColor);
+		// Mil Display set
+		if (m_pMilDispPin == NULL)
+		{
+			m_pMilDispPin = m_pMil->AllocDisp();
+			m_pMil->DisplaySelect(m_pMilDispPin, m_pMilBufPin, hDispCtrl, rtDispCtrl.Width(), rtDispCtrl.Height(), DISPLAY_FIT_MODE_CENTERVIEW);
+		}
+		// Create Overlay
+		if (m_pMilDispPin)
+		{
+			m_pMil->CreateOverlay(m_pMilDispPin, M_COLOR_GREEN);
+			Sleep(30);
+		}
+
+		// Draw
+		if (!m_pMilPinOverlay)
+		{
+			m_pMilPinOverlay = m_pMil->AllocDraw(m_pMilDispPin);
+			m_pMilPinOverlay->SetDrawColor(M_COLOR_GREEN);
+			m_pMilPinOverlay->SetDrawBackColor(m_pMilDispPin->m_lOverlayColor);
+		}
+		if (!m_pMilPinOverlayDelete)
+		{
+			m_pMilPinOverlayDelete = m_pMil->AllocDraw(m_pMilDispPin);
+			m_pMilPinOverlayDelete->SetDrawColor(m_pMilDispPin->m_lOverlayColor);
+			m_pMilPinOverlayDelete->SetDrawBackColor(m_pMilDispPin->m_lOverlayColor);
+		}
 	}
 }
 
@@ -985,6 +988,37 @@ void CVision::SelDispAlign(HWND hDispCtrl, CRect rtDispCtrl, int nDisplayFitMode
 	if(m_pMilBufAlign == NULL)
 	{
 		m_pMilBufAlign = m_pMil->AllocBuf(3, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, 1L+M_UNSIGNED , M_IMAGE+M_DISP+M_PROC);
+	}
+
+	if (nDisplayFitMode == 1)
+	{
+		// Mil Display set
+		if (m_pMilDispPin == NULL)
+		{
+			m_pMilDispPin = m_pMil->AllocDisp();
+			m_pMil->DisplaySelect(m_pMilDispPin, m_pMilBufAlign, hDispCtrl, rtDispCtrl.Width(), rtDispCtrl.Height(), DISPLAY_FIT_MODE_CENTERVIEW);
+		}
+
+		//// Create Overlay
+		//if (m_pMilDispPin)
+		//{
+		//	m_pMil->CreateOverlay(m_pMilDispPin, M_COLOR_GREEN);
+		//	Sleep(30);
+		//}
+
+		//// Draw
+		//if (!m_pMilPinOverlay)
+		//{
+		//	m_pMilPinOverlay = m_pMil->AllocDraw(m_pMilDispPin);
+		//	m_pMilPinOverlay->SetDrawColor(M_COLOR_GREEN);
+		//	m_pMilPinOverlay->SetDrawBackColor(m_pMilDispPin->m_lOverlayColor);
+		//}
+		//if (!m_pMilPinOverlayDelete)
+		//{
+		//	m_pMilPinOverlayDelete = m_pMil->AllocDraw(m_pMilDispPin);
+		//	m_pMilPinOverlayDelete->SetDrawColor(m_pMilDispPin->m_lOverlayColor);
+		//	m_pMilPinOverlayDelete->SetDrawBackColor(m_pMilDispPin->m_lOverlayColor);
+		//}
 	}
 }
 
@@ -2536,20 +2570,23 @@ void CVision::DrawCrossOnPin(int nCenterX, int nCenterY, int nLineLength)
 	
 	ClearPinCenterMarkArea(nCenterX, nCenterY, nLineLength);
 	
-	m_pMilPinOverlay->DrawCross(M_COLOR_RED, 
-		nCenterX, 
-		nCenterY, 
-		nLineLength, 
-		nLineLength, 
-		0,
-		0);
-// 	m_pMilPinOverlay->DrawCross(M_COLOR_RED, 
-// 		nCenterX+1, 
-// 		nCenterY+1, 
-// 		nLineLength, 
-// 		nLineLength, 
-// 		0,
-// 		0);
+	if (m_pMilPinOverlay)
+	{
+		m_pMilPinOverlay->DrawCross(M_COLOR_RED,
+			nCenterX,
+			nCenterY,
+			nLineLength,
+			nLineLength,
+			0,
+			0);
+		// 	m_pMilPinOverlay->DrawCross(M_COLOR_RED, 
+		// 		nCenterX+1, 
+		// 		nCenterY+1, 
+		// 		nLineLength, 
+		// 		nLineLength, 
+		// 		0,
+		// 		0);
+	}
 }
 
 // BOOL CVision::ClearPcsCenterMarkArea(int nCenterX, int nCenterY, int nLineLength)
@@ -4266,14 +4303,17 @@ BOOL CVision::ClearPinCenterMarkArea(int nCenterX, int nCenterY, int nLineLength
 		m_nPinCrsLen = nLineLength;
 	}
 	
-	m_pMilPinOverlayDelete->DrawRectFill(m_pMilDispPin->m_lOverlayColor, 
-		m_nPinCtrX-m_nPinCrsLen, 
-		m_nPinCtrY-m_nPinCrsLen,
-		m_nPinCtrX+m_nPinCrsLen,
-		m_nPinCtrY+m_nPinCrsLen);
-	m_nPinCtrX = nCenterX;
-	m_nPinCtrY = nCenterY;
-	m_nPinCrsLen = nLineLength;
+	if (m_pMilPinOverlayDelete)
+	{
+		m_pMilPinOverlayDelete->DrawRectFill(m_pMilDispPin->m_lOverlayColor,
+			m_nPinCtrX - m_nPinCrsLen,
+			m_nPinCtrY - m_nPinCrsLen,
+			m_nPinCtrX + m_nPinCrsLen,
+			m_nPinCtrY + m_nPinCrsLen);
+		m_nPinCtrX = nCenterX;
+		m_nPinCtrY = nCenterY;
+		m_nPinCrsLen = nLineLength;
+	}
 	
 	return TRUE;
 }
