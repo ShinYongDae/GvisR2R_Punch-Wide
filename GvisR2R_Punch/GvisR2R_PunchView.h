@@ -1154,6 +1154,11 @@ public:
 	void SetAoiDnAutoStep(int nStep);
 	CString GetAoiDnAlarmRestartMsg();
 
+	void DelOverLotEndSerialUp(int nSerial);
+	void DelOverLotEndSerialDn(int nSerial);
+	void ChkReTestAlarmOnAoiUp();
+	void ChkReTestAlarmOnAoiDn();
+
 	// DTS
 	BOOL m_bSerialDecrese;
 	BOOL GetDtsPieceOut(int nSerial, int* pPcsOutIdx, int& nTotPcsOut);

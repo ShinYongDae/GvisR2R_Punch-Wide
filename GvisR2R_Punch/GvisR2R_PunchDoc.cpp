@@ -1334,8 +1334,16 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.sPathItsFile = CString(szData);
 	else
 	{
-		AfxMessageBox(_T("VRS 완료 파일 Path가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		AfxMessageBox(_T("ItsOldFileDirPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.System.sPathItsFile = CString(_T(""));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("ItsFileDirPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathIts = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("ItsFileDirPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathIts = CString(_T(""));
 	}
 
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("VrsOldFileDirIpPath"), NULL, szData, sizeof(szData), sPath))
@@ -1350,8 +1358,16 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.sIpPathItsFile = CString(szData);
 	else
 	{
-		AfxMessageBox(_T("ITS 완료 파일 IpPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		AfxMessageBox(_T("ITS 완료 파일 ItsOldFileDirIpPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.System.sIpPathItsFile = CString(_T(""));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("ItsFileDirIpPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sIpPathIts = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("ITS 완료 파일 ItsFileDirIpPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sIpPathIts = CString(_T(""));
 	}
 
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("Sapp3Path"), NULL, szData, sizeof(szData), sPath))
@@ -6384,6 +6400,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 				{
 					nErrorCnt++;
 					i--;
+					continue;
 				}
 			}
 
@@ -6440,6 +6457,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
 				{
 					nErrorCnt++;
 					i--;
+					continue;
 				}
 			}
 
@@ -6710,6 +6728,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 				{
 					nErrorCnt++;
 					i--;
+					continue;
 				}
 			}
 
@@ -6766,6 +6785,7 @@ BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
 				{
 					nErrorCnt++;
 					i--;
+					continue;
 				}
 			}
 
@@ -10912,6 +10932,20 @@ CString CGvisR2R_PunchDoc::GetItsFolderPath()
 	return sPath;
 }
 
+CString CGvisR2R_PunchDoc::GetItsTargetFolderPath()
+{
+	CString sItsPath = pDoc->WorkingInfo.System.sPathIts;
+
+	if (sItsPath.IsEmpty())
+		return _T("");
+
+	int pos = sItsPath.ReverseFind('\\');
+	if (pos != -1)
+		sItsPath.Delete(pos, sItsPath.GetLength() - pos);
+
+	return sItsPath;
+}
+
 CString CGvisR2R_PunchDoc::GetItsReelmapPath()
 {
 	CString  Path[3];
@@ -12648,6 +12682,35 @@ void CGvisR2R_PunchDoc::SetReelmapInner(int nDir)
 			break;
 		}
 	}
+}
+
+CString CGvisR2R_PunchDoc::GetItsTargetPath(int nSerial, int nLayer)	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
+{
+	CString sPath, str;
+	CString sItsFolderPath = GetItsTargetFolderPath();
+	CString sTime = pView->GetTimeIts();
+
+	switch (nLayer)
+	{
+	case RMAP_UP: // 외층 Top
+		str.Format(_T("%s_L1_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+		break;
+	case RMAP_DN: // 외층 Bottom
+		str.Format(_T("%s_L4_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+		break;
+	case RMAP_INNER_UP: // 내층 Top
+		str.Format(_T("%s_L2_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+		break;
+	case RMAP_INNER_DN: // 내층 Bottom
+		str.Format(_T("%s_L3_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+		break;
+	}
+
+	return sPath;
 }
 
 

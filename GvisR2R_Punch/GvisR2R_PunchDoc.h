@@ -443,6 +443,7 @@ public:
 	//BOOL WriteReelmapIts(int nItsSerial);																							// ³»¿ÜÃþ ¸ÓÂ¡µÈ ¸±¸Ê µ¥ÀÌÅ¸
 	int GetLastItsSerial();																											// ³»¿ÜÃþ ¸ÓÂ¡µÈ ¸±¸Ê µ¥ÀÌÅ¸ÀÇ Last ½Ã¸®¾ó
 	CString GetItsFolderPath();
+	CString GetItsTargetFolderPath();
 	CString GetItsReelmapPath();
 	BOOL GetInnerFolderPath(int nItsSerial, CString  &sUp, CString &sDn);
 
@@ -468,6 +469,7 @@ public:
 	BOOL InitReelmapInnerDn();
 	void SetReelmapInner(int nDir = ROT_NONE);
 	CString GetItsPath(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
+	CString GetItsTargetPath(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 	int GetItsDefCode(int nDefCode);				// return to [Sapp3Code]
 	BOOL MakeItsDir(CString sModel, CString sLot, CString sLayer);
 	void WriteChangedModel();

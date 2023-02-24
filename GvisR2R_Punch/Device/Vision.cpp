@@ -4360,10 +4360,9 @@ BOOL CVision::SaveMkImg(CString sPath)
 		MIL_ID MilGrabImgCld = M_NULL;
 		MbufChild2d(MilGrabImg->m_MilImage, (640 - DEF_IMG_DISP_SIZEX) / 2, (480 - DEF_IMG_DISP_SIZEX) / 2, DEF_IMG_DISP_SIZEX, DEF_IMG_DISP_SIZEX, &MilGrabImgCld);
 
-		MbufSave(sPath, MilGrabImgCld);
-
 		if (MilGrabImgCld)
 		{
+			MbufSave(sPath, MilGrabImgCld);
 			MbufFree(MilGrabImgCld);
 			MilGrabImgCld = M_NULL;
 		}

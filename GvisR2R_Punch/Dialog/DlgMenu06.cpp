@@ -4108,7 +4108,8 @@ void CDlgMenu06::OnChkEjectBuffer()
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
 					pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-					pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+					pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 				}
 			}
@@ -4140,6 +4141,7 @@ void CDlgMenu06::OnChkEjectBuffer()
 #ifdef USE_MPE
 						pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 					}
 				}

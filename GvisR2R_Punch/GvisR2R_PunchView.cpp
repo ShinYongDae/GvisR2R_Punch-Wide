@@ -4832,9 +4832,9 @@ int CGvisR2R_PunchView::ChkSerial() // // 0: Continue, -: Previous, +: Discontin
 void CGvisR2R_PunchView::ChkBuf()
 {
 	if (!m_bShift2Mk)
-	ChkBufUp();
+		ChkBufUp();
 	if (!m_bShift2Mk)
-	ChkBufDn();
+		ChkBufDn();
 }
 
 void CGvisR2R_PunchView::ChkBufUp()
@@ -4848,6 +4848,8 @@ void CGvisR2R_PunchView::ChkBufUp()
 		{
 			if (m_bShift2Mk)
 				return;
+
+			DelOverLotEndSerialUp(m_pBufSerial[0][i]);
 
 			if (i == m_nBufTot[0] - 1)
 				sTemp.Format(_T("%d"), m_pBufSerial[0][i]);
@@ -4886,6 +4888,8 @@ void CGvisR2R_PunchView::ChkBufDn()
 		{
 			if (m_bShift2Mk)
 				return;
+
+			DelOverLotEndSerialDn(m_pBufSerial[1][i]);
 
 			if (i == m_nBufTot[1] - 1)
 				sTemp.Format(_T("%d"), m_pBufSerial[1][i]);
@@ -5002,17 +5006,19 @@ void CGvisR2R_PunchView::DoIO()
 
 			if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
 			{
-				SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
-				Sleep(300);
-				if(m_pMpe)
-					m_pMpe->Write(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+				ChkReTestAlarmOnAoiUp();
+				//SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
+				//Sleep(300);
+				//if(m_pMpe)
+				//	m_pMpe->Write(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
 			}
 			else if(pDoc->m_sAlmMsg == GetAoiDnAlarmRestartMsg())
 			{
-				SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
-				Sleep(300);
-				if(m_pMpe)
-					m_pMpe->Write(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+				ChkReTestAlarmOnAoiDn();
+				//SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
+				//Sleep(300);
+				//if(m_pMpe)
+				//	m_pMpe->Write(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
 			}
 		}
 		pDoc->m_sAlmMsg = _T("");
@@ -11357,9 +11363,10 @@ BOOL CGvisR2R_PunchView::InitMk()
 
 	if (nRSer)
 	{
-		if(nRSer < 0)
-			m_bSerialDecrese = TRUE;
-		else
+		// syd - 20130224 : 보완 필요
+		//if(nRSer < 0)
+		//	m_bSerialDecrese = TRUE;
+		//else
 			m_bSerialDecrese = FALSE;
 
 		if (pDoc->m_bUseRTRYShiftAdjust)
@@ -17396,7 +17403,10 @@ void CGvisR2R_PunchView::DoAutoSetLastProcAtPlc()
 				if (MODE_INNER != pDoc->GetTestMode())
 				{
 					if (ChkLastProcFromUp())
+					{
 						m_pMpe->Write(_T("MB440185"), 1);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+						m_pMpe->Write(_T("MB44012B"), 1);			// AOI 상 : PCR파일 Received
+					}
 					else
 						m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 				}
@@ -17405,7 +17415,10 @@ void CGvisR2R_PunchView::DoAutoSetLastProcAtPlc()
 					if (ChkLastProcFromEng())
 						m_pMpe->Write(_T("MB44019D"), 1);			// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 					else if (ChkLastProcFromUp())
+					{
 						m_pMpe->Write(_T("MB440185"), 1);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+						m_pMpe->Write(_T("MB44012B"), 1);			// AOI 상 : PCR파일 Received
+					}
 					else
 						m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 				}
@@ -18190,6 +18203,23 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 
 
 				ModelChange(0); // 0 : AOI-Up , 1 : AOI-Dn
+
+				if (m_pDlgMenu01)
+				{
+					m_pDlgMenu01->InitGL();
+					m_bDrawGL = TRUE;
+					m_pDlgMenu01->RefreshRmap();
+					m_pDlgMenu01->InitCadImg();
+					m_pDlgMenu01->SetPnlNum();
+					m_pDlgMenu01->SetPnlDefNum();
+				}
+
+				if (m_pDlgMenu02)
+				{
+					m_pDlgMenu02->ChgModelUp(); // PinImg, AlignImg를 Display함.
+					m_pDlgMenu02->InitCadImg();
+				}
+
 			}
 			if (nNewLot)
 			{
@@ -30704,4 +30734,150 @@ void CGvisR2R_PunchView::Shift2Mk()
 	}
 
 	m_bShift2Mk = FALSE;
+}
+
+void CGvisR2R_PunchView::DelOverLotEndSerialUp(int nSerial)
+{
+	CString sSrc;
+
+	if (nSerial > 0)
+	{
+		sSrc.Format(_T("%s%04d.pcr"), pDoc->WorkingInfo.System.sPathVrsBufUp, nSerial);
+
+		if (pView->m_bSerialDecrese)
+		{
+			if (m_nLotEndSerial > 0 && nSerial < m_nLotEndSerial)
+			{
+				// Delete PCR File
+				pDoc->m_pFile->DeleteFolerOrFile(sSrc);
+			}
+		}
+		else
+		{
+			if (m_nLotEndSerial > 0 && nSerial > m_nLotEndSerial)
+			{
+				// Delete PCR File
+				pDoc->m_pFile->DeleteFolerOrFile(sSrc);
+			}
+		}
+	}
+
+}
+
+
+void CGvisR2R_PunchView::DelOverLotEndSerialDn(int nSerial)
+{
+	CString sSrc;
+
+	if (nSerial > 0)
+	{
+		sSrc.Format(_T("%s%04d.pcr"), pDoc->WorkingInfo.System.sPathVrsBufDn, nSerial);
+
+		if (pView->m_bSerialDecrese)
+		{
+			if (m_nLotEndSerial > 0 && nSerial < m_nLotEndSerial)
+			{
+				// Delete PCR File
+				pDoc->m_pFile->DeleteFolerOrFile(sSrc);
+			}
+		}
+		else
+		{
+			if (m_nLotEndSerial > 0 && nSerial > m_nLotEndSerial)
+			{
+				// Delete PCR File
+				pDoc->m_pFile->DeleteFolerOrFile(sSrc);
+			}
+		}
+	}
+
+}
+
+
+
+void CGvisR2R_PunchView::ChkReTestAlarmOnAoiUp()
+{
+	int nSerial = m_pBufSerial[0][m_nBufTot[0] - 1];
+
+	if (pView->m_bSerialDecrese)
+	{
+		if (m_nLotEndSerial > 0 && nSerial > m_nLotEndSerial)
+		{
+			//if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
+			{
+				SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
+				Sleep(300);
+				if (m_pMpe)
+					m_pMpe->Write(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+			}
+		}
+		else if(m_nLotEndSerial > 0 && nSerial <= m_nLotEndSerial)
+		{
+			if (m_pMpe)
+				m_pMpe->Write(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
+		}
+	}
+	else
+	{
+		if (m_nLotEndSerial > 0 && nSerial < m_nLotEndSerial)
+		{
+			//if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
+			{
+				SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
+				Sleep(300);
+				if (m_pMpe)
+					m_pMpe->Write(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+			}
+		}
+		else if (m_nLotEndSerial > 0 && nSerial >= m_nLotEndSerial)
+		{
+			if (m_pMpe)
+				m_pMpe->Write(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
+		}
+	}
+
+}
+
+
+void CGvisR2R_PunchView::ChkReTestAlarmOnAoiDn()
+{
+	int nSerial = m_pBufSerial[1][m_nBufTot[1] - 1];
+
+	if (pView->m_bSerialDecrese)
+	{
+		if (m_nLotEndSerial > 0 && nSerial > m_nLotEndSerial)
+		{
+			//if (pDoc->m_sAlmMsg == GetAoiDnAlarmRestartMsg())
+			{
+				SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
+				Sleep(300);
+				if (m_pMpe)
+					m_pMpe->Write(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+			}
+		}
+		else if(m_nLotEndSerial > 0 && nSerial <= m_nLotEndSerial)
+		{
+			if (m_pMpe)
+				m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
+		}
+	}
+	else
+	{
+		if (m_nLotEndSerial > 0 && nSerial < m_nLotEndSerial)
+		{
+			//if (pDoc->m_sAlmMsg == GetAoiDnAlarmRestartMsg())
+			{
+				SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
+				Sleep(300);
+				if (m_pMpe)
+					m_pMpe->Write(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+			}
+		}
+		else if (m_nLotEndSerial > 0 && nSerial >= m_nLotEndSerial)
+		{
+			if (m_pMpe)
+				m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
+		}
+	}
+
 }

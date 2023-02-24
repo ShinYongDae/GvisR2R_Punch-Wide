@@ -2662,8 +2662,8 @@ BOOL CReelMap::ReadYield(int nSerial, CString sPath)
 			}
 			else
 			{
-				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-불량(%d)\r\n%s"), nSerial, i, sPath);
-				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+				//sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-불량(%d)\r\n%s"), nSerial, i, sPath);
+				//AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 				return FALSE;
 			}
 		}
@@ -2959,8 +2959,13 @@ BOOL CReelMap::UpdateYield(int nSerial)
 
 	if (bExist && nPnl) // After first shot
 	{
-		ReadYield(nPnl, sPath);
-		WriteYield(nSerial, sPath);
+		if(ReadYield(nPnl, sPath))
+			WriteYield(nSerial, sPath);
+		else
+		{
+			ResetYield();
+			WriteYield(nSerial, sPath);
+		}
 	}
 	else // First Shot
 	{
@@ -4485,9 +4490,9 @@ BOOL CReelMap::ThreadProcRemakeReelmap( LPVOID lpContext )
 	pThread->m_bRtnThreadRemakeReelmap = TRUE;
 	pThread->m_bThreadAliveRemakeReelmap = TRUE;	
 	
-	pThread->m_cs.Lock();
+	//pThread->m_cs.Lock();
 	pThread->m_bRtnThreadRemakeReelmap = pThread->RemakeReelmap();
-	pThread->m_cs.Unlock();
+	//pThread->m_cs.Unlock();
 
 	pThread->m_bThreadAliveRemakeReelmap = FALSE;
 
@@ -5050,10 +5055,10 @@ BOOL CReelMap::ThreadProcReloadRst( LPVOID lpContext )
 	pThread->m_bRtnThreadReloadRst = FALSE;
 	pThread->m_bThreadAliveReloadRst = TRUE;	
 	
-	pThread->m_cs.Lock();
+	//pThread->m_cs.Lock();
 	int nSerial = pDoc->GetLastShotMk();	// m_pDlgFrameHigh에서 얻거나 없으면, sPathOldFile폴더의 ReelMapDataDn.txt에서 _T("Info"), _T("Marked Shot") 찾음.
 	pThread->m_bRtnThreadReloadRst = pThread->ReloadRst(pThread->m_nLastOnThread);
-	pThread->m_cs.Unlock();
+	//pThread->m_cs.Unlock();
 
 	pThread->m_bThreadAliveReloadRst = FALSE;
 
@@ -6397,6 +6402,10 @@ BOOL CReelMap::MakeItsFile(int nSerial, int nLayer) // RMAP_UP, RMAP_DN, RMAP_IN
 	}
 
 	fclose(fp);
+
+	CString sDestPath = pDoc->GetItsTargetPath(nSerial, nLayer);
+	BOOL bRtn = pDoc->m_pFile->Copy(sPath, sDestPath);			// ITS 파일을 복사한다.
+
 	return TRUE;
 }
 
@@ -6564,9 +6573,10 @@ CString CReelMap::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN, R
 BOOL CReelMap::MakeDirIts()
 {
 	CFileFind finder;
-	CString  Path[3];
+	CString  Path[3], sItsPath;
 	CString sPath = _T("");
 
+	sItsPath = pDoc->WorkingInfo.System.sPathIts;
 	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
 	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
 	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
@@ -6590,6 +6600,17 @@ BOOL CReelMap::MakeDirIts()
 	sPath.Format(_T("%s%s\\%s\\Outer"), Path[0], Path[1], Path[2]);
 	if (!pDoc->DirectoryExists(sPath))
 		CreateDirectory(sPath, NULL);
+
+
+	if (sItsPath.IsEmpty())
+		return FALSE;
+
+	int pos = sItsPath.ReverseFind('\\');
+	if (pos != -1)
+		sItsPath.Delete(pos, sItsPath.GetLength() - pos);
+
+	if (!pDoc->DirectoryExists(sItsPath))
+		CreateDirectory(sItsPath, NULL);
 
 	return TRUE;
 }
