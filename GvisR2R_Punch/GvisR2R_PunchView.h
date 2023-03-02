@@ -1159,6 +1159,7 @@ public:
 	void ChkReTestAlarmOnAoiUp();
 	void ChkReTestAlarmOnAoiDn();
 	void ShowMsgBox();
+	BOOL FinalCopyItsFiles();
 
 	// DTS
 	BOOL m_bSerialDecrese;

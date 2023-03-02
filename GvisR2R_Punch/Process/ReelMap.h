@@ -235,6 +235,14 @@ public:
 
 	BOOL GetNodeXYonRmap(int &nNodeX, int &nNodeY, CString sPath);
 
+	BOOL m_bThreadAliveFinalCopyItsFiles, m_bRtnThreadFinalCopyItsFiles;
+	CThreadTask m_ThreadTaskFinalCopyItsFiles; // CThreadTask class, handles the threading code
+	void StartThreadFinalCopyItsFiles();
+	static BOOL ThreadProcFinalCopyItsFiles(LPVOID lpContext);
+	void StopThreadFinalCopyItsFiles();
+	BOOL FinalCopyItsFiles();
+	BOOL CopyItsFile(CString sPathSrc, CString sPathDest);
+
 	// ITS
 	CString GetPathReelmapIts();
 	BOOL MakeItsReelmapHeader();	// ³»¿ÜÃþ ¸ÓÂ¡µÈ ¸±¸Ê Çìµå

@@ -13946,6 +13946,11 @@ void CGvisR2R_PunchView::LotEnd()
 	SetLotEd();
 
 	MakeResultMDS();
+
+	if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
+	{
+		FinalCopyItsFiles();
+	}
 }
 
 void CGvisR2R_PunchView::TimWinker(int nId, int nDly) // 0:Ready, 1:Reset, 2:Run, 3:Stop
@@ -30896,4 +30901,28 @@ void CGvisR2R_PunchView::ShowMsgBox()
 		m_pDlgMyMsg->SetForegroundWindow();
 		m_pDlgMyMsg->RedrawWindow();
 	}
+}
+
+BOOL CGvisR2R_PunchView::FinalCopyItsFiles()
+{
+	if (pDoc->m_pReelMapUp)
+		pDoc->m_pReelMapUp->StartThreadFinalCopyItsFiles();
+
+	return TRUE;
+
+	//if (pDoc->m_pReelMapInnerUp)
+	//	pDoc->m_pReelMapInnerUp->StartThreadRemakeReelmap();
+
+	//if (pDoc->m_pReelMapIts)
+	//	pDoc->m_pReelMapIts->StartThreadRemakeReelmap();
+
+	//if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+	//{
+	//	if (pDoc->m_pReelMapInnerDn)
+	//		pDoc->m_pReelMapInnerDn->StartThreadRemakeReelmap();
+
+	//	if (pDoc->m_pReelMapInnerAllUp)
+	//		pDoc->m_pReelMapInnerAllUp->StartThreadRemakeReelmap();
+	//}
+
 }

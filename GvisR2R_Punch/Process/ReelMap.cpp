@@ -158,6 +158,8 @@ CReelMap::CReelMap(int nLayer, int nPnl, int nPcs, int nDir)
 
 	//ResetYield();
 
+	m_bThreadAliveFinalCopyItsFiles = FALSE;
+
 }
 
 CReelMap::~CReelMap()
@@ -6403,8 +6405,8 @@ BOOL CReelMap::MakeItsFile(int nSerial, int nLayer) // RMAP_UP, RMAP_DN, RMAP_IN
 
 	fclose(fp);
 
-	CString sDestPath = pDoc->GetItsTargetPath(nSerial, nLayer);
-	BOOL bRtn = pDoc->m_pFile->Copy(sPath, sDestPath);			// ITS 파일을 복사한다.
+	//CString sDestPath = pDoc->GetItsTargetPath(nSerial, nLayer);
+	//BOOL bRtn = pDoc->m_pFile->Copy(sPath, sDestPath);			// ITS 파일을 복사한다.
 
 	return TRUE;
 }
@@ -7479,3 +7481,94 @@ CString CReelMap::GetIpPath()
 	m_sIpPath = sPath;
 	return sPath;
 }
+
+
+void CReelMap::StartThreadFinalCopyItsFiles()
+{
+	m_bRtnThreadFinalCopyItsFiles = FALSE;
+	m_bThreadAliveFinalCopyItsFiles = TRUE;
+	m_ThreadTaskFinalCopyItsFiles.Start(GetSafeHwnd(), this, ThreadProcFinalCopyItsFiles);// Start the thread
+}
+
+void CReelMap::StopThreadFinalCopyItsFiles()
+{
+	m_ThreadTaskFinalCopyItsFiles.Stop();// Stop the thread
+}
+
+// Home thread body
+BOOL CReelMap::ThreadProcFinalCopyItsFiles(LPVOID lpContext)
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CReelMap* pThread = reinterpret_cast< CReelMap* >(lpContext);
+	//	DWORD dwTimePeriod = 10; // 10ms sec sleep
+
+	pThread->m_bRtnThreadFinalCopyItsFiles = TRUE;
+	pThread->m_bThreadAliveFinalCopyItsFiles = TRUE;
+
+	//pThread->m_cs.Lock();
+	pThread->m_bRtnThreadFinalCopyItsFiles = pThread->FinalCopyItsFiles();
+	//pThread->m_cs.Unlock();
+
+	pThread->m_bThreadAliveFinalCopyItsFiles = FALSE;
+
+	return (pThread->m_bRtnThreadFinalCopyItsFiles);
+}
+
+BOOL CReelMap::FinalCopyItsFiles()
+{
+	CString sPathSrc, sPathDest;
+	CString sPathSrcDir, sPathDestDir;
+	CString sItsFolderSrcPath = pDoc->GetItsFolderPath();
+	CString sItsFolderDestPath = pDoc->GetItsTargetFolderPath();
+
+	if (pDoc->GetTestMode() == MODE_INNER)
+		sPathSrcDir.Format(_T("%s\\Inner"), sItsFolderSrcPath);
+	else if (pDoc->GetTestMode() == MODE_OUTER)
+		sPathSrcDir.Format(_T("%s\\Outer"), sItsFolderSrcPath);
+	else
+		return FALSE;
+
+	CFileFind cFile;
+	BOOL bExist = cFile.FindFile(sPathSrcDir + _T("\\*.dat"));
+	if (!bExist)
+	{
+		return FALSE; // dat파일이 존재하지 않음.
+	}
+
+	CString sFileName;
+	int nTot = 0;
+	while (bExist)
+	{
+		bExist = cFile.FindNextFile();
+		if (cFile.IsDots()) continue;
+		if (!cFile.IsDirectory())
+		{
+			sFileName = cFile.GetFileName();
+			sPathSrc.Format(_T("%s\\%s"), sPathSrcDir, sFileName);
+			sPathDest.Format(_T("%s\\%s"), sItsFolderDestPath, sFileName);
+			CopyItsFile(sPathSrc, sPathDest);
+			nTot++;
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL CReelMap::CopyItsFile(CString sPathSrc, CString sPathDest)
+{
+	BOOL bRtn = FALSE;
+
+	CFileFind cFile;
+
+	if (!cFile.FindFile(sPathSrc))
+	{
+		return FALSE;
+	}
+
+	if(pDoc->m_pFile)
+		bRtn = pDoc->m_pFile->Copy(sPathSrc, sPathDest);			// ITS 파일을 복사한다.
+
+	return bRtn;
+}
+
+
