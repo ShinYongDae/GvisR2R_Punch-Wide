@@ -1506,7 +1506,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								ShowDefInfoUp(nIdxMkInfo); // 화면의 IDC 인덱스
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
-								SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
+								//SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++; // 화면의 IDC 인덱스
 								m_nIdxDef[0]++; // 화면에 표시할 불량피스 인덱스 ( 0 ~ TotalDef )
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
@@ -1549,7 +1549,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								ShowDefInfoUp(nIdxMkInfo);
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg);
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
-								SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
+								//SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++;
 								m_nIdxDef[0]++;
 								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
@@ -1607,7 +1607,7 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 							ShowDefInfoDn(nIdxMkInfo);
 							WriteDefInfoDn(nSerial, nIdxMkInfo, m_nIdxDef[1], nDefImg);
 							SaveCadImgDn(nSerial, nIdxMkInfo, nDefImg);
-							SaveDefImgPosDn(nSerial, nIdxMkInfo, nDefImg);
+							//SaveDefImgPosDn(nSerial, nIdxMkInfo, nDefImg);
 							m_nIdxMkInfo[1]++;
 							m_nIdxDef[1]++;
 							(pDoc->m_pPcr[1][nIdx]->m_nTotRealDef)++;
@@ -1787,6 +1787,8 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 
 void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 {
+	pDoc->MakeImageDirUp(nSerial);
+
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
@@ -1801,6 +1803,8 @@ void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSer
 
 void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 {
+	pDoc->MakeImageDirDn(nSerial);
+
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
@@ -1824,7 +1828,7 @@ BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 
 	CString strDefImgPathS, strDefImgPathD, strTemp;
 
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+	strDefImgPathS.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		pDoc->WorkingInfo.LastJob.sLotUp,
 		pDoc->WorkingInfo.LastJob.sLayerUp,
@@ -1868,10 +1872,10 @@ BOOL CDlgMenu01::SaveDefImgPosDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 
 	CString strDefImgPathS, strDefImgPathD, strTemp;
 
-	strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
+	strDefImgPathS.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		pDoc->WorkingInfo.LastJob.sLotUp,
-		pDoc->WorkingInfo.LastJob.sLayerUp,
+		pDoc->WorkingInfo.LastJob.sLayerDn,
 		nSerial,
 		nIdxImg);
 
@@ -2266,6 +2270,9 @@ void CDlgMenu01::InitStcData()
 
 	myStcData[84].SubclassDlgItem(IDC_STC_LAST_SHOT, this);
 
+	myStcData[85].SubclassDlgItem(IDC_STC_TQ_VAL_L, this);
+	myStcData[86].SubclassDlgItem(IDC_STC_TQ_VAL_R, this);
+
 	for(int i=0; i<MAX_MENU01_STC_DATA; i++)
 	{
 		myStcData[i].SetFontName(_T("Arial"));
@@ -2472,6 +2479,10 @@ void CDlgMenu01::InitStcTitle()
 
 	myStcTitle[65].SubclassDlgItem(IDC_STC_MK_L, this);
 	myStcTitle[66].SubclassDlgItem(IDC_STC_MK_R, this);
+
+	myStcTitle[67].SubclassDlgItem(IDC_STC_TQ_L, this);
+	myStcTitle[68].SubclassDlgItem(IDC_STC_TQ_R, this);
+
 	for(i=65; i<MAX_MENU01_STC_TITLE; i++)
 	{
 		myStcTitle[i].SetFontName(_T("Arial"));
@@ -2695,6 +2706,7 @@ void CDlgMenu01::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_DISP_MK_CNT);
 		DispMkCnt();
+		DispTqVal();
 		ChkMkLimit();
 		ChkPartialSpd();
 		if(m_bTIM_DISP_MK_CNT)
@@ -4111,7 +4123,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 	CString sLastShot = _T("");
 	BOOL bOn = myBtn[3].GetCheck();
 
-	if(bOn && !m_bLastProc && pView->IsBuffer())
+	if(bOn && !m_bLastProc && pView->IsBufferUp())
 	{
 		if(IDNO == pView->MsgBox(_T("잔량처리를 하시겠습니까?"), 0, MB_YESNO))
 			myBtn[3].SetCheck(FALSE);
@@ -4147,7 +4159,8 @@ void CDlgMenu01::OnChkEjectBuffer()
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
 					pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-					pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+					pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 					sLastShot = ShowKeypad1();
 				}
@@ -4181,6 +4194,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 #ifdef USE_MPE
 						pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 						sLastShot = ShowKeypad1();
 					}
@@ -4580,6 +4594,22 @@ void CDlgMenu01::DispMkCnt()
 
 }
 
+
+void CDlgMenu01::DispTqVal()
+{
+	CString str;
+
+	str.Format(_T("%d"), int(pDoc->GetMarkingToq1()));
+	//str.Format(_T("%.1f"), pDoc->GetMarkingToq1());
+	myStcData[85].SetText(str);
+	//pDoc->SetMkMenu01(_T("Data"), _T("MkNumLf"), str);
+
+	str.Format(_T("%d"), int(pDoc->GetMarkingToq2()));
+	//str.Format(_T("%.1f"), pDoc->GetMarkingToq2());
+	myStcData[86].SetText(str);
+	//pDoc->SetMkMenu01(_T("Data"), _T("MkNumRt"), str);
+
+}
 void CDlgMenu01::ChkMkLimit()
 {
 	int nCurrL = pDoc->GetMkCntL();
@@ -5738,11 +5768,19 @@ void CDlgMenu01::DispTotRatioIts()
 
 	// 내층
 	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+	{
 		if (pDoc->m_pReelMapInnerAllUp)
 			pDoc->m_pReelMapInnerAllUp->GetPcsNum(nGood, nBad);
+		else
+			return;
+	}
 	else
+	{
 		if (pDoc->m_pReelMapInnerUp)
 			pDoc->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
+		else
+			return;
+	}
 
 	nTot = nGood + nBad;
 
@@ -5777,6 +5815,9 @@ void CDlgMenu01::DispTotRatioIts()
 	// 전체
 	if (pDoc->m_pReelMapIts)
 		pDoc->m_pReelMapIts->GetPcsNum(nGood, nBad);
+	else
+		return; 
+
 	nTot = nGood + nBad;
 
 	str.Format(_T("%d"), nBad);
@@ -5816,6 +5857,17 @@ void CDlgMenu01::DispStripRatioIts()
 	int nPnl = m_nSerial - 1;
 	double dRatio = 0.0;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if (bDualTest)
+	{
+		if (!pDoc->m_pReelMapAllUp)
+			return;
+	}
+	else
+	{
+		if (!pDoc->m_pReelMapUp)
+			return;
+	}
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -5894,6 +5946,9 @@ void CDlgMenu01::DispStripRatioIts()
 	// 내층
 	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
 	{
+		if (!pDoc->m_pReelMapInnerAllUp)
+			return;
+
 		nVal[1][0] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(0);
 		nVal[1][1] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(1);
 		nVal[1][2] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(2);
@@ -5901,6 +5956,9 @@ void CDlgMenu01::DispStripRatioIts()
 	}
 	else
 	{
+		if (!pDoc->m_pReelMapInnerUp)
+			return;
+
 		nVal[1][0] = pDoc->m_pReelMapInnerUp->GetDefStrip(0);
 		nVal[1][1] = pDoc->m_pReelMapInnerUp->GetDefStrip(1);
 		nVal[1][2] = pDoc->m_pReelMapInnerUp->GetDefStrip(2);
@@ -5954,6 +6012,9 @@ void CDlgMenu01::DispStripRatioIts()
 	nSum = 0;
 
 	// 외층 + 내층
+	if (!pDoc->m_pReelMapIts || !pDoc->m_pReelMapAllUp)
+		return;
+
 	nMer[0] = pDoc->m_pReelMapIts->GetDefStrip(0);
 	nMer[1] = pDoc->m_pReelMapAllUp->GetDefStrip(1);
 	nMer[2] = pDoc->m_pReelMapAllUp->GetDefStrip(2);

@@ -650,10 +650,11 @@ struct stSystem
 	CString sPathVsShareDn;
 
 	CString sPathEng, sPathEngCurrInfo, sPathEngOffset, sPathMkCurrInfo, sPathMkCurrInfoBuf;
+	CString sPathMkSignalInfo, sPathEngSignalInfo, sPathAoiUpStatusInfo, sPathAoiDnStatusInfo;
 	CString sPathMkMenu01, sPathMkMenu03, sPathMkInfo, sPathMonDispMain;
 
-	CString sPathOldFile, sPathItsFile;
-	CString sIpPathOldFile, sIpPathItsFile;
+	CString sPathOldFile, sPathItsFile, sPathIts;
+	CString sIpPathOldFile, sIpPathItsFile, sIpPathIts;
 	CString sPathSapp3;
 	BOOL bSaveLog;
 	BOOL bNoMk;	// 0 : 마킹모드, 1 : 비젼모드
@@ -687,12 +688,16 @@ struct stSystem
 		sPathVsShareDn = _T("");
 
 		sPathEng = _T(""); sPathEngCurrInfo = _T(""); sPathEngOffset = _T(""); sPathMkCurrInfo = _T("");
+		sPathMkSignalInfo = _T(""); sPathEngSignalInfo = _T("");
+		sPathAoiUpStatusInfo = _T(""); sPathAoiDnStatusInfo = _T("");
 		sPathMkCurrInfoBuf = _T(""); sPathMkMenu01 = _T(""); sPathMkMenu03 = _T(""); sPathMkInfo = _T(""); sPathMonDispMain = _T("");
 
 		sPathOldFile = _T("");
 		sPathItsFile = _T("");
+		sPathIts = _T("");
 		sIpPathOldFile = _T("");
 		sIpPathItsFile = _T("");
+		sIpPathIts = _T("");
 		bSaveLog = FALSE;
 		bNoMk = FALSE;	// 0 : 마킹모드, 1 : 비젼모드
 		sReViewMkLen = _T("");

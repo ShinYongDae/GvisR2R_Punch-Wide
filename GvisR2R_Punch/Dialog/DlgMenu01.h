@@ -13,8 +13,8 @@
 
 #define MAX_MENU01_STC_DEFINFO		12
 
-#define MAX_MENU01_STC_TITLE		67
-#define MAX_MENU01_STC_DATA			85
+#define MAX_MENU01_STC_TITLE		69
+#define MAX_MENU01_STC_DATA			87
 #define MAX_MENU01_BTN				23
 
 #define TIM_DISP_DEF_IMG			100
@@ -179,6 +179,7 @@ public:
 	BOOL SetSerialMkInfo(int nSerial, BOOL bDumy=FALSE);
 
 	void DispMkCnt();
+	void DispTqVal();
 	void WriteMkCnt();
 	void ChkMkLimit();
 

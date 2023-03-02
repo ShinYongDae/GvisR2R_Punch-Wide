@@ -709,6 +709,18 @@ void CDlgInfo::Disp()
 	str.Format(_T("%d"), pDoc->m_pMpeData[7][6]) ; //Shot수 설정값
 	myStcData[18].SetWindowText(str);
 
+
+	if (pView->IsAuto())
+	{
+		GetDlgItem(IDC_CHK_ONE_METAL)->EnableWindow(FALSE); // myBtn[15] IDC_CHK_ONE_METAL - Recoiler\r정방향 CW : FALSE
+		GetDlgItem(IDC_CHK_TWO_METAL)->EnableWindow(FALSE); // myBtn[16] IDC_CHK_TWO_METAL - Uncoiler\r정방향 CW : FALSE
+	}
+	else
+	{
+		GetDlgItem(IDC_CHK_ONE_METAL)->EnableWindow(TRUE); // myBtn[15] IDC_CHK_ONE_METAL - Recoiler\r정방향 CW : FALSE
+		GetDlgItem(IDC_CHK_TWO_METAL)->EnableWindow(TRUE); // myBtn[16] IDC_CHK_TWO_METAL - Uncoiler\r정방향 CW : FALSE
+	}
+
 }
 
 void CDlgInfo::OnStc0008()
@@ -1657,7 +1669,10 @@ void CDlgInfo::OnChkSampleTest()
 void CDlgInfo::OnChkOneMetal() 
 {
 	// TODO: Add your control notification handler code here
-	//SetTwoMetal(FALSE);
+	if (pView->IsAuto())
+		return;
+
+	SetTwoMetal(FALSE);
 	BOOL bOn = myBtn[15].GetCheck();
 	//BOOL bOn = !pDoc->WorkingInfo.LastJob.bOneMetal;
 	if (bOn)
@@ -1687,7 +1702,10 @@ void CDlgInfo::OnChkOneMetal()
 void CDlgInfo::OnChkTwoMetal() 
 {
 	// TODO: Add your control notification handler code here
-	//SetTwoMetal(TRUE);
+	if (pView->IsAuto())
+		return;
+
+	SetTwoMetal(TRUE);
 	BOOL bOn = myBtn[16].GetCheck();
 	//BOOL bOn = !pDoc->WorkingInfo.LastJob.bTwoMetal;
 	if(bOn)
