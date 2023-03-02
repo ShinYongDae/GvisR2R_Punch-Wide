@@ -30310,7 +30310,7 @@ void CGvisR2R_PunchView::MakeResultMDS()
 		RemakeReelmapInner();
 }
 
-BOOL CGvisR2R_PunchView::RemakeReelmap()
+BOOL CGvisR2R_PunchView:: RemakeReelmap()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	CString sReelmapSrc, str;
