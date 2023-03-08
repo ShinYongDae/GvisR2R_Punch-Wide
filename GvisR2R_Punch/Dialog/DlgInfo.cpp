@@ -1480,7 +1480,7 @@ void CDlgInfo::SetTestMode(int nMode)
 			if (pView->m_pDlgMenu01)
 				pView->m_pDlgMenu01->EnableItsMode();
 
-			pView->m_bLoadMstInfo = TRUE; // LoadMstInfo()
+			//pView->m_bLoadMstInfo = TRUE; // LoadMstInfo()
 		}
 		else
 		{
