@@ -166,6 +166,11 @@ CReelMap::~CReelMap()
 {
 	int k;
 
+	m_bThreadAliveReloadRst = FALSE;
+	m_bThreadAliveRemakeReelmap = FALSE;
+	m_bThreadAliveFinalCopyItsFiles = FALSE;
+
+
 	CloseRst();
 
 // 	if(pMkInfo)
@@ -5144,6 +5149,9 @@ BOOL CReelMap::ReloadRst(int nTo)
 
 	for(nPnl=0; nPnl<nTo; nPnl++)
 	{
+		if (!m_bThreadAliveReloadRst)
+			return FALSE;
+
 		nDefStrip[0] = 0; nDefStrip[1] = 0; nDefStrip[2] = 0; nDefStrip[3] = 0;
 
 		for(nRow=0; nRow<nNodeX; nRow++)
@@ -6773,6 +6781,9 @@ BOOL CReelMap::RemakeReelmap()
 		// Reload Reelmap.....
 		for (nPnl = 0; nPnl<nLastShot; nPnl++)
 		{
+			if (!m_bThreadAliveRemakeReelmap)
+				break;
+
 			m_dProgressRatio = double(nPnl + 1) / double(nLastShot) * 100.0;
 
 			fprintf(fp, "%d\n", nPnl + 1);
@@ -7549,6 +7560,8 @@ BOOL CReelMap::FinalCopyItsFiles()
 			CopyItsFile(sPathSrc, sPathDest);
 			nTot++;
 		}
+		if (!m_bThreadAliveFinalCopyItsFiles)
+			break;
 	}
 
 	return TRUE;
