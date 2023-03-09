@@ -5677,7 +5677,7 @@ int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Fai
 		WorkingInfo.LastJob.sModelUp = strModel;
 		WorkingInfo.LastJob.sLayerUp = strLayer;
 
-		if (!WorkingInfo.LastJob.bDualTest)
+		//if (!WorkingInfo.LastJob.bDualTest)
 		{
 			pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
 		}
@@ -5999,10 +5999,10 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 		WorkingInfo.LastJob.sModelDn = strModel;
 		WorkingInfo.LastJob.sLayerDn = strLayer;
 
-		if (!WorkingInfo.LastJob.bDualTest)
-		{
-			pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-		}
+		//if (WorkingInfo.LastJob.bDualTest)
+		//{
+		//	pView->ResetMkInfo(0); // CAD 데이터 리로딩 --->  0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
+		//}
 	}
 
 	if (bUpdate)

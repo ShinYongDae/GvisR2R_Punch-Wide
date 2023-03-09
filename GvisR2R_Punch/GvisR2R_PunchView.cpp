@@ -939,6 +939,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			m_nStepInitView++;
 			ClrDispMsg();
 			//SetListBuf();
+			LoadPcrFromBuf();
 
 			if (m_pDlgMenu01)
 			{
@@ -13553,7 +13554,7 @@ BOOL CGvisR2R_PunchView::LoadMstInfo()
 	OpenReelmap();
 #endif
 	SetPathAtBuf(); // Reelmap path를 설정함.
-	LoadPcrFromBuf();
+	//LoadPcrFromBuf();
 
 	int nSrl = pDoc->GetLastShotMk();
 	SetMkFdLen();
@@ -18208,6 +18209,8 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 
 				// 20220502 - end
 				InitReelmap();	// 20220421
+
+
 				if (pDoc->m_Master[0].IsMstSpec(pDoc->WorkingInfo.System.sPathCamSpecDir, pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sInnerLayerUp))
 					InitReelmapInner();	// 20220421
 
