@@ -1167,6 +1167,14 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.sPathAoiUp = CString(_T(""));
 	}
 
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("AOIUpCamInfoPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathAoiUpCamInfo = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("AOIUpCamInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathAoiUpCamInfo = CString(_T(""));
+	}
+
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("UseDTS"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.System.bUseDTS = _ttoi(szData);
 	else
@@ -1229,6 +1237,14 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	{
 		AfxMessageBox(_T("AOIDnPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.System.sPathAoiDn = CString(_T(""));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("AOIDnCamInfoPath"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.System.sPathAoiDnCamInfo = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("AOIDnCamInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.System.sPathAoiDnCamInfo = CString(_T(""));
 	}
 
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("AOIDnDtsPath"), NULL, szData, sizeof(szData), sPath))
@@ -4827,6 +4843,17 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) /
 			if (!m_bBufEmpty[0])
 				m_bBufEmptyF[0] = FALSE;
 
+			if (m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo() > -1)
+			{
+				if ((m_nAoiCamInfoStrPcs[0] ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
+				{
+					//if(m_nAoiCamInfoStrPcs[0])
+					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+					//else
+					//	pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n상면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+					return FALSE;
+				}
+			}
 			return TRUE;
 		}
 	}
@@ -5021,6 +5048,18 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) /
 		{
 			if (!m_bBufEmpty[1])
 				m_bBufEmptyF[1] = FALSE;
+
+			if (m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo() > -1)
+			{
+				if ((m_nAoiCamInfoStrPcs[1] ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
+				{
+					//if (m_nAoiCamInfoStrPcs[1])
+					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+					//else
+					//	pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n하면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+					return FALSE;
+				}
+			}
 
 			return TRUE;
 		}
@@ -12929,4 +12968,34 @@ void CGvisR2R_PunchDoc::WriteChangedModel()
 
 	if (pView->m_pDlgMenu01)
 		pView->m_pDlgMenu01->DispChangedModel();
+}
+
+int CGvisR2R_PunchDoc::GetAoiUpCamMstInfo()
+{
+	TCHAR szData[200];
+	CString sPath;
+	sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpCamInfo,
+		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp);
+		
+	if (0 < ::GetPrivateProfileString(_T(""), _T(""), NULL, szData, sizeof(szData), sPath))
+		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = _ttoi(szData);
+	else
+		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = -1;
+
+	return pDoc->m_Master[0].MasterInfo.nOutFileOnAoi;
+}
+
+int CGvisR2R_PunchDoc::GetAoiDnCamMstInfo()
+{
+	TCHAR szData[200];
+	CString sPath;
+	sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnCamInfo,
+		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn);
+
+	if (0 < ::GetPrivateProfileString(_T(""), _T(""), NULL, szData, sizeof(szData), sPath))
+		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = _ttoi(szData);
+	else
+		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = -1;
+
+	return pDoc->m_Master[1].MasterInfo.nOutFileOnAoi;
 }

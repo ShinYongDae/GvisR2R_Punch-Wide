@@ -27,7 +27,7 @@ struct stMasterInfo
 	double dTestRgnW, dTestRgnH;				// [PANEL INFO] InspectionWidth, InspectionHeight [mm]
 	double dTestRgnLeft, dTestRgnTop;			// [ORIGIN COORD] MX, MY [mm]
 	double dPinPosX, dPinPosY;					// [ORIGIN COORD] PX, PY [mm]
-	int nActionCode;
+	int nActionCode, nOutFileOnAoi;
 
 	stMasterInfo()
 	{
@@ -39,6 +39,7 @@ struct stMasterInfo
 		dTestRgnLeft = 0.0; dTestRgnTop = 0.0;			// [ORIGIN COORD] MX, MY [mm]
 		dPinPosX = 0.0; dPinPosY = 0.0;					// [ORIGIN COORD] PX, PY [mm]
 		nActionCode = 0; // 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
+		nOutFileOnAoi = -1;	// -1 : AOI 설정 없음, 0 : Old , 1 : New
 	}
 };
 

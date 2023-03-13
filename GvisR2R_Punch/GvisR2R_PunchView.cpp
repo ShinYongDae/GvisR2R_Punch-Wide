@@ -939,6 +939,11 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			m_nStepInitView++;
 			ClrDispMsg();
 			//SetListBuf();
+
+			pDoc->m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
+			if(bDualTest)
+				pDoc->m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
+
 			LoadPcrFromBuf();
 
 			if (m_pDlgMenu01)
@@ -14529,7 +14534,7 @@ BOOL CGvisR2R_PunchView::MakeDummyUp(int nErr) // AOI 상면 기준.
 	FILE *fpPCR = NULL;
 
 	CString sMsg, strRstPath, strRstPath2, sDummyRst;
-	strRstPath.Format(_T("%s%s\\%s\\\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
+	strRstPath.Format(_T("%s%s\\%s\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		pDoc->WorkingInfo.LastJob.sLayerUp,
 		pDoc->WorkingInfo.LastJob.sLotUp,
@@ -14551,7 +14556,7 @@ BOOL CGvisR2R_PunchView::MakeDummyUp(int nErr) // AOI 상면 기준.
 	sNewLine.Format(_T("%d%s"), 0, sLine);
 	pDataFile->ReplaceLine(1, sNewLine);
 
-	strRstPath2.Format(_T("%s%s\\%s\\\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
+	strRstPath2.Format(_T("%s%s\\%s\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		pDoc->WorkingInfo.LastJob.sLayerUp,
 		pDoc->WorkingInfo.LastJob.sLotUp,
@@ -14571,7 +14576,7 @@ BOOL CGvisR2R_PunchView::MakeDummyUp(int nErr) // AOI 상면 기준.
 
 
 	CString sDummyPath;
-	sDummyPath.Format(_T("%s%s\\%s\\\\%s\\%04d.PCR"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
+	sDummyPath.Format(_T("%s%s\\%s\\%s\\%04d.PCR"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		pDoc->WorkingInfo.LastJob.sLayerUp,
 		pDoc->WorkingInfo.LastJob.sLotUp,
@@ -14629,7 +14634,7 @@ BOOL CGvisR2R_PunchView::MakeDummyDn(int nErr) // AOI 상면 기준.
 	FILE *fpPCR = NULL;
 
 	CString sMsg, strRstPath, strRstPath2, sDummyRst;
-	strRstPath.Format(_T("%s%s\\%s\\\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
+	strRstPath.Format(_T("%s%s\\%s\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		//pDoc->WorkingInfo.LastJob.sModelDn,
 		pDoc->WorkingInfo.LastJob.sLayerDn,
@@ -14653,7 +14658,7 @@ BOOL CGvisR2R_PunchView::MakeDummyDn(int nErr) // AOI 상면 기준.
 	sNewLine.Format(_T("%d%s"), 0, sLine);
 	pDataFile->ReplaceLine(1, sNewLine);
 
-	strRstPath2.Format(_T("%s%s\\%s\\\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
+	strRstPath2.Format(_T("%s%s\\%s\\%s\\%04d.RST"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		//pDoc->WorkingInfo.LastJob.sModelDn,
 		pDoc->WorkingInfo.LastJob.sLayerDn,
@@ -14674,7 +14679,7 @@ BOOL CGvisR2R_PunchView::MakeDummyDn(int nErr) // AOI 상면 기준.
 
 
 	CString sDummyPath;
-	sDummyPath.Format(_T("%s%s\\%s\\\\%s\\%04d.PCR"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
+	sDummyPath.Format(_T("%s%s\\%s\\%s\\%04d.PCR"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
 		pDoc->WorkingInfo.LastJob.sModelUp,
 		//pDoc->WorkingInfo.LastJob.sModelDn,
 		pDoc->WorkingInfo.LastJob.sLayerDn,
@@ -18234,6 +18239,21 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 				}
 
 			}
+			else
+			{
+				if ((pDoc->m_nAoiCamInfoStrPcs[0] ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
+				{
+					if (pDoc->m_nAoiCamInfoStrPcs[0])
+						pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+					else
+						pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n상면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+
+					Stop();
+					TowerLamp(RGB_RED, TRUE);
+					break;
+				}
+			}
+			
 			if (nNewLot)
 			{
 				if (!pDoc->m_bNewLotShare[0])
@@ -18378,6 +18398,21 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 				ModelChange(1); // 0 : AOI-Up , 1 : AOI-Dn
 
 			}
+			else
+			{
+				if ((pDoc->m_nAoiCamInfoStrPcs[1] ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
+				{
+					if (pDoc->m_nAoiCamInfoStrPcs[1])
+						pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+					else
+						pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n하면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+
+					Stop();
+					TowerLamp(RGB_RED, TRUE);
+					break;
+				}
+			}
+
 			if (nNewLot)
 			{
 				if (!pDoc->m_bNewLotShare[1])
@@ -30912,20 +30947,14 @@ BOOL CGvisR2R_PunchView::FinalCopyItsFiles()
 		pDoc->m_pReelMapUp->StartThreadFinalCopyItsFiles();
 
 	return TRUE;
+}
 
-	//if (pDoc->m_pReelMapInnerUp)
-	//	pDoc->m_pReelMapInnerUp->StartThreadRemakeReelmap();
+int CGvisR2R_PunchView::GetAoiUpCamMstInfo()
+{
+	return pDoc->GetAoiDnCamMstInfo();
+}
 
-	//if (pDoc->m_pReelMapIts)
-	//	pDoc->m_pReelMapIts->StartThreadRemakeReelmap();
-
-	//if (pDoc->WorkingInfo.LastJob.bDualTestInner)
-	//{
-	//	if (pDoc->m_pReelMapInnerDn)
-	//		pDoc->m_pReelMapInnerDn->StartThreadRemakeReelmap();
-
-	//	if (pDoc->m_pReelMapInnerAllUp)
-	//		pDoc->m_pReelMapInnerAllUp->StartThreadRemakeReelmap();
-	//}
-
+int CGvisR2R_PunchView::GetAoiDnCamMstInfo()
+{
+	return pDoc->GetAoiDnCamMstInfo();
 }

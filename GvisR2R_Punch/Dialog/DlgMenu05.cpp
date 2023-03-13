@@ -195,6 +195,7 @@ BOOL CDlgMenu05::OnInitDialog()
 	InitModel();
 
 	GetDlgItem(IDC_BTN_MES)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_BTN_SAVE4)->ShowWindow(SW_HIDE);
 
 	ShowDlg(IDD_DLG_UTIL_01);
 	OnCheck1();

@@ -476,6 +476,10 @@ public:
 
 	int m_nEjectBufferLastShot;
 
+	int m_nAoiCamInfoStrPcs[2]; // [0] : Up, [1] : Dn
+	int GetAoiUpCamMstInfo();
+	int GetAoiDnCamMstInfo();
+
 // 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();
