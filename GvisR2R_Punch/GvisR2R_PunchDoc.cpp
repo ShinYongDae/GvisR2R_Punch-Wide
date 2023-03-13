@@ -5512,7 +5512,7 @@ int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Fai
 	size_t nFileSize, nRSize;
 	char *FileData;
 	CString strFileData;
-	int nTemp, i;
+	int nTemp, i, nC, nR;
 	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
 	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
 		strCellNum, strImageSize, strImageNum, strMarkingCode;
@@ -5790,6 +5790,9 @@ int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Fai
 			nFileSize = nFileSize - nTemp - 1;
 			m_pPcr[0][nIdx]->m_pDefType[i] = _tstoi(strBadName);
 
+			pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(m_pPcr[0][nIdx]->m_pDefPcs[i], nC, nR);
+			m_pPcr[0][nIdx]->m_arDefType[nR][nC] = m_pPcr[0][nIdx]->m_pDefType[i];
+
 			// CellNum
 			nTemp = strFileData.Find(',', 0);
 			strCellNum = strFileData.Left(nTemp);
@@ -5835,7 +5838,7 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 	size_t nFileSize, nRSize;
 	char *FileData;
 	CString strFileData;
-	int nTemp, i;
+	int nTemp, i, nC, nR;
 	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
 	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
 		strCellNum, strImageSize, strImageNum, strMarkingCode;
@@ -6107,6 +6110,10 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 			strFileData.Delete(0, nTemp + 1);
 			nFileSize = nFileSize - nTemp - 1;
 			m_pPcr[1][nIdx]->m_pDefType[i] = _tstoi(strBadName);
+
+			// Temp for ITS - m_pPcr[0][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
+			pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(Rotate180(m_pPcr[1][nIdx]->m_pDefPcs[i]), nC, nR);
+			m_pPcr[1][nIdx]->m_arDefType[nR][nC] = m_pPcr[1][nIdx]->m_pDefType[i];
 
 			// CellNum
 			nTemp = strFileData.Find(',', 0);

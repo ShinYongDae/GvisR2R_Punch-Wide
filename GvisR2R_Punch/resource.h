@@ -1175,6 +1175,7 @@
 #define IDC_CHK_MK_3                    1363
 #define IDC_STC_2_0                     1363
 #define IDC_STC_SIG3                    1363
+#define IDC_BTN_SAVE4                   1363
 #define IDC_STC_2_1                     1364
 #define IDC_STC_2_2                     1365
 #define IDC_STC_SIG5                    1365

@@ -72,8 +72,14 @@ public:
 	void InitModel();
 	BOOL GetResult();
 	void MakeSapp3();
+	void MakeIts();
+	void MakeItsFile(int nSerial, int nLayer);
+	CString GetItsFileData(int nSerial, int nLayer); // RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 	CString Sapp3Data();
 	CString TxtDataMDS();
+
+	int LoadPCRUpFromMk(int nSerial);
+	int LoadPCRDnFromMk(int nSerial);
 
 
 // Dialog Data
@@ -109,6 +115,7 @@ protected:
 	afx_msg void OnStcSerialSt();
 	afx_msg void OnStcSerialEd();
 	afx_msg void OnStcProc();
+	afx_msg void OnBtnSave4();
 	afx_msg void OnBtnSave3();
 	afx_msg void OnBtnSave2();
 	afx_msg void OnCheck1();
