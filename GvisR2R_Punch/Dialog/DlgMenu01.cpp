@@ -3376,6 +3376,9 @@ void CDlgMenu01::UpdateRst() // Menu01 화면에서의 수율정보를 업데이트함.
 
 void CDlgMenu01::DispTotRatio()
 {
+	if (!pDoc->m_pReelMapUp || !pDoc->m_pReelMapDn)
+		return;
+
 	CString str;
 	int nGood=0, nBad=0, nTot=0, nVal;
 	int nPnl = m_nSerial - 1;
@@ -5696,8 +5699,8 @@ void CDlgMenu01::EnableItsMode(BOOL bEnable)
 		pView->m_nSelRmap = RMAP_ITS;
 
 		myBtn[12].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_UP
-		myBtn[13].SetCheck(SW_HIDE);	// IDC_CHK_DEF_DN
-		myBtn[14].SetCheck(SW_HIDE);	// IDC_CHK_DEF_ALL
+		myBtn[13].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_DN
+		myBtn[14].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_ALL
 
 		myStcTitle[49].SetText(_T("외층")); // IDC_STC_WK_UP
 		myStcTitle[50].SetText(_T("내층")); // IDC_STC_WK_DN
@@ -5709,8 +5712,8 @@ void CDlgMenu01::EnableItsMode(BOOL bEnable)
 		pView->m_nSelRmap = m_nSelRmapPrev;
 
 		myBtn[12].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_UP
-		myBtn[13].SetCheck(SW_HIDE);	// IDC_CHK_DEF_DN
-		myBtn[14].SetCheck(SW_HIDE);	// IDC_CHK_DEF_ALL
+		myBtn[13].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_DN
+		myBtn[14].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_ALL
 
 		myStcTitle[49].SetText(_T("상면")); // IDC_STC_WK_UP
 		myStcTitle[50].SetText(_T("하면")); // IDC_STC_WK_DN

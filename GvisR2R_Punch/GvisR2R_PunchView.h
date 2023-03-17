@@ -494,6 +494,7 @@ public:
 	BOOL m_bCycleStop, m_bContDiffLot;
 	CString m_sDispMain;
 	BOOL m_bStopF_Verify;
+	BOOL m_bInitAuto, m_bInitAutoLoadMstInfo;
 
 	BOOL m_bShowMyMsg;
 	CWnd *m_pMyMsgForeground;

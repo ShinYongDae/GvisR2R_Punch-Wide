@@ -1171,7 +1171,7 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.sPathAoiUpCamInfo = CString(szData);
 	else
 	{
-		AfxMessageBox(_T("AOIUpCamInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		//AfxMessageBox(_T("AOIUpCamInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.System.sPathAoiUpCamInfo = CString(_T(""));
 	}
 
@@ -1243,7 +1243,7 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.sPathAoiDnCamInfo = CString(szData);
 	else
 	{
-		AfxMessageBox(_T("AOIDnCamInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		//AfxMessageBox(_T("AOIDnCamInfoPath가 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.System.sPathAoiDnCamInfo = CString(_T(""));
 	}
 
@@ -4233,25 +4233,6 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 	//if (m_pReelMap->m_nLayer < 0)
 	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
-	if (m_pReelMap->m_nLayer == RMAP_UP || m_pReelMap->m_nLayer == RMAP_ALLUP)
-	{
-		//if (m_pReelMap)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMap;
-		//	m_pReelMap = NULL;
-		//}
-		//m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
-
-		if (pMkInfo)
-		{
-			delete[] pMkInfo;
-			pMkInfo = NULL;
-		}
-		if (!pMkInfo)
-			pMkInfo = new CString[nTotPcs];
-	}
-
 	if (m_pReelMapUp)
 	{
 		//m_pReelMapUp->ResetReelmap();
@@ -4291,6 +4272,25 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 		}
 	}
 
+	if (m_pReelMap->m_nLayer == RMAP_UP || m_pReelMap->m_nLayer == RMAP_ALLUP)
+	{
+		//if (m_pReelMap)
+		//{
+		//	//m_pReelMap->ResetReelmap();
+		//	delete m_pReelMap;
+		//	m_pReelMap = NULL;
+		//}
+		//m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
+
+		if (pMkInfo)
+		{
+			delete[] pMkInfo;
+			pMkInfo = NULL;
+		}
+		if (!pMkInfo)
+			pMkInfo = new CString[nTotPcs];
+	}
+
 	CString sPath = m_pReelMap->GetIpPath();
 	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 
@@ -4326,6 +4326,24 @@ BOOL CGvisR2R_PunchDoc::InitReelmapDn()
 	//if (m_pReelMap->m_nLayer < 0)
 	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
 
+	if (m_pReelMapDn)
+	{
+		//m_pReelMapDn->ResetReelmap();
+		delete m_pReelMapDn;
+		m_pReelMapDn = NULL;
+	}
+	m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
+	//m_pReelMapDn->m_nLayer = RMAP_DN;
+
+	if (m_pReelMapAllDn)
+	{
+		//m_pReelMapAllDn->ResetReelmap();
+		delete m_pReelMapAllDn;
+		m_pReelMapAllDn = NULL;
+	}
+	m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
+	//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
+
 	if (m_pReelMap->m_nLayer == RMAP_DN || m_pReelMap->m_nLayer == RMAP_ALLDN)
 	{
 		//if (m_pReelMap)
@@ -4344,24 +4362,6 @@ BOOL CGvisR2R_PunchDoc::InitReelmapDn()
 		if (!pMkInfo)
 			pMkInfo = new CString[nTotPcs];
 	}
-
-	if (m_pReelMapDn)
-	{
-		//m_pReelMapDn->ResetReelmap();
-		delete m_pReelMapDn;
-		m_pReelMapDn = NULL;
-	}
-	m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapDn->m_nLayer = RMAP_DN;
-
-	if (m_pReelMapAllDn)
-	{
-		//m_pReelMapAllDn->ResetReelmap();
-		delete m_pReelMapAllDn;
-		m_pReelMapAllDn = NULL;
-	}
-	m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
 
 	return TRUE;
 }
@@ -4832,7 +4832,7 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) /
 		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = Status.PcrShare[0].sItsCode;
 	}
 
-	if (WorkingInfo.LastJob.sModelUp != Status.PcrShare[0].sModel || WorkingInfo.LastJob.sLayerUp != Status.PcrShare[0].sLayer)
+	if (WorkingInfo.LastJob.sModelUp != Status.PcrShare[0].sModel || WorkingInfo.LastJob.sLayerUp != Status.PcrShare[0].sLayer || pView->m_bInitAutoLoadMstInfo)
 	{
 		bUpdate = TRUE;
 		WorkingInfo.LastJob.sModelUp = Status.PcrShare[0].sModel;
@@ -4854,6 +4854,14 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) /
 					return FALSE;
 				}
 			}
+
+			pView->m_bInitAutoLoadMstInfo = FALSE;
+			return TRUE;
+		}
+
+		if (pView->m_bInitAutoLoadMstInfo)
+		{
+			pView->m_bInitAutoLoadMstInfo = FALSE;
 			return TRUE;
 		}
 	}
@@ -12974,10 +12982,12 @@ int CGvisR2R_PunchDoc::GetAoiUpCamMstInfo()
 {
 	TCHAR szData[200];
 	CString sPath;
-	sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpCamInfo,
-		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp);
+	sPath.Format(_T("%s%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
+		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerUp, pDoc->WorkingInfo.LastJob.sLotUp);
+	//sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpCamInfo,
+	//	pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp);
 		
-	if (0 < ::GetPrivateProfileString(_T(""), _T(""), NULL, szData, sizeof(szData), sPath))
+	if (0 < ::GetPrivateProfileString(_T("Region"), _T("Piece Region Type"), NULL, szData, sizeof(szData), sPath))
 		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = _ttoi(szData);
 	else
 		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = -1;
@@ -12989,10 +12999,12 @@ int CGvisR2R_PunchDoc::GetAoiDnCamMstInfo()
 {
 	TCHAR szData[200];
 	CString sPath;
-	sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnCamInfo,
-		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn);
+	sPath.Format(_T("%s%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
+		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerDn, pDoc->WorkingInfo.LastJob.sLotUp);
+	//sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnCamInfo,
+	//	pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn);
 
-	if (0 < ::GetPrivateProfileString(_T(""), _T(""), NULL, szData, sizeof(szData), sPath))
+	if (0 < ::GetPrivateProfileString(_T("Region"), _T("Piece Region Type"), NULL, szData, sizeof(szData), sPath))
 		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = _ttoi(szData);
 	else
 		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = -1;

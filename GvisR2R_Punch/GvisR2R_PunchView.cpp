@@ -496,6 +496,8 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_nSaveMk1Img = 0;
 
 	m_bStopF_Verify = FALSE;
+	m_bInitAuto = FALSE;
+	m_bInitAutoLoadMstInfo = FALSE;
 
 	m_bLoadMstInfo = FALSE;
 	m_bLoadMstInfoF = FALSE;
@@ -10853,6 +10855,9 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 
 	pDoc->m_nEjectBufferLastShot = -1;
 	m_bSerialDecrese = FALSE;
+	m_bStopF_Verify = TRUE;
+	m_bInitAuto = TRUE;
+	m_bInitAutoLoadMstInfo = TRUE;
 
 	if (bInit) // 이어가기가 아닌경우.
 	{
@@ -19766,6 +19771,18 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			break;
 
 		case MK_ST + (Mk2PtIdx::DoneMk) :	 // Align변수 초기화
+			if (!IsRun()) 
+				break;
+
+			if (m_bInitAuto)
+			{
+				m_bInitAuto = FALSE;
+				MsgBox(_T("마킹위치를 확인하세요."));
+				Stop();
+				TowerLamp(RGB_YELLOW, TRUE);
+				break;
+			}
+
 			if (m_nBufUpSerial[0] == 0)
 			{
 				m_bSkipAlign[0][0] = TRUE;
@@ -30951,7 +30968,7 @@ BOOL CGvisR2R_PunchView::FinalCopyItsFiles()
 
 int CGvisR2R_PunchView::GetAoiUpCamMstInfo()
 {
-	return pDoc->GetAoiDnCamMstInfo();
+	return pDoc->GetAoiUpCamMstInfo();
 }
 
 int CGvisR2R_PunchView::GetAoiDnCamMstInfo()
