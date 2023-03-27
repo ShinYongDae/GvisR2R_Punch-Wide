@@ -514,6 +514,9 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_bTIM_START_UPDATE = FALSE;
 	m_bEscape = FALSE;
 	m_bSerialDecrese = FALSE;
+
+	pView->m_bIsBuf[0] = FALSE;
+	pView->m_bIsBuf[1] = FALSE;
 }
 
 CGvisR2R_PunchView::~CGvisR2R_PunchView()
@@ -684,6 +687,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 	BOOL bDualTestInner;
 	BOOL bExist = FALSE; 
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bRtn = FALSE;
 
 	if (nIDEvent == TIM_INIT_VIEW)
 	{
@@ -942,11 +946,11 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			ClrDispMsg();
 			//SetListBuf();
 
-			pDoc->m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
-			if(bDualTest)
-				pDoc->m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
+			//pDoc->m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
+			//if (bDualTest)
+			//	pDoc->m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
 
-			LoadPcrFromBuf();
+			bRtn = LoadPcrFromBuf();
 
 			if (m_pDlgMenu01)
 			{
@@ -962,7 +966,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			}
 			else
 			{
-				if (pDoc->m_pReelMap)
+				if (pDoc->m_pReelMap && bRtn)
 				{
 					ReloadRst();
 					UpdateRst();
@@ -3647,7 +3651,10 @@ BOOL CGvisR2R_PunchView::ChkBufUp(int* pSerial, int &nTot)
 	if (nTot == 0)
 		pDoc->m_bBufEmpty[0] = TRUE;
 	else
+	{
 		pDoc->m_bBufEmpty[0] = FALSE;
+		m_bIsBuf[0] = TRUE;
+	}
 
 	return (bRtn);
 }
@@ -3699,7 +3706,10 @@ BOOL CGvisR2R_PunchView::ChkBufDn(int* pSerial, int &nTot)
 	if (nTot == 0)
 		pDoc->m_bBufEmpty[1] = TRUE;
 	else
+	{
 		pDoc->m_bBufEmpty[1] = FALSE;
+		m_bIsBuf[1] = TRUE;
+	}
 
 	return (bRtn);
 	//return TRUE;
@@ -10188,12 +10198,19 @@ BOOL CGvisR2R_PunchView::IsBuffer(int nNum)
 	{
 		if (m_nBufTot[0] > nNum && m_nBufTot[1] > nNum) // [0]: AOI-Up , [1]: AOI-Dn
 			return TRUE;
+
+		if (m_bLastProc)
+		{
+			if ((m_nBufTot[0] > nNum || !m_bIsBuf[0]) && (m_nBufTot[1] > nNum || !m_bIsBuf[1])) // [0]: AOI-Up , [1]: AOI-Dn
+				return TRUE;
+		}
 	}
 	else
 	{
 		if (m_nBufTot[0] > nNum) // [0]: AOI-Up
 			return TRUE;
 	}
+
 	return FALSE;
 }
 
@@ -10616,10 +10633,10 @@ BOOL CGvisR2R_PunchView::SetSerialMkInfo(int nSerial, BOOL bDumy)
 void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 {
 	pView->m_nDebugStep = 10; pView->DispThreadTick();
-	int nCam, nPoint;
+	int nCam, nPoint, kk, a, b;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	for (int kk = 0; kk<10; kk++)
+	for (kk = 0; kk < 10; kk++)
 	{
 		m_bDispMsgDoAuto[kk] = FALSE;
 		m_nStepDispMsg[kk] = 0;
@@ -10787,9 +10804,9 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 	pDoc->SetMkMenu01(_T("Signal"), _T("DispDefImg"), _T("0"));
 
 	pView->m_nDebugStep = 11; pView->DispThreadTick();
-	for (int a = 0; a<2; a++)
+	for (a = 0; a<2; a++)
 	{
-		for (int b = 0; b<4; b++)
+		for (b = 0; b<4; b++)
 		{
 			m_nMkStrip[a][b] = 0;
 			m_bRejectDone[a][b] = FALSE;
@@ -11097,8 +11114,8 @@ void CGvisR2R_PunchView::ModelChange(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn
 		if (pView->m_pDlgMenu01)
 		{
 			pView->m_pDlgMenu01->UpdateData();
-			if (pView->m_nSelRmap == RMAP_UP || pView->m_nSelRmap == RMAP_ALLUP)
-				pView->m_pDlgMenu01->OpenReelmap(pView->m_nSelRmap);
+			//if (pView->m_nSelRmap == RMAP_UP || pView->m_nSelRmap == RMAP_ALLUP)
+			//	pView->m_pDlgMenu01->OpenReelmap(pView->m_nSelRmap);
 		}
 
 		pDoc->m_pSpecLocal->MakeDir(pDoc->Status.PcrShare[0].sModel, pDoc->Status.PcrShare[0].sLayer);
@@ -11116,8 +11133,8 @@ void CGvisR2R_PunchView::ModelChange(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn
 		if (pView->m_pDlgMenu01)
 		{
 			pView->m_pDlgMenu01->UpdateData();
-			if (pView->m_nSelRmap == RMAP_DN || pView->m_nSelRmap == RMAP_ALLDN)
-				pView->m_pDlgMenu01->OpenReelmap(pView->m_nSelRmap);
+			//if (pView->m_nSelRmap == RMAP_DN || pView->m_nSelRmap == RMAP_ALLDN)
+			//	pView->m_pDlgMenu01->OpenReelmap(pView->m_nSelRmap);
 		}
 		pDoc->m_pSpecLocal->MakeDir(pDoc->Status.PcrShare[1].sModel, pDoc->Status.PcrShare[1].sLayer);
 	}
@@ -11331,6 +11348,7 @@ void CGvisR2R_PunchView::ResetMkInfo(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn , 2 : 
 	// 		if(m_pDlgMenu01)
 	// 			m_pDlgMenu01->ResetMkInfo();
 	// 	}
+
 }
 
 void CGvisR2R_PunchView::SetAlignPos()
@@ -14243,7 +14261,7 @@ BOOL CGvisR2R_PunchView::IsFixPcsUp(int nSerial)
 		return FALSE;
 
 	CString sMsg = _T(""), str = _T("");
-	int nStrip, pCol[2500], pRow[2500], nTot;
+	int nStrip, pCol[2500], pRow[2500], nTot, nRepeat;
 
 	if (pDoc->m_pReelMapUp->IsFixPcs(nSerial, pCol, pRow, nTot))
 	{
@@ -14255,10 +14273,21 @@ BOOL CGvisR2R_PunchView::IsFixPcsUp(int nSerial)
 		for (int i = 0; i<nTot; i++)
 		{
 			nStrip = int(pRow[i] / nStPcsY);
+			nRepeat = pDoc->m_pReelMapUp->GetRptFixPcs(pCol[i], pRow[i]);
 			if (!(i % 5))
-				str.Format(_T("\r\n[%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			{
+				if(nRepeat > 1)
+					str.Format(_T("\r\n[%d:%c-%d,%d] (%d회)"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1, nRepeat);
+				else
+					str.Format(_T("\r\n[%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			}
 			else
-				str.Format(_T(" , [%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			{
+				if (nRepeat > 1)
+					str.Format(_T(" , [%d:%c-%d,%d] (%d회)"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1, nRepeat);
+				else
+					str.Format(_T(" , [%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			}
 
 			sMsg += str;
 		}
@@ -14282,7 +14311,7 @@ BOOL CGvisR2R_PunchView::IsFixPcsDn(int nSerial)
 		return FALSE;
 
 	CString sMsg = _T(""), str = _T("");
-	int nStrip, pCol[2500], pRow[2500], nTot;
+	int nStrip, pCol[2500], pRow[2500], nTot, nRepeat;
 
 	if (pDoc->m_pReelMapDn->IsFixPcs(nSerial, pCol, pRow, nTot))
 	{
@@ -14294,10 +14323,22 @@ BOOL CGvisR2R_PunchView::IsFixPcsDn(int nSerial)
 		for (int i = 0; i<nTot; i++)
 		{
 			nStrip = int(pRow[i] / nStPcsY);
+			nRepeat = pDoc->m_pReelMapDn->GetRptFixPcs(pCol[i], pRow[i]);
+
 			if (!(i % 5))
-				str.Format(_T("\r\n[%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			{
+				if (nRepeat > 1)
+					str.Format(_T("\r\n[%d:%c-%d,%d] (%d회)"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1, nRepeat);
+				else
+					str.Format(_T("\r\n[%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			}
 			else
-				str.Format(_T(" , [%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			{
+				if (nRepeat > 1)
+					str.Format(_T(" , [%d:%c-%d,%d] (%d회)"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1, nRepeat);
+				else
+					str.Format(_T(" , [%d:%c-%d,%d]"), nSerial, 'A' + nStrip, pCol[i] + 1, (pRow[i] % nStPcsY) + 1);
+			}
 
 			sMsg += str;
 		}
@@ -18129,6 +18170,9 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 		break;
 
 	case AT_LP + 4:
+		if (!IsRun())
+			break;
+
 		if (!bDualTest)
 		{
 			if (pDoc->GetTestMode() == MODE_OUTER)
@@ -18246,16 +18290,20 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 			}
 			else
 			{
-				if ((pDoc->m_nAoiCamInfoStrPcs[0] ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
+				if (nSerial == 1)
 				{
-					if (pDoc->m_nAoiCamInfoStrPcs[0])
-						pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
-					else
-						pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n상면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+					pDoc->m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
+					if ((pDoc->m_nAoiCamInfoStrPcs[0] == 1 ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
+					{
+						if (pDoc->m_nAoiCamInfoStrPcs[0])
+							pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+						else
+							pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n상면 AOI는 일반 모드에서 검사를 진행하였습니다."));
 
-					Stop();
-					TowerLamp(RGB_RED, TRUE);
-					break;
+						Stop();
+						TowerLamp(RGB_RED, TRUE);
+						break;
+					}
 				}
 			}
 			
@@ -18358,6 +18406,9 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 		break;
 
 	case AT_LP + 5:
+		if (!IsRun())
+			break;
+
 		if (!bDualTest)
 		{
 			m_nStepAuto++;
@@ -18405,16 +18456,20 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 			}
 			else
 			{
-				if ((pDoc->m_nAoiCamInfoStrPcs[1] ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
+				if (nSerial == 1)
 				{
-					if (pDoc->m_nAoiCamInfoStrPcs[1])
-						pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
-					else
-						pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n하면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+					pDoc->m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
+					if ((pDoc->m_nAoiCamInfoStrPcs[1] == 1 ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
+					{
+						if (pDoc->m_nAoiCamInfoStrPcs[1])
+							pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+						else
+							pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n하면 AOI는 일반 모드에서 검사를 진행하였습니다."));
 
-					Stop();
-					TowerLamp(RGB_RED, TRUE);
-					break;
+						Stop();
+						TowerLamp(RGB_RED, TRUE);
+						break;
+					}
 				}
 			}
 
@@ -22804,19 +22859,6 @@ void CGvisR2R_PunchView::OpenReelmap()
 		if (pDoc->m_pReelMapAllDn)
 			pDoc->m_pReelMapAllDn->Open();
 	}
-
-	//if (pDoc->m_pReelMap)
-	//{
-	//	if (pDoc->m_pReelMap->m_nLayer < 0)
-	//		pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
-	//	pDoc->m_pReelMap->Open();
-	//}
-
-	//if (pDoc->GetTestMode() == MODE_OUTER)
-	//{
-	//	if (pDoc->m_pReelMapIts)
-	//		pDoc->m_pReelMapIts->Open(GetRmapPath(pDoc->m_pReelMapIts->m_nLayer));
-	//}
 }
 
 void CGvisR2R_PunchView::OpenReelmapUp()
@@ -24712,10 +24754,11 @@ void CGvisR2R_PunchView::ChgLot()
 	SetPathAtBuf();
 }
 
-void CGvisR2R_PunchView::LoadPcrFromBuf() // 프로그램 처음 시작시 버퍼에 저장된 파일을 릴맵에 최초로 업데이트 함.
+BOOL CGvisR2R_PunchView::LoadPcrFromBuf() // 프로그램 처음 시작시 버퍼에 저장된 파일을 릴맵에 최초로 업데이트 함.
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	CString str, sTemp;
+	BOOL bRtn = FALSE;
 
 	if (ChkBufUp(m_pBufSerial[0], m_nBufTot[0]))
 	{
@@ -24725,6 +24768,7 @@ void CGvisR2R_PunchView::LoadPcrFromBuf() // 프로그램 처음 시작시 버퍼에 저장된 
 			if (!bDualTest)
 			{
 				UpdateReelmap(m_pBufSerial[0][i]);
+				bRtn = TRUE;
 			}
 		}
 	}
@@ -24737,9 +24781,12 @@ void CGvisR2R_PunchView::LoadPcrFromBuf() // 프로그램 처음 시작시 버퍼에 저장된 
 			{
 				LoadPcrDn(m_pBufSerial[1][i]);
 				UpdateReelmap(m_pBufSerial[1][i]); // After inspect bottom side.
+				bRtn = TRUE;
 			}
 		}
 	}
+
+	return bRtn;
 }
 
 void CGvisR2R_PunchView::SetPathAtBuf()
@@ -29563,12 +29610,12 @@ void CGvisR2R_PunchView::OpenReelmapInner()
 			pDoc->m_pReelMapInnerAllDn->Open();
 	}
 
-	if (pDoc->m_pReelMapInner)
-	{
-		if (pDoc->m_pReelMapInner->m_nLayer < 0)
-			pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmapInner;
-		pDoc->m_pReelMapInner->Open();
-	}
+	//if (pDoc->m_pReelMapInner)
+	//{
+	//	if (pDoc->m_pReelMapInner->m_nLayer < 0)
+	//		pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmapInner;
+	//	pDoc->m_pReelMapInner->Open();
+	//}
 
 	//if (pDoc->m_pReelMapInOuterUp)
 	//	pDoc->m_pReelMapInOuterUp->Open(GetRmapPath(RMAP_INOUTER_UP));
@@ -29595,22 +29642,22 @@ void CGvisR2R_PunchView::OpenReelmapInnerUp()
 			pDoc->m_pReelMapInnerAllUp->Open();
 	}
 
-	if (pDoc->m_pReelMapInner)
-	{
-		if (pDoc->m_pReelMapInner->m_nLayer < 0)
-			pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmapInner;
+	//if (pDoc->m_pReelMapInner)
+	//{
+	//	if (pDoc->m_pReelMapInner->m_nLayer < 0)
+	//		pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmapInner;
 
-		if (bDualTest)
-		{
-			if (pDoc->m_pReelMapInner->m_nLayer == RMAP_UP || pDoc->m_pReelMapInner->m_nLayer == RMAP_ALLUP)
-				pDoc->m_pReelMapInner->Open();
-		}
-		else
-		{
-			if (pDoc->m_pReelMapInner->m_nLayer == RMAP_UP)
-				pDoc->m_pReelMapInner->Open();
-		}
-	}
+	//	if (bDualTest)
+	//	{
+	//		if (pDoc->m_pReelMapInner->m_nLayer == RMAP_UP || pDoc->m_pReelMapInner->m_nLayer == RMAP_ALLUP)
+	//			pDoc->m_pReelMapInner->Open();
+	//	}
+	//	else
+	//	{
+	//		if (pDoc->m_pReelMapInner->m_nLayer == RMAP_UP)
+	//			pDoc->m_pReelMapInner->Open();
+	//	}
+	//}
 }
 
 void CGvisR2R_PunchView::OpenReelmapInnerDn()
@@ -29626,14 +29673,14 @@ void CGvisR2R_PunchView::OpenReelmapInnerDn()
 	if (pDoc->m_pReelMapInnerAllDn)
 		pDoc->m_pReelMapInnerAllDn->Open();
 
-	if (pDoc->m_pReelMapInner)
-	{
-		if (pDoc->m_pReelMapInner->m_nLayer < 0)
-			pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmapInner;
+	//if (pDoc->m_pReelMapInner)
+	//{
+	//	if (pDoc->m_pReelMapInner->m_nLayer < 0)
+	//		pDoc->m_pReelMapInner->m_nLayer = pView->m_nSelRmapInner;
 
-		if (pDoc->m_pReelMapInner->m_nLayer == RMAP_DN || pDoc->m_pReelMapInner->m_nLayer == RMAP_ALLDN)
-			pDoc->m_pReelMapInner->Open();
-	}
+	//	if (pDoc->m_pReelMapInner->m_nLayer == RMAP_DN || pDoc->m_pReelMapInner->m_nLayer == RMAP_ALLDN)
+	//		pDoc->m_pReelMapInner->Open();
+	//}
 }
 
 

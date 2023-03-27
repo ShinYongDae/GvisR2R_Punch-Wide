@@ -208,6 +208,10 @@ public:
 	void DispLotEndSerial(int nLotEndSerial);
 	void DispChangedModel();
 
+	void SwitchReelmapDisp(int nSelRmap);	// 20130315
+	void DispReelmapDisp();					// 20130321
+
+
 // Dialog Data
 	//{{AFX_DATA(CDlgMenu01)
 	enum { IDD = IDD_DLG_MENU_01 };

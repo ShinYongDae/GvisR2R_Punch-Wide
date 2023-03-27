@@ -55,6 +55,7 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 
 	// 	m_pCellRgn = NULL;
 	// 	m_pPcsRgn = NULL;
+	m_pReelMapDisp = NULL;
 	m_pReelMap = NULL;
 	m_pReelMapUp = NULL;
 	m_pReelMapDn = NULL;
@@ -4204,6 +4205,11 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 	CString sPath = m_pReelMap->GetIpPath();
 	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 
+	if (m_pReelMap)
+	{
+		m_pReelMapDisp = m_pReelMap;
+		pView->m_pDlgMenu01->SelMap(ALL);
+	}
 	return TRUE;
 }
 
@@ -4254,7 +4260,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
 
 		if (pDoc->GetTestMode() != MODE_OUTER)
-			m_pReelMap = m_pReelMapAllUp;
+ 			m_pReelMap = m_pReelMapAllUp;
 		else
 		{
 			if (m_pReelMapIts)
@@ -4293,6 +4299,9 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 
 	CString sPath = m_pReelMap->GetIpPath();
 	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+
+	if (pView->m_pDlgMenu01)
+		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_nSelRmap);
 
 	return TRUE;
 }
@@ -4362,6 +4371,9 @@ BOOL CGvisR2R_PunchDoc::InitReelmapDn()
 		if (!pMkInfo)
 			pMkInfo = new CString[nTotPcs];
 	}
+
+	if (pView->m_pDlgMenu01)
+		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_nSelRmap);
 
 	return TRUE;
 }
@@ -4461,6 +4473,13 @@ void CGvisR2R_PunchDoc::SetReelmap(int nDir)
 			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
 			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
 			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
+			if (m_pReelMapDisp)
+			{
+				m_pReelMapDisp->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.left;
+				m_pReelMapDisp->pFrmRgn[k].top = m_Master[0].m_pPcsRgn->rtFrm.top;
+				m_pReelMapDisp->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fRight;
+				m_pReelMapDisp->pFrmRgn[k].bottom = fBottom;
+			}
 
 			for (i = 0; i < nTotPcs; i++)
 			{
@@ -4475,6 +4494,14 @@ void CGvisR2R_PunchDoc::SetReelmap(int nDir)
 				m_pReelMap->pPcsRgn[k][i].top = fData2;
 				m_pReelMap->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
 				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
+
+				if (m_pReelMapDisp)
+				{
+					m_pReelMapDisp->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+					m_pReelMapDisp->pPcsRgn[k][i].top = fData2;
+					m_pReelMapDisp->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+					m_pReelMapDisp->pPcsRgn[k][i].bottom = fData4;
+				}
 			}
 			break;
 			// 		case ROT_NONE:
@@ -4504,6 +4531,14 @@ void CGvisR2R_PunchDoc::SetReelmap(int nDir)
 			m_pReelMap->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.bottom;
 			m_pReelMap->pFrmRgn[k].bottom = fDistY - m_Master[0].m_pPcsRgn->rtFrm.left;
 
+			if (m_pReelMapDisp)
+			{
+				m_pReelMapDisp->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.top;
+				m_pReelMapDisp->pFrmRgn[k].top = fDistY - m_Master[0].m_pPcsRgn->rtFrm.right;
+				m_pReelMapDisp->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.bottom;
+				m_pReelMapDisp->pFrmRgn[k].bottom = fDistY - m_Master[0].m_pPcsRgn->rtFrm.left;
+			}
+
 			for (i = 0; i < nTotPcs; i++)
 			{
 				fData1 = m_Master[0].m_pPcsRgn->pPcs[i].top;	// left
@@ -4515,6 +4550,14 @@ void CGvisR2R_PunchDoc::SetReelmap(int nDir)
 				m_pReelMap->pPcsRgn[k][i].top = fData2;
 				m_pReelMap->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
 				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
+
+				if (m_pReelMapDisp)
+				{
+					m_pReelMapDisp->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+					m_pReelMapDisp->pPcsRgn[k][i].top = fData2;
+					m_pReelMapDisp->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+					m_pReelMapDisp->pPcsRgn[k][i].bottom = fData4;
+				}
 			}
 			break;
 		}
@@ -4843,9 +4886,10 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) /
 			if (!m_bBufEmpty[0])
 				m_bBufEmptyF[0] = FALSE;
 
-			if (m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo() > -1)
+			m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
+			if (m_nAoiCamInfoStrPcs[0] > -1)
 			{
-				if ((m_nAoiCamInfoStrPcs[0] ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
+				if ((m_nAoiCamInfoStrPcs[0] == 1 ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
 				{
 					//if(m_nAoiCamInfoStrPcs[0])
 					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
@@ -5057,9 +5101,10 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) /
 			if (!m_bBufEmpty[1])
 				m_bBufEmptyF[1] = FALSE;
 
-			if (m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo() > -1)
+			m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
+			if (m_nAoiCamInfoStrPcs[1] > -1)
 			{
-				if ((m_nAoiCamInfoStrPcs[1] ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
+				if ((m_nAoiCamInfoStrPcs[1] == 1 ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
 				{
 					//if (m_nAoiCamInfoStrPcs[1])
 					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
@@ -8261,6 +8306,10 @@ void CGvisR2R_PunchDoc::DelPcrAll()
 
 	DelPcrUp();
 	DelPcrDn();
+
+	pView->m_bIsBuf[0] = FALSE;
+	pView->m_bIsBuf[1] = FALSE;
+
 }
 
 void CGvisR2R_PunchDoc::DelPcrUp()

@@ -232,7 +232,7 @@ void CMyGL::SetPcsDef()
 
 void CMyGL::SetPnlNum()
 {
-	if(!m_pReelMap || !m_pReelMap->m_pPnlNum)//pDoc->
+	if(!m_pReelMap || !m_pReelMap->m_pPnlNum)
 		return;
 
 	if(!m_pPnlNum)

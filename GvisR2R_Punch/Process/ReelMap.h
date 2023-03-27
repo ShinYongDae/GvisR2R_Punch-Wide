@@ -72,6 +72,7 @@ class CReelMap : public CWnd
 {
 	BOOL m_FixPcs[FIX_PCS_SHOT_MAX][FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]
 	int m_FixPcsPrev[FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]
+	int m_FixPcsRpt[FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]
 	int m_nPrevSerial[2]; // [0] : -- , [1] : ++
 	int m_nPnlBuf;															// 메모리에 할당된 총 Shot수
 	short ***m_pPnlBuf;	// DefCode 3D Array : [nSerial-1][nRow][nCol] on File -> [nSerial-1][NodeX][NodeY] : Rotated Cw 90 
@@ -194,6 +195,7 @@ public:
 	void SetFixPcs(int nSerial, int nCol, int nRow); // nShot : 0 ~ 
 	BOOL IsFixPcs(int nSerial, int &Col, int &Row);
 	BOOL IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot);
+	int GetRptFixPcs(int nCol, int nRow);
 
 	//BOOL Write(int nSerial, int nLayer, CString sPath);
 	void SetPathAtBuf();

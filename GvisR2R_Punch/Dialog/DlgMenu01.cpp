@@ -182,17 +182,17 @@ void CDlgMenu01::AtDlgShow()
 
 	if(pDoc->WorkingInfo.LastJob.nMergingLayer==0) 	// [0]:AOI-Up , [1]:AOI-Dn
 	{
-		myStcTitle[61].SetTextColor(RGB_WHITE);
-		myStcTitle[61].SetBkColor(RGB_RED);
-		myStcTitle[62].SetTextColor(RGB_WHITE);
-		myStcTitle[62].SetBkColor(RGB_DARKBLUE);
+		myStcTitle[61].SetTextColor(RGB_WHITE);		// IDC_STC_UP
+		myStcTitle[61].SetBkColor(RGB_RED);			// IDC_STC_UP
+		myStcTitle[62].SetTextColor(RGB_WHITE);		// IDC_STC_DN
+		myStcTitle[62].SetBkColor(RGB_DARKBLUE);	// IDC_STC_DN
 	}
 	else if(pDoc->WorkingInfo.LastJob.nMergingLayer==1) 	// [0]:AOI-Up , [1]:AOI-Dn
 	{
-		myStcTitle[61].SetTextColor(RGB_WHITE);
-		myStcTitle[61].SetBkColor(RGB_DARKBLUE);
-		myStcTitle[62].SetTextColor(RGB_WHITE);
-		myStcTitle[62].SetBkColor(RGB_RED);
+		myStcTitle[61].SetTextColor(RGB_WHITE);		// IDC_STC_UP
+		myStcTitle[61].SetBkColor(RGB_DARKBLUE);	// IDC_STC_UP
+		myStcTitle[62].SetTextColor(RGB_WHITE);		// IDC_STC_DN
+		myStcTitle[62].SetBkColor(RGB_RED);			// IDC_STC_DN
 	}
 
 	myBtn[21].SetCheck(pDoc->WorkingInfo.Probing[0].bUse);
@@ -363,8 +363,8 @@ void CDlgMenu01::SelMap(int nSel)
 			pView->m_nSelRmap = RMAP_ALLUP;
 		break;
 	}
-	OpenReelmap(pView->m_nSelRmap);
-	DispReelmap(TEST_SHOT);	
+	//OpenReelmap(pView->m_nSelRmap);
+	//DispReelmap(TEST_SHOT);	
 #else
 	CString str;// , sPath;
 
@@ -414,13 +414,14 @@ void CDlgMenu01::SelMap(int nSel)
 		pView->m_nSelRmap = RMAP_ITS;
 	}
 
+	SwitchReelmapDisp(pView->m_nSelRmap);
+
 	//sPath = pView->GetRmapPath(pView->m_nSelRmap);
-	OpenReelmap(pView->m_nSelRmap);
-	DispReelmap(m_nSerial);
+
+	//OpenReelmap(pView->m_nSelRmap);	// 20130315
+	//DispReelmap(m_nSerial);			// 20130315
+
 #endif
-// 	if(pDoc->m_pReelMap)
-// 		pDoc->m_pReelMap->ReloadRst();
-// 	UpdateRst();
 }
 
 //BOOL CDlgMenu01::OpenReelmap(CString sPath)
@@ -499,6 +500,10 @@ BOOL CDlgMenu01::DispReelmap(int nSerial, BOOL bDumy)
 				return FALSE;
 		}
 	}
+
+	if (pDoc->m_pReelMapDisp)
+		pDoc->m_pReelMapDisp->Disp(nSerial, bDumy);
+
  	SetPnlNum();
  	SetPnlDefNum();
 	myStcReelmap.Refresh();
@@ -2007,7 +2012,7 @@ void CDlgMenu01::InitGL()
 		//if(pDoc->GetTestMode() == MODE_OUTER)
 		//	m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMapIts);
 		//else
-			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMap);
+			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMapDisp);
 	}
 // 	m_pMyGL->ResetRgn();
 	m_pMyGL->SetRgn();
@@ -3350,8 +3355,8 @@ void CDlgMenu01::UpdateTotVel(CString sVel)
 			pDoc->m_pReelMapAllUp->UpdateTotVel(sVel, 2); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		if(pDoc->m_pReelMapAllDn)
 			pDoc->m_pReelMapAllDn->UpdateTotVel(sVel, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-		if(pDoc->m_pReelMap)
-			pDoc->m_pReelMap->UpdateTotVel(sVel, pView->m_nSelRmap); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		//if(pDoc->m_pReelMap) // 20130315
+		//	pDoc->m_pReelMap->UpdateTotVel(sVel, pView->m_nSelRmap); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
@@ -4400,8 +4405,11 @@ void CDlgMenu01::OnChkDefUp()
 	// TODO: Add your control notification handler code here
 	int nOn = myBtn[12].GetCheck();
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_UP))->GetCheck();
-	if(nOn)
-		SelMap(UP);
+	if (nOn)
+	{
+		SelMap(UP); // pView->m_nSelRmap
+		DispReelmapDisp();
+	}
 	else
 		myBtn[12].SetCheck(TRUE);
 // 		((CButton*)GetDlgItem(IDC_CHK_DEF_UP))->SetCheck(TRUE);
@@ -4417,8 +4425,11 @@ void CDlgMenu01::OnChkDefDn()
 
 	int nOn = myBtn[13].GetCheck();
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_DN))->GetCheck();
-	if(nOn)
-		SelMap(DN);
+	if (nOn)
+	{
+		SelMap(DN); // pView->m_nSelRmap
+		DispReelmapDisp();
+	}
 	else
 		myBtn[13].SetCheck(TRUE);
 // 		((CButton*)GetDlgItem(IDC_CHK_DEF_DN))->SetCheck(TRUE);	
@@ -4430,8 +4441,11 @@ void CDlgMenu01::OnChkDefAll()
 	// TODO: Add your control notification handler code here
 	int nOn = myBtn[14].GetCheck();
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_ALL))->GetCheck();
-	if(nOn)
-		SelMap(ALL);
+	if (nOn)
+	{
+		SelMap(ALL); // pView->m_nSelRmap
+		DispReelmapDisp();
+	}
 	else
 		myBtn[14].SetCheck(TRUE);
 // 		((CButton*)GetDlgItem(IDC_CHK_DEF_ALL))->SetCheck(TRUE);		
@@ -4441,10 +4455,10 @@ void CDlgMenu01::OnChkDefAll()
 void CDlgMenu01::OnStcUp() 
 {
 	// TODO: Add your control notification handler code here
-	myStcTitle[61].SetTextColor(RGB_WHITE);
-	myStcTitle[61].SetBkColor(RGB_RED);
-	myStcTitle[62].SetTextColor(RGB_WHITE);
-	myStcTitle[62].SetBkColor(RGB_DARKBLUE);
+	myStcTitle[61].SetTextColor(RGB_WHITE);		// IDC_STC_UP
+	myStcTitle[61].SetBkColor(RGB_RED);			// IDC_STC_UP
+	myStcTitle[62].SetTextColor(RGB_WHITE);		// IDC_STC_DN
+	myStcTitle[62].SetBkColor(RGB_DARKBLUE);	// IDC_STC_DN
 
 	BOOL bShow=FALSE;
 	if(pDoc->WorkingInfo.LastJob.nMergingLayer!=0)
@@ -4452,8 +4466,8 @@ void CDlgMenu01::OnStcUp()
 
 	pDoc->WorkingInfo.LastJob.nMergingLayer=0; 	// [0]:AOI-Up , [1]:AOI-Dn
 	::WritePrivateProfileString(_T("Last Job"), _T("Merging Layer"), _T("0"), PATH_WORKING_INFO);
-	if(bShow)
-		SelMap(ALL);
+	//if(bShow)
+	//	SelMap(ALL);
 }
 
 void CDlgMenu01::OnStcDn() 
@@ -4463,10 +4477,10 @@ void CDlgMenu01::OnStcDn()
 	if(!bDualTest)
 		return;
 
-	myStcTitle[61].SetTextColor(RGB_WHITE);
-	myStcTitle[61].SetBkColor(RGB_DARKBLUE);
-	myStcTitle[62].SetTextColor(RGB_WHITE);
-	myStcTitle[62].SetBkColor(RGB_RED);
+	myStcTitle[61].SetTextColor(RGB_WHITE);		// IDC_STC_UP
+	myStcTitle[61].SetBkColor(RGB_DARKBLUE);	// IDC_STC_UP
+	myStcTitle[62].SetTextColor(RGB_WHITE);		// IDC_STC_DN
+	myStcTitle[62].SetBkColor(RGB_RED);			// IDC_STC_DN
 
 	BOOL bShow=FALSE;
 	if(pDoc->WorkingInfo.LastJob.nMergingLayer!=1)
@@ -4474,8 +4488,8 @@ void CDlgMenu01::OnStcDn()
 
 	pDoc->WorkingInfo.LastJob.nMergingLayer=1; 	// [0]:AOI-Up , [1]:AOI-Dn
 	::WritePrivateProfileString(_T("Last Job"), _T("Merging Layer"), _T("1"), PATH_WORKING_INFO);	
-	if(bShow)
-		SelMap(ALL);
+	//if(bShow)
+	//	SelMap(ALL);
 }
 
 void CDlgMenu01::OnBtnMkAll() 
@@ -6114,4 +6128,50 @@ void CDlgMenu01::DispChangedModel()
 	myStcData[2].SetText(pDoc->WorkingInfo.LastJob.sLayerUp);		// 상면레이어
 	if (bDualTest)
 		myStcData[75].SetText(pDoc->WorkingInfo.LastJob.sLayerDn);	// 하면레이어
+}
+
+
+void CDlgMenu01::SwitchReelmapDisp(int nSelRmap)
+{
+	CString str;// , sPath;
+
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	if (bDualTest)
+	{
+		switch (nSelRmap) // pView->m_nSelRmap
+		{
+		case RMAP_UP:
+			pDoc->m_pReelMapDisp = pDoc->m_pReelMapUp;
+			break;
+		case RMAP_DN:
+			pDoc->m_pReelMapDisp = pDoc->m_pReelMapDn;
+			break;
+		case RMAP_ALLUP:
+		case RMAP_ALLDN:
+			pDoc->m_pReelMapDisp = pDoc->m_pReelMapAllUp;
+			break;
+		}
+	}
+	else
+	{
+		pDoc->m_pReelMapDisp = pDoc->m_pReelMapUp;
+	}
+
+	pDoc->SetReelmap(ROT_NONE);
+}
+
+void CDlgMenu01::DispReelmapDisp()
+{
+	if (pDoc->m_pReelMapDisp)
+	{
+		pDoc->m_pReelMapDisp->Disp(m_nSerial);
+
+		pView->m_bDrawGL = TRUE;
+		InitGL();
+
+		SetPnlNum();
+		SetPnlDefNum();
+		myStcReelmap.Refresh();
+		this->MoveWindow(m_pRect, TRUE);
+	}
 }

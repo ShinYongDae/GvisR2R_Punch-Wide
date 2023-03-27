@@ -523,6 +523,9 @@ public:
 	//CString m_sPathRmapInnerUpdate[4];
 	int m_nSerialRmapInnerUpdate;
 
+	BOOL m_bIsBuf[2]; // [0]: AOI-Up , [1]: AOI-Dn
+
+
 // 작업입니다.
 public:
 	BOOL m_bShift2Mk;
@@ -981,7 +984,7 @@ public:
 	void SetPathAtBuf();
 	void SetPathAtBufUp();
 	void SetPathAtBufDn();
-	void LoadPcrFromBuf();
+	BOOL LoadPcrFromBuf();
 
 	BOOL SetSerialReelmap(int nSerial, BOOL bDumy = FALSE);
 	BOOL SetSerialMkInfo(int nSerial, BOOL bDumy = FALSE);

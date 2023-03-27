@@ -3737,6 +3737,7 @@ void CDlgMenu03::DoReady()
 		KillTimer(TIM_CHK_DONE_READY);
 	}
 	ChkReadyDone();
+	pDoc->DelPcrAll();
 //	}
 }
 

@@ -591,14 +591,12 @@ void CDlgMenu06::SelMap(int nSel)
 			pView->m_nSelRmapInner = RMAP_INNER_UP;
 	}
 
-	if (pDoc->m_pReelMapInner)
-	{
-		OpenReelmap(pView->m_nSelRmapInner);
-		DispReelmap(m_nSerial);
-	}
-// 	if(pDoc->m_pReelMapInner)
-// 		pDoc->m_pReelMapInner->ReloadRst();
-// 	UpdateRst();
+	// 20130315
+	//if (pDoc->m_pReelMapInner)
+	//{
+	//	OpenReelmap(pView->m_nSelRmapInner);
+	//	DispReelmap(m_nSerial);
+	//}
 }
 
 //BOOL CDlgMenu06::OpenReelmap(CString sPath)
@@ -3310,8 +3308,8 @@ void CDlgMenu06::UpdateTotVel(CString sVel)
 			pDoc->m_pReelMapInnerAllUp->UpdateTotVel(sVel, 2); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		if(pDoc->m_pReelMapInnerAllDn)
 			pDoc->m_pReelMapInnerAllDn->UpdateTotVel(sVel, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-		if(pDoc->m_pReelMapInner)
-			pDoc->m_pReelMapInner->UpdateTotVel(sVel, pView->m_nSelRmapInner); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		//if(pDoc->m_pReelMapInner) // 20130315
+		//	pDoc->m_pReelMapInner->UpdateTotVel(sVel, pView->m_nSelRmapInner); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
@@ -4336,11 +4334,14 @@ void CDlgMenu06::OnChkDefUp()
 	// TODO: Add your control notification handler code here
 	int nOn = myBtn[12].GetCheck();
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_UP))->GetCheck();
-	if(nOn)
-		SelMap(UP);
-	else
-		myBtn[12].SetCheck(TRUE);
+
+	//if(nOn)
+	//	SelMap(UP);
+	//else
+	//	myBtn[12].SetCheck(TRUE);
+
 // 		((CButton*)GetDlgItem(IDC_CHK_DEF_UP))->SetCheck(TRUE);
+
 	this->MoveWindow(m_pRect, TRUE);
 }
 
@@ -4353,11 +4354,14 @@ void CDlgMenu06::OnChkDefDn()
 
 	int nOn = myBtn[13].GetCheck();
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_DN))->GetCheck();
-	if(nOn)
-		SelMap(DN);
-	else
-		myBtn[13].SetCheck(TRUE);
+
+	//if(nOn)
+	//	SelMap(DN);
+	//else
+	//	myBtn[13].SetCheck(TRUE);
+
 // 		((CButton*)GetDlgItem(IDC_CHK_DEF_DN))->SetCheck(TRUE);	
+
 	this->MoveWindow(m_pRect, TRUE);
 }
 
@@ -4366,11 +4370,14 @@ void CDlgMenu06::OnChkDefAll()
 	// TODO: Add your control notification handler code here
 	int nOn = myBtn[14].GetCheck();
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_ALL))->GetCheck();
-	if(nOn)
-		SelMap(ALL);
-	else
-		myBtn[14].SetCheck(TRUE);
-// 		((CButton*)GetDlgItem(IDC_CHK_DEF_ALL))->SetCheck(TRUE);		
+
+	//if(nOn)
+	//	SelMap(ALL);
+	//else
+	//	myBtn[14].SetCheck(TRUE);
+
+// 		((CButton*)GetDlgItem(IDC_CHK_DEF_ALL))->SetCheck(TRUE);	
+
 	this->MoveWindow(m_pRect, TRUE);
 }
 
@@ -4388,8 +4395,8 @@ void CDlgMenu06::OnStcUp()
 
 	pDoc->WorkingInfo.LastJob.nMergingLayer=0; 	// [0]:AOI-Up , [1]:AOI-Dn
 	::WritePrivateProfileString(_T("Last Job"), _T("Merging Layer"), _T("0"), PATH_WORKING_INFO);
-	if(bShow)
-		SelMap(ALL);
+	//if(bShow)
+	//	SelMap(ALL);
 }
 
 void CDlgMenu06::OnStcDn() 
@@ -4410,8 +4417,8 @@ void CDlgMenu06::OnStcDn()
 
 	pDoc->WorkingInfo.LastJob.nMergingLayer=1; 	// [0]:AOI-Up , [1]:AOI-Dn
 	::WritePrivateProfileString(_T("Last Job"), _T("Merging Layer"), _T("1"), PATH_WORKING_INFO);	
-	if(bShow)
-		SelMap(ALL);
+	//if(bShow)
+	//	SelMap(ALL);
 }
 
 void CDlgMenu06::OnBtnMkAll() 

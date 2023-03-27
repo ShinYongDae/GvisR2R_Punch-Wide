@@ -26,6 +26,8 @@ extern CGvisR2R_PunchView* pView;
 
 CReelMap::CReelMap(int nLayer, int nPnl, int nPcs, int nDir)
 {
+	int nC, nR;
+
 	m_nLayer = -1;
 	nTotPnl = nPnl;
 	nTotPcs = nPcs;
@@ -160,6 +162,9 @@ CReelMap::CReelMap(int nLayer, int nPnl, int nPcs, int nDir)
 
 	m_bThreadAliveFinalCopyItsFiles = FALSE;
 
+	for (nC = 0; nC < FIX_PCS_COL_MAX; nC++)
+		for (nR = 0; nR < FIX_PCS_ROW_MAX; nR++)
+			m_FixPcsRpt[nC][nR] = 0;
 }
 
 CReelMap::~CReelMap()
@@ -1816,9 +1821,15 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				if (nLoadPnl >= pView->m_nLotEndSerial || pView->m_nLotEndSerial == 0)
 				{
 					if (m_nLayer == RMAP_UP || m_nLayer == RMAP_DN || m_nLayer == RMAP_ALLUP || m_nLayer == RMAP_ALLDN)
-						m_pPnlDefNum[k] = pDoc->m_pPcr[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					{
+						//m_pPnlDefNum[k] = pDoc->m_pPcr[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+						m_pPnlDefNum[k] = pDoc->m_pPcr[m_nLayer][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					}
 					else if (m_nLayer == RMAP_INNER_UP || m_nLayer == RMAP_INNER_DN || m_nLayer == RMAP_INNER_ALLUP || m_nLayer == RMAP_INNER_ALLDN)
-						m_pPnlDefNum[k] = pDoc->m_pPcrInner[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					{
+						//m_pPnlDefNum[k] = pDoc->m_pPcrInner[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+						m_pPnlDefNum[k] = pDoc->m_pPcrInner[m_nLayer][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					}
 					else if (m_nLayer == RMAP_ITS)
 						m_pPnlDefNum[k] = pDoc->m_pPcrIts[pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
 					else
@@ -1844,9 +1855,15 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				if (nLoadPnl <= pView->m_nLotEndSerial || pView->m_nLotEndSerial == 0)
 				{
 					if (m_nLayer == RMAP_UP || m_nLayer == RMAP_DN || m_nLayer == RMAP_ALLUP || m_nLayer == RMAP_ALLDN)
-						m_pPnlDefNum[k] = pDoc->m_pPcr[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					{
+						//m_pPnlDefNum[k] = pDoc->m_pPcr[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+						m_pPnlDefNum[k] = pDoc->m_pPcr[m_nLayer][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					}
 					else if (m_nLayer == RMAP_INNER_UP || m_nLayer == RMAP_INNER_DN || m_nLayer == RMAP_INNER_ALLUP || m_nLayer == RMAP_INNER_ALLDN)
-						m_pPnlDefNum[k] = pDoc->m_pPcrInner[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					{
+						//m_pPnlDefNum[k] = pDoc->m_pPcrInner[RMAP_ALLUP][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+						m_pPnlDefNum[k] = pDoc->m_pPcrInner[m_nLayer][pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
+					}
 					else if (m_nLayer == RMAP_ITS)
 						m_pPnlDefNum[k] = pDoc->m_pPcrIts[pDoc->GetPcrIdx1(nLoadPnl)]->m_nTotDef;
 					else
@@ -3205,6 +3222,7 @@ BOOL CReelMap::IsFixPcs(int nSerial, int &Col, int &Row)
 			{
 				if(m_FixPcsPrev[nC][nR] >= nJudge)
 				{
+					m_FixPcsRpt[nC][nR]++;
 					Col = nC;
 					Row = nR;
 					ClrFixPcs(nC, nR);
@@ -3267,6 +3285,7 @@ BOOL CReelMap::IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot) // nTot : 
 			{
 				if(m_FixPcsPrev[nC][nR] >= nJudge)
 				{
+					m_FixPcsRpt[nC][nR]++;
 					pCol[nTot] = nC;
 					pRow[nTot] = nR;
 					nTot++;
@@ -7584,4 +7603,9 @@ BOOL CReelMap::CopyItsFile(CString sPathSrc, CString sPathDest)
 	return bRtn;
 }
 
+
+int CReelMap::GetRptFixPcs(int nCol, int nRow)
+{
+	return m_FixPcsRpt[nCol][nRow];;
+}
 
