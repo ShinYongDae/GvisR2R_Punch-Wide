@@ -92,6 +92,9 @@ public:
 	CString m_sAlmMsg, m_sPrevAlmMsg;
 	CString m_sIsAlmMsg;
 
+	CString m_sMsgBox, m_sPrevMsgBox;
+	CString m_sIsMsgBox;
+
 	stListBuf m_ListBuf[2]; // [0]:AOI-Up , [1]:AOI-Dn
 
 	BOOL m_bNewLotShare[2]; // [0]:AOI-Up , [1]:AOI-Dn

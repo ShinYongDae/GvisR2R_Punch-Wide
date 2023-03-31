@@ -4156,7 +4156,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 						m_bLastProc = TRUE;
 #ifdef USE_MPE 
 						pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-						pView->m_pMpe->Write(_T("MB440181"), 1);					// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						//pView->m_pMpe->Write(_T("MB440181"), 1);					// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 						sLastShot = ShowKeypad1();
 					}
@@ -4167,10 +4167,15 @@ void CDlgMenu01::OnChkEjectBuffer()
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
 					pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-					pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
+					//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+					//pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 					sLastShot = ShowKeypad1();
+#ifdef USE_MPE
+					pView->m_pMpe->Write(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
+					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
+
+#endif
 				}
 			}
 			else // MODE_INNER
@@ -4190,7 +4195,7 @@ void CDlgMenu01::OnChkEjectBuffer()
 							m_bLastProc = TRUE;
 #ifdef USE_MPE 
 							pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-							pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+							//pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 							sLastShot = ShowKeypad1();
 						}
@@ -4201,8 +4206,8 @@ void CDlgMenu01::OnChkEjectBuffer()
 						m_bLastProc = TRUE;
 #ifdef USE_MPE
 						pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-						pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-						pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
+						//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						//pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 						sLastShot = ShowKeypad1();
 					}
@@ -4213,12 +4218,17 @@ void CDlgMenu01::OnChkEjectBuffer()
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
 					pView->m_pMpe->Write(_T("MB44019D"), 1);				// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
-					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
-#endif
+					//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
 					pView->m_pMpe->Write(_T("MB440185"), 0);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 					pView->m_pMpe->Write(_T("MB440186"), 0);				// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+#endif
 
 					sLastShot = ShowKeypad1(_T("각인부 Last Shot 번호 입력"));
+#ifdef USE_MPE
+					pView->m_pMpe->Write(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
+					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
+
+#endif
 				}
 
 			}
@@ -5725,9 +5735,9 @@ void CDlgMenu01::EnableItsMode(BOOL bEnable)
 	{
 		pView->m_nSelRmap = m_nSelRmapPrev;
 
-		myBtn[12].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_UP
-		myBtn[13].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_DN
-		myBtn[14].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_ALL
+		myBtn[12].ShowWindow(SW_SHOW);	// IDC_CHK_DEF_UP
+		myBtn[13].ShowWindow(SW_SHOW);	// IDC_CHK_DEF_DN
+		myBtn[14].ShowWindow(SW_SHOW);	// IDC_CHK_DEF_ALL
 
 		myStcTitle[49].SetText(_T("상면")); // IDC_STC_WK_UP
 		myStcTitle[50].SetText(_T("하면")); // IDC_STC_WK_DN

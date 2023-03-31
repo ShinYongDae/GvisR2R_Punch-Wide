@@ -517,6 +517,8 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 
 	pView->m_bIsBuf[0] = FALSE;
 	pView->m_bIsBuf[1] = FALSE;
+
+	m_bUpdateYield = FALSE;
 }
 
 CGvisR2R_PunchView::~CGvisR2R_PunchView()
@@ -1380,9 +1382,23 @@ LRESULT CGvisR2R_PunchView::OnMyMsgExit(WPARAM wPara, LPARAM lPara)
 	return 0L;
 }
 
-int CGvisR2R_PunchView::MsgBox(CString sMsg, int nThreadIdx, int nType, int nTimOut)
+int CGvisR2R_PunchView::MsgBox(CString sMsg, int nThreadIdx, int nType, int nTimOut, BOOL bEngave)
 {
 	int nRtnVal = -1; // Reply(-1) is None.
+
+	if (bEngave)
+	{
+		if (m_pEngrave)
+		{
+			pDoc->m_sMsgBox = sMsg;
+			if (pDoc->m_sIsMsgBox != pDoc->m_sMsgBox)
+			{
+				if (m_pEngrave)
+					m_pEngrave->SetMsgBox(pDoc->m_sMsgBox, nType);
+			}
+		}
+	}
+
 	if (m_pDlgMyMsg)
 		nRtnVal = m_pDlgMyMsg->SyncMsgBox(sMsg, nThreadIdx, nType, nTimOut);
 
@@ -3462,8 +3478,11 @@ void CGvisR2R_PunchView::ChkShareUp()
 		str.Format(_T("US: %d"), nSerial);
 		pDoc->Status.PcrShare[0].bExist = TRUE;
 		pDoc->Status.PcrShare[0].nSerial = nSerial;
-		if(m_pMpe)
+		if (m_pMpe)
+		{
+			pView->m_pMpe->Write(_T("ML45112"), (long)nSerial);	// 검사한 Panel의 AOI 상 Serial
 			m_pMpe->Write(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
+		}
 	}
 	else
 	{
@@ -3491,7 +3510,10 @@ void CGvisR2R_PunchView::ChkShareDn()
 		pDoc->Status.PcrShare[1].bExist = TRUE;
 		pDoc->Status.PcrShare[1].nSerial = nSerial;
 		if (m_pMpe)
+		{
+			pView->m_pMpe->Write(_T("ML45114"), (long)nSerial);	// 검사한 Panel의 AOI 하 Serial
 			m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
+		}
 	}
 	else
 	{
@@ -5020,7 +5042,7 @@ void CGvisR2R_PunchView::DoIO()
 		//MyMsgBox(pDoc->m_sAlmMsg);
 		if (!pDoc->m_sAlmMsg.IsEmpty())
 		{
-			MsgBox(pDoc->m_sAlmMsg);
+			MsgBox(pDoc->m_sAlmMsg, 0, 0, DEFAULT_TIME_OUT, FALSE);
 
 			if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
 			{
@@ -17595,8 +17617,10 @@ void CGvisR2R_PunchView::DoAutoSetFdOffset()
 			GetAoiUpOffset(OfStUp);
 			GetAoiDnOffset(OfStDn);
 
-			dAveX = (OfStUp.x + OfStDn.x) / 2.0;
-			dAveY = (OfStUp.y + OfStDn.y) / 2.0;
+			dAveX = OfStUp.x;
+			dAveY = OfStUp.y; // syd - 20230327
+			//dAveX = (OfStUp.x + OfStDn.x) / 2.0;
+			//dAveY = (OfStUp.y + OfStDn.y) / 2.0;
 
 			if (m_pDlgMenu02)
 			{
@@ -17710,7 +17734,7 @@ void CGvisR2R_PunchView::DoAutoChkCycleStop()
 		//MyMsgBox(pDoc->m_sAlmMsg);
 		if (!pDoc->m_sAlmMsg.IsEmpty())
 		{
-			MsgBox(pDoc->m_sAlmMsg);
+			MsgBox(pDoc->m_sAlmMsg, 0, 0, DEFAULT_TIME_OUT, FALSE);
 
 			if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
 			{
@@ -19775,8 +19799,20 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			break;
 
 		case MK_ST + (Mk2PtIdx::DoMk) + 1:
-			Sleep(100);
-			m_nMkStAuto++;
+			if (!m_bUpdateYield)
+			{
+				if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
+				{
+					m_bUpdateYield = TRUE;
+					UpdateYield();
+					m_nMkStAuto++;
+				}
+			}
+			else
+			{
+				Sleep(100);
+				m_nMkStAuto++;
+			}
 			break;
 
 		case MK_ST + (Mk2PtIdx::Verify) :
@@ -19885,6 +19921,8 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			m_bCam = FALSE;
 			m_nPrevMkStAuto = 0;
 
+			m_bUpdateYield = FALSE;
+
 			for (a = 0; a < 2; a++)
 			{
 				for (b = 0; b < MAX_STRIP_NUM; b++)
@@ -19908,11 +19946,12 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 		case MK_ST + (Mk2PtIdx::DoneMk) + 2:
 			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
-				if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
-				{
-					UpdateYield();
-					m_nMkStAuto++;
-				}
+				m_nMkStAuto++;
+				//if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
+				//{
+				//	UpdateYield();
+				//	m_nMkStAuto++;
+				//}
 			}
 			break;
 
@@ -19933,6 +19972,7 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 					m_dwCycSt = GetTickCount();
 
 					UpdateRst();
+
 					//UpdateWorking();	// Update Working Info...
 					m_nMkStAuto++;
 				}
@@ -24644,9 +24684,10 @@ void CGvisR2R_PunchView::PlcAlm(BOOL bMon, BOOL bClr)
 		ClrAlarm();
 		if (pView->m_pEngrave)
 		{
-			pView->m_pEngrave->SetAlarm(_T(""));
-			Sleep(100);
-			pView->m_pEngrave->IsSetAlarm(_T(""));
+			pDoc->m_sAlmMsg = _T("");
+			pView->m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
+			//Sleep(100);
+			//pView->m_pEngrave->IsSetAlarm(_T(""));
 		}
 		Sleep(300);
 		m_pMpe->Write(_T("MB600009"), 1);
@@ -24657,6 +24698,17 @@ void CGvisR2R_PunchView::PlcAlm(BOOL bMon, BOOL bClr)
 	{
 		m_nClrAlmF = 0;
 		ResetClear();
+	}
+	else
+	{
+		if (pView->m_pEngrave)
+		{
+			if (pDoc->m_sIsAlmMsg != pDoc->m_sAlmMsg)
+			{
+				if (pView->m_pEngrave)
+					pView->m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
+			}
+		}
 	}
 }
 
@@ -30970,8 +31022,8 @@ void CGvisR2R_PunchView::ChkReTestAlarmOnAoiDn()
 		}
 		else if(m_nLotEndSerial > 0 && nSerial <= m_nLotEndSerial)
 		{
-			if (m_pMpe)
-				m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
+			//if (m_pMpe)
+			//	m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
 		}
 	}
 	else
@@ -30988,8 +31040,8 @@ void CGvisR2R_PunchView::ChkReTestAlarmOnAoiDn()
 		}
 		else if (m_nLotEndSerial > 0 && nSerial >= m_nLotEndSerial)
 		{
-			if (m_pMpe)
-				m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
+			//if (m_pMpe)
+			//	m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
 		}
 	}
 

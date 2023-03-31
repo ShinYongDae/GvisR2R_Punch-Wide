@@ -2831,6 +2831,26 @@ void CEngrave::GetAlarmMsg(SOCKET_DATA SockData)
 	}
 }
 
+void CEngrave::GetMsgBox(SOCKET_DATA SockData)
+{
+	int nCmdCode = SockData.nCmdCode;
+	int nMsgId = SockData.nMsgID;
+	CString sVal;
+
+	if (nCmdCode == _SetData)
+	{
+		switch (nMsgId)
+		{
+		case _stMsgBoxInx::_MsgBox:
+			pDoc->m_sMsgBox = CharToString(SockData.strData);
+			break;
+		case _stMsgBoxInx::_IsMsgBox:
+			pDoc->m_sIsMsgBox = CharToString(SockData.strData);
+			break;
+		}
+	}
+}
+
 // End for GetSysData()
 
 // Start for SetSysSignal()
@@ -8662,6 +8682,38 @@ void CEngrave::IsSetAlarm(CString sMsg)
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
+
+void CEngrave::SetMsgBox(CString sMsg, int nType)
+{
+	if (!pDoc)
+		return;
+
+	SOCKET_DATA SocketData;
+	SocketData.nCmdCode = _SetData;
+	char cData[BUFFER_DATA_SIZE];
+
+	SocketData.nMsgID = _stMsgBoxInx::_MsgBox;
+	StringToChar(sMsg, cData);
+	sprintf(SocketData.strData, "%s", cData);
+	SocketData.nData1 = nType;
+	SendCommand(SocketData);
+}
+
+void CEngrave::IsSetMsgBox(CString sMsg)
+{
+	if (!pDoc)
+		return;
+
+	SOCKET_DATA SocketData;
+	SocketData.nCmdCode = _SetData;
+	char cData[BUFFER_DATA_SIZE];
+
+	SocketData.nMsgID = _stMsgBoxInx::_IsMsgBox;
+	StringToChar(sMsg, cData);
+	sprintf(SocketData.strData, "%s", cData);
+	SendCommand(SocketData);
+}
+
 // On Running Auto
 
 BOOL CEngrave::UpdateWorking()

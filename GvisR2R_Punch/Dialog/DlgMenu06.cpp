@@ -4096,7 +4096,7 @@ void CDlgMenu06::OnChkEjectBuffer()
 						m_bLastProc = TRUE;
 #ifdef USE_MPE 
 						pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-						pView->m_pMpe->Write(_T("MB440181"), 1);					// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						//pView->m_pMpe->Write(_T("MB440181"), 1);					// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 					}
 				}
@@ -4106,8 +4106,8 @@ void CDlgMenu06::OnChkEjectBuffer()
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
 					pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-					pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
+					//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+					//pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 				}
 			}
@@ -4128,7 +4128,7 @@ void CDlgMenu06::OnChkEjectBuffer()
 							m_bLastProc = TRUE;
 #ifdef USE_MPE 
 							pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-							pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+							//pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 						}
 					}
@@ -4138,8 +4138,8 @@ void CDlgMenu06::OnChkEjectBuffer()
 						m_bLastProc = TRUE;
 #ifdef USE_MPE
 						pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-						pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-						pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
+						//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						//pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 					}
 				}
@@ -4149,10 +4149,10 @@ void CDlgMenu06::OnChkEjectBuffer()
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
 					pView->m_pMpe->Write(_T("MB44019D"), 1);				// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
-					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
-#endif
+					//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
 					pView->m_pMpe->Write(_T("MB440185"), 0);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 					pView->m_pMpe->Write(_T("MB440186"), 0);				// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+#endif
 				}
 
 			}

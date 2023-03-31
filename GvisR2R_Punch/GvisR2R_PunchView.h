@@ -528,11 +528,11 @@ public:
 
 // 작업입니다.
 public:
-	BOOL m_bShift2Mk;
+	BOOL m_bShift2Mk, m_bUpdateYield;
 
 	void SetLastSerialEng(int nSerial);
-	int MsgBox(CString sMsg, int nThreadIdx = 0, int nType = MB_OK, int nTimOut = DEFAULT_TIME_OUT);		// SyncMsgBox
-	int AsyncMsgBox(CString sMsg, int nThreadIdx = 1, int nType = MB_OK, int nTimOut = DEFAULT_TIME_OUT); // AsyncMsgBox
+	int MsgBox(CString sMsg, int nThreadIdx = 0, int nType = MB_OK, int nTimOut = DEFAULT_TIME_OUT, BOOL bEngave = TRUE);		// SyncMsgBox
+	int AsyncMsgBox(CString sMsg, int nThreadIdx = 1, int nType = MB_OK, int nTimOut = DEFAULT_TIME_OUT);						// AsyncMsgBox
 	int WaitRtnVal(int nThreadIdx = 1);
 	afx_msg LRESULT OnMyMsgExit(WPARAM wPara, LPARAM lPara);
 

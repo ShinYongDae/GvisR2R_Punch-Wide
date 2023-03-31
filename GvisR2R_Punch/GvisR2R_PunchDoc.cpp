@@ -145,6 +145,10 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 	m_sIsAlmMsg = _T("");
 	m_sPrevAlmMsg = _T("");
 
+	m_sMsgBox = _T("");
+	m_sIsMsgBox = _T("");
+	m_sPrevMsgBox = _T("");
+
 	m_nPrevSerial = 0;
 	m_bNewLotShare[0] = FALSE;
 	m_bNewLotShare[1] = FALSE;

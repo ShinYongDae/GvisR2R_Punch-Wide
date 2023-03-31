@@ -3617,7 +3617,7 @@ BOOL CDlgMenu03::DoReset()
 			pView->m_pEngrave->SwEngAutoInit(TRUE);
 		}
 		
-		if(IDNO == pView->MsgBox(_T("초기화를 하시겠습니까?"), 0, MB_YESNO))
+		if(IDNO == pView->MsgBox(_T("초기화를 하시겠습니까?"), 0, MB_YESNO, DEFAULT_TIME_OUT, FALSE))
 			bInit = FALSE;
 		else
 		{
@@ -3630,7 +3630,7 @@ BOOL CDlgMenu03::DoReset()
 
 		if(!bInit)
 		{
-			if(IDNO == pView->MsgBox(_T("이어가기를 하시겠습니까?"), 0, MB_YESNO))
+			if(IDNO == pView->MsgBox(_T("이어가기를 하시겠습니까?"), 0, MB_YESNO, DEFAULT_TIME_OUT, FALSE))
 			{
 				pView->m_bCont = FALSE;
 				return FALSE;
@@ -3679,6 +3679,11 @@ BOOL CDlgMenu03::DoReset()
 				pView->m_nDebugStep = 10; pView->DispThreadTick();
 				pDoc->DelPcrAll();
 			}
+			else
+			{
+				pView->m_bIsBuf[0] = FALSE;
+				pView->m_bIsBuf[1] = FALSE;
+			}
 		}
 		else
 		{
@@ -3687,7 +3692,11 @@ BOOL CDlgMenu03::DoReset()
 				pView->m_nDebugStep = 11; pView->DispThreadTick();
 				pDoc->DelPcrAll();
 			}
-
+			else
+			{
+				pView->m_bIsBuf[0] = FALSE;
+				pView->m_bIsBuf[1] = FALSE;
+			}
 		}
 
 		pView->m_nDebugStep = 12; pView->DispThreadTick();
