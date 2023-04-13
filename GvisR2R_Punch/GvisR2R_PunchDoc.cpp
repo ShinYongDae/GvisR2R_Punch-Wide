@@ -4206,8 +4206,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 	if (!pMkInfo)
 		pMkInfo = new CString[nTotPcs];
 
-	CString sPath = m_pReelMap->GetIpPath();
-	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+	//CString sPath = m_pReelMap->GetIpPath();
+	//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 
 	if (m_pReelMap)
 	{
@@ -4301,8 +4301,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 			pMkInfo = new CString[nTotPcs];
 	}
 
-	CString sPath = m_pReelMap->GetIpPath();
-	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+	//CString sPath = m_pReelMap->GetIpPath();
+	//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 
 	if (pView->m_pDlgMenu01)
 		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_nSelRmap);
@@ -5814,8 +5814,11 @@ int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Fai
 			}
 		}
 
-		CString sPath = m_pReelMap->GetIpPath();
-		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+		//CString sPath = m_pReelMap->GetIpPath();
+		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+
+		//CString sPathUp = m_pReelMapUp->GetIpPath();
+		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapUpPath"), sPathUp);
 	}
 
 	int nTotDef = _tstoi(strTotalBadPieceNum);
@@ -12574,8 +12577,13 @@ BOOL CGvisR2R_PunchDoc::InitReelmapInner()
 		if(m_pReelMapIts)
 			m_pReelMap = m_pReelMapIts;
 
-		CString sPath = m_pReelMap->GetIpPath();
-		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+		//CString sPath = m_pReelMap->GetIpPath();
+		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+
+		//CString sPath = m_pReelMap->GetIpPath();
+		//CString sPathUp = m_pReelMapUp->GetIpPath();
+		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapUpPath"), sPathUp);
 	}
 
 	//if (pMkInfo)
@@ -12676,8 +12684,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapInnerUp()
 	{
 		m_pReelMap = m_pReelMapIts;
 
-		CString sPath = m_pReelMap->GetIpPath();
-		SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+		//CString sPath = m_pReelMap->GetIpPath();
+		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
 	}
 
 	return TRUE;

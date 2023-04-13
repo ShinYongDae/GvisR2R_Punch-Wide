@@ -13239,29 +13239,47 @@ BOOL CGvisR2R_PunchView::LoadPcrDn(int nSerial, BOOL bFromShare)
 void CGvisR2R_PunchView::UpdateRMapUp()
 {
 	if (pDoc->m_pReelMapUp)
+	{
 		pDoc->m_pReelMapUp->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//pDoc->m_pReelMapUp->Write(m_nSerialRmapUpdate, 0, m_sPathRmapUpdate[0]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+
+		if (pDoc->m_pReelMap == pDoc->m_pReelMapUp)
+		{
+			DuplicateRmap(RMAP_UP);
+		}
+	}
 }
 
 void CGvisR2R_PunchView::UpdateRMapDn()
 {
 	if (pDoc->m_pReelMapDn)
+	{
 		pDoc->m_pReelMapDn->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//pDoc->m_pReelMapDn->Write(m_nSerialRmapUpdate, 1, m_sPathRmapUpdate[1]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+	}
 }
 
 void CGvisR2R_PunchView::UpdateRMapAllUp()
 {
-	if(pDoc->m_pReelMapAllUp)
+	if (pDoc->m_pReelMapAllUp)
+	{
 		pDoc->m_pReelMapAllUp->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//pDoc->m_pReelMapAllUp->Write(m_nSerialRmapUpdate, 2, m_sPathRmapUpdate[2]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+
+		if (pDoc->m_pReelMap == pDoc->m_pReelMapAllUp)
+		{
+			DuplicateRmap(RMAP_ALLUP);
+		}
+	}
 }
 
 void CGvisR2R_PunchView::UpdateRMapAllDn()
 {
-	if(pDoc->m_pReelMapAllDn)
+	if (pDoc->m_pReelMapAllDn)
+	{
 		pDoc->m_pReelMapAllDn->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//pDoc->m_pReelMapAllDn->Write(m_nSerialRmapUpdate, 3, m_sPathRmapUpdate[3]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+	}
 }
 
 UINT CGvisR2R_PunchView::ThreadProc6(LPVOID lpContext)	// UpdateRMapUp()
@@ -27582,7 +27600,14 @@ UINT CGvisR2R_PunchView::ThreadProc25(LPVOID lpContext)	// ReloadRstIts()
 BOOL CGvisR2R_PunchView::WriteReelmapIts()
 {
 	//return pDoc->WriteReelmapIts(m_nSerialRmapUpdate);
-	return pDoc->m_pReelMapIts->WriteIts(m_nSerialRmapUpdate);
+	BOOL bRtn = pDoc->m_pReelMapIts->WriteIts(m_nSerialRmapUpdate);
+
+	if (pDoc->m_pReelMap == pDoc->m_pReelMapIts)
+	{
+		DuplicateRmap(RMAP_ITS);
+	}
+
+	return bRtn;
 }
 
 
@@ -31073,4 +31098,47 @@ int CGvisR2R_PunchView::GetAoiUpCamMstInfo()
 int CGvisR2R_PunchView::GetAoiDnCamMstInfo()
 {
 	return pDoc->GetAoiDnCamMstInfo();
+}
+
+void CGvisR2R_PunchView::DuplicateRmap(int nRmap)
+{
+	CFileFind finder;
+	CString strTemp, sSrcPath, sDstPath;
+	sDstPath = _T("C:\\PunchWork\\Reelmap.txt");
+
+	switch (nRmap)
+	{
+	case RMAP_UP:
+		sSrcPath = pDoc->m_pReelMapUp->GetRmapPath(RMAP_UP);
+		break;
+	case RMAP_ALLUP:
+		sSrcPath = pDoc->m_pReelMapAllUp->GetRmapPath(RMAP_ALLUP);
+		break;
+	case RMAP_ITS:
+		sSrcPath = pDoc->m_pReelMapUp->GetRmapPath(RMAP_ITS);
+		break;
+	}
+
+	if (finder.FindFile(sSrcPath))
+	{
+		if (!CopyFile((LPCTSTR)sSrcPath, (LPCTSTR)sDstPath, FALSE))
+		{
+			Sleep(30);
+			if (!CopyFile((LPCTSTR)sSrcPath, (LPCTSTR)sDstPath, FALSE))
+			{
+				strTemp.Format(_T("%s \r\n: Reelmap File Copy Fail"), sSrcPath);
+				pView->MsgBox(strTemp);
+				return;
+			}
+		}
+	}
+	else
+	{
+		Sleep(30);
+		strTemp.Format(_T("%s \r\n: Reelmap File Not Exist"), sSrcPath);
+		//AfxMessageBox(strTemp);
+		pView->MsgBox(strTemp);
+		return;
+	}
+
 }
