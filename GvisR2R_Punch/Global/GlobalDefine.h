@@ -652,6 +652,7 @@ struct stSystem
 	CString sPathEng, sPathEngCurrInfo, sPathEngOffset, sPathMkCurrInfo, sPathMkCurrInfoBuf;
 	CString sPathMkSignalInfo, sPathEngSignalInfo, sPathAoiUpStatusInfo, sPathAoiDnStatusInfo;
 	CString sPathMkMenu01, sPathMkMenu03, sPathMkInfo, sPathMonDispMain;
+	CString sPathMkWork;
 
 	CString sPathOldFile, sPathItsFile, sPathIts;
 	CString sIpPathOldFile, sIpPathItsFile, sIpPathIts;
@@ -667,7 +668,7 @@ struct stSystem
 	CString sIpClient[3];	// ID_SR1000W, ID_MDX2500, ID_PUNCH
 	CString sIpServer[3];	// ID_SR1000W, ID_MDX2500, ID_ENGRAVE
 	CString sPort[3];		// ID_SR1000W, ID_MDX2500, ID_ENGRAVE(ID_PUNCH)
-	BOOL bSaveMkImg;
+	BOOL bSaveMkImg, bSaveGrabImg;
 	BOOL bStripPcsRgnBin;
 	BOOL bUseDTS, bUseITS;
 
@@ -691,6 +692,7 @@ struct stSystem
 		sPathMkSignalInfo = _T(""); sPathEngSignalInfo = _T("");
 		sPathAoiUpStatusInfo = _T(""); sPathAoiDnStatusInfo = _T("");
 		sPathMkCurrInfoBuf = _T(""); sPathMkMenu01 = _T(""); sPathMkMenu03 = _T(""); sPathMkInfo = _T(""); sPathMonDispMain = _T("");
+		sPathMkWork = _T("");
 
 		sPathOldFile = _T("");
 		sPathItsFile = _T("");
@@ -712,6 +714,7 @@ struct stSystem
 		sPort[ID_SR1000W] = _T(""); sPort[ID_MDX2500] = _T(""); sPort[ID_ENGRAVE] = _T("");				// ID_SR1000W, ID_MDX2500, ID_ENGRAVE(ID_PUNCH)
 
 		bSaveMkImg = FALSE;
+		bSaveGrabImg = FALSE;
 		bStripPcsRgnBin = FALSE;
 		bUseDTS = FALSE;
 		bUseITS = FALSE;

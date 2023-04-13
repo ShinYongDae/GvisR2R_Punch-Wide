@@ -496,7 +496,7 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_nSaveMk1Img = 0;
 
 	m_bStopF_Verify = FALSE;
-	m_bInitAuto = FALSE;
+	m_bInitAuto = TRUE;
 	m_bInitAutoLoadMstInfo = FALSE;
 
 	m_bLoadMstInfo = FALSE;
@@ -1131,6 +1131,9 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 
 			m_bTIM_MPE_IO = TRUE;
 			SetTimer(TIM_MPE_IO, 50, NULL);
+
+			if(m_bMkSt)
+				LoadSerial();
 
 			m_bTIM_INIT_VIEW = FALSE;
 			break;
@@ -11414,7 +11417,7 @@ void CGvisR2R_PunchView::SetAlignPosDn()
 BOOL CGvisR2R_PunchView::InitMk()
 {
 	m_nStepElecChk = 0;
-	int nRSer = ChkSerial(); // 0: Continue, -: Previous, +: Discontinue  --> 0: Same Serial, -: Decrese Serial, +: Increase Serial
+	int nRSer = ChkSerial(); // (nSerial0 - nLastShot) -> 0: Same Serial, -: Decrese Serial, +: Increase Serial 
 	int nSerial = GetBuffer0();
 
 	if (nRSer)
@@ -25916,25 +25919,33 @@ void CGvisR2R_PunchView::AdjPinPos()
 		if (m_pDlgMenu02->m_dMkFdOffsetY[0][0] > -2.0 && m_pDlgMenu02->m_dMkFdOffsetY[1][0] > -2.0 &&
 			m_pDlgMenu02->m_dMkFdOffsetY[0][0] < 2.0 && m_pDlgMenu02->m_dMkFdOffsetY[1][0] < 2.0)
 		{
-			double dOffsetY = -1.0*(m_pDlgMenu02->m_dMkFdOffsetY[0][0] + m_pDlgMenu02->m_dMkFdOffsetY[1][0]) / 2.0;
-			dOffsetY *= pDoc->m_dShiftAdjustRatio;
+			double dOffsetY0 = -1.0 * m_pDlgMenu02->m_dMkFdOffsetY[0][0];
+			dOffsetY0 *= pDoc->m_dShiftAdjustRatio;
+			double dOffsetY1 = -1.0 * m_pDlgMenu02->m_dMkFdOffsetY[1][0];
+			dOffsetY1 *= pDoc->m_dShiftAdjustRatio;
+			//double dOffsetY = -1.0*(m_pDlgMenu02->m_dMkFdOffsetY[0][0] + m_pDlgMenu02->m_dMkFdOffsetY[1][0]) / 2.0;
+			//dOffsetY *= pDoc->m_dShiftAdjustRatio;
 
 			CfPoint ptPnt[2];
 			ptPnt[0].x = _tstof(pDoc->WorkingInfo.Motion.sPinPosX[0]);
-			ptPnt[0].y = _tstof(pDoc->WorkingInfo.Motion.sPinPosY[0]) + dOffsetY;
+			ptPnt[0].y = _tstof(pDoc->WorkingInfo.Motion.sPinPosY[0]) + dOffsetY0;
+			//ptPnt[0].y = _tstof(pDoc->WorkingInfo.Motion.sPinPosY[0]) + dOffsetY;
 			ptPnt[1].x = _tstof(pDoc->WorkingInfo.Motion.sPinPosX[1]);
-			ptPnt[1].y = _tstof(pDoc->WorkingInfo.Motion.sPinPosY[1]) + dOffsetY;
+			ptPnt[1].y = _tstof(pDoc->WorkingInfo.Motion.sPinPosY[1]) + dOffsetY1;
+			//ptPnt[1].y = _tstof(pDoc->WorkingInfo.Motion.sPinPosY[1]) + dOffsetY;
 
 			m_pDlgMenu02->SetPinPos(0, ptPnt[0]);
 			m_pDlgMenu02->SetPinPos(1, ptPnt[1]);
 
 			CString sData, sPath = PATH_WORKING_INFO;
-			pDoc->WorkingInfo.Fluck.dMeasPosY[0] = _tstof(pDoc->WorkingInfo.Probing[0].sMeasurePosY) + dOffsetY;
+			pDoc->WorkingInfo.Fluck.dMeasPosY[0] = _tstof(pDoc->WorkingInfo.Probing[0].sMeasurePosY) + dOffsetY0;
+			//pDoc->WorkingInfo.Fluck.dMeasPosY[0] = _tstof(pDoc->WorkingInfo.Probing[0].sMeasurePosY) + dOffsetY;
 			sData.Format(_T("%.2f"), pDoc->WorkingInfo.Fluck.dMeasPosY[0]);
 			pDoc->WorkingInfo.Probing[0].sMeasurePosY = sData;
 			::WritePrivateProfileString(_T("Probing0"), _T("PROBING_MEASURE_POSY"), sData, sPath);
 
-			pDoc->WorkingInfo.Fluck.dMeasPosY[1] = _tstof(pDoc->WorkingInfo.Probing[1].sMeasurePosY) + dOffsetY;
+			pDoc->WorkingInfo.Fluck.dMeasPosY[1] = _tstof(pDoc->WorkingInfo.Probing[1].sMeasurePosY) + dOffsetY1;
+			//pDoc->WorkingInfo.Fluck.dMeasPosY[1] = _tstof(pDoc->WorkingInfo.Probing[1].sMeasurePosY) + dOffsetY;
 			sData.Format(_T("%.2f"), pDoc->WorkingInfo.Fluck.dMeasPosY[1]);
 			pDoc->WorkingInfo.Probing[1].sMeasurePosY = sData;
 			::WritePrivateProfileString(_T("Probing1"), _T("PROBING_MEASURE_POSY"), sData, sPath);
@@ -31123,13 +31134,21 @@ void CGvisR2R_PunchView::DuplicateRmap(int nRmap)
 	{
 		if (!CopyFile((LPCTSTR)sSrcPath, (LPCTSTR)sDstPath, FALSE))
 		{
-			Sleep(30);
+			Sleep(100);
 			if (!CopyFile((LPCTSTR)sSrcPath, (LPCTSTR)sDstPath, FALSE))
 			{
-				strTemp.Format(_T("%s \r\n: Reelmap File Copy Fail"), sSrcPath);
-				pView->MsgBox(strTemp);
-				return;
-			}
+				Sleep(300);
+				if (!CopyFile((LPCTSTR)sSrcPath, (LPCTSTR)sDstPath, FALSE))
+				{
+					Sleep(500);
+					//strTemp.Format(_T("%s \r\n: Reelmap File Copy Fail"), sSrcPath);
+					//pView->MsgBox(strTemp);
+					if (!CopyFile((LPCTSTR)sSrcPath, (LPCTSTR)sDstPath, FALSE))
+					{
+						return;
+					}
+				}
+			}					
 		}
 	}
 	else
@@ -31141,4 +31160,137 @@ void CGvisR2R_PunchView::DuplicateRmap(int nRmap)
 		return;
 	}
 
+}
+
+int CGvisR2R_PunchView::GetMkStAuto()
+{
+	int nStep = 0;
+	TCHAR szData[512];
+
+	CString strFolder, strTemp;
+	strFolder.Format(_T("%s\\AutoStep.ini"), pDoc->WorkingInfo.System.sPathMkWork);
+
+	if (0 < ::GetPrivateProfileString(_T("Auto"), _T("nStep"), NULL, szData, sizeof(szData), strFolder))
+		nStep = _ttoi(szData);
+	else
+		nStep = 0;
+
+	m_nMkStAuto = nStep;
+
+	return nStep;
+}
+
+void CGvisR2R_PunchView::SetMkStAuto()
+{
+	CString strFolder, strTemp;
+	strFolder.Format(_T("%s\\AutoStep.ini"), pDoc->WorkingInfo.System.sPathMkWork);
+	strTemp.Format(_T("%d"), m_nMkStAuto);
+	::WritePrivateProfileString(_T("Auto"), _T("nStep"), strTemp, strFolder);
+}
+
+BOOL CGvisR2R_PunchView::GetMkStSignal()
+{
+	BOOL bMkSt = FALSE;
+	TCHAR szData[512];
+
+	CString strFolder, strTemp;
+	strFolder.Format(_T("%s\\AutoStep.ini"), pDoc->WorkingInfo.System.sPathMkWork);
+
+	if (0 < ::GetPrivateProfileString(_T("Auto"), _T("bMkStart"), NULL, szData, sizeof(szData), strFolder))
+		bMkSt = _ttoi(szData) ? TRUE : FALSE;
+	else
+		bMkSt = FALSE;
+
+	m_bMkSt = bMkSt;
+
+	return bMkSt;
+}
+
+void CGvisR2R_PunchView::SetMkStSignal()
+{
+	CString strFolder, strTemp;
+	strFolder.Format(_T("%s\\AutoStep.ini"), pDoc->WorkingInfo.System.sPathMkWork);
+	strTemp.Format(_T("%d"), m_bMkSt ? 1 : 0);
+	::WritePrivateProfileString(_T("Auto"), _T("bMkStart"), strTemp, strFolder);
+}
+
+void CGvisR2R_PunchView::LoadSerial()
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if (bDualTest)
+	{
+		if (pDoc->m_ListBuf[1].nTot > 0) // AOI-Dn
+		{
+			m_nBufDnSerial[0] = pDoc->m_ListBuf[1].Pop();
+			m_nBufUpSerial[0] = m_nBufDnSerial[0];
+			if (pDoc->m_ListBuf[1].nTot > 0) // AOI-Dn
+			{
+				m_nBufDnSerial[1] = pDoc->m_ListBuf[1].Pop();
+				m_nBufUpSerial[1] = m_nBufDnSerial[1];
+			}
+			else
+			{
+				m_nBufDnSerial[1] = 0;
+				m_nBufUpSerial[1] = 0;
+			}
+		}
+		else
+		{
+			m_bLotEnd = TRUE;
+			m_nLotEndAuto = LOT_END;
+		}
+
+		if (pDoc->WorkingInfo.LastJob.bSampleTest)
+		{
+			if (m_nBufUpSerial[0] == 1)
+			{
+				m_nLotEndSerial = _tstoi(pDoc->WorkingInfo.LastJob.sSampleTestShotNum);
+				m_bLastProcFromUp = FALSE;
+				m_bLastProcFromEng = FALSE;
+				m_bLastProc = TRUE;
+				if (m_pDlgMenu01)
+					m_pDlgMenu01->m_bLastProc = TRUE;
+				if (m_pMpe)
+				{
+					m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+				}
+			}
+		}
+	}
+	else
+	{
+		if (pDoc->m_ListBuf[0].nTot > 0) // AOI-Up
+		{
+			m_nBufUpSerial[0] = pDoc->m_ListBuf[0].Pop();
+			if (pDoc->m_ListBuf[0].nTot > 0) // AOI-Up
+				m_nBufUpSerial[1] = pDoc->m_ListBuf[0].Pop();
+			else
+				m_nBufUpSerial[1] = 0;
+		}
+		else
+		{
+			m_bLotEnd = TRUE;
+			m_nLotEndAuto = LOT_END;
+		}
+
+		if (pDoc->WorkingInfo.LastJob.bSampleTest)
+		{
+			if (m_nBufUpSerial[0] == 1)
+			{
+				m_nLotEndSerial = _tstoi(pDoc->WorkingInfo.LastJob.sSampleTestShotNum);
+				m_bLastProcFromUp = FALSE;
+				m_bLastProcFromEng = FALSE;
+				m_bLastProc = TRUE;
+				if (m_pDlgMenu01)
+					m_pDlgMenu01->m_bLastProc = TRUE;
+				if (m_pMpe)
+				{
+					m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+				}
+			}
+		}
+	}
 }
