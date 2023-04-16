@@ -14023,6 +14023,22 @@ void CGvisR2R_PunchView::LotEnd()
 	{
 		FinalCopyItsFiles();
 	}
+
+	if (pDoc->m_pReelMap == pDoc->m_pReelMapUp)
+	{
+		DuplicateRmap(RMAP_UP);
+	}
+	else if (pDoc->m_pReelMap == pDoc->m_pReelMapAllUp)
+	{
+		DuplicateRmap(RMAP_ALLUP);
+	}
+	else if (pDoc->m_pReelMap == pDoc->m_pReelMapIts)
+	{
+		DuplicateRmap(RMAP_ITS);
+	}
+
+	if (m_pEngrave)
+		m_pEngrave->SwMenu01DispDefImg(TRUE);
 }
 
 void CGvisR2R_PunchView::TimWinker(int nId, int nDly) // 0:Ready, 1:Reset, 2:Run, 3:Stop
