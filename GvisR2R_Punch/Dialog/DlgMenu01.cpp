@@ -2844,8 +2844,11 @@ void CDlgMenu01::DispStTime()
 
 // 	sPrev = myStcData[21].GetText();
 	GetDlgItem(IDC_STC_LOT_START)->GetWindowText(sPrev);
-	if(sPrev != str)
+	if (sPrev != str)
+	{
 		myStcData[21].SetText(str);
+		pDoc->SetMkMenu01(_T("LotTime"), _T("Start"), str);
+	}
 
 #ifdef USE_ENGRAVE
 	if (pView)
@@ -2938,14 +2941,16 @@ void CDlgMenu01::DispRunTime()
 		}
 	}
 
-// 	sPrev = myStcData[22].GetText();
+ 	//sPrev = myStcData[22].GetText();
 	GetDlgItem(IDC_STC_LOT_START)->GetWindowText(sPrev);
+
 	if(!sPrev.IsEmpty())
 	{
 		GetDlgItem(IDC_STC_LOT_RUN)->GetWindowText(sPrev);
 		if (sPrev != str)
 		{
 			myStcData[22].SetText(str);
+			pDoc->SetMkMenu01(_T("LotTime"), _T("Run"), str);
 
 #ifdef USE_ENGRAVE
 			if (pView)
@@ -2986,8 +2991,11 @@ void CDlgMenu01::DispEdTime()
 
 // 	sPrev = myStcData[23].GetText();
 	GetDlgItem(IDC_STC_LOT_END)->GetWindowText(sPrev);
-	if(sPrev != str)
+	if (sPrev != str)
+	{
 		myStcData[23].SetText(str);
+		pDoc->SetMkMenu01(_T("LotTime"), _T("End"), str);
+	}
 
 #ifdef USE_ENGRAVE
 	if (pView)

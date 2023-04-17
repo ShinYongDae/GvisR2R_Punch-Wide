@@ -484,6 +484,8 @@ public:
 	int GetAoiUpCamMstInfo();
 	int GetAoiDnCamMstInfo();
 
+	BOOL m_bDebugGrabAlign;
+
 // 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();

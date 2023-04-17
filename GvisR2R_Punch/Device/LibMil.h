@@ -101,10 +101,10 @@ class CLibMil : public CWnd
 
 
 	// Morphology ========================================================================================================
-	void Erode(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
-	void Dilate(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
-	void Open(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
-	void Close(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
+	//void Erode(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
+	//void Dilate(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
+	//void Open(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
+	//void Close(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
 
 	void Filter(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_ID KernelId, MIL_INT Rank, MIL_INT64 Mode);	// rank filter on the pixels in an image
 	void Convolution(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_ID KernelId);							// general convolution operation
@@ -123,6 +123,11 @@ public:
 
 // Attributes
 public:
+	// Morphology ========================================================================================================
+	void Erode(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
+	void Dilate(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
+	void Open(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
+	void Close(MIL_ID SrcImageId, MIL_ID DestImageId, MIL_INT NbIteration, MIL_INT64 ProcMode);
 
 // Operations
 public:

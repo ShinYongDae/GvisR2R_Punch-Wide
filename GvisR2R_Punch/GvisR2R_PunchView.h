@@ -1173,6 +1173,13 @@ public:
 	int GetAoiUpCamMstInfo();
 	int GetAoiDnCamMstInfo();
 
+	void DuplicateRmap(int nRmap);
+	int GetMkStAuto();
+	void SetMkStAuto();
+	BOOL GetMkStSignal();
+	void SetMkStSignal();
+	void LoadSerial();
+
 // 재정의입니다.
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

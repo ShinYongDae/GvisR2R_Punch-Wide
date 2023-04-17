@@ -2345,8 +2345,11 @@ void CDlgMenu02::OnBtnPinSave()
 
 	SetPinPos(0, ptPnt);
 
-	if(pView->m_nMkStAuto > MK_ST+11 && pView->m_nMkStAuto < MK_ST+29)
-		pView->m_nMkStAuto = MK_ST+11;
+	if (pView->m_nMkStAuto > MK_ST + 11 && pView->m_nMkStAuto < MK_ST + 29)
+	{
+		pView->m_nMkStAuto = MK_ST + 11;
+		//pView->SetMkStAuto();
+	}
 
  	if(pDoc->m_pSpecLocal)
  	{
@@ -2394,8 +2397,11 @@ void CDlgMenu02::OnBtnPinSave2()
 		}
 	}	
 
-	if(pView->m_nMkStAuto > MK_ST+11 && pView->m_nMkStAuto < MK_ST+29)
-		pView->m_nMkStAuto = MK_ST+11;
+	if (pView->m_nMkStAuto > MK_ST + 11 && pView->m_nMkStAuto < MK_ST + 29)
+	{
+		pView->m_nMkStAuto = MK_ST + 11;
+		//pView->SetMkStAuto();
+	}
 }
 
 // void CDlgMenu02::PinSave() 
