@@ -496,7 +496,7 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_nSaveMk1Img = 0;
 
 	m_bStopF_Verify = FALSE;
-	m_bInitAuto = FALSE;
+	m_bInitAuto = TRUE;
 	m_bInitAutoLoadMstInfo = FALSE;
 
 	m_bLoadMstInfo = FALSE;
