@@ -3154,6 +3154,7 @@ void CReelMap::ClrFixPcs()
 				if(!nS)
 				{
 					m_FixPcsPrev[nC][nR] = 0;
+					m_FixPcsPrevStSerial[nC][nR] = 0;
 				}		
 			}
 		}
@@ -3167,6 +3168,7 @@ void CReelMap::ClrFixPcs(int nCol, int nRow)
 		m_FixPcs[nS][nCol][nRow] = FALSE;
 	}
 	m_FixPcsPrev[nCol][nRow] = 0;
+	m_FixPcsPrevStSerial[nCol][nRow] = 0;
 }
 
 BOOL CReelMap::IsFixPcs(int nSerial, int &Col, int &Row)
@@ -3235,7 +3237,7 @@ BOOL CReelMap::IsFixPcs(int nSerial, int &Col, int &Row)
 	return bRtn;
 }
 
-BOOL CReelMap::IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot) // nTot : total of PCS Over nJudge
+BOOL CReelMap::IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot, BOOL &bCont) // nTot : total of PCS Over nJudge
 {
 	BOOL bRtn = FALSE;
 	int nNodeX = pDoc->m_Master[0].m_pPcsRgn->nCol;
@@ -3278,6 +3280,8 @@ BOOL CReelMap::IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot) // nTot : 
 			nS = (nSerial-1) % nRange;
 			if(m_FixPcs[nS][nC][nR]) // Defect PCS
 			{
+				if (!m_FixPcsPrev[nC][nR])
+					m_FixPcsPrevStSerial[nC][nR] = nSerial;
 				m_FixPcsPrev[nC][nR]++;
 			}
 
@@ -3285,6 +3289,8 @@ BOOL CReelMap::IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot) // nTot : 
 			{
 				if(m_FixPcsPrev[nC][nR] >= nJudge)
 				{
+					if (nSerial - m_FixPcsPrevStSerial[nC][nR] == nJudge - 1)
+						bCont = TRUE;
 					m_FixPcsRpt[nC][nR]++;
 					pCol[nTot] = nC;
 					pRow[nTot] = nR;

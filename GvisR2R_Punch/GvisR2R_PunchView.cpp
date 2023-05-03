@@ -14321,14 +14321,19 @@ BOOL CGvisR2R_PunchView::IsFixPcsUp(int nSerial)
 
 	CString sMsg = _T(""), str = _T("");
 	int nStrip, pCol[2500], pRow[2500], nTot, nRepeat;
+	BOOL bCont = FALSE;
 
-	if (pDoc->m_pReelMapUp->IsFixPcs(nSerial, pCol, pRow, nTot))
+	if (pDoc->m_pReelMapUp->IsFixPcs(nSerial, pCol, pRow, nTot, bCont))
 	{
 		int nNodeX = pDoc->m_Master[0].m_pPcsRgn->nCol;
 		int nNodeY = pDoc->m_Master[0].m_pPcsRgn->nRow;
 		int nStPcsY = nNodeY / MAX_STRIP_NUM;
 
-		sMsg.Format(_T("상면 고정불량 발생"));
+		if(bCont)
+			sMsg.Format(_T("상면 연속 고정불량 발생"));
+		else
+			sMsg.Format(_T("상면 누적 고정불량 발생"));
+
 		for (int i = 0; i<nTot; i++)
 		{
 			nStrip = int(pRow[i] / nStPcsY);
@@ -14371,14 +14376,19 @@ BOOL CGvisR2R_PunchView::IsFixPcsDn(int nSerial)
 
 	CString sMsg = _T(""), str = _T("");
 	int nStrip, pCol[2500], pRow[2500], nTot, nRepeat;
+	BOOL bCont = FALSE;
 
-	if (pDoc->m_pReelMapDn->IsFixPcs(nSerial, pCol, pRow, nTot))
+	if (pDoc->m_pReelMapDn->IsFixPcs(nSerial, pCol, pRow, nTot, bCont))
 	{
 		int nNodeX = pDoc->m_Master[0].m_pPcsRgn->nCol;
 		int nNodeY = pDoc->m_Master[0].m_pPcsRgn->nRow;
 		int nStPcsY = nNodeY / MAX_STRIP_NUM;
 
-		sMsg.Format(_T("하면 고정불량 발생"));
+		if (bCont)
+			sMsg.Format(_T("하면 연속 고정불량 발생"));
+		else
+			sMsg.Format(_T("하면 누적 고정불량 발생"));
+
 		for (int i = 0; i<nTot; i++)
 		{
 			nStrip = int(pRow[i] / nStPcsY);
