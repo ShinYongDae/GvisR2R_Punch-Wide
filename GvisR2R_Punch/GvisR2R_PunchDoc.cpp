@@ -4231,7 +4231,11 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 	if (m_pReelMap)
 	{
 		m_pReelMapDisp = m_pReelMap;
-		pView->m_pDlgMenu01->SelMap(ALL);
+
+		if (bDualTest)
+			pView->m_pDlgMenu01->SelMap(ALL);
+		else
+			pView->m_pDlgMenu01->SelMap(UP);
 	}
 	return TRUE;
 }

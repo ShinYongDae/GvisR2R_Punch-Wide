@@ -7121,6 +7121,307 @@ CString CReelMap::GetSapp3Txt()
 
 	// 열별 투입/완성/수율 Data.
 	strFileData += _T("1Q\r\n");
+	dRateBeforeVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[0]) / nStripPcs;
+	dRateAfterVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[0]) / nStripPcs;
+	strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_stResult.nDefStrip[0], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+	strFileData += strData;
+
+	strFileData += _T("2Q\r\n");
+	dRateBeforeVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[1]) / nStripPcs;
+	dRateAfterVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[1]) / nStripPcs;
+	strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_stResult.nDefStrip[1], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+	strFileData += strData;
+
+	strFileData += _T("3Q\r\n");
+	dRateBeforeVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[2]) / nStripPcs;
+	dRateAfterVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[2]) / nStripPcs;
+	strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_stResult.nDefStrip[2], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+	strFileData += strData;
+
+	strFileData += _T("4Q\r\n");
+	dRateBeforeVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[3]) / nStripPcs;
+	dRateAfterVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[3]) / nStripPcs;
+	strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_stResult.nDefStrip[3], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+	strFileData += strData;
+
+
+	strFileData += _T("\r\n");
+
+
+	// 열별 불량 Data.
+	strFileData += _T("1X\r\n");
+
+	if (m_stResult.nDefPerStrip[0][DEF_OPEN] > 0 && pDoc->m_nSapp3Code[SAPP3_OPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_OPEN], m_stResult.nDefPerStrip[0][DEF_OPEN]); // 오픈(B102)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[0][DEF_SHORT];// + m_stResult.nDefPerStrip[0][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SHORT], nSum); // 쇼트(B129) // +u쇼트
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[0][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_USHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_USHORT], nSum); // u쇼트(B314)
+		strFileData += strData;
+	}
+
+	if (m_stResult.nDefPerStrip[0][DEF_NICK] > 0 && pDoc->m_nSapp3Code[SAPP3_NICK] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_NICK], m_stResult.nDefPerStrip[0][DEF_NICK]); // 결손(B137)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[0][DEF_SPACE] + m_stResult.nDefPerStrip[0][DEF_EXTRA] + m_stResult.nDefPerStrip[0][DEF_PROTRUSION];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION], nSum); // 선간폭+잔동+돌기(B160)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[0][DEF_PINHOLE];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PINHOLE] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PINHOLE], nSum); // 핀홀(B134)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[0][DEF_PAD];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PAD], nSum); // 패드(B316)
+		strFileData += strData;
+	}
+
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HOPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HOPEN], m_stResult.nDefPerStrip[0][DEF_HOLE_OPEN]);
+		strFileData += strData;
+	}
+	nSum = m_stResult.nDefPerStrip[0][DEF_HOLE_MISS] + m_stResult.nDefPerStrip[0][DEF_HOLE_POSITION] + m_stResult.nDefPerStrip[0][DEF_HOLE_DEFECT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD], nSum);
+		strFileData += strData;
+	}
+
+
+	strFileData += _T("2X\r\n");
+
+	if (m_stResult.nDefPerStrip[1][DEF_OPEN] > 0 && pDoc->m_nSapp3Code[SAPP3_OPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_OPEN], m_stResult.nDefPerStrip[1][DEF_OPEN]); // 오픈(B102)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[1][DEF_SHORT];// + m_stResult.nDefPerStrip[2][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SHORT], nSum); // 쇼트(B129) // +u쇼트
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[1][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_USHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_USHORT], nSum); // u쇼트(B314)
+		strFileData += strData;
+	}
+
+	if (m_stResult.nDefPerStrip[1][DEF_NICK] > 0 && pDoc->m_nSapp3Code[SAPP3_NICK] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_NICK], m_stResult.nDefPerStrip[1][DEF_NICK]); // 결손(B137)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[1][DEF_SPACE] + m_stResult.nDefPerStrip[1][DEF_EXTRA] + m_stResult.nDefPerStrip[1][DEF_PROTRUSION];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION], nSum); // 선간폭+잔동+돌기(B160)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[1][DEF_PINHOLE];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PINHOLE] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PINHOLE], nSum); // 핀홀(B134)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[1][DEF_PAD];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PAD], nSum); // 패드(B316)
+		strFileData += strData;
+	}
+
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HOPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HOPEN], m_stResult.nDefPerStrip[2][DEF_HOLE_OPEN]);
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[1][DEF_HOLE_MISS] + m_stResult.nDefPerStrip[1][DEF_HOLE_POSITION] + m_stResult.nDefPerStrip[1][DEF_HOLE_DEFECT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD], nSum);
+		strFileData += strData;
+	}
+
+
+	strFileData += _T("3X\r\n");
+
+	if (m_stResult.nDefPerStrip[2][DEF_OPEN] > 0 && pDoc->m_nSapp3Code[SAPP3_OPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_OPEN], m_stResult.nDefPerStrip[2][DEF_OPEN]); // 오픈(B102)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[2][DEF_SHORT];// + m_stResult.nDefPerStrip[1][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SHORT], nSum); // 쇼트(B129) // +u쇼트
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[2][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_USHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_USHORT], nSum); // u쇼트(B314)
+		strFileData += strData;
+	}
+
+	if (m_stResult.nDefPerStrip[2][DEF_NICK] > 0 && pDoc->m_nSapp3Code[SAPP3_NICK] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_NICK], m_stResult.nDefPerStrip[2][DEF_NICK]); // 결손(B137)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[2][DEF_SPACE] + m_stResult.nDefPerStrip[2][DEF_EXTRA] + m_stResult.nDefPerStrip[2][DEF_PROTRUSION];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION], nSum); // 선간폭+잔동+돌기(B160)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[2][DEF_PINHOLE];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PINHOLE] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PINHOLE], nSum); // 핀홀(B134)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[2][DEF_PAD];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PAD], nSum); // 패드(B316)
+		strFileData += strData;
+	}
+
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HOPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HOPEN], m_stResult.nDefPerStrip[2][DEF_HOLE_OPEN]);
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[2][DEF_HOLE_MISS] + m_stResult.nDefPerStrip[2][DEF_HOLE_POSITION] + m_stResult.nDefPerStrip[2][DEF_HOLE_DEFECT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD], nSum);
+		strFileData += strData;
+	}
+
+
+	strFileData += _T("4X\r\n");
+
+	if (m_stResult.nDefPerStrip[3][DEF_OPEN] > 0 && pDoc->m_nSapp3Code[SAPP3_OPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_OPEN], m_stResult.nDefPerStrip[3][DEF_OPEN]); // 오픈(B102)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[3][DEF_SHORT];// + m_stResult.nDefPerStrip[3][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SHORT], nSum); // 쇼트(B129) // +u쇼트
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[3][DEF_USHORT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_USHORT] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_USHORT], nSum); // u쇼트(B314)
+		strFileData += strData;
+	}
+
+	if (m_stResult.nDefPerStrip[3][DEF_NICK] > 0 && pDoc->m_nSapp3Code[SAPP3_NICK] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_NICK], m_stResult.nDefPerStrip[3][DEF_NICK]); // 결손(B137)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[3][DEF_SPACE] + m_stResult.nDefPerStrip[3][DEF_EXTRA] + m_stResult.nDefPerStrip[3][DEF_PROTRUSION];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION], nSum); // 선간폭+잔동+돌기(B160)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[3][DEF_PINHOLE];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PINHOLE] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PINHOLE], nSum); // 핀홀(B134)
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[3][DEF_PAD];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_PAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_PAD], nSum); // 패드(B316)
+		strFileData += strData;
+	}
+
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HOPEN] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HOPEN], m_stResult.nDefPerStrip[3][DEF_HOLE_OPEN]);
+		strFileData += strData;
+	}
+
+	nSum = m_stResult.nDefPerStrip[3][DEF_HOLE_MISS] + m_stResult.nDefPerStrip[3][DEF_HOLE_POSITION] + m_stResult.nDefPerStrip[3][DEF_HOLE_DEFECT];
+	if (nSum > 0 && pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] > 0)
+	{
+		strData.Format(_T("B%d,%d\r\n"), pDoc->m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD], nSum);
+		strFileData += strData;
+	}
+
+	// 속도.
+	strFileData += _T("\r\nS\r\n");
+	strData.Format(_T("%.2f"), m_stResult.dEntireSpeed);
+	strFileData += strData;
+	strFileData += _T("\r\n");
+
+
+	return strFileData;
+}
+
+CString CReelMap::GetSapp3TxtReverse()
+{
+	CString strFileData = _T("");
+	CString strData;
+	int nSum, nStripPcs;
+	double dRateBeforeVerify, dRateAfterVerify;
+	nStripPcs = m_stResult.nEntirePieceNum / MAX_STRIP_NUM;
+
+	// 파일 이름.
+	strFileData.Format(_T("FileName : %9s_%4s_%5s.txt\r\n\r\n"), m_stResult.sLot, m_stResult.sProcessNum, m_stResult.sMachin);
+
+	// 열별 투입/완성/수율 Data.
+	strFileData += _T("1Q\r\n");
 	dRateBeforeVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[3]) / nStripPcs;
 	dRateAfterVerify = 100.0 * (nStripPcs - m_stResult.nDefStrip[3]) / nStripPcs;
 	strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_stResult.nDefStrip[3], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량

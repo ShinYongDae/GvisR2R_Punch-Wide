@@ -259,6 +259,7 @@ public:
 	BOOL GetResult(); // TRUE: Make Result, FALSE: Load Result or Failed.
 	CString GetResultTxt();
 	CString GetSapp3Txt();
+	CString GetSapp3TxtReverse();
 	CString GetPath();
 	CString GetIpPath();
 
