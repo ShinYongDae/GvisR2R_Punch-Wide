@@ -8606,6 +8606,60 @@ void CGvisR2R_PunchDoc::UpdateYield(int nSerial)
 
 }
 
+void CGvisR2R_PunchDoc::UpdateYieldUp(int nSerial)
+{
+	if (m_pReelMapUp)
+		m_pReelMapUp->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldDn(int nSerial)
+{
+	if (m_pReelMapDn)
+		m_pReelMapDn->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldAllUp(int nSerial)
+{
+	if (m_pReelMapAllUp)
+		m_pReelMapAllUp->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldAllDn(int nSerial)
+{
+	if (m_pReelMapAllDn)
+		m_pReelMapAllDn->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldInnerUp(int nSerial)
+{
+	if (m_pReelMapInnerUp)
+		m_pReelMapInnerUp->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldInnerDn(int nSerial)
+{
+	if (m_pReelMapInnerDn)
+		m_pReelMapInnerDn->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldInnerAllUp(int nSerial)
+{
+	if (m_pReelMapInnerAllUp)
+		m_pReelMapInnerAllUp->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldInnerAllDn(int nSerial)
+{
+	if (m_pReelMapInnerAllDn)
+		m_pReelMapInnerAllDn->UpdateYield(nSerial);
+}
+
+void CGvisR2R_PunchDoc::UpdateYieldIts(int nSerial)
+{
+	if (m_pReelMapIts)
+		m_pReelMapIts->UpdateYield(nSerial);
+}
+
 void CGvisR2R_PunchDoc::SetCompletedSerial(int nSerial)
 {
 	if (nSerial <= 0)

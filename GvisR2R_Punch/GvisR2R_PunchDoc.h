@@ -300,11 +300,21 @@ public:
 	BOOL MakeMkDirDn();
 	BOOL Shift2Mk(int nSerial);
 	void SetLastSerial(int nSerial);								// 릴맵 텍스트 파일의 수율정보를 업데이트함.
-	void UpdateYield(int nSerial);
 	void SetCompletedSerial(int nSerial);
 	BOOL ChkLotEnd(CString sPath);
 	BOOL IsPinMkData();
 	BOOL IsPinData();
+
+	void UpdateYield(int nSerial);
+	void UpdateYieldUp(int nSerial);
+	void UpdateYieldDn(int nSerial);
+	void UpdateYieldAllUp(int nSerial);
+	void UpdateYieldAllDn(int nSerial);
+	void UpdateYieldInnerUp(int nSerial);
+	void UpdateYieldInnerDn(int nSerial);
+	void UpdateYieldInnerAllUp(int nSerial);
+	void UpdateYieldInnerAllDn(int nSerial);
+	void UpdateYieldIts(int nSerial);
 
 	BOOL CopyDefImg(int nSerial);
 	BOOL CopyDefImg(int nSerial, CString sNewLot);

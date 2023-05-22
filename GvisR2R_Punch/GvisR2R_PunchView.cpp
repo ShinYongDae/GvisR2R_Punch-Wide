@@ -228,6 +228,24 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_dwThreadTick[28] = 0;
 	m_bThread[29] = FALSE;
 	m_dwThreadTick[29] = 0;
+	m_bThread[30] = FALSE;
+	m_dwThreadTick[30] = 0;
+	m_bThread[31] = FALSE;
+	m_dwThreadTick[31] = 0;
+	m_bThread[32] = FALSE;
+	m_dwThreadTick[32] = 0;
+	m_bThread[33] = FALSE;
+	m_dwThreadTick[33] = 0;
+	m_bThread[34] = FALSE;
+	m_dwThreadTick[34] = 0;
+	m_bThread[35] = FALSE;
+	m_dwThreadTick[35] = 0;
+	m_bThread[36] = FALSE;
+	m_dwThreadTick[36] = 0;
+	m_bThread[37] = FALSE;
+	m_dwThreadTick[37] = 0;
+	m_bThread[38] = FALSE;
+	m_dwThreadTick[38] = 0;
 
 	m_bTIM_MPE_IO = FALSE;
 
@@ -277,11 +295,24 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_bTHREAD_UPDATE_REELMAP_INNER_DN = FALSE;
 	m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN = FALSE;
 
+	m_nSnTHREAD_UPDATAE_YIELD = 0;
+
 	m_bTHREAD_UPDATE_RST_UP = FALSE;
 	m_bTHREAD_UPDATE_RST_ALLUP = FALSE;
 	m_bTHREAD_UPDATE_RST_DN = FALSE;
 	m_bTHREAD_UPDATE_RST_ALLDN = FALSE;
 	m_bTHREAD_UPDATE_RST_ITS = FALSE;
+
+	m_bTHREAD_UPDATE_YIELD_UP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_ALLUP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_DN = FALSE;
+	m_bTHREAD_UPDATE_YIELD_ALLDN = FALSE;
+	m_bTHREAD_UPDATE_YIELD_ITS = FALSE;
+
+	m_bTHREAD_UPDATE_YIELD_INNER_UP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_INNER_DN = FALSE;
+	m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = FALSE;
 
 	m_bTHREAD_RELOAD_RST_UP = FALSE;
 	m_bTHREAD_RELOAD_RST_ALLUP = FALSE;
@@ -1115,6 +1146,42 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			// UpdataeReelmapAllDn
 			if (!m_bThread[29])
 				m_Thread[29].Start(GetSafeHwnd(), this, ThreadProc29);
+
+			// UpdataeYieldUp
+			if (!m_bThread[30])
+				m_Thread[30].Start(GetSafeHwnd(), this, ThreadProc30);
+
+			// UpdataeYieldDn
+			if (!m_bThread[31])
+				m_Thread[31].Start(GetSafeHwnd(), this, ThreadProc31);
+
+			// UpdataeYieldAllUp
+			if (!m_bThread[32])
+				m_Thread[32].Start(GetSafeHwnd(), this, ThreadProc32);
+
+			// UpdataeYieldAllDn
+			if (!m_bThread[33])
+				m_Thread[33].Start(GetSafeHwnd(), this, ThreadProc33);
+
+			// UpdataeYieldInnerUp
+			if (!m_bThread[34])
+				m_Thread[34].Start(GetSafeHwnd(), this, ThreadProc34);
+
+			// UpdataeYieldInnerDn
+			if (!m_bThread[35])
+				m_Thread[35].Start(GetSafeHwnd(), this, ThreadProc35);
+
+			// UpdataeYieldInnerAllUp
+			if (!m_bThread[36])
+				m_Thread[36].Start(GetSafeHwnd(), this, ThreadProc36);
+
+			// UpdataeYieldInnerAllDn
+			if (!m_bThread[37])
+				m_Thread[37].Start(GetSafeHwnd(), this, ThreadProc37);
+
+			// UpdataeYieldIts
+			if (!m_bThread[38])
+				m_Thread[38].Start(GetSafeHwnd(), this, ThreadProc38);
 
 			MoveInitPos1();
 			Sleep(30);
@@ -2721,6 +2788,87 @@ void CGvisR2R_PunchView::ThreadKill()
 			Sleep(20);
 		}
 	}
+	if (m_bThread[30])
+	{
+		m_Thread[30].Stop();
+		Sleep(20);
+		while (m_bThread[30])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[31])
+	{
+		m_Thread[31].Stop();
+		Sleep(20);
+		while (m_bThread[31])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[32])
+	{
+		m_Thread[32].Stop();
+		Sleep(20);
+		while (m_bThread[32])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[33])
+	{
+		m_Thread[33].Stop();
+		Sleep(20);
+		while (m_bThread[33])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[34])
+	{
+		m_Thread[34].Stop();
+		Sleep(20);
+		while (m_bThread[34])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[35])
+	{
+		m_Thread[35].Stop();
+		Sleep(20);
+		while (m_bThread[35])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[36])
+	{
+		m_Thread[36].Stop();
+		Sleep(20);
+		while (m_bThread[36])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[37])
+	{
+		m_Thread[37].Stop();
+		Sleep(20);
+		while (m_bThread[37])
+		{
+			Sleep(20);
+		}
+	}
+	if (m_bThread[38])
+	{
+		m_Thread[38].Stop();
+		Sleep(20);
+		while (m_bThread[38])
+		{
+			Sleep(20);
+		}
+	}
 }
 
 UINT CGvisR2R_PunchView::ThreadProc0(LPVOID lpContext)	// DoMark0(), DoMark1()
@@ -2937,15 +3085,27 @@ UINT CGvisR2R_PunchView::ThreadProc3(LPVOID lpContext)	// UpdateYield()
 
 		if (pThread->m_bTHREAD_UPDATAE_YIELD[0])
 		{
-			pThread->UpdateYield(pThread->m_nSerialTHREAD_UPDATAE_YIELD[0]);
 			pThread->m_bTHREAD_UPDATAE_YIELD[0] = FALSE;
+			pThread->UpdateYield(pThread->m_nSerialTHREAD_UPDATAE_YIELD[0]);
 			Sleep(0);
 		}
-		else if(pThread->m_bTHREAD_UPDATAE_YIELD[1])
+		else if(pThread->m_bTHREAD_UPDATAE_YIELD[1] && !pThread->m_bTHREAD_UPDATE_YIELD_UP)
 		{
-			pThread->UpdateYield(pThread->m_nSerialTHREAD_UPDATAE_YIELD[1]);
-			pThread->m_bTHREAD_UPDATAE_YIELD[1] = FALSE;
-			Sleep(0);
+			if (pDoc->WorkingInfo.LastJob.bDualTest)
+			{
+				if (!pThread->m_bTHREAD_UPDATE_YIELD_DN && !pThread->m_bTHREAD_UPDATE_YIELD_ALLUP && !pThread->m_bTHREAD_UPDATE_YIELD_ALLDN)
+				{
+					pThread->m_bTHREAD_UPDATAE_YIELD[1] = FALSE;
+					pThread->UpdateYield(pThread->m_nSerialTHREAD_UPDATAE_YIELD[1]);
+					Sleep(0);
+				}
+			}
+			else
+			{
+				pThread->m_bTHREAD_UPDATAE_YIELD[1] = FALSE;
+				pThread->UpdateYield(pThread->m_nSerialTHREAD_UPDATAE_YIELD[1]);
+				Sleep(0);
+			}
 		}
 		else
 			Sleep(30);
@@ -10894,6 +11054,8 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 	m_bTHREAD_UPDATE_RST_DN = FALSE;
 	m_bTHREAD_UPDATE_RST_ALLDN = FALSE;
 	m_bTHREAD_UPDATE_RST_ITS = FALSE;
+
+	m_nSnTHREAD_UPDATAE_YIELD = 0;
 
 	pDoc->m_nEjectBufferLastShot = -1;
 	m_bSerialDecrese = FALSE;
@@ -26362,11 +26524,76 @@ BOOL CGvisR2R_PunchView::LoadMasterSpec()
 //	pDoc->SetMkPcsIdx(nSerial);
 //}
 
+
+// Call from Thread Function
 void CGvisR2R_PunchView::UpdateYield(int nSerial)
 {
-	pDoc->UpdateYield(nSerial);
+	//pDoc->UpdateYield(nSerial);
+
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	//int nId = nSerial % 2; // È¦¼ö(1), Â¦¼ö(0)
+
+	m_nSnTHREAD_UPDATAE_YIELD = nSerial;
+	m_bTHREAD_UPDATE_YIELD_UP = TRUE;
+	if(bDualTest)
+		m_bTHREAD_UPDATE_YIELD_DN = TRUE;
+
+	//if (pDoc->GetTestMode() == MODE_OUTER)
+	//{
+	//	m_bTHREAD_UPDATE_YIELD_ITS = TRUE;
+	//	m_bTHREAD_UPDATE_YIELD_INNER_UP = TRUE;
+	//	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+	//	{
+	//		m_bTHREAD_UPDATE_YIELD_INNER_DN = TRUE;
+	//	}
+	//}
+
 }
 
+void CGvisR2R_PunchView::UpdateYieldUp(int nSerial)
+{
+	pDoc->UpdateYieldUp(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldDn(int nSerial)
+{
+	pDoc->UpdateYieldDn(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldAllUp(int nSerial)
+{
+	pDoc->UpdateYieldAllUp(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldAllDn(int nSerial)
+{
+	pDoc->UpdateYieldAllDn(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldInnerUp(int nSerial)
+{
+	pDoc->UpdateYieldInnerUp(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldInnerDn(int nSerial)
+{
+	pDoc->UpdateYieldInnerDn(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldInnerAllUp(int nSerial)
+{
+	pDoc->UpdateYieldInnerAllUp(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldInnerAllDn(int nSerial)
+{
+	pDoc->UpdateYieldInnerAllDn(nSerial);
+}
+
+void CGvisR2R_PunchView::UpdateYieldIts(int nSerial)
+{
+	pDoc->UpdateYieldIts(nSerial);
+}
 
 void CGvisR2R_PunchView::UpdateYield()
 {
@@ -26384,16 +26611,19 @@ void CGvisR2R_PunchView::UpdateYield()
 	{
 			m_nSerialTHREAD_UPDATAE_YIELD[0] = nSerial;
 			m_bTHREAD_UPDATAE_YIELD[0] = TRUE;
+			Sleep(30);
 	}
 	else
 	{
 		m_nSerialTHREAD_UPDATAE_YIELD[0] = nSerial;
 		m_bTHREAD_UPDATAE_YIELD[0] = TRUE;
+		Sleep(30);
 
 		if (m_nBufUpSerial[1] > 0)
 		{
 			m_nSerialTHREAD_UPDATAE_YIELD[1] = m_nBufUpSerial[1];
 			m_bTHREAD_UPDATAE_YIELD[1] = TRUE;
+			Sleep(30);
 		}
 		else if(m_nBufUpSerial[1] < 0)
 		{
@@ -31319,4 +31549,290 @@ void CGvisR2R_PunchView::LoadSerial()
 			}
 		}
 	}
+}
+
+
+UINT CGvisR2R_PunchView::ThreadProc30(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[30] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[30].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[30] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_UP)
+		{
+			pThread->UpdateYieldUp(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_UP = FALSE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[30] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc31(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[31] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[31].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[31] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_DN)
+		{
+			pThread->UpdateYieldDn(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_DN = FALSE;
+			pThread->m_bTHREAD_UPDATE_YIELD_ALLUP = TRUE;
+			pThread->m_bTHREAD_UPDATE_YIELD_ALLDN = TRUE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[31] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc32(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[32] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[32].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[32] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_ALLUP)
+		{
+			pThread->UpdateYieldAllUp(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_ALLUP = FALSE;
+
+			if (pDoc->GetTestMode() == MODE_OUTER)
+			{
+				pThread->m_bTHREAD_UPDATE_YIELD_ITS = TRUE;
+				//pThread->m_bTHREAD_UPDATE_YIELD_INNER_UP = TRUE;
+				//if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+				//{
+				//	pThread->m_bTHREAD_UPDATE_YIELD_INNER_DN = TRUE;
+				//}
+			}
+
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[32] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc33(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[33] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[33].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[33] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_ALLDN)
+		{
+			pThread->UpdateYieldAllDn(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_ALLDN = FALSE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[33] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc34(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[34] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[34].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[34] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_INNER_UP)
+		{
+			pThread->UpdateYieldInnerUp(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_INNER_UP = FALSE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[34] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc35(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[35] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[35].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[35] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_INNER_DN)
+		{
+			pThread->UpdateYieldInnerDn(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_INNER_DN = FALSE;
+			pThread->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = TRUE;
+			pThread->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = TRUE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[35] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc36(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[36] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[36].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[36] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP)
+		{
+			pThread->UpdateYieldInnerAllUp(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = FALSE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[36] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc37(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[37] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[37].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[37] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN)
+		{
+			pThread->UpdateYieldInnerAllDn(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = FALSE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[37] = FALSE;
+
+	return 0;
+}
+
+UINT CGvisR2R_PunchView::ThreadProc38(LPVOID lpContext)	// UpdateYieldUp()
+{
+	// Turn the passed in 'this' pointer back into a CProgressMgr instance
+	CGvisR2R_PunchView* pThread = reinterpret_cast<CGvisR2R_PunchView*>(lpContext);
+
+	BOOL bLock = FALSE;
+	DWORD dwTick = GetTickCount();
+	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
+
+	pThread->m_bThread[38] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[38].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	{
+		pThread->m_dwThreadTick[38] = GetTickCount() - dwTick;
+		dwTick = GetTickCount();
+
+		if (pThread->m_bTHREAD_UPDATE_YIELD_ITS)
+		{
+			pThread->UpdateYieldIts(pThread->m_nSnTHREAD_UPDATAE_YIELD);
+			pThread->m_bTHREAD_UPDATE_YIELD_ITS = FALSE;
+			Sleep(0);
+		}
+		else
+			Sleep(30);
+	}
+
+	pThread->m_bThread[38] = FALSE;
+
+	return 0;
 }

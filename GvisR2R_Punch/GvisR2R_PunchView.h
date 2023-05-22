@@ -80,7 +80,7 @@
 #define TIM_CAMMASTER_UPDATE	22
 #define TIM_START_UPDATE		100
 
-#define MAX_THREAD				30
+#define MAX_THREAD				39
 
 namespace Read2dIdx
 {
@@ -416,7 +416,13 @@ public:
 	BOOL m_bTHREAD_RELOAD_RST_UP_INNER, m_bTHREAD_RELOAD_RST_ALLUP_INNER;
 	BOOL m_bTHREAD_RELOAD_RST_DN_INNER, m_bTHREAD_RELOAD_RST_ALLDN_INNER;
 	BOOL m_bTHREAD_RELOAD_RST_ITS, m_bTHREAD_UPDATE_RST_ITS;
-	// 	BOOL m_bTIM_MK_START;
+
+	BOOL m_bTHREAD_UPDATE_YIELD_UP, m_bTHREAD_UPDATE_YIELD_ALLUP;
+	BOOL m_bTHREAD_UPDATE_YIELD_DN, m_bTHREAD_UPDATE_YIELD_ALLDN;
+	BOOL m_bTHREAD_UPDATE_YIELD_ITS;
+	BOOL m_bTHREAD_UPDATE_YIELD_INNER_UP, m_bTHREAD_UPDATE_YIELD_INNER_ALLUP;
+	BOOL m_bTHREAD_UPDATE_YIELD_INNER_DN, m_bTHREAD_UPDATE_YIELD_INNER_ALLDN;
+	int	m_nSnTHREAD_UPDATAE_YIELD;
 
 	void UpdateRstUp();
 	void UpdateRstAllUp();
@@ -645,6 +651,17 @@ public:
 	static UINT ThreadProc27(LPVOID lpContext); // UpdateRMapInnerDn()
 	static UINT ThreadProc28(LPVOID lpContext); // UpdateRMapInnerAllUp()
 	static UINT ThreadProc29(LPVOID lpContext); // UpdateRMapInnerAllDn()
+
+	static UINT ThreadProc30(LPVOID lpContext); // UpdateYieldUp()
+	static UINT ThreadProc31(LPVOID lpContext); // UpdateYieldDn()
+	static UINT ThreadProc32(LPVOID lpContext); // UpdateYieldAllUp()
+	static UINT ThreadProc33(LPVOID lpContext); // UpdateYieldAllDn()
+
+	static UINT ThreadProc34(LPVOID lpContext); // UpdateYieldInnerUp()
+	static UINT ThreadProc35(LPVOID lpContext); // UpdateYieldInnerDn()
+	static UINT ThreadProc36(LPVOID lpContext); // UpdateYieldInnerAllUp()
+	static UINT ThreadProc37(LPVOID lpContext); // UpdateYieldInnerAllDn()
+	static UINT ThreadProc38(LPVOID lpContext); // UpdateYieldIts()
 
 	void UpdateRMapUp();
 	void UpdateRMapAllUp();
@@ -1052,6 +1069,15 @@ public:
 
 	void UpdateYield();
 	void UpdateYield(int nSerial);
+	void UpdateYieldUp(int nSerial);
+	void UpdateYieldDn(int nSerial);
+	void UpdateYieldAllUp(int nSerial);
+	void UpdateYieldAllDn(int nSerial);
+	void UpdateYieldInnerUp(int nSerial);
+	void UpdateYieldInnerDn(int nSerial);
+	void UpdateYieldInnerAllUp(int nSerial);
+	void UpdateYieldInnerAllDn(int nSerial);
+	void UpdateYieldIts(int nSerial);
 
 	void SetEngFd();
 	void MoveEng(double dOffset);
