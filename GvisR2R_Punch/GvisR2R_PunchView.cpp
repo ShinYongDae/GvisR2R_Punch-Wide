@@ -2565,12 +2565,13 @@ void CGvisR2R_PunchView::ThreadKill()
 	}
 	if (m_bThread[5])
 	{
+		CWinThread* pPointer = m_Thread[5].GetPointer();
 		m_Thread[5].Stop();
 		Sleep(20);
-		while (m_bThread[5])
-		{
-			Sleep(20);
-		}
+		//while (m_bThread[5])
+		//{
+		//	Sleep(20);
+		//}
 	}
 	if (m_bThread[6])
 	{
@@ -3173,70 +3174,6 @@ UINT CGvisR2R_PunchView::ThreadProc5(LPVOID lpContext)	// GetCurrentInfoSignal()
 		{
 			bLock = TRUE;
 			pThread->GetCurrentInfoSignal();
-			/*
-			//if (pThread->m_pEngrave)
-			//{
-			//	if (pDoc->BtnStatus.EngAuto.IsMkSt)
-			//	{
-			//		pDoc->BtnStatus.EngAuto.IsMkSt = FALSE;
-			//		pThread->m_pEngrave->IsSwEngAutoMkSt(pDoc->BtnStatus.EngAuto.MkSt);
-			//	}
-
-			//	if (pDoc->BtnStatus.EngAuto.IsRead2dSt)
-			//	{
-			//		pDoc->BtnStatus.EngAuto.IsRead2dSt = FALSE;
-			//		pThread->m_pEngrave->IsSwEngAuto2dReadSt(pDoc->BtnStatus.EngAuto.Read2dSt);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsReady)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsReady = FALSE;
-			//		pThread->m_pEngrave->IsSetDispReady(pDoc->BtnStatus.Disp.Ready);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsRun)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsRun = FALSE;
-			//		pThread->m_pEngrave->IsSetDispRun(pDoc->BtnStatus.Disp.Run);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsStop)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsStop = FALSE;
-			//		pThread->m_pEngrave->IsSetDispStop(pDoc->BtnStatus.Disp.Stop);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsDualSample)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsDualSample = FALSE;
-			//		pThread->m_pEngrave->IsSetDispDualSample(pDoc->BtnStatus.Disp.Stop);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsSingleSample)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsSingleSample = FALSE;
-			//		pThread->m_pEngrave->IsSetDispSingleSample(pDoc->BtnStatus.Disp.SingleSample);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsDualTest)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsDualTest = FALSE;
-			//		pThread->m_pEngrave->IsSetDispDualTest(pDoc->BtnStatus.Disp.DualTest);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsSingleTest)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsSingleTest = FALSE;
-			//		pThread->m_pEngrave->IsSetDispDualTest(pDoc->BtnStatus.Disp.SingleTest);
-			//	}
-
-			//	if (pDoc->BtnStatus.Disp.IsSingleTest)
-			//	{
-			//		pDoc->BtnStatus.Disp.IsSingleTest = FALSE;
-			//		pThread->m_pEngrave->IsSetDispDualTest(pDoc->BtnStatus.Disp.SingleTest);
-			//	}
-			//}
-			*/
 			bLock = FALSE;
 		}
 		Sleep(100);
@@ -13464,9 +13401,14 @@ UINT CGvisR2R_PunchView::ThreadProc6(LPVOID lpContext)	// UpdateRMapUp()
 
 		if (pThread->m_bTHREAD_UPDATE_REELMAP_UP)
 		{
-			pThread->UpdateRMapUp();
-			pThread->m_bTHREAD_UPDATE_REELMAP_UP = FALSE;
-			Sleep(0);
+			if (!pThread->m_bTHREAD_UPDATE_RST_UP)
+			{
+				pThread->UpdateRMapUp();
+				pThread->m_bTHREAD_UPDATE_REELMAP_UP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -13496,9 +13438,14 @@ UINT CGvisR2R_PunchView::ThreadProc7(LPVOID lpContext)	// UpdateRMapDn()
 		{
 			//pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP = TRUE;
 			//pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN = TRUE;
-			pThread->UpdateRMapDn();
-			pThread->m_bTHREAD_UPDATE_REELMAP_DN = FALSE;
-			Sleep(0);
+			if (!pThread->m_bTHREAD_UPDATE_RST_DN)
+			{
+				pThread->UpdateRMapDn();
+				pThread->m_bTHREAD_UPDATE_REELMAP_DN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -13526,9 +13473,14 @@ UINT CGvisR2R_PunchView::ThreadProc8(LPVOID lpContext)	// UpdateRMapAllUp()
 
 		if (pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP)
 		{
-			pThread->UpdateRMapAllUp();
-			pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP = FALSE;
-			Sleep(0);
+			if (!pThread->m_bTHREAD_UPDATE_RST_ALLUP)
+			{
+				pThread->UpdateRMapAllUp();
+				pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -13556,9 +13508,14 @@ UINT CGvisR2R_PunchView::ThreadProc9(LPVOID lpContext)	// UpdateRMapAllDn()
 
 		if (pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN)
 		{
-			pThread->UpdateRMapAllDn();
-			pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN = FALSE;
-			Sleep(0);
+			if (!pThread->m_bTHREAD_UPDATE_RST_ALLDN)
+			{
+				pThread->UpdateRMapAllDn();
+				pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -20189,6 +20146,9 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 #endif
 			break;
 		case MK_ST + (Mk2PtIdx::DoneMk) + 4:
+			sMsg.Format(_T("%d%d%d%d%d"), m_bTHREAD_SHIFT2MK ? 1 : 0, m_bTHREAD_UPDATE_RST_UP ? 1 : 0, m_bTHREAD_UPDATE_RST_DN ? 1 : 0, m_bTHREAD_UPDATE_RST_ALLUP ? 1 : 0, m_bTHREAD_UPDATE_RST_ALLDN ? 1 : 0);
+			DispStsBar(sMsg, 0);
+
 			if (!m_bTHREAD_SHIFT2MK && !m_bTHREAD_UPDATE_RST_UP && !m_bTHREAD_UPDATE_RST_DN && !m_bTHREAD_UPDATE_RST_ALLUP && !m_bTHREAD_UPDATE_RST_ALLDN)
 			{
 				if (pDoc->GetTestMode() == MODE_OUTER)
@@ -27251,15 +27211,20 @@ UINT CGvisR2R_PunchView::ThreadProc10(LPVOID lpContext)	// UpdateRstUp()
 
 		if (pThread->m_bTHREAD_UPDATE_RST_UP)
 		{
-			pThread->UpdateRstUp();
-			pThread->m_bTHREAD_UPDATE_RST_UP = FALSE;
-			if (!pDoc->WorkingInfo.LastJob.bDualTest)
+			if (!pThread->m_bTHREAD_UPDATE_REELMAP_UP)
 			{
-				if (pDoc->GetTestMode() == MODE_OUTER)
-					pThread->m_bTHREAD_UPDATE_RST_ITS = TRUE;
-			}
+				pThread->UpdateRstUp();
+				pThread->m_bTHREAD_UPDATE_RST_UP = FALSE;
+				if (!pDoc->WorkingInfo.LastJob.bDualTest)
+				{
+					if (pDoc->GetTestMode() == MODE_OUTER)
+						pThread->m_bTHREAD_UPDATE_RST_ITS = TRUE;
+				}
 
-			Sleep(0);
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -27287,11 +27252,16 @@ UINT CGvisR2R_PunchView::ThreadProc11(LPVOID lpContext)	// UpdateRstDn()
 
 		if (pThread->m_bTHREAD_UPDATE_RST_DN)
 		{
-			pThread->UpdateRstDn();
-			pThread->m_bTHREAD_UPDATE_RST_DN = FALSE;
-			pThread->m_bTHREAD_UPDATE_RST_ALLUP = TRUE;
-			pThread->m_bTHREAD_UPDATE_RST_ALLDN = TRUE;
-			Sleep(0);
+			if (!pThread->m_bTHREAD_UPDATE_REELMAP_DN)
+			{
+				pThread->UpdateRstDn();
+				pThread->m_bTHREAD_UPDATE_RST_DN = FALSE;
+				pThread->m_bTHREAD_UPDATE_RST_ALLUP = TRUE;
+				pThread->m_bTHREAD_UPDATE_RST_ALLDN = TRUE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -27319,11 +27289,16 @@ UINT CGvisR2R_PunchView::ThreadProc12(LPVOID lpContext)	// UpdateRstAllUp()
 
 		if (pThread->m_bTHREAD_UPDATE_RST_ALLUP)
 		{
-			pThread->UpdateRstAllUp();
-			pThread->m_bTHREAD_UPDATE_RST_ALLUP = FALSE;
-			if(pDoc->GetTestMode() == MODE_OUTER)
-				pThread->m_bTHREAD_UPDATE_RST_ITS = TRUE;
-			Sleep(0);
+			if (!pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP)
+			{
+				pThread->UpdateRstAllUp();
+				pThread->m_bTHREAD_UPDATE_RST_ALLUP = FALSE;
+				if (pDoc->GetTestMode() == MODE_OUTER)
+					pThread->m_bTHREAD_UPDATE_RST_ITS = TRUE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -27351,9 +27326,14 @@ UINT CGvisR2R_PunchView::ThreadProc13(LPVOID lpContext)	// UpdateRstAllDn()
 
 		if (pThread->m_bTHREAD_UPDATE_RST_ALLDN)
 		{
-			pThread->UpdateRstAllDn();
-			pThread->m_bTHREAD_UPDATE_RST_ALLDN = FALSE;
-			Sleep(0);
+			if (!pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN)
+			{
+				pThread->UpdateRstAllDn();
+				pThread->m_bTHREAD_UPDATE_RST_ALLDN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);

@@ -28,6 +28,7 @@ public:
 
 	CIniFile(void);
 	CIniFile(string FileName);
+	//CIniFile(CString FileName);
 	virtual ~CIniFile(void);
 
 	bool m_bLoaded, m_bChanged;
@@ -54,9 +55,13 @@ public:
 	bool AddSection(string SectionName);
 	bool Create();
 
+	void StringToChar(CString str, char* pCh);
+	CString CharToString(const char *szStr);
+
 private:
 	vector<CIniFile::Record> GetSections();
 	bool Load(string FileName);
+	//bool Load(CString sPath);
 	bool Save();
 
 	struct RecordSectionIs : std::unary_function<Record, bool>

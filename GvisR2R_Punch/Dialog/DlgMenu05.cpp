@@ -1365,96 +1365,96 @@ void CDlgMenu05::InsertLine(CString sPath)
 
 }
 
-void CDlgMenu05::DisplayReelMapData()
-{
-	//char FileD[MAX_PATH];
-	TCHAR FileD[MAX_PATH];
-	char *FileData;
-	CString strReelMapPath, strReelMapData, DsipMsg;
- 	int nFileSize, nRSize, i;	//, nSizeTemp	
-	FILE *fp;
-
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	strReelMapData = _T("");
-	if(bDualTest)
-	{
-		strReelMapPath.Format(_T("%s%s\\%s\\%s\\ReelMapDataAll.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
-															   m_sModel, m_sLot, m_sLayer);
-	}
-	else
-	{
-		strReelMapPath.Format(_T("%s%s\\%s\\%s\\ReelMapDataUp.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
-															   m_sModel, m_sLot, m_sLayer);
-	}
-
-	InsertLine(strReelMapPath);
-
-	//파일을 불러옴. 
-	//strcpy(FileD, strReelMapPath);
-	wsprintf(FileD, TEXT("%s"), strReelMapPath);
-	char* pRtn = NULL;
-	if((fp = fopen(pRtn=TCHARToChar(FileD), "r")) != NULL)
-	{
-		fseek(fp, 0, SEEK_END);
-		nFileSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		// Allocate space for a path name
-		FileData = (char*)calloc(nFileSize, sizeof(char));	
-		
-		nRSize = 0;
-		for( i=0; i < nFileSize ; i++ )
-		{
-			if( feof( fp ) != 0 )
-				break;
-
-			FileData[i] = fgetc(fp);
-
-			if(FileData[i] == '\n')
-			{
-				if(FileData[i-1] != '\r')
-				{
-					nFileSize++;
-					FileData = (char*)realloc(FileData, nFileSize);
-					FileData[i] = '\r';
-					i++;
-					nRSize++;
-					FileData[i] = '\n';
-				}
-			}
-
-			nRSize++;
-		}
-
-		strReelMapData.Format(_T("%s"), CharToString(FileData));
-
-/*
-		fseek(fp, 0, SEEK_END);
-		nFileSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-		
-		// Allocate space for a path name
-		//FileData = (char*)malloc( nFileSize );
-		FileData = (char*)calloc(nFileSize+1, sizeof(char));
-
-		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
-		strReelMapData.Format(_T("%s"), FileData);
-*/
-		fclose(fp);
-		free( FileData );
-	}
-	else
-	{
-		DsipMsg.Format(_T("파일이 존재하지 않습니다.\r\n%s"), strReelMapPath);
-		pView->ClrDispMsg();
-		AfxMessageBox(DsipMsg);
-	}
-
-	if(pRtn)
-		delete pRtn;
-	GetDlgItem(IDC_EDIT_RESULT)->SetWindowText(strReelMapData);
-}
+//void CDlgMenu05::DisplayReelMapData()
+//{
+//	//char FileD[MAX_PATH];
+//	TCHAR FileD[MAX_PATH];
+//	char *FileData;
+//	CString strReelMapPath, strReelMapData, DsipMsg;
+// 	int nFileSize, nRSize, i;	//, nSizeTemp	
+//	FILE *fp;
+//
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//	strReelMapData = _T("");
+//	if(bDualTest)
+//	{
+//		strReelMapPath.Format(_T("%s%s\\%s\\%s\\ReelMapDataAll.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
+//															   m_sModel, m_sLot, m_sLayer);
+//	}
+//	else
+//	{
+//		strReelMapPath.Format(_T("%s%s\\%s\\%s\\ReelMapDataUp.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
+//															   m_sModel, m_sLot, m_sLayer);
+//	}
+//
+//	InsertLine(strReelMapPath);
+//
+//	//파일을 불러옴. 
+//	//strcpy(FileD, strReelMapPath);
+//	wsprintf(FileD, TEXT("%s"), strReelMapPath);
+//	char* pRtn = NULL;
+//	if((fp = fopen(pRtn=TCHARToChar(FileD), "r")) != NULL)
+//	{
+//		fseek(fp, 0, SEEK_END);
+//		nFileSize = ftell(fp);
+//		fseek(fp, 0, SEEK_SET);
+//
+//		// Allocate space for a path name
+//		FileData = (char*)calloc(nFileSize, sizeof(char));	
+//		
+//		nRSize = 0;
+//		for( i=0; i < nFileSize ; i++ )
+//		{
+//			if( feof( fp ) != 0 )
+//				break;
+//
+//			FileData[i] = fgetc(fp);
+//
+//			if(FileData[i] == '\n')
+//			{
+//				if(FileData[i-1] != '\r')
+//				{
+//					nFileSize++;
+//					FileData = (char*)realloc(FileData, nFileSize);
+//					FileData[i] = '\r';
+//					i++;
+//					nRSize++;
+//					FileData[i] = '\n';
+//				}
+//			}
+//
+//			nRSize++;
+//		}
+//
+//		strReelMapData.Format(_T("%s"), CharToString(FileData));
+//
+//
+//		//fseek(fp, 0, SEEK_END);
+//		//nFileSize = ftell(fp);
+//		//fseek(fp, 0, SEEK_SET);
+//		//
+//		//// Allocate space for a path name
+//		////FileData = (char*)malloc( nFileSize );
+//		//FileData = (char*)calloc(nFileSize+1, sizeof(char));
+//
+//		//nRSize = fread(FileData, sizeof(char), nFileSize, fp);
+//		//strReelMapData.Format(_T("%s"), FileData);
+//
+//		fclose(fp);
+//		free( FileData );
+//	}
+//	else
+//	{
+//		DsipMsg.Format(_T("파일이 존재하지 않습니다.\r\n%s"), strReelMapPath);
+//		pView->ClrDispMsg();
+//		AfxMessageBox(DsipMsg);
+//	}
+//
+//	if(pRtn)
+//		delete pRtn;
+//	GetDlgItem(IDC_EDIT_RESULT)->SetWindowText(strReelMapData);
+//}
 
 void CDlgMenu05::DisplayReelMapUser()
 {

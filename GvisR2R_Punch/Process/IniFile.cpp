@@ -18,6 +18,17 @@ CIniFile::CIniFile(string FileName)													// Default constructor
 		m_strFileName = FileName;
 	}
 }
+//CIniFile::CIniFile(CString FileName)													// Default constructor
+//{
+//	m_bLoaded = false;
+//	m_bChanged = false;
+//	m_vecRec.clear();
+//	if (Load(FileName))
+//	{
+//		m_bLoaded = true;
+//		m_strFileName = CT2CA(FileName);;
+//	}
+//}
 
 CIniFile::~CIniFile(void)
 {
@@ -52,6 +63,8 @@ void Trim(std::string& str, const std::string & ChrsToTrim = " \t\n\r", int Trim
 
 bool CIniFile::Load(string FileName)
 {
+	int dwStart = GetTickCount();
+
 	string s, s_0, s_1;														// Holds the current line from the ini file
 	string CurrentSection;													// Holds the current section name
 
@@ -113,13 +126,141 @@ bool CIniFile::Load(string FileName)
 	}
 
 	inFile.close();															// Close the file
+
+	int dwEnd = GetTickCount();
+	int dwElapsed = dwEnd - dwStart;
+
 	return true;
 }
+
+//bool CIniFile::Load(CString sPath)
+//{
+//	//int dwStart = GetTickCount();
+//
+//	CFileFind cFile;
+//	if (!cFile.FindFile(sPath))
+//		return false;															// If the input file doesn't open, then return
+//		//DeleteFile(sItsPath);
+//
+//	char FileName[MAX_PATH];
+//	StringToChar(sPath, FileName);
+//
+//	char *FileData;
+//	size_t nFileSize, nRSize;
+//	//CString strFileData;
+//
+//	FILE *fp = NULL;
+//	fp = fopen(FileName, "r");													// Open the file
+//	if (fp != NULL)
+//	{
+//		fseek(fp, 0, SEEK_END);
+//		nFileSize = ftell(fp);
+//		fseek(fp, 0, SEEK_SET);
+//
+//		/* Allocate space for a path name */
+//		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
+//
+//		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
+//		//strFileData.Format(_T("%s"), CharToString(FileData));
+//		fclose(fp);																// Close the file
+//	}
+//	else
+//	{
+//		//pView->MsgBox(_T("It is trouble to MakeItsFile."), MB_ICONWARNING | MB_OK);
+//		return false;															// If the input file doesn't open, then return
+//	}
+//
+//	string s, s_0, s_1;															// Holds the current line from the ini file
+//	string CurrentSection;														// Holds the current section name
+//
+//	m_vecRec.clear();															// Clear the content vector
+//
+//	string comments = "";														// A string to store comments in
+//
+//	int dwStart = GetTickCount();
+//
+//	char cLine[MAX_PATH];
+//	int i, line_start, line_end, line_ch;
+//	line_start = 0; line_ch = 0;
+//	for (i = 0; i < nFileSize; i++)												// Read until the end of the file
+//	{
+//		if (FileData[i] == '\n')
+//		{
+//			cLine[line_ch] = '\0';
+//			s = (string)cLine;
+//			line_ch = 0;
+//
+//			Trim(s);															// Trim whitespace from the ends
+//			if (!s.empty())														// Make sure its not a blank line
+//			{
+//				Record r;														// Define a new record
+//
+//				if ((s[0] == '#') || (s[0] == ';'))									// Is this a commented line?
+//				{
+//					if ((s.find('[') == string::npos) &&							// If there is no [ or =
+//						(s.find('=') == string::npos))							// Then it's a comment
+//					{
+//						comments += s + '\n';									// Add the comment to the current comments string
+//					}
+//					else {
+//						r.Commented = s[0];										// Save the comment character
+//						s.erase(s.begin());										// Remove the comment for further processing
+//						Trim(s);
+//					}// Remove any more whitespace
+//				}
+//				else r.Commented = ' ';											// else mark it as not being a comment
+//
+//				if (s.find('[') != string::npos)								// Is this line a section?
+//				{
+//					s.erase(s.begin());											// Erase the leading bracket
+//					s.erase(s.find(']'));										// Erase the trailing bracket
+//					r.Comments = comments;										// Add the comments string (if any)
+//					comments = "";												// Clear the comments for re-use
+//					r.Section = s;												// Set the Section value
+//					r.Key = "";													// Set the Key value
+//					r.Value = "";												// Set the Value value
+//					CurrentSection = s;
+//				}
+//
+//				if (s.find('=') != string::npos)								// Is this line a Key/Value?
+//				{
+//					r.Comments = comments;										// Add the comments string (if any)
+//					comments = "";												// Clear the comments for re-use
+//					r.Section = CurrentSection;									// Set the section to the current Section
+//					s_0 = s.substr(0, s.find('='));
+//					Trim(s_0);
+//					r.Key = s_0;												// Set the Key value to everything before the = sign
+//					s_1 = s.substr(s.find('=') + 1);
+//					Trim(s_1);
+//					r.Value = s_1;												// Set the Value to everything after the = sign
+//				}
+//				if (comments == "")												// Don't add a record yet if its a comment line
+//					m_vecRec.push_back(r);										// Add the record to content
+//			}
+//
+//		}
+//		else
+//		{
+//			cLine[line_ch] = FileData[i];
+//			line_ch++;
+//		}
+//
+//	}
+//
+//	free(FileData);
+//
+//	int dwEnd = GetTickCount();
+//	int dwElapsed = dwEnd - dwStart;
+//
+//	return true;
+//}
 
 bool CIniFile::Save()
 {
 	if (!m_bChanged)
 		return true;
+
+	int dwStart = GetTickCount();
 
 	ofstream outFile(m_strFileName.c_str());								// Create an output filestream
 	if (!outFile.is_open()) return false;									// If the output file doesn't open, then return
@@ -136,6 +277,10 @@ bool CIniFile::Save()
 	}
 
 	outFile.close();														// Close the file
+
+	int dwEnd = GetTickCount();
+	int dwElapsed = dwEnd - dwStart;
+
 	return true;
 }
 
@@ -548,4 +693,41 @@ bool CIniFile::AddSection(string SectionName)
 bool CIniFile::Create()
 {
 	return Save();															// Save
+}
+
+
+void CIniFile::StringToChar(CString str, char* pCh) // char* returned must be deleted... 
+{
+	wchar_t*	wszStr;
+	int				nLenth;
+
+	USES_CONVERSION;
+	//1. CString to wchar_t* conversion
+	wszStr = T2W(str.GetBuffer(str.GetLength()));
+
+	//2. wchar_t* to char* conversion
+	nLenth = WideCharToMultiByte(CP_ACP, 0, wszStr, -1, NULL, 0, NULL, NULL); //char* 형에 대한길이를 구함 
+
+																			  //3. wchar_t* to char* conversion
+	WideCharToMultiByte(CP_ACP, 0, wszStr, -1, pCh, nLenth, 0, 0);
+	return;
+}
+
+CString CIniFile::CharToString(const char *szStr)
+{
+	CString strRet;
+
+	int nLen = strlen(szStr) + sizeof(char);
+	wchar_t *tszTemp = NULL;
+	tszTemp = new WCHAR[nLen];
+
+	MultiByteToWideChar(CP_ACP, 0, szStr, -1, tszTemp, nLen * sizeof(WCHAR));
+
+	strRet.Format(_T("%s"), (CString)tszTemp);
+	if (tszTemp)
+	{
+		delete[] tszTemp;
+		tszTemp = NULL;
+	}
+	return strRet;
 }

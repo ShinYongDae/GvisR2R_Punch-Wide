@@ -96,7 +96,6 @@ HRESULT CThreadTask::Start( HWND hWnd, LPVOID lpContext,LPVOID lpThreadProc)
 //+------------------------------------------------------
 HRESULT CThreadTask::Stop()
 {
-	m_hWnd = NULL;
 	return ShutdownThread();
 }
 
@@ -287,4 +286,9 @@ UINT CThreadTask::ThreadProc( LPVOID lpContext )
 
 	pThread->m_csThreadProc.Unlock();
 	return 0;
+}
+
+CWinThread* CThreadTask::GetPointer()
+{
+	return m_pThread;
 }

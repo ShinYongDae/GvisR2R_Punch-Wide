@@ -29,6 +29,8 @@ public:
 	HRESULT Stop();// Public method to stop a running thread
 	HRESULT WaitThreadEnd(DWORD dwTimeOut=0);
 	
+	CWinThread* GetPointer();
+
 // Implementation
 //private:
     HRESULT CreateThread();// Helper method to create the secondary thread

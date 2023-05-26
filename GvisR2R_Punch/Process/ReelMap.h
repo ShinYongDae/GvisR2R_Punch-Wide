@@ -167,7 +167,7 @@ public:
 	BOOL OpenUser(CString sPath);
 	BOOL Open();
 	BOOL OpenUser(CString sPath, CString sModel, CString sLayer, CString sLot);
-	int Read(CString &sRead);
+	//int Read(CString &sRead);
 	BOOL Write(int nSerial);
 	BOOL Disp(int nMkPnl, BOOL bDumy=FALSE);
 	void SetLastSerial(int nSerial);

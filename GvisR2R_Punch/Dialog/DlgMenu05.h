@@ -39,7 +39,7 @@ class CDlgMenu05 : public CDialog
 	void ModifyModelData();
 	void ModifyLotData();
 	void ModifyLayerData();
-	void DisplayReelMapData();
+	//void DisplayReelMapData();
 	void DisplayReelMapUser();
 	void DisplayResultData();
 	int CntModelNames();
