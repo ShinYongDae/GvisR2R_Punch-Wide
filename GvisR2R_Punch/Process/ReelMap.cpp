@@ -5,6 +5,7 @@
 //#include "gvisr2r.h"
 #include "ReelMap.h"
 #include "DataFile.h"
+#include "IniFile.h"
 #include "../Global/GlobalFunc.h"
 #include "../Dialog/DlgProgress.h"
 
@@ -2663,174 +2664,6 @@ void CReelMap::ResetYield()
 	}
 }
 
-BOOL CReelMap::ReadYield(int nSerial, CString sPath)
-{
-	int i, k;
-	TCHAR szData[200];
-
-	CString sCode, strMenu, strItem, sMsg;
-
-	strMenu.Format(_T("%d"), nSerial);
-	for (i = 1; i < MAX_DEF; i++)
-	{
-		sCode.Format(_T("%d"), i);
-		if (0 < ::GetPrivateProfileString(strMenu, sCode, NULL, szData, sizeof(szData), sPath))
-		{
-			m_stYield.nDefA[i] = _ttoi(szData);
-		}
-		else
-		{
-			if (nSerial == 1)
-			{
-				m_stYield.nDefA[i] = 0;
-			}
-			else
-			{
-				//sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-불량(%d)\r\n%s"), nSerial, i, sPath);
-				//AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-				return FALSE;
-			}
-		}
-	}
-
-	if (0 < ::GetPrivateProfileString(strMenu, _T("Total Pcs"), NULL, szData, sizeof(szData), sPath))
-	{
-		m_stYield.nTot = _ttoi(szData);
-	}
-	else
-	{
-		if (nSerial == 1)
-		{
-			m_stYield.nTot = 0;
-		}
-		else
-		{
-			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Total Pcs\r\n%s"), nSerial, sPath);
-			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-			return FALSE;
-		}
-	}
-
-	if (0 < ::GetPrivateProfileString(strMenu, _T("Good Pcs"), NULL, szData, sizeof(szData), sPath))
-	{
-		m_stYield.nGood = _ttoi(szData);
-	}
-	else
-	{
-		if (nSerial == 1)
-		{
-			m_stYield.nGood = 0;
-		}
-		else
-		{
-			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Good Pcs\r\n%s"), nSerial, sPath);
-			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-			return FALSE;
-		}
-	}
-
-	if (0 < ::GetPrivateProfileString(strMenu, _T("Bad Pcs"), NULL, szData, sizeof(szData), sPath))
-	{
-		m_stYield.nDef = _ttoi(szData);
-	}
-	else
-	{
-		if (nSerial == 1)
-		{
-			m_stYield.nDef = 0;
-		}
-		else
-		{
-			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Bad Pcs\r\n%s"), nSerial, sPath);
-			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-			return FALSE;
-		}
-	}
-
-	for (k = 0; k < MAX_STRIP; k++)
-	{
-		strItem.Format(_T("Strip%d"), k);
-		if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
-		{
-			m_stYield.nDefStrip[k] = _ttoi(szData);
-		}
-		else
-		{
-			if (nSerial == 1)
-			{
-				m_stYield.nDefStrip[k] = 0;
-			}
-			else
-			{
-				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d\r\n%s"), nSerial, k, sPath);
-				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-				return FALSE;
-			}
-		}
-
-		strItem.Format(_T("StripOut_%d"), k);
-		if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
-		{
-			m_stYield.nStripOut[k] = _ttoi(szData);
-		}
-		else
-		{
-			if (nSerial == 1)
-			{
-				m_stYield.nStripOut[k] = 0;
-			}
-			else
-			{
-				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_%d\r\n%s"), nSerial, k, sPath);
-				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-				return FALSE;
-			}
-		}
-
-		for (i = 1; i < MAX_DEF; i++)
-		{
-			strItem.Format(_T("Strip%d_%d"), k, i);
-			if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
-			{
-				m_stYield.nDefPerStrip[k][i] = _ttoi(szData);
-			}
-			else
-			{
-				if (nSerial == 1)
-				{
-					m_stYield.nDefPerStrip[k][i] = 0;
-				}
-				else
-				{
-					sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d_%d\r\n%s"), nSerial, k, i, sPath);
-					AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-					return FALSE;
-				}
-			}
-		}
-	}
-
-	if (0 < ::GetPrivateProfileString(strMenu, _T("StripOut_Total"), NULL, szData, sizeof(szData), sPath))
-	{
-		m_stYield.nTotSriptOut = _ttoi(szData);
-	}
-	else
-	{
-		if (nSerial == 1)
-		{
-			m_stYield.nTotSriptOut = 0;
-		}
-		else
-		{
-			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_Total\r\n%s"), nSerial, sPath);
-			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
-			return FALSE;
-		}
-	}
-
-	return TRUE;
-}
-
 //BOOL CReelMap::WriteYield(int nSerial, CString sPath)
 //{
 //	int nNodeX = 0, nNodeY = 0;
@@ -5439,6 +5272,195 @@ BOOL CReelMap::MakeDirYield(CString sPath)
 	return TRUE;
 }
 
+BOOL CReelMap::ReadYield(int nSerial, CString sPath)
+{
+	int i, k;
+	TCHAR szData[200];
+
+	CString sCode, strMenu, strItem, sMsg;
+
+	std::string strSection, strKey, strVal, strFullPath;
+	strFullPath = CT2CA(sPath);
+	CIniFile iniFile(strFullPath);
+
+	strMenu.Format(_T("%d"), nSerial);
+	strSection = CT2CA(strMenu);
+
+	for (i = 1; i < MAX_DEF; i++)
+	{
+		sCode.Format(_T("%d"), i);
+		strKey = CT2CA(sCode);
+		strVal = iniFile.GetValue(strKey, strSection);
+		if (strVal == "")
+		{
+			if (nSerial == 1)
+			{
+				m_stYield.nDefA[i] = 0;
+			}
+			else
+			{
+				//sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-불량(%d)\r\n%s"), nSerial, i, sPath);
+				//AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+				return FALSE;
+			}
+		}
+		else
+		{
+			m_stYield.nDefA[i] = stoi(strVal);
+		}
+	}
+
+	strKey = "Total Pcs";
+	strVal = iniFile.GetValue(strKey, strSection);
+	if (strVal == "")
+	{
+		if (nSerial == 1)
+		{
+			m_stYield.nTot = 0;
+		}
+		else
+		{
+			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Total Pcs\r\n%s"), nSerial, sPath);
+			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+			return FALSE;
+		}
+	}
+	else
+	{
+		m_stYield.nTot = stoi(strVal);
+	}
+
+	strKey = "Good Pcs";
+	strVal = iniFile.GetValue(strKey, strSection);
+	if (strVal == "")
+	{
+		if (nSerial == 1)
+		{
+			m_stYield.nGood = 0;
+		}
+		else
+		{
+			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Good Pcs\r\n%s"), nSerial, sPath);
+			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+			return FALSE;
+		}
+	}
+	else
+	{
+		m_stYield.nGood = stoi(strVal);
+	}
+
+	strKey = "Bad Pcs";
+	strVal = iniFile.GetValue(strKey, strSection);
+	if (strVal == "")
+	{
+		if (nSerial == 1)
+		{
+			m_stYield.nDef = 0;
+		}
+		else
+		{
+			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Bad Pcs\r\n%s"), nSerial, sPath);
+			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+			return FALSE;
+		}
+	}
+	else
+	{
+		m_stYield.nDef = stoi(strVal);
+	}
+
+	for (k = 0; k < MAX_STRIP; k++)
+	{
+		strItem.Format(_T("Strip%d"), k);
+		strKey = CT2CA(strItem);
+		strVal = iniFile.GetValue(strKey, strSection);
+		if (strVal == "")
+		{
+			if (nSerial == 1)
+			{
+				m_stYield.nDefStrip[k] = 0;
+			}
+			else
+			{
+				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d\r\n%s"), nSerial, k, sPath);
+				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+				return FALSE;
+			}
+		}
+		else
+		{
+			m_stYield.nDefStrip[k] = stoi(strVal);
+		}
+
+		strItem.Format(_T("StripOut_%d"), k);
+		strKey = CT2CA(strItem);
+		strVal = iniFile.GetValue(strKey, strSection);
+		if (strVal == "")
+		{
+			if (nSerial == 1)
+			{
+				m_stYield.nStripOut[k] = 0;
+			}
+			else
+			{
+				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_%d\r\n%s"), nSerial, k, sPath);
+				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+				return FALSE;
+			}
+		}
+		else
+		{
+			m_stYield.nStripOut[k] = stoi(strVal);
+		}
+
+		for (i = 1; i < MAX_DEF; i++)
+		{
+			strItem.Format(_T("Strip%d_%d"), k, i);
+			strKey = CT2CA(strItem);
+			strVal = iniFile.GetValue(strKey, strSection);
+			if (strVal == "")
+			{
+				if (nSerial == 1)
+				{
+					m_stYield.nDefPerStrip[k][i] = 0;
+				}
+				else
+				{
+					sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d_%d\r\n%s"), nSerial, k, i, sPath);
+					AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+					return FALSE;
+				}
+			}
+			else
+			{
+				m_stYield.nDefPerStrip[k][i] = stoi(strVal);
+			}
+		}
+	}
+
+	strKey = "StripOut_Total";
+	strVal = iniFile.GetValue(strKey, strSection);
+	if (strVal == "")
+	{
+		if (nSerial == 1)
+		{
+			m_stYield.nTotSriptOut = 0;
+		}
+		else
+		{
+			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_Total\r\n%s"), nSerial, sPath);
+			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+			return FALSE;
+		}
+	}
+	else
+	{
+		m_stYield.nTotSriptOut = stoi(strVal);
+	}
+
+	return TRUE;
+}
 
 BOOL CReelMap::WriteYield(int nSerial, CString sPath)
 {
@@ -5582,111 +5604,528 @@ BOOL CReelMap::WriteYield(int nSerial, CString sPath)
 		fprintf(fp, "StripOut_3 = \n");
 		fprintf(fp, "\n");
 	}
-	
-	// [Serial]
-/*
-	fprintf(fp, "[%d]\n", nSerial);
-	fprintf(fp, "Total Pcs = %d\n", m_stYield.nTot);
-	fprintf(fp, "Good Pcs = %d\n", m_stYield.nGood);
-	fprintf(fp, "Bad Pcs = %d\n\n", m_stYield.nDef);
-	
-	for (i = 1; i < MAX_DEF; i++)
-	{
-		fprintf(fp, "%d = %d\n", i, m_stYield.nDefA[i]);
-	}
-	fprintf(fp, "\n");
 
-	fprintf(fp, "StripOut_Total = %d\n", m_stYield.nTotSriptOut);
-	for (k = 0; k < MAX_STRIP; k++)
-		fprintf(fp, "StripOut_%d = %d\n", k, m_stYield.nStripOut[k]);
-	fprintf(fp, "\n");
-
-	for (k = 0; k < MAX_STRIP; k++)
-	{
-		fprintf(fp, "Strip%d = %d\n", k, m_stYield.nDefStrip[k]);
-		for (i = 1; i < MAX_DEF; i++)
-			fprintf(fp, "Strip%d_%d = %d\n", k, i, m_stYield.nDefPerStrip[k][i]);
-		fprintf(fp, "\n");
-	}
-*/
 	fclose(fp);
 
+	// [Serial]
+
+	std::string strSection, strKey, strVal, strFullPath;
+	strFullPath = CT2CA(sPath);
+	CIniFile iniFile(strFullPath);
+
 	strMenu.Format(_T("%d"), nSerial);
+	strSection = CT2CA(strMenu);
 
 	for (i = 1; i < MAX_DEF; i++)
 	{
 		sCode.Format(_T("%d"), i);
+		strKey = CT2CA(sCode);
 		sDefNum.Format(_T("%d"), m_stYield.nDefA[i]);
+		strVal = CT2CA(sDefNum);
 
 		// [Info]
-		::WritePrivateProfileString(_T("Info"), sCode, sDefNum, sPath);
+		iniFile.SetValue(strKey, strVal, "Info");
 
 		// [Serial]
-		::WritePrivateProfileString(strMenu, sCode, sDefNum, sPath);
+		iniFile.SetValue(strKey, strVal, strSection);
 	}
 
 	// [Info]
 	strData.Format(_T("%d"), nSerial);
-	::WritePrivateProfileString(_T("Info"), _T("End Shot"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("End Shot", strVal, "Info");
 
 	strData.Format(_T("%d"), nSerial - m_nStartSerial + 1);
-	::WritePrivateProfileString(_T("Info"), _T("Total Shot"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("Total Shot", strVal, "Info");
 
 	strData.Format(_T("%d"), m_stYield.nTot);
-	::WritePrivateProfileString(_T("Info"), _T("Total Pcs"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("Total Pcs", strVal, "Info");
 
 	strData.Format(_T("%d"), m_stYield.nGood);
-	::WritePrivateProfileString(_T("Info"), _T("Good Pcs"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("Good Pcs", strVal, "Info");
 
 	strData.Format(_T("%d"), m_stYield.nDef);
-	::WritePrivateProfileString(_T("Info"), _T("Bad Pcs"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("Bad Pcs", strVal, "Info");
 
 	// [Serial]
 	strData.Format(_T("%d"), m_stYield.nTot);
-	::WritePrivateProfileString(strMenu, _T("Total Pcs"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("Total Pcs", strVal, strSection);
 
 	strData.Format(_T("%d"), m_stYield.nGood);
-	::WritePrivateProfileString(strMenu, _T("Good Pcs"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("Good Pcs", strVal, strSection);
 
 	strData.Format(_T("%d"), m_stYield.nDef);
-	::WritePrivateProfileString(strMenu, _T("Bad Pcs"), strData, sPath);
+	strVal = CT2CA(strData);
+	iniFile.SetValue("Bad Pcs", strVal, strSection);
 
 	for (k = 0; k < MAX_STRIP; k++)
 	{
 		strItem.Format(_T("Strip%d"), k);
+		strKey = CT2CA(strItem);
 		strData.Format(_T("%d"), m_stYield.nDefStrip[k]);
+		strVal = CT2CA(strData);
 		// [Info]
-		::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+		iniFile.SetValue(strKey, strVal, "Info");
+
 		// [Serial]
-		::WritePrivateProfileString(strMenu, strItem, strData, sPath);
+		iniFile.SetValue(strKey, strVal, strSection);
 
 		strItem.Format(_T("StripOut_%d"), k);
+		strKey = CT2CA(strItem);
 		strData.Format(_T("%d"), m_stYield.nStripOut[k]);
+		strVal = CT2CA(strData);
 		// [Info]
-		::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+		iniFile.SetValue(strKey, strVal, "Info");
+
 		// [Serial]
-		::WritePrivateProfileString(strMenu, strItem, strData, sPath);
+		iniFile.SetValue(strKey, strVal, strSection);
 
 		for (i = 1; i < MAX_DEF; i++)
 		{
 			strItem.Format(_T("Strip%d_%d"), k, i);
+			strKey = CT2CA(strItem);
 			strData.Format(_T("%d"), m_stYield.nDefPerStrip[k][i]);
+			strVal = CT2CA(strData);
 			// [Info]
-			::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+			iniFile.SetValue(strKey, strVal, "Info");
+
 			// [Serial]
-			::WritePrivateProfileString(strMenu, strItem, strData, sPath);
+			iniFile.SetValue(strKey, strVal, strSection);
 		}
 	}
 
 	strData.Format(_T("%d"), m_stYield.nTotSriptOut);
+	strVal = CT2CA(strData);
 	// [Info]
-	::WritePrivateProfileString(_T("Info"), _T("StripOut_Total"), strData, sPath);
-	// [Serial]
-	::WritePrivateProfileString(strMenu, _T("StripOut_Total"), strData, sPath);
+	iniFile.SetValue("StripOut_Total", strVal, "Info");
 
+	// [Serial]
+	iniFile.SetValue("StripOut_Total", strVal, strSection);
 
 	return TRUE;
 }
+
+//BOOL CReelMap::ReadYield(int nSerial, CString sPath)
+//{
+//	int i, k;
+//	TCHAR szData[200];
+//
+//	CString sCode, strMenu, strItem, sMsg;
+//
+//	strMenu.Format(_T("%d"), nSerial);
+//	for (i = 1; i < MAX_DEF; i++)
+//	{
+//		sCode.Format(_T("%d"), i);
+//		if (0 < ::GetPrivateProfileString(strMenu, sCode, NULL, szData, sizeof(szData), sPath))
+//		{
+//			m_stYield.nDefA[i] = _ttoi(szData);
+//		}
+//		else
+//		{
+//			if (nSerial == 1)
+//			{
+//				m_stYield.nDefA[i] = 0;
+//			}
+//			else
+//			{
+//				//sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-불량(%d)\r\n%s"), nSerial, i, sPath);
+//				//AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//				return FALSE;
+//			}
+//		}
+//	}
+//
+//	if (0 < ::GetPrivateProfileString(strMenu, _T("Total Pcs"), NULL, szData, sizeof(szData), sPath))
+//	{
+//		m_stYield.nTot = _ttoi(szData);
+//	}
+//	else
+//	{
+//		if (nSerial == 1)
+//		{
+//			m_stYield.nTot = 0;
+//		}
+//		else
+//		{
+//			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Total Pcs\r\n%s"), nSerial, sPath);
+//			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//			return FALSE;
+//		}
+//	}
+//
+//	if (0 < ::GetPrivateProfileString(strMenu, _T("Good Pcs"), NULL, szData, sizeof(szData), sPath))
+//	{
+//		m_stYield.nGood = _ttoi(szData);
+//	}
+//	else
+//	{
+//		if (nSerial == 1)
+//		{
+//			m_stYield.nGood = 0;
+//		}
+//		else
+//		{
+//			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Good Pcs\r\n%s"), nSerial, sPath);
+//			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//			return FALSE;
+//		}
+//	}
+//
+//	if (0 < ::GetPrivateProfileString(strMenu, _T("Bad Pcs"), NULL, szData, sizeof(szData), sPath))
+//	{
+//		m_stYield.nDef = _ttoi(szData);
+//	}
+//	else
+//	{
+//		if (nSerial == 1)
+//		{
+//			m_stYield.nDef = 0;
+//		}
+//		else
+//		{
+//			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Bad Pcs\r\n%s"), nSerial, sPath);
+//			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//			return FALSE;
+//		}
+//	}
+//
+//	for (k = 0; k < MAX_STRIP; k++)
+//	{
+//		strItem.Format(_T("Strip%d"), k);
+//		if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
+//		{
+//			m_stYield.nDefStrip[k] = _ttoi(szData);
+//		}
+//		else
+//		{
+//			if (nSerial == 1)
+//			{
+//				m_stYield.nDefStrip[k] = 0;
+//			}
+//			else
+//			{
+//				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d\r\n%s"), nSerial, k, sPath);
+//				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//				return FALSE;
+//			}
+//		}
+//
+//		strItem.Format(_T("StripOut_%d"), k);
+//		if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
+//		{
+//			m_stYield.nStripOut[k] = _ttoi(szData);
+//		}
+//		else
+//		{
+//			if (nSerial == 1)
+//			{
+//				m_stYield.nStripOut[k] = 0;
+//			}
+//			else
+//			{
+//				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_%d\r\n%s"), nSerial, k, sPath);
+//				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//				return FALSE;
+//			}
+//		}
+//
+//		for (i = 1; i < MAX_DEF; i++)
+//		{
+//			strItem.Format(_T("Strip%d_%d"), k, i);
+//			if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
+//			{
+//				m_stYield.nDefPerStrip[k][i] = _ttoi(szData);
+//			}
+//			else
+//			{
+//				if (nSerial == 1)
+//				{
+//					m_stYield.nDefPerStrip[k][i] = 0;
+//				}
+//				else
+//				{
+//					sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d_%d\r\n%s"), nSerial, k, i, sPath);
+//					AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//					return FALSE;
+//				}
+//			}
+//		}
+//	}
+//
+//	if (0 < ::GetPrivateProfileString(strMenu, _T("StripOut_Total"), NULL, szData, sizeof(szData), sPath))
+//	{
+//		m_stYield.nTotSriptOut = _ttoi(szData);
+//	}
+//	else
+//	{
+//		if (nSerial == 1)
+//		{
+//			m_stYield.nTotSriptOut = 0;
+//		}
+//		else
+//		{
+//			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_Total\r\n%s"), nSerial, sPath);
+//			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
+//			return FALSE;
+//		}
+//	}
+//
+//	return TRUE;
+//}
+
+//BOOL CReelMap::WriteYield(int nSerial, CString sPath)
+//{
+//	int nNodeX = 0, nNodeY = 0;
+//#ifndef TEST_MODE
+//	nNodeX = pDoc->m_Master[0].m_pPcsRgn->nCol;
+//	nNodeY = pDoc->m_Master[0].m_pPcsRgn->nRow;
+//#endif
+//	CString sDefNum, strData;
+//	int nPnl, nRow, nCol, nDefCode, nStrip;
+//	int nTotPcs = nNodeX * nNodeY;
+//	int nStripPcs = nTotPcs / 4;
+//	double dStOutRto = _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
+//	nPnl = nSerial - 1;
+//
+//	int i, k;
+//	TCHAR szData[200];
+//
+//	CString sCode, strMenu, strItem, sMsg;
+//	int nTot = 0, nGood = 0, nDef = 0;
+//	int nTotSriptOut = 0;
+//
+//	int nDefStrip[MAX_STRIP], nDefA[MAX_DEF], nDefPerStrip[4][MAX_DEF], nStripOut[4];
+//	nDefStrip[0] = 0; nDefStrip[1] = 0; nDefStrip[2] = 0; nDefStrip[3] = 0;
+//	nStripOut[0] = 0; nStripOut[1] = 0; nStripOut[2] = 0; nStripOut[3] = 0;
+//
+//	nTot = nNodeX * nNodeY;
+//
+//	for (k = 0; k < MAX_DEF; k++)
+//	{
+//		nDefA[k] = 0;
+//
+//		for (i = 0; i < MAX_STRIP; i++)
+//		{
+//			nDefPerStrip[i][k] = 0;
+//		}
+//	}
+//
+//	for (nRow = 0; nRow < nNodeY; nRow++)
+//	{
+//		for (nCol = 0; nCol < nNodeX; nCol++)
+//		{
+//			if (m_pPnlBuf)
+//			{
+//				nDefCode = (int)m_pPnlBuf[nPnl][nRow][nCol] < 0 ? 0 : (int)m_pPnlBuf[nPnl][nRow][nCol];
+//				nDefA[nDefCode]++;
+//
+//				nStrip = int(nRow / (nNodeY / 4));
+//				if (nStrip > -1 && nStrip < 4)
+//				{
+//					if (nDefCode > 0)
+//					{
+//						nDefStrip[nStrip]++;
+//						nDefPerStrip[nStrip][nDefCode]++;
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	for (nStrip = 0; nStrip < 4; nStrip++)
+//	{
+//		if (nDefStrip[nStrip] >= nStripPcs * dStOutRto)
+//			nStripOut[nStrip]++;
+//	}
+//
+//	for (i = 1; i < MAX_DEF; i++)
+//	{
+//		m_stYield.nDefA[i] = m_stYield.nDefA[i] + nDefA[i];
+//		nDef += nDefA[i];
+//	}
+//	nGood = nTot - nDef;
+//
+//	m_stYield.nTot = m_stYield.nTot + nTot;
+//	m_stYield.nGood = m_stYield.nGood + nGood;
+//	m_stYield.nDef = m_stYield.nDef + nDef;
+//
+//	for (k = 0; k < MAX_STRIP; k++)
+//	{
+//		m_stYield.nDefStrip[k] = m_stYield.nDefStrip[k] + nDefStrip[k];
+//		m_stYield.nStripOut[k] = m_stYield.nStripOut[k] + nStripOut[k];
+//		nTotSriptOut += nStripOut[k];
+//		for (i = 1; i < MAX_DEF; i++)
+//			m_stYield.nDefPerStrip[k][i] = m_stYield.nDefPerStrip[k][i] + nDefPerStrip[k][i];
+//	}
+//	m_stYield.nTotSriptOut = m_stYield.nTotSriptOut + nTotSriptOut;
+//
+//
+//	FILE *fp = NULL;
+//	char FileName[MAX_PATH];
+//
+//	BOOL bExist = FALSE;
+//	CFileFind findfile;
+//	if (findfile.FindFile(sPath))
+//		bExist = TRUE;
+//	else
+//		MakeDirYield(sPath);
+//
+//	//_tcscpy(FileName, sPath);
+//	StrToChar(sPath, FileName);
+//
+//	fp = fopen(FileName, "a+");
+//	if (fp == NULL)
+//	{
+//		pView->MsgBox(_T("It is trouble to open ReelMap.txt"));
+//		//AfxMessageBox(_T("It is trouble to open ReelMap.txt"),MB_ICONWARNING|MB_OK);
+//		return FALSE;
+//	}
+//
+//	if (!bExist)
+//	{
+//		m_nStartSerial = nSerial;
+//
+//		fprintf(fp, "[Info]\n");
+//		fprintf(fp, "Total Shot = \n\n");
+//		fprintf(fp, "Total Pcs = \n");
+//		fprintf(fp, "Good Pcs = \n");
+//		fprintf(fp, "Bad Pcs = \n\n");
+//		fprintf(fp, "Start Shot=%d\n", m_nStartSerial);
+//		fprintf(fp, "End Shot = \n\n");
+//
+//		for (i = 1; i <= MAX_DEF; i++)
+//			fprintf(fp, "%d=\n", i);
+//		fprintf(fp, "\n");
+//
+//		for (k = 0; k < MAX_STRIP; k++)
+//			fprintf(fp, "Strip%d = \n", k);
+//		fprintf(fp, "\n");
+//
+//		for (k = 0; k < MAX_STRIP; k++)
+//		{
+//			for (i = 1; i <= MAX_DEF; i++)
+//				fprintf(fp, "Strip%d_%d = \n", k, i);
+//			fprintf(fp, "\n");
+//		}
+//
+//		fprintf(fp, "StripOut_Total = \n");
+//		fprintf(fp, "StripOut_0 = \n");
+//		fprintf(fp, "StripOut_1 = \n");
+//		fprintf(fp, "StripOut_2 = \n");
+//		fprintf(fp, "StripOut_3 = \n");
+//		fprintf(fp, "\n");
+//	}
+//	
+//	// [Serial]
+///*
+//	fprintf(fp, "[%d]\n", nSerial);
+//	fprintf(fp, "Total Pcs = %d\n", m_stYield.nTot);
+//	fprintf(fp, "Good Pcs = %d\n", m_stYield.nGood);
+//	fprintf(fp, "Bad Pcs = %d\n\n", m_stYield.nDef);
+//	
+//	for (i = 1; i < MAX_DEF; i++)
+//	{
+//		fprintf(fp, "%d = %d\n", i, m_stYield.nDefA[i]);
+//	}
+//	fprintf(fp, "\n");
+//
+//	fprintf(fp, "StripOut_Total = %d\n", m_stYield.nTotSriptOut);
+//	for (k = 0; k < MAX_STRIP; k++)
+//		fprintf(fp, "StripOut_%d = %d\n", k, m_stYield.nStripOut[k]);
+//	fprintf(fp, "\n");
+//
+//	for (k = 0; k < MAX_STRIP; k++)
+//	{
+//		fprintf(fp, "Strip%d = %d\n", k, m_stYield.nDefStrip[k]);
+//		for (i = 1; i < MAX_DEF; i++)
+//			fprintf(fp, "Strip%d_%d = %d\n", k, i, m_stYield.nDefPerStrip[k][i]);
+//		fprintf(fp, "\n");
+//	}
+//*/
+//	fclose(fp);
+//
+//	strMenu.Format(_T("%d"), nSerial);
+//
+//	for (i = 1; i < MAX_DEF; i++)
+//	{
+//		sCode.Format(_T("%d"), i);
+//		sDefNum.Format(_T("%d"), m_stYield.nDefA[i]);
+//
+//		// [Info]
+//		::WritePrivateProfileString(_T("Info"), sCode, sDefNum, sPath);
+//
+//		// [Serial]
+//		::WritePrivateProfileString(strMenu, sCode, sDefNum, sPath);
+//	}
+//
+//	// [Info]
+//	strData.Format(_T("%d"), nSerial);
+//	::WritePrivateProfileString(_T("Info"), _T("End Shot"), strData, sPath);
+//
+//	strData.Format(_T("%d"), nSerial - m_nStartSerial + 1);
+//	::WritePrivateProfileString(_T("Info"), _T("Total Shot"), strData, sPath);
+//
+//	strData.Format(_T("%d"), m_stYield.nTot);
+//	::WritePrivateProfileString(_T("Info"), _T("Total Pcs"), strData, sPath);
+//
+//	strData.Format(_T("%d"), m_stYield.nGood);
+//	::WritePrivateProfileString(_T("Info"), _T("Good Pcs"), strData, sPath);
+//
+//	strData.Format(_T("%d"), m_stYield.nDef);
+//	::WritePrivateProfileString(_T("Info"), _T("Bad Pcs"), strData, sPath);
+//
+//	// [Serial]
+//	strData.Format(_T("%d"), m_stYield.nTot);
+//	::WritePrivateProfileString(strMenu, _T("Total Pcs"), strData, sPath);
+//
+//	strData.Format(_T("%d"), m_stYield.nGood);
+//	::WritePrivateProfileString(strMenu, _T("Good Pcs"), strData, sPath);
+//
+//	strData.Format(_T("%d"), m_stYield.nDef);
+//	::WritePrivateProfileString(strMenu, _T("Bad Pcs"), strData, sPath);
+//
+//	for (k = 0; k < MAX_STRIP; k++)
+//	{
+//		strItem.Format(_T("Strip%d"), k);
+//		strData.Format(_T("%d"), m_stYield.nDefStrip[k]);
+//		// [Info]
+//		::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+//		// [Serial]
+//		::WritePrivateProfileString(strMenu, strItem, strData, sPath);
+//
+//		strItem.Format(_T("StripOut_%d"), k);
+//		strData.Format(_T("%d"), m_stYield.nStripOut[k]);
+//		// [Info]
+//		::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+//		// [Serial]
+//		::WritePrivateProfileString(strMenu, strItem, strData, sPath);
+//
+//		for (i = 1; i < MAX_DEF; i++)
+//		{
+//			strItem.Format(_T("Strip%d_%d"), k, i);
+//			strData.Format(_T("%d"), m_stYield.nDefPerStrip[k][i]);
+//			// [Info]
+//			::WritePrivateProfileString(_T("Info"), strItem, strData, sPath);
+//			// [Serial]
+//			::WritePrivateProfileString(strMenu, strItem, strData, sPath);
+//		}
+//	}
+//
+//	strData.Format(_T("%d"), m_stYield.nTotSriptOut);
+//	// [Info]
+//	::WritePrivateProfileString(_T("Info"), _T("StripOut_Total"), strData, sPath);
+//	// [Serial]
+//	::WritePrivateProfileString(strMenu, _T("StripOut_Total"), strData, sPath);
+//
+//
+//	return TRUE;
+//}
 
 BOOL CReelMap::MakeHeader(CString sPath)
 {

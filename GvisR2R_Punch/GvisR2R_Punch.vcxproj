@@ -298,6 +298,7 @@
     <ClInclude Include="Process\DataMarking.h" />
     <ClInclude Include="Process\freeimage.h" />
     <ClInclude Include="Process\GVGL.h" />
+    <ClInclude Include="Process\IniFile.h" />
     <ClInclude Include="Process\Matrix.h" />
     <ClInclude Include="Process\MyFile.h" />
     <ClInclude Include="Process\PcsRgn.h" />
@@ -391,6 +392,7 @@
     <ClCompile Include="Process\DataFile.cpp" />
     <ClCompile Include="Process\DataMarking.cpp" />
     <ClCompile Include="Process\GVGL.cpp" />
+    <ClCompile Include="Process\IniFile.cpp" />
     <ClCompile Include="Process\Matrix.cpp" />
     <ClCompile Include="Process\MyFile.cpp" />
     <ClCompile Include="Process\PcsRgn.cpp" />

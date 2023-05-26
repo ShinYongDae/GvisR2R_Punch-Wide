@@ -357,6 +357,9 @@
     <ClInclude Include="Dialog\DlgKeyNum1.h">
       <Filter>Dialog</Filter>
     </ClInclude>
+    <ClInclude Include="Process\IniFile.h">
+      <Filter>Process</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GvisR2R_Punch.cpp">
@@ -619,6 +622,9 @@
     </ClCompile>
     <ClCompile Include="Dialog\DlgKeyNum1.cpp">
       <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\IniFile.cpp">
+      <Filter>Process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
