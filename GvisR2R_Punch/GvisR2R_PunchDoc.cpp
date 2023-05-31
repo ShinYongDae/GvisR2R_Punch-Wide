@@ -8535,16 +8535,16 @@ void CGvisR2R_PunchDoc::SetLastSerial(int nSerial)
 	}
 }
 
-void CGvisR2R_PunchDoc::UpdateRstOnRmap()
+void CGvisR2R_PunchDoc::UpdateYieldOnRmap()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	pView->m_bTHREAD_UPDATE_RST_UP = TRUE;
+	pView->m_bTHREAD_REELMAP_YIELD_UP = TRUE;
 	if (bDualTest)
 	{
-		pView->m_bTHREAD_UPDATE_RST_DN = TRUE;
-		//pView->m_bTHREAD_UPDATE_RST_ALLUP = TRUE;
-		//pView->m_bTHREAD_UPDATE_RST_ALLDN = TRUE;
+		pView->m_bTHREAD_REELMAP_YIELD_DN = TRUE;
+		//pView->m_bTHREAD_REELMAP_YIELD_ALLUP = TRUE;
+		//pView->m_bTHREAD_REELMAP_YIELD_ALLDN = TRUE;
 	}
 	Sleep(100);
 

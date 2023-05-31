@@ -25,6 +25,9 @@
     <Filter Include="Global">
       <UniqueIdentifier>{4a6c055d-3a6c-4acd-b62b-2de18627cc78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MailSlot">
+      <UniqueIdentifier>{352e5065-6631-4428-ad53-99bd78796353}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -360,6 +363,39 @@
     <ClInclude Include="Process\IniFile.h">
       <Filter>Process</Filter>
     </ClInclude>
+    <ClInclude Include="MailSlot\AsyncMailslotReader.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\AsyncMailslotWriter.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\BaseThread.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\InterruptibleMutex.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\MailSlots.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\OverlappedIO.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\QueuedMailslotWriter.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\SyncMailslotReader.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="MailSlot\SyncMailslotWriter.h">
+      <Filter>MailSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\MsgBoxControl.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\MySharedMem.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GvisR2R_Punch.cpp">
@@ -625,6 +661,39 @@
     </ClCompile>
     <ClCompile Include="Process\IniFile.cpp">
       <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\AsyncMailslotReader.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\AsyncMailslotWriter.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\BaseThread.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\InterruptibleMutex.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\MailSlots.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\OverlappedIO.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\QueuedMailslotWriter.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\SyncMailslotReader.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="MailSlot\SyncMailslotWriter.cpp">
+      <Filter>MailSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\MsgBoxControl.cpp">
+      <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\MySharedMem.cpp">
+      <Filter>Dialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

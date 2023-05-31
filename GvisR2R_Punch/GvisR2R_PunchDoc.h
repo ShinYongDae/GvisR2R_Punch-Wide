@@ -407,7 +407,7 @@ public:
 	double GetEngraveBuffInitPos();
 
 	BOOL DirectoryExists(LPCTSTR szPath);
-	void UpdateRstOnRmap();
+	void UpdateYieldOnRmap();
 	void SetTestMode(int nMode);
 	int GetTestMode();
 	BOOL GetEngOffset(CfPoint &OfSt);

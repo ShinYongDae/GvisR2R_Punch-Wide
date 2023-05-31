@@ -11,6 +11,8 @@
 #include "GvisR2R_PunchDoc.h"
 #include "GvisR2R_PunchView.h"
 
+#include <tlhelp32.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -58,6 +60,97 @@ CGvisR2R_PunchApp::~CGvisR2R_PunchApp()
 
 CGvisR2R_PunchApp theApp;
 
+DWORD CGvisR2R_PunchApp::KillProcess(CString strProcName)
+{
+	HANDLE         hProcessSnap = NULL;
+	DWORD          Return = FALSE;
+	PROCESSENTRY32 pe32 = { 0 };
+	CString strMsg;
+	DWORD nCurPID = GetCurrentProcessId();
+	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	if (hProcessSnap == INVALID_HANDLE_VALUE)
+		return (DWORD)INVALID_HANDLE_VALUE;
+	pe32.dwSize = sizeof(PROCESSENTRY32);
+	if (Process32First(hProcessSnap, &pe32))
+	{
+		DWORD Code = 0;
+		DWORD dwPriorityClass;
+		do
+		{
+			CString name = CString(pe32.szExeFile);
+
+			if (name.CompareNoCase(_T("V3UI.exe")) == 0)
+				continue;
+
+			if (name.CompareNoCase(_T("V3APRule.exe")) == 0)
+				continue;
+
+			HANDLE hProcess;
+			// Get the actual priority class. 
+			hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
+			dwPriorityClass = GetPriorityClass(hProcess);
+
+			if (nCurPID == pe32.th32ProcessID)
+			{
+				CloseHandle(hProcess);
+				continue;
+			}
+
+			CString Temp = pe32.szExeFile;
+			Temp.MakeLower();
+			strProcName.MakeLower();
+			if (Temp == strProcName)
+			{
+				int checkval = 0;
+#ifndef _WIN64
+				DWORD ret;
+#else
+				DWORD_PTR ret;
+#endif
+				checkval = SendMessageTimeout((HWND)hProcess, WM_NULL, 0,//널 메세지를 보내본다
+					0, SMTO_ABORTIFHUNG | SMTO_BLOCK, 500, &ret);
+				if (checkval == 0)
+				{
+					//타임 아웃이나 기타 문제가 발생시
+					int kk = GetLastError();
+					strMsg = "Delete ";
+					strMsg += strProcName;
+					strMsg += " Process";
+					//	AfxMessageBox(strMsg);
+					if (TerminateProcess(hProcess, 0))
+						GetExitCodeProcess(hProcess, &Code);
+					else
+						return Return;
+				}
+				else
+				{
+					CString str;
+					str.Format(_T("On running %s Process "), Temp);
+					//AfxMessageBox(str);
+					OutputDebugString(str);
+					if (TerminateProcess(hProcess, 0))
+						GetExitCodeProcess(hProcess, &Code);
+					else
+						return Return;
+				}
+			}
+			if (!Temp.Compare(_T("vcspawn.exe")))
+			{	// 이것은 콘솔 창으로 무조건 죽인다
+				if (TerminateProcess(hProcess, 0))
+					GetExitCodeProcess(hProcess, &Code);
+				else
+					return GetLastError();
+			}
+			CloseHandle(hProcess);
+		} while (Process32Next(hProcessSnap, &pe32));
+		Return = TRUE;
+	}
+	else
+		Return = FALSE; // could not walk the list of processes 
+
+	CloseHandle(hProcessSnap); // Do not forget to clean up the snapshot object. 
+	return Return;
+}
 
 // CGvisR2R_PunchApp 초기화
 

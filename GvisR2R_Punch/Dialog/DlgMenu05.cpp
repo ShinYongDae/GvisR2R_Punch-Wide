@@ -1876,7 +1876,7 @@ void CDlgMenu05::OnSelchangeComboLayer()
 			sVal.Format(_T("%d"), m_nSerialEd);
 		myStcSerialEd.SetText(sVal);
 
-		ReloadRst();
+		ReloadReelmap();
 		DispProcCode(m_sRmapPath);
 		
 		if(((CButton*)GetDlgItem(IDC_CHK_REELMAP))->GetCheck())
@@ -2320,7 +2320,7 @@ CString CDlgMenu05::TxtDataMDS()
 //	return strFileData;
 //}
 
-BOOL CDlgMenu05::ReloadRst()
+BOOL CDlgMenu05::ReloadReelmap()
 {
 	int nFirstShot, nLastShot;
 	CFileFind FF;

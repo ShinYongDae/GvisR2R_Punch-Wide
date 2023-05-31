@@ -409,13 +409,13 @@ public:
 	BOOL m_bTHREAD_SHIFT2MK;// [2];		// [0] : Cam0, [1] : Cam1
 	BOOL m_bTHREAD_UPDATE_REELMAP_UP, m_bTHREAD_UPDATE_REELMAP_ALLUP;
 	BOOL m_bTHREAD_UPDATE_REELMAP_DN, m_bTHREAD_UPDATE_REELMAP_ALLDN;
-	BOOL m_bTHREAD_UPDATE_RST_UP, m_bTHREAD_UPDATE_RST_ALLUP;
-	BOOL m_bTHREAD_UPDATE_RST_DN, m_bTHREAD_UPDATE_RST_ALLDN;
+	BOOL m_bTHREAD_REELMAP_YIELD_UP, m_bTHREAD_REELMAP_YIELD_ALLUP;
+	BOOL m_bTHREAD_REELMAP_YIELD_DN, m_bTHREAD_REELMAP_YIELD_ALLDN;
 	BOOL m_bTHREAD_RELOAD_RST_UP, m_bTHREAD_RELOAD_RST_ALLUP;
 	BOOL m_bTHREAD_RELOAD_RST_DN, m_bTHREAD_RELOAD_RST_ALLDN;
 	BOOL m_bTHREAD_RELOAD_RST_UP_INNER, m_bTHREAD_RELOAD_RST_ALLUP_INNER;
 	BOOL m_bTHREAD_RELOAD_RST_DN_INNER, m_bTHREAD_RELOAD_RST_ALLDN_INNER;
-	BOOL m_bTHREAD_RELOAD_RST_ITS, m_bTHREAD_UPDATE_RST_ITS;
+	BOOL m_bTHREAD_RELOAD_RST_ITS, m_bTHREAD_REELMAP_YIELD_ITS;
 
 	BOOL m_bTHREAD_UPDATE_YIELD_UP, m_bTHREAD_UPDATE_YIELD_ALLUP;
 	BOOL m_bTHREAD_UPDATE_YIELD_DN, m_bTHREAD_UPDATE_YIELD_ALLDN;
@@ -424,11 +424,11 @@ public:
 	BOOL m_bTHREAD_UPDATE_YIELD_INNER_DN, m_bTHREAD_UPDATE_YIELD_INNER_ALLDN;
 	int	m_nSnTHREAD_UPDATAE_YIELD;
 
-	void UpdateRstUp();
-	void UpdateRstAllUp();
-	void UpdateRstDn();
-	void UpdateRstAllDn();
-	void UpdateRstIts();
+	void UpdateReelmapYieldUp();
+	void UpdateReelmapYieldAllUp();
+	void UpdateReelmapYieldDn();
+	void UpdateReelmapYieldAllDn();
+	void UpdateReelmapYieldIts();
 
 	BOOL m_bSwRun, m_bSwRunF;
 	BOOL m_bSwStop, m_bSwStopF;
@@ -629,23 +629,23 @@ public:
 	static UINT ThreadProc8(LPVOID lpContext); // UpdateRMapAllUp()
 	static UINT ThreadProc9(LPVOID lpContext); // UpdateRMapAllDn()
 
-	static UINT ThreadProc10(LPVOID lpContext); // UpdateRstUp()
-	static UINT ThreadProc11(LPVOID lpContext); // UpdateRstDn()
-	static UINT ThreadProc12(LPVOID lpContext); // UpdateRstAllUp()
-	static UINT ThreadProc13(LPVOID lpContext); // UpdateRstAllDn()
+	static UINT ThreadProc10(LPVOID lpContext); // UpdateReelmapYieldUp()
+	static UINT ThreadProc11(LPVOID lpContext); // UpdateReelmapYieldDn()
+	static UINT ThreadProc12(LPVOID lpContext); // UpdateReelmapYieldAllUp()
+	static UINT ThreadProc13(LPVOID lpContext); // UpdateReelmapYieldAllDn()
 
-	static UINT ThreadProc14(LPVOID lpContext); // ReloadRstUp()
-	static UINT ThreadProc15(LPVOID lpContext); // ReloadRstDn()
-	static UINT ThreadProc16(LPVOID lpContext); // ReloadRstAllUp()
-	static UINT ThreadProc17(LPVOID lpContext); // ReloadRstAllDn()
+	static UINT ThreadProc14(LPVOID lpContext); // ReloadReelmapUp()
+	static UINT ThreadProc15(LPVOID lpContext); // ReloadReelmapDn()
+	static UINT ThreadProc16(LPVOID lpContext); // ReloadReelmapAllUp()
+	static UINT ThreadProc17(LPVOID lpContext); // ReloadReelmapAllDn()
 	static UINT ThreadProc18(LPVOID lpContext); // WriteReelmapIts()
 	static UINT ThreadProc19(LPVOID lpContext); // DispDefImgInner()
-	static UINT ThreadProc20(LPVOID lpContext); // UpdateRstIts()
-	static UINT ThreadProc21(LPVOID lpContext); // ReloadRstUpInner()
-	static UINT ThreadProc22(LPVOID lpContext); // ReloadRstDnInner()
-	static UINT ThreadProc23(LPVOID lpContext); // ReloadRstAllUpInner()
-	static UINT ThreadProc24(LPVOID lpContext); // ReloadRstAllDnInner()
-	static UINT ThreadProc25(LPVOID lpContext); // ReloadRstIts()
+	static UINT ThreadProc20(LPVOID lpContext); // UpdateReelmapYieldIts()
+	static UINT ThreadProc21(LPVOID lpContext); // ReloadReelmapUpInner()
+	static UINT ThreadProc22(LPVOID lpContext); // ReloadReelmapDnInner()
+	static UINT ThreadProc23(LPVOID lpContext); // ReloadReelmapAllUpInner()
+	static UINT ThreadProc24(LPVOID lpContext); // ReloadReelmapAllDnInner()
+	static UINT ThreadProc25(LPVOID lpContext); // ReloadReelmapIts()
 
 	static UINT ThreadProc26(LPVOID lpContext); // UpdateRMapInnerUp()
 	static UINT ThreadProc27(LPVOID lpContext); // UpdateRMapInnerDn()
@@ -935,7 +935,7 @@ public:
 
 	afx_msg LRESULT OnBufThreadDone(WPARAM wPara, LPARAM lPara);
 	int ChkSerial(); // 0: Continue, -: Previous, +:Discontinue
-	BOOL ReloadRst();
+	BOOL ReloadReelmap();
 	void OpenReelmap();
 	void OpenReelmapUp();
 	void OpenReelmapDn();
@@ -1010,7 +1010,7 @@ public:
 
 	void CntMk();
 	void ChkMyMsg();
-	BOOL ReloadRst(int nSerial);
+	BOOL ReloadReelmap(int nSerial);
 	BOOL IsSameUpDnLot();
 	BOOL ChkStShotNum();
 	BOOL ChkContShotNum();
@@ -1099,17 +1099,17 @@ public:
 	BOOL Set2dRead(BOOL bRun = TRUE);
 	BOOL Is2dReadDone();
 
-	int m_nReloadRstSerial;
-	void ReloadRstUp();
-	void ReloadRstAllUp();
-	void ReloadRstDn();
-	void ReloadRstAllDn();
+	int m_nReloadReelmapSerial;
+	void ReloadReelmapUp();
+	void ReloadReelmapAllUp();
+	void ReloadReelmapDn();
+	void ReloadReelmapAllDn();
 
-	void ReloadRstUpInner();
-	void ReloadRstAllUpInner();
-	void ReloadRstDnInner();
-	void ReloadRstAllDnInner();
-	void ReloadRstIts();
+	void ReloadReelmapUpInner();
+	void ReloadReelmapAllUpInner();
+	void ReloadReelmapDnInner();
+	void ReloadReelmapAllDnInner();
+	void ReloadReelmapIts();
 
 	BOOL m_bSetSig, m_bSetSigF, m_bSetData, m_bSetDataF;
 	BOOL m_bLoadMstInfo, m_bLoadMstInfoF;
@@ -1160,8 +1160,8 @@ public:
 	void InitReelmapInner();
 	void InitReelmapInnerUp();
 	void InitReelmapInnerDn();
-	BOOL ReloadRstInner();
-	BOOL ReloadRstInner(int nSerial);
+	BOOL ReloadReelmapInner();
+	BOOL ReloadReelmapInner(int nSerial);
 	void UpdateRstInner();
 	void OpenReelmapInner();
 	void OpenReelmapInnerUp();

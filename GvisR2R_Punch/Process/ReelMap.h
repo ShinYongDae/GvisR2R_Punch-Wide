@@ -221,19 +221,19 @@ public:
 
 	void RestoreReelmap();
 
-	BOOL m_bThreadAliveReloadRst, m_bRtnThreadReloadRst, m_bDoneReloadRst;
-	int m_nLastOnThread, m_nProgressReloadRst, m_nTotalProgressReloadRst;
-	CThreadTask m_ThreadTaskReloadRst; // CThreadTask class, handles the threading code
-	BOOL ReloadRst();
-	BOOL ReloadRst(int nTo);
-	BOOL IsDoneReloadRst();
-	int GetProgressReloadRst();
-	void StartThreadReloadRst();
-	static BOOL ThreadProcReloadRst(LPVOID lpContext);
-	void StopThreadReloadRst();
+	BOOL m_bThreadAliveReloadReelmap, m_bRtnThreadReloadReelmap, m_bDoneReloadReelmap;
+	int m_nLastOnThread, m_nProgressReloadReelmap, m_nTotalProgressReloadReelmap;
+	CThreadTask m_ThreadTaskReloadReelmap; // CThreadTask class, handles the threading code
+	BOOL ReloadReelmap();
+	BOOL ReloadReelmap(int nTo);
+	BOOL IsDoneReloadReelmap();
+	int GetProgressReloadReelmap();
+	void StartThreadReloadReelmap();
+	static BOOL ThreadProcReloadReelmap(LPVOID lpContext);
+	void StopThreadReloadReelmap();
 
 	BOOL UpdateYield(int nSerial);
-	BOOL UpdateRst();
+	BOOL UpdateReelmapYield();
 	BOOL MakeHeader(CString sPath);
 
 	BOOL GetNodeXYonRmap(int &nNodeX, int &nNodeY, CString sPath);

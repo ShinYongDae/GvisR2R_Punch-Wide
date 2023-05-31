@@ -28,6 +28,7 @@ public:
 	~CGvisR2R_PunchApp();
 
 	CSingleInstance m_singleInstance;
+	DWORD KillProcess(CString strProcName);
 
 // 재정의입니다.
 public:

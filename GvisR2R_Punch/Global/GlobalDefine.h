@@ -10,10 +10,12 @@
 #endif // _MSC_VER > 1000
 
 
-#define TEST_MODE		1
+//#define TEST_MODE		1
 #ifndef MAX_STRIP
 	#define MAX_STRIP				4
 #endif
+
+#define MSG_BOX_PATH				_T("C:\\R2RSet\\MsgBox.exe")
 
 #define MAX_STRIP_NUM				4
 #define MAX_PCE_COL					100

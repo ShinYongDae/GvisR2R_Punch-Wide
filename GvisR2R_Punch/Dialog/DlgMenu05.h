@@ -50,7 +50,7 @@ class CDlgMenu05 : public CDialog
 	void InitStc();
 	//CString TxtData();
 	BOOL ShowMyKeypad(int nCtlID, CPoint ptSt=(0, 0), int nDir=TO_NONE);
-	BOOL ReloadRst();
+	BOOL ReloadReelmap();
 	void InsertLine(CString sPath);
 	void DispProcCode(CString sPath);
 	CString GetProcCode(CString sPath);

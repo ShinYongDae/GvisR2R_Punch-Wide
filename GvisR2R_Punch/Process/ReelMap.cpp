@@ -132,11 +132,11 @@ CReelMap::CReelMap(int nLayer, int nPnl, int nPcs, int nDir)
 	m_bThreadAliveRemakeReelmap = FALSE;
 	m_sPathOnThread = _T("");
 	
-	m_bThreadAliveReloadRst = FALSE;
+	m_bThreadAliveReloadReelmap = FALSE;
 	m_nLastOnThread = 0;
-	m_nTotalProgressReloadRst = 0;
-	m_nProgressReloadRst = 0;
-	m_bDoneReloadRst = FALSE;
+	m_nTotalProgressReloadReelmap = 0;
+	m_nProgressReloadReelmap = 0;
+	m_bDoneReloadReelmap = FALSE;
 
 	m_nSelMarkingPnl = 2;
 	m_nWritedSerial = 0;
@@ -172,7 +172,7 @@ CReelMap::~CReelMap()
 {
 	int k;
 
-	m_bThreadAliveReloadRst = FALSE;
+	m_bThreadAliveReloadReelmap = FALSE;
 	m_bThreadAliveRemakeReelmap = FALSE;
 	m_bThreadAliveFinalCopyItsFiles = FALSE;
 
@@ -2836,7 +2836,7 @@ BOOL CReelMap::UpdateYield(int nSerial)
 
 
 
-BOOL CReelMap::UpdateRst()
+BOOL CReelMap::UpdateReelmapYield()
 {
 	int k, i;
 	CString strMenu, strItem, sCode, sDefNum, strData;
@@ -4898,58 +4898,58 @@ int CReelMap::GetLastRmapRestoreDir(CString strPath)
 
 
 
-void CReelMap::StartThreadReloadRst() 
+void CReelMap::StartThreadReloadReelmap()
 {
-	m_bRtnThreadReloadRst = FALSE;
-	m_bThreadAliveReloadRst = TRUE;	
-	m_ThreadTaskReloadRst.Start( GetSafeHwnd(),this,ThreadProcReloadRst);// Start the thread
+	m_bRtnThreadReloadReelmap = FALSE;
+	m_bThreadAliveReloadReelmap = TRUE;
+	m_ThreadTaskReloadReelmap.Start( GetSafeHwnd(),this,ThreadProcReloadReelmap);// Start the thread
 }
 
-void CReelMap::StopThreadReloadRst() 
+void CReelMap::StopThreadReloadReelmap()
 {
-	m_ThreadTaskReloadRst.Stop();// Stop the thread
+	m_ThreadTaskReloadReelmap.Stop();// Stop the thread
 }
 
 // Home thread body
-BOOL CReelMap::ThreadProcReloadRst( LPVOID lpContext )
+BOOL CReelMap::ThreadProcReloadReelmap( LPVOID lpContext )
 {
 	// Turn the passed in 'this' pointer back into a CProgressMgr instance
 	CReelMap* pThread = reinterpret_cast< CReelMap* >( lpContext );
 //	DWORD dwTimePeriod = 10; // 10ms sec sleep
 
-	pThread->m_bRtnThreadReloadRst = FALSE;
-	pThread->m_bThreadAliveReloadRst = TRUE;	
+	pThread->m_bRtnThreadReloadReelmap = FALSE;
+	pThread->m_bThreadAliveReloadReelmap = TRUE;	
 	
 	//pThread->m_cs.Lock();
 	int nSerial = pDoc->GetLastShotMk();	// m_pDlgFrameHigh에서 얻거나 없으면, sPathOldFile폴더의 ReelMapDataDn.txt에서 _T("Info"), _T("Marked Shot") 찾음.
-	pThread->m_bRtnThreadReloadRst = pThread->ReloadRst(pThread->m_nLastOnThread);
+	pThread->m_bRtnThreadReloadReelmap = pThread->ReloadReelmap(pThread->m_nLastOnThread);
 	//pThread->m_cs.Unlock();
 
-	pThread->m_bThreadAliveReloadRst = FALSE;
+	pThread->m_bThreadAliveReloadReelmap = FALSE;
 
-	return (pThread->m_bRtnThreadReloadRst);
+	return (pThread->m_bRtnThreadReloadReelmap);
 }
 
 
-BOOL CReelMap::IsDoneReloadRst()
+BOOL CReelMap::IsDoneReloadReelmap()
 {
-	return m_bDoneReloadRst;
+	return m_bDoneReloadReelmap;
 }
 
-int CReelMap::GetProgressReloadRst()
+int CReelMap::GetProgressReloadReelmap()
 {
-	if(m_nTotalProgressReloadRst <= 0)
+	if(m_nTotalProgressReloadReelmap <= 0)
 		return 0;
 
-	double dA = (double)m_nProgressReloadRst;
-	double dB = (double)m_nTotalProgressReloadRst;
+	double dA = (double)m_nProgressReloadReelmap;
+	double dB = (double)m_nTotalProgressReloadReelmap;
 	double dC = 100.0 * dA / dB;
 	int nC = int(dC);
 
 	return nC;
 }
 
-BOOL CReelMap::ReloadRst()
+BOOL CReelMap::ReloadReelmap()
 {
 	//int nSerial;
 	BOOL bRtn;
@@ -4961,11 +4961,11 @@ BOOL CReelMap::ReloadRst()
 	//if(nSerial > 0)
 	if(m_nLastOnThread > 0)
 	{
-		//bRtn = ReloadRst(nSerial);
-		m_bDoneReloadRst = FALSE;
-		m_nProgressReloadRst = 0;
-		m_nTotalProgressReloadRst = 0;
-		StartThreadReloadRst();
+		//bRtn = ReloadReelmap(nSerial);
+		m_bDoneReloadReelmap = FALSE;
+		m_nProgressReloadReelmap = 0;
+		m_nTotalProgressReloadReelmap = 0;
+		StartThreadReloadReelmap();
 		bRtn = TRUE;
 	}
 	else 
@@ -4974,12 +4974,12 @@ BOOL CReelMap::ReloadRst()
 	return bRtn;
 }
 
-BOOL CReelMap::ReloadRst(int nTo)
+BOOL CReelMap::ReloadReelmap(int nTo)
 {
 	if(!m_pPnlBuf)
 	{
 		AfxMessageBox(_T("Memory not alloced.- PnlBuf"));
-		m_bDoneReloadRst = TRUE;
+		m_bDoneReloadReelmap = TRUE;
 		return FALSE;
 	}
 
@@ -5002,12 +5002,12 @@ BOOL CReelMap::ReloadRst(int nTo)
 	m_nGoodPcs = 0;
 	m_nBadPcs = 0;
 	
-	m_nTotalProgressReloadRst = nTo*(nNodeX*nNodeY+4)+4*MAX_DEF+MAX_DEF;
-	m_nProgressReloadRst=0;
+	m_nTotalProgressReloadReelmap = nTo*(nNodeX*nNodeY+4)+4*MAX_DEF+MAX_DEF;
+	m_nProgressReloadReelmap=0;
 
 	for(nPnl=0; nPnl<nTo; nPnl++)
 	{
-		if (!m_bThreadAliveReloadRst)
+		if (!m_bThreadAliveReloadReelmap)
 			return FALSE;
 
 		nDefStrip[0] = 0; nDefStrip[1] = 0; nDefStrip[2] = 0; nDefStrip[3] = 0;
@@ -5021,7 +5021,7 @@ BOOL CReelMap::ReloadRst(int nTo)
 			{
 				for(nCol=0; nCol<nNodeY; nCol++)
 				{
-					m_nProgressReloadRst++;
+					m_nProgressReloadReelmap++;
 
 					if(nCol==0)
 						sVal = _tcstok(szData,sep);
@@ -5059,7 +5059,7 @@ BOOL CReelMap::ReloadRst(int nTo)
 		double dStOutRto = _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0; //atof
 		for(nStrip=0; nStrip<4; nStrip++)
 		{
-			m_nProgressReloadRst++;
+			m_nProgressReloadReelmap++;
 
 			if(nDefStrip[nStrip] >= nStripPcs * dStOutRto)
 				m_nStripOut[nStrip]++;
@@ -5096,7 +5096,7 @@ BOOL CReelMap::ReloadRst(int nTo)
 
 		for(i=1; i<MAX_DEF; i++)
 		{
-			m_nProgressReloadRst++;
+			m_nProgressReloadReelmap++;
 
 			strItem.Format(_T("Strip%d"), k);
 			strMenu.Format(_T("%d"), i);
@@ -5109,14 +5109,14 @@ BOOL CReelMap::ReloadRst(int nTo)
 
 	for(i=1; i<MAX_DEF; i++)
 	{
-		m_nProgressReloadRst++;
+		m_nProgressReloadReelmap++;
 
 		strMenu.Format(_T("%d"), i);
 		strData.Format(_T("%d"), m_nDef[i]); // 불량이름별 불량수
 		::WritePrivateProfileString(_T("Info"), strMenu, strData, m_sPathBuf);
 	}
 
-	m_bDoneReloadRst = TRUE;
+	m_bDoneReloadReelmap = TRUE;
 	return TRUE;
 }
 
