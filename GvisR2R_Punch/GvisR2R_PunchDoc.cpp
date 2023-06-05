@@ -268,6 +268,23 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 	m_bDebugGrabAlign = FALSE;
 }
 
+
+void CGvisR2R_PunchDoc::DestroyDoc()
+{
+
+	if (m_pFile)
+	{
+		delete m_pFile;
+		m_pFile = NULL;
+	}
+
+	if (pMkInfo)
+	{
+		delete[] pMkInfo;
+		pMkInfo = NULL;
+	}
+}
+
 CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
 {
 	int k, i;
@@ -279,11 +296,7 @@ CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
 	// 	PcsImgFree();
 	// 	CADLinkImgFree();
 
-	if (m_pFile)
-	{
-		delete m_pFile;
-		m_pFile = NULL;
-	}
+	//DestroyDoc();
 
 	//if (m_pReelMap)
 	//{
@@ -362,12 +375,6 @@ CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
 	//	delete m_pReelMapInOuterDn;
 	//	m_pReelMapInOuterDn = NULL;
 	//}
-
-	if (pMkInfo)
-	{
-		delete[] pMkInfo;
-		pMkInfo = NULL;
-	}
 
 	if (m_pMpeIb)
 	{
@@ -468,6 +475,8 @@ CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
 	//		m_pPcrMkInner[k] = NULL;
 	//	}
 	//}
+
+
 }
 
 BOOL CGvisR2R_PunchDoc::OnNewDocument()

@@ -496,6 +496,8 @@ public:
 
 	BOOL m_bDebugGrabAlign;
 
+	void DestroyDoc();
+
 // 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();

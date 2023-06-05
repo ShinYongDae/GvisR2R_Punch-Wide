@@ -26,8 +26,10 @@ CSr1000w::CSr1000w(CString sAddrCli, CString sAddrSvr, CString sPortSvr, CWnd* p
 	RECT rt = { 0,0,0,0 };
 	Create(NULL, _T("None"), WS_CHILD, rt, FromHandle(m_hParentWnd), (UINT)this);
 
+#ifndef TEST_MODE
 	StartClient(sAddrCli, sAddrSvr, sPortSvr);
 	Sleep(10);
+#endif
 
 	m_pThread = NULL;
 	//StartThread();

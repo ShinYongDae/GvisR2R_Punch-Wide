@@ -36,8 +36,10 @@ CEngrave::CEngrave(CString sAddrCli, CString sAddrSvr, CString sPortSvr, CWnd* p
 	RECT rt = { 0,0,0,0 };
 	Create(NULL, _T("None"), WS_CHILD, rt, FromHandle(m_hParentWnd), (UINT)this);
 
+#ifndef TEST_MODE
 	StartClient(sAddrCli, sAddrSvr, sPortSvr);
 	Sleep(10);
+#endif
 
 	m_pThread = NULL;
 	m_bTIM_CHECK_CONNECT = FALSE;
@@ -398,7 +400,9 @@ void CEngrave::OnTimer(UINT_PTR nIDEvent)
 		break;
 	case TIM_CONNECT + 1:
 		KillTimer(TIM_CONNECT + 1);
+#ifndef TEST_MODE
 		StartClient(m_strAddrCli, m_strAddrSvr, m_strPortSvr);
+#endif
 		SetTimer(TIM_CONNECT + 2, 1000, NULL);
 		break;
 	case TIM_CONNECT + 2:

@@ -242,6 +242,7 @@ BOOL CMainFrame::DestroyWindow()
 	//	pView->m_pVision[0] = NULL;
 	//}
 #endif
+	pDoc->DestroyDoc();
 	pView->DestroyView();
 
 	return CFrameWnd::DestroyWindow();

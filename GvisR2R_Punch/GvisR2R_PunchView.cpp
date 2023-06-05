@@ -554,7 +554,58 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 
 CGvisR2R_PunchView::~CGvisR2R_PunchView()
 {
-	DestroyView();
+	//DestroyView();
+
+#ifdef USE_VISION
+	if (m_pVisionInner[1])
+	{
+		delete m_pVisionInner[1];
+		m_pVisionInner[1] = NULL;
+	}
+
+	if (m_pVisionInner[0])
+	{
+		delete m_pVisionInner[0];
+		m_pVisionInner[0] = NULL;
+	}
+	if (m_pVision[1])
+	{
+		delete m_pVision[1];
+		m_pVision[1] = NULL;
+	}
+
+	if (m_pVision[0])
+	{
+		delete m_pVision[0];
+		m_pVision[0] = NULL;
+	}
+#endif
+
+	m_bTIM_MPE_IO = FALSE;
+	m_bTIM_DISP_STATUS = FALSE;
+	m_bTIM_INIT_VIEW = FALSE;
+	Sleep(100);
+
+
+	InitIoWrite();
+	SetMainMc(FALSE);
+
+	// H/W Device ¼Ò¸ê.....
+	HwKill();
+
+	// 	if(m_pDlgMyMsg != NULL) 
+	// 	{
+	// 		m_pDlgMyMsg->DestroyWindow();
+	// 		delete m_pDlgMyMsg;
+	// 		m_pDlgMyMsg = NULL;
+	// 	}
+	CloseMyMsg();
+
+	if (m_ArrayMyMsgBox.GetSize() > 0)
+	{
+		m_ArrayMyMsgBox.RemoveAll();
+	}
+
 }
 
 void CGvisR2R_PunchView::DestroyView()
@@ -576,55 +627,55 @@ void CGvisR2R_PunchView::DestroyView()
 		Buzzer(FALSE, 0);
 		Buzzer(FALSE, 1);
 
-#ifdef USE_VISION
-		if (m_pVisionInner[1])
-		{
-			delete m_pVisionInner[1];
-			m_pVisionInner[1] = NULL;
-		}
-
-		if (m_pVisionInner[0])
-		{
-			delete m_pVisionInner[0];
-			m_pVisionInner[0] = NULL;
-		}
-		if (m_pVision[1])
-		{
-			delete m_pVision[1];
-			m_pVision[1] = NULL;
-		}
-
-		if (m_pVision[0])
-		{
-			delete m_pVision[0];
-			m_pVision[0] = NULL;
-		}
-#endif
-
-		m_bTIM_MPE_IO = FALSE;
-		m_bTIM_DISP_STATUS = FALSE;
-		m_bTIM_INIT_VIEW = FALSE;
-		Sleep(100);
-
-
-		InitIoWrite();
-		SetMainMc(FALSE);
-
-		// H/W Device ¼Ò¸ê.....
-		HwKill();
-
-		// 	if(m_pDlgMyMsg != NULL) 
-		// 	{
-		// 		m_pDlgMyMsg->DestroyWindow();
-		// 		delete m_pDlgMyMsg;
-		// 		m_pDlgMyMsg = NULL;
-		// 	}
-		CloseMyMsg();
-
-		if (m_ArrayMyMsgBox.GetSize() > 0)
-		{
-			m_ArrayMyMsgBox.RemoveAll();
-		}
+//#ifdef USE_VISION
+//		if (m_pVisionInner[1])
+//		{
+//			delete m_pVisionInner[1];
+//			m_pVisionInner[1] = NULL;
+//		}
+//
+//		if (m_pVisionInner[0])
+//		{
+//			delete m_pVisionInner[0];
+//			m_pVisionInner[0] = NULL;
+//		}
+//		if (m_pVision[1])
+//		{
+//			delete m_pVision[1];
+//			m_pVision[1] = NULL;
+//		}
+//
+//		if (m_pVision[0])
+//		{
+//			delete m_pVision[0];
+//			m_pVision[0] = NULL;
+//		}
+//#endif
+//
+//		m_bTIM_MPE_IO = FALSE;
+//		m_bTIM_DISP_STATUS = FALSE;
+//		m_bTIM_INIT_VIEW = FALSE;
+//		Sleep(100);
+//
+//
+//		InitIoWrite();
+//		SetMainMc(FALSE);
+//
+//		// H/W Device ¼Ò¸ê.....
+//		HwKill();
+//
+//		// 	if(m_pDlgMyMsg != NULL) 
+//		// 	{
+//		// 		m_pDlgMyMsg->DestroyWindow();
+//		// 		delete m_pDlgMyMsg;
+//		// 		m_pDlgMyMsg = NULL;
+//		// 	}
+//		CloseMyMsg();
+//
+//		if (m_ArrayMyMsgBox.GetSize() > 0)
+//		{
+//			m_ArrayMyMsgBox.RemoveAll();
+//		}
 	}
 }
 
@@ -1030,7 +1081,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 				}
 
 			}
-
+/*
 			// ChkCollision
 			if (!m_bThread[1])
 				m_Thread[1].Start(GetSafeHwnd(), this, ThreadProc1);
@@ -1182,7 +1233,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			// UpdataeYieldIts
 			if (!m_bThread[38])
 				m_Thread[38].Start(GetSafeHwnd(), this, ThreadProc38);
-
+*/
 			MoveInitPos1();
 			Sleep(30);
 			MoveInitPos0();
@@ -3170,11 +3221,14 @@ UINT CGvisR2R_PunchView::ThreadProc5(LPVOID lpContext)	// GetCurrentInfoSignal()
 		pThread->m_dwThreadTick[5] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (!bLock)
+		if (!pThread->m_bDestroyedView)
 		{
-			bLock = TRUE;
-			pThread->GetCurrentInfoSignal();
-			bLock = FALSE;
+			if (!bLock)
+			{
+				bLock = TRUE;
+				pThread->GetCurrentInfoSignal();
+				bLock = FALSE;
+			}
 		}
 		Sleep(100);
 	}
@@ -3192,6 +3246,9 @@ void CGvisR2R_PunchView::DispStsMainMsg(int nIdx)
 
 void CGvisR2R_PunchView::DispThreadTick()
 {
+	if (m_bDestroyedView)
+		return;
+
 	CString str;
 	//	str.Format(_T("%d"), m_dwThreadTick[1]);//, m_dwThreadTick[1], m_dwThreadTick[2]);
 	//str.Format(_T("%d,%d,%d"), m_dwThreadTick[0], m_dwThreadTick[1], m_dwThreadTick[2]); // MK, Collision, Enc
@@ -26381,6 +26438,9 @@ void CGvisR2R_PunchView::SetEngraveFdPitch(double dPitch)
 
 BOOL CGvisR2R_PunchView::IsConnectedEng()
 {
+	if (m_bDestroyedView)
+		return FALSE;
+
 #ifdef USE_ENGRAVE
 	if (m_pEngrave)
 	{
@@ -27508,6 +27568,9 @@ void CGvisR2R_PunchView::UpdateReelmapYieldIts()
 
 BOOL CGvisR2R_PunchView::IsConnectedSr()
 {
+	if (m_bDestroyedView)
+		return FALSE;
+
 	if (m_pSr1000w)
 	{
 		return m_pSr1000w->IsConnected();

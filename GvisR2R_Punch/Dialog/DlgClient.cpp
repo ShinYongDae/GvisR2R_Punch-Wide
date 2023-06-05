@@ -194,7 +194,9 @@ void CDlgClient::OnBnClickedBtnStart()
 	m_strAddrSvr = sAddrSvr;	
 	m_strAddrCli = sAddrCli;
 
+#ifndef TEST_MODE
 	StartClient(sAddrCli, sAddrSvr, sPortSvr);
+#endif
 
 	GetDlgItem(IDC_BTN_START)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BTN_STOP)->EnableWindow(TRUE);

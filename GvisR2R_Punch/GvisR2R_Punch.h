@@ -11,6 +11,21 @@
 
 #include "SingleInstance.h"
 
+//== 메모리 누수 감지 기능 ========================================================
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#ifdef _DEBUG
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+// Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
+// allocations to be of _CLIENT_BLOCK type
+#else
+#define DBG_NEW new
+#endif
+
+//=================================================================================
 
 // CGvisR2R_PunchApp:
 // 이 클래스의 구현에 대해서는 GvisR2R_Punch.cpp을 참조하십시오.

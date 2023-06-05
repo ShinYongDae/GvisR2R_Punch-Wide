@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
+
+
 #include "GvisR2R_Punch.h"
 #include "MainFrm.h"
 
@@ -53,7 +55,10 @@ CGvisR2R_PunchApp::CGvisR2R_PunchApp()
 CGvisR2R_PunchApp::~CGvisR2R_PunchApp()
 {
 	wsaEndup();
-	Sleep(100);
+	Sleep(300);
+
+	//_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);	// 메모리 누수 감지 기능 - 출력 창으로 다시 리디렉션
+	//_CrtDumpMemoryLeaks();								// 메모리 누수 감지 기능
 }
 
 // 유일한 CGvisR2R_PunchApp 개체입니다.
@@ -236,7 +241,7 @@ int CGvisR2R_PunchApp::ExitInstance()
 {
 
 	//TODO: 추가한 추가 리소스를 처리합니다.
-	AfxOleTerm(FALSE);
+	AfxOleTerm(FALSE); // MFC 내부 클래스 메모리 부분 문제 해결
 
 	return CWinApp::ExitInstance();
 }
