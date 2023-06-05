@@ -137,7 +137,7 @@ void CSmac::SearchHomeSmac(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 // 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("HOME_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Homming First Smac."));
@@ -151,7 +151,7 @@ void CSmac::SearchHomeSmac(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 // 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("HOME_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Homming Second Smac."));
@@ -217,7 +217,7 @@ void CSmac::SearchHomeSmac0()
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd0(_T("OK"));
 	}
 	else if(nCamNum == VOICE_COIL_SECOND_CAM)
@@ -227,7 +227,7 @@ void CSmac::SearchHomeSmac0()
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd1(_T("OK"));
 	}
 	
@@ -252,7 +252,7 @@ void CSmac::SearchHomeSmac1()
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd0(_T("OK"));
 	}
 	else if(nCamNum == VOICE_COIL_SECOND_CAM)
@@ -262,7 +262,7 @@ void CSmac::SearchHomeSmac1()
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd1(_T("OK"));
 	}
 	
@@ -284,7 +284,7 @@ double CSmac::GetSmacPosition(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 
 //		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T(":GET_POS_OK;")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
@@ -317,7 +317,7 @@ double CSmac::GetSmacPosition(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 
 //		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T(":GET_POS_OK;")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
@@ -361,7 +361,7 @@ void CSmac::MoveSmacShiftPos(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 //		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("START_POS_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Shift Position - First Smac."));
@@ -375,7 +375,7 @@ void CSmac::MoveSmacShiftPos(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 //		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("START_POS_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Shift Position - Second Smac."));
@@ -437,7 +437,7 @@ void CSmac::MoveSmacShiftPos0()
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd0(_T("OK"));
 	}
 	else if(nCamNum == VOICE_COIL_SECOND_CAM)
@@ -446,7 +446,7 @@ void CSmac::MoveSmacShiftPos0()
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd1(_T("OK"));
 	}
 	
@@ -467,7 +467,7 @@ void CSmac::MoveSmacShiftPos1()
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd0(_T("OK"));
 	}
 	else if(nCamNum == VOICE_COIL_SECOND_CAM)
@@ -476,7 +476,7 @@ void CSmac::MoveSmacShiftPos1()
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetWaitSmacCmdEnd1(_T("OK"));
 	}
 	
@@ -495,7 +495,7 @@ void CSmac::MoveSmacFinalPos(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 //		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("END_POS_OK"))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Final Position - First Smac."));
@@ -508,7 +508,7 @@ void CSmac::MoveSmacFinalPos(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 //		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("END_POS_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Final Position - Second Smac."));
@@ -533,7 +533,7 @@ void CSmac::MoveSmacMeasPos(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		//		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("END_POS_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Final Position - First Smac."));
@@ -546,7 +546,7 @@ void CSmac::MoveSmacMeasPos(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		//		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("END_POS_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Final Position - Second Smac."));
@@ -570,14 +570,14 @@ void CSmac::ResetSmac(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(150);
+		Sleep(100);
 	}
 	else if(nCamNum == VOICE_COIL_SECOND_CAM)
 	{
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(150);
+		Sleep(100);
 	}
 
 	//ClearReceive();
@@ -597,7 +597,7 @@ CString CSmac::GetSmacStatus(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 
 //		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("_OK;")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
@@ -626,7 +626,7 @@ CString CSmac::GetSmacStatus(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 
 //		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("_OK;"))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
@@ -674,7 +674,7 @@ double CSmac::GetSmacMeasureOfSurface(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 //		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T(":CHECK_END_POS_OK;")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 		{
@@ -705,7 +705,7 @@ double CSmac::GetSmacMeasureOfSurface(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 //		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T(":CHECK_END_POS_OK;")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 		{
@@ -1267,7 +1267,7 @@ void CSmac::SetMarking(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("PUNCHING_OK")))
 			//		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Punching First Smac."));
@@ -1279,7 +1279,7 @@ void CSmac::SetMarking(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("PUNCHING_OK")))
 			//		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Punching Second Smac."));
@@ -1305,19 +1305,19 @@ void CSmac::SetMarkShiftData(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR30"), int(dShiftVel));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR32"), int(dShiftAcc));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		if(!m_bTimerStop)
 			SetTimer(TIMER_FIRST_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1328,19 +1328,19 @@ void CSmac::SetMarkShiftData(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR30"), int(dShiftVel));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR32"), int(dShiftAcc));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		if(!m_bTimerStop)
 			SetTimer(TIMER_SECOND_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1371,31 +1371,31 @@ void CSmac::SetMarkFinalData(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR20"), int(dFinalVel));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR22"), int(dFinalAcc));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR40"), int(dFinalTorque));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR48"), int(dFinalTorqueOffset));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		if(!m_bTimerStop)
 			SetTimer(TIMER_FIRST_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1407,31 +1407,31 @@ void CSmac::SetMarkFinalData(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR20"), int(dFinalVel));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR22"), int(dFinalAcc));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR40"), int(dFinalTorque));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR48"), int(dFinalTorqueOffset));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 
 		if(!m_bTimerStop)
 			SetTimer(TIMER_SECOND_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1451,7 +1451,7 @@ void CSmac::SetMark(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetCmdEndChk(nCamNum, _T("OK"));
 	}
 	else if(nCamNum == VOICE_COIL_SECOND_CAM)
@@ -1460,7 +1460,7 @@ void CSmac::SetMark(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		SetCmdEndChk(nCamNum, _T("OK"));
 	}
 }
@@ -1492,19 +1492,19 @@ void CSmac::SetProbShiftData(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR70"), int(dShiftVel));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR72"), int(dShiftAcc));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		if(!m_bTimerStop)
 			SetTimer(TIMER_FIRST_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1515,19 +1515,19 @@ void CSmac::SetProbShiftData(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR70"), int(dShiftVel));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR72"), int(dShiftAcc));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		if(!m_bTimerStop)
 			SetTimer(TIMER_SECOND_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1554,25 +1554,25 @@ void CSmac::SetProbFinalData(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR70"), int(dFinalVel));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR72"), int(dFinalAcc));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR80"), int(dFinalTorque));
 		SendStringToFirstCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		if(!m_bTimerStop)
 			SetTimer(TIMER_FIRST_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1587,25 +1587,25 @@ void CSmac::SetProbFinalData(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR60"), int(dFinalVel));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR62"), int(dFinalAcc));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		strVal.Format(_T("AL%d,AR60"), int(dFinalTorque));
 		SendStringToSecondCamVoiceCoil(strVal);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		
 		if(!m_bTimerStop)
 			SetTimer(TIMER_SECOND_SMAC_CHECK_ERROR_CODE, 100, NULL);
@@ -1627,7 +1627,7 @@ void CSmac::SetProbing(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Punching First Smac."));
 		Sleep(30);
@@ -1638,7 +1638,7 @@ void CSmac::SetProbing(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Punching Second Smac."));
 		Sleep(30);
@@ -1671,7 +1671,7 @@ void CSmac::MoveProbFinalPos(int nCamNum)
 		SendStringToFirstCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToFirstCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		//		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("START_POS_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_FIRST_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Shift Position - First Smac."));
@@ -1685,7 +1685,7 @@ void CSmac::MoveProbFinalPos(int nCamNum)
 		SendStringToSecondCamVoiceCoil(strSend);
 		Sleep(30);
 		SendStringToSecondCamVoiceCoil(_T("\r\n"));
-		Sleep(30);
+		Sleep(100);
 		//		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("START_POS_OK")))
 		if(!WaitSmacCmdEnd(VOICE_COIL_SECOND_CAM, _T("OK")))
 			AfxMessageBox(_T("Fail Moving Shift Position - Second Smac."));
