@@ -1353,11 +1353,11 @@ void CSmac::SetMarkFinalData(int nCamNum)
 	double dFinalPos, dFinalVel, dFinalAcc, dFinalTorque, dFinalTorqueOffset;
 	CString strVal;
 	
-	dFinalPos = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingPos) * 200;
-	dFinalVel = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingVel) * 2621;
-	dFinalAcc = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingAcc) * 0.5;
+	dFinalPos = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingPos) * 200; 
+	dFinalVel = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingVel) * 2621;	// 100[mm/s] = SV26214
+	dFinalAcc = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingAcc) * 0.5;	// 100[mm/s2] = SA52
 	//	dFinalTorque = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingToq) * 16.9;
-	dFinalTorque = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingToq)/3.19;
+	dFinalTorque = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingToq)/3.19;	// [-32767~32767]
 	dFinalTorqueOffset = 8000 + (_tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingToqOffset))*18.0;
 	
 	if(dFinalTorque > 1024.0)
@@ -1541,10 +1541,10 @@ void CSmac::SetProbFinalData(int nCamNum)
 	CString strVal;
 	
 	dFinalPos = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingPos) * 200;
-	dFinalVel = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingVel) * 2621;
-	dFinalAcc = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingAcc) * 0.5;
+	dFinalVel = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingVel) * 2621;	// 100[mm/s] = SV26214
+	dFinalAcc = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingAcc) * 0.5;	// 100[mm/s2] = SA52
 	//	dFinalTorque = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingToq) * 16.9;
-	dFinalTorque = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingToq)/3.19;
+	dFinalTorque = _tstof(pDoc->WorkingInfo.Marking[nCamNum].sMarkingToq)/3.19;	// [-32767~32767]
 	if(nCamNum == VOICE_COIL_FIRST_CAM)
 	{
 		if(dFinalTorque > 32767.0)
