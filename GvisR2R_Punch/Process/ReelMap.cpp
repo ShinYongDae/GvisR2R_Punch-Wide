@@ -4978,7 +4978,7 @@ BOOL CReelMap::ReloadReelmap(int nTo)
 {
 	if(!m_pPnlBuf)
 	{
-		AfxMessageBox(_T("Memory not alloced.- PnlBuf"));
+		AfxMessageBox(_T("Memory is not allocated.- PnlBuf"));
 		m_bDoneReloadReelmap = TRUE;
 		return FALSE;
 	}
@@ -5008,7 +5008,11 @@ BOOL CReelMap::ReloadReelmap(int nTo)
 	for(nPnl=0; nPnl<nTo; nPnl++)
 	{
 		if (!m_bThreadAliveReloadReelmap)
+		{
+			AfxMessageBox(_T("Thread is stopped on reloading reelmap.- PnlBuf"));
+			m_bDoneReloadReelmap = TRUE;
 			return FALSE;
+		}
 
 		nDefStrip[0] = 0; nDefStrip[1] = 0; nDefStrip[2] = 0; nDefStrip[3] = 0;
 

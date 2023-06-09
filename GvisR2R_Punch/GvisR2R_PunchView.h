@@ -936,6 +936,7 @@ public:
 	afx_msg LRESULT OnBufThreadDone(WPARAM wPara, LPARAM lPara);
 	int ChkSerial(); // 0: Continue, -: Previous, +:Discontinue
 	BOOL ReloadReelmap();
+	BOOL IsDoneReloadReelmap(int& nProc);
 	void OpenReelmap();
 	void OpenReelmapUp();
 	void OpenReelmapDn();

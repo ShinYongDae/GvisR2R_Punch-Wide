@@ -22836,65 +22836,275 @@ int CGvisR2R_PunchView::MyPassword(CString strMsg, int nCtrlId)
 
 }
 
+BOOL CGvisR2R_PunchView::ReloadReelmapInner()
+{
+	double dRatio = 0.0;
+	CString sVal = _T("");
+	CDlgProgress dlg;
+	sVal.Format(_T("On Reloading InnerReelmap."));
+	dlg.Create(sVal);
+
+	//GetCurrentInfoEng();
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
+
+
+	BOOL bRtn[7];
+	if (pDoc->m_pReelMapInner)
+		bRtn[0] = pDoc->m_pReelMapInner->ReloadReelmap();
+	if (pDoc->m_pReelMapInnerUp)
+		bRtn[1] = pDoc->m_pReelMapInnerUp->ReloadReelmap();
+
+	if (pDoc->m_pReelMapIts)
+		bRtn[2] = pDoc->m_pReelMapIts->ReloadReelmap();
+
+
+	if (bDualTest)
+	{
+		if (pDoc->m_pReelMapInnerDn)
+			bRtn[4] = pDoc->m_pReelMapInnerDn->ReloadReelmap();
+		if (pDoc->m_pReelMapInnerAllUp)
+			bRtn[5] = pDoc->m_pReelMapInnerAllUp->ReloadReelmap();
+		if (pDoc->m_pReelMapInnerAllDn)
+			bRtn[6] = pDoc->m_pReelMapInnerAllDn->ReloadReelmap();
+	}
+
+	int nRatio[7] = { 0 };
+	BOOL bDone[7] = { 0 };
+	int nTo = 0;
+	if (bDualTest)
+		nTo = 600; //[%]
+	else
+		nTo = 300; //[%]
+
+	dlg.SetRange(0, nTo);
+
+	for (int nProc = 0; nProc < nTo;)
+	{
+		if (pDoc->m_pReelMapInner)
+		{
+			nRatio[0] = pDoc->m_pReelMapInner->GetProgressReloadReelmap();
+			bDone[0] = pDoc->m_pReelMapInner->IsDoneReloadReelmap();
+		}
+		else
+			bDone[0] = TRUE;
+		if (!bRtn[0])
+			bDone[0] = TRUE;
+
+		if (pDoc->m_pReelMapInnerUp)
+		{
+			nRatio[1] = pDoc->m_pReelMapInnerUp->GetProgressReloadReelmap();
+			bDone[1] = pDoc->m_pReelMapInnerUp->IsDoneReloadReelmap();
+		}
+		else
+			bDone[1] = TRUE;
+		if (!bRtn[1])
+			bDone[1] = TRUE;
+
+		bDone[3] = TRUE;
+
+		if (pDoc->m_pReelMapIts)
+		{
+			nRatio[2] = pDoc->m_pReelMapIts->GetProgressReloadReelmap();
+			bDone[2] = pDoc->m_pReelMapIts->IsDoneReloadReelmap();
+		}
+		else
+			bDone[2] = TRUE;
+		if (!bRtn[2])
+			bDone[2] = TRUE;
+
+		if (bDualTest)
+		{
+			if (pDoc->m_pReelMapInnerDn)
+			{
+				nRatio[4] = pDoc->m_pReelMapInnerDn->GetProgressReloadReelmap();
+				bDone[4] = pDoc->m_pReelMapInnerDn->IsDoneReloadReelmap();
+			}
+			else
+				bDone[4] = TRUE;
+			if (!bRtn[4])
+				bDone[4] = TRUE;
+
+			if (pDoc->m_pReelMapInnerAllUp)
+			{
+				nRatio[5] = pDoc->m_pReelMapInnerAllUp->GetProgressReloadReelmap();
+				bDone[5] = pDoc->m_pReelMapInnerAllUp->IsDoneReloadReelmap();
+			}
+			else
+				bDone[5] = TRUE;
+			if (!bRtn[5])
+				bDone[5] = TRUE;
+
+			if (pDoc->m_pReelMapAllDn)
+			{
+				nRatio[6] = pDoc->m_pReelMapInnerAllDn->GetProgressReloadReelmap();
+				bDone[6] = pDoc->m_pReelMapInnerAllDn->IsDoneReloadReelmap();
+			}
+			else
+				bDone[6] = TRUE;
+			if (!bRtn[6])
+				bDone[6] = TRUE;
+
+		}
+		else
+		{
+			bDone[4] = TRUE;
+			bDone[5] = TRUE;
+			bDone[6] = TRUE;
+		}
+
+		nProc = nRatio[0] + nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4] + nRatio[5] + nRatio[6];
+
+		if (bDone[0] && bDone[1] && bDone[2] && bDone[3] && bDone[4] && bDone[5] && bDone[6])
+			break;
+		else
+		{
+			dlg.SetPos(nProc);
+			Sleep(30);
+		}
+	}
+
+	dlg.DestroyWindow();
+
+	if (bDualTest)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			if (!bRtn[i])
+				return FALSE;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (!bRtn[i])
+				return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
 BOOL CGvisR2R_PunchView::ReloadReelmap()
 {
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	BOOL bRtn[5] = { 0 };
+
+	if (pDoc->m_pReelMapUp)
+		bRtn[1] = pDoc->m_pReelMapUp->ReloadReelmap();
+
+	if (bDualTest)
+	{
+		if (pDoc->m_pReelMapDn)
+			bRtn[2] = pDoc->m_pReelMapDn->ReloadReelmap();
+
+		if (pDoc->m_pReelMapAllUp)
+			bRtn[3] = pDoc->m_pReelMapAllUp->ReloadReelmap();
+
+		if (pDoc->m_pReelMapAllDn)
+			bRtn[4] = pDoc->m_pReelMapAllDn->ReloadReelmap();
+	}
+
+	if (pDoc->GetTestMode() == MODE_OUTER)
+	{
+		bRtn[0] = ReloadReelmapInner();
+	}
+
 	double dRatio = 0.0;
 	CString sVal = _T("");
 	CDlgProgress dlg;
 	sVal.Format(_T("On Reloading Reelmap."));
 	dlg.Create(sVal);
-	//dlg.SetRange(0, 500);
-
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	BOOL bRtn[5] = { 0 };
-	//if (pDoc->m_pReelMap)
-	//{
-	//	if (pDoc->m_pReelMap != pDoc->m_pReelMapUp && pDoc->m_pReelMap != pDoc->m_pReelMapDn &&
-	//		pDoc->m_pReelMap != pDoc->m_pReelMapAllUp && pDoc->m_pReelMap != pDoc->m_pReelMapAllDn)
-	//		bRtn[0] = pDoc->m_pReelMap->ReloadReelmap();
-	//}
-	if (pDoc->m_pReelMapUp)
-		bRtn[1] = pDoc->m_pReelMapUp->ReloadReelmap();
-	dlg.SetPos(1);
-	//dlg.SetPos(2);
-	if (bDualTest)
-	{
-		if (pDoc->m_pReelMapDn)
-			bRtn[2] = pDoc->m_pReelMapDn->ReloadReelmap();
-		//dlg.SetPos(3);
-		if (pDoc->m_pReelMapAllUp)
-			bRtn[3] = pDoc->m_pReelMapAllUp->ReloadReelmap();
-		//dlg.SetPos(4);
-		if (pDoc->m_pReelMapAllDn)
-			bRtn[4] = pDoc->m_pReelMapAllDn->ReloadReelmap();
-		//dlg.SetPos(5);
-	}
 
 	int nRatio[5] = { 0 };
 	BOOL bDone[5] = { 0 };
 	int nTo = 0;
 	if (bDualTest)
 		nTo = 400; //[%]
-		//nTo = 500; //[%]
 	else
 		nTo = 100; //[%]
-		//nTo = 200; //[%]
 
 	dlg.SetRange(0, nTo);
+	dlg.SetPos(1);
 
-	for (int nProc = 0; nProc<nTo;)
+	for (int nProc = 0; nProc < nTo;)
 	{
-		//if (pDoc->m_pReelMap)
-		//{
-		//	nRatio[0] = pDoc->m_pReelMap->GetProgressReloadReelmap();
-		//	bDone[0] = pDoc->m_pReelMap->IsDoneReloadReelmap();
-		//}
-		//else
-		//	bDone[0] = TRUE;
-		//if (!bRtn[0])
-		//	bDone[0] = TRUE;
+		if (bDone[0] = IsDoneReloadReelmap(nProc))
+			break;
+		else
+		{
+			dlg.SetPos(nProc);
+			Sleep(100);
+		}
+	}
 
+	dlg.DestroyWindow();
+	
+	if (!bDone[0])
+	{
+		AfxMessageBox(_T("IsDoneReloadReelmap is FALSE."));
+		return FALSE;
+	}
+
+	if (bDualTest)
+	{
+		if (pDoc->GetTestMode() == MODE_OUTER)
+		{
+		}
+		else
+		{
+			for (int i = 1; i < 5; i++)
+			{
+				if (!bRtn[i])
+					return FALSE;
+			}
+		}
+	}
+	else
+	{
+		if (!bRtn[1])
+			return FALSE;
+	}
+
+	if (pDoc->GetTestMode() == MODE_OUTER)
+	{
+		if (!bRtn[0])
+			return FALSE;
+	}
+	//if (pDoc->GetTestMode() == MODE_OUTER)
+	//{
+	//	return ReloadReelmapInner();
+	//}
+
+	return TRUE;
+}
+
+BOOL CGvisR2R_PunchView::IsDoneReloadReelmap(int& nProc)
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	//double dRatio = 0.0;
+	//CString sVal = _T("");
+	//CDlgProgress dlg;
+	//sVal.Format(_T("On Reloading Reelmap."));
+	//dlg.Create(sVal);
+
+	//BOOL bRtn[5] = { 0 };
+
+	int nRatio[5] = { 0 };
+	BOOL bDone[5] = { 0 };
+	//int nTo = 0;
+	//if (bDualTest)
+	//	nTo = 400; //[%]
+	//else
+	//	nTo = 100; //[%]
+
+	//dlg.SetRange(0, nTo);
+	//dlg.SetPos(1);
+
+	//for (int nProc = 0; nProc<nTo;)
+	//{
 		if (pDoc->m_pReelMapUp)
 		{
 			nRatio[1] = pDoc->m_pReelMapUp->GetProgressReloadReelmap();
@@ -22902,8 +23112,8 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 		}
 		else
 			bDone[1] = TRUE;
-		if (!bRtn[1])
-			bDone[1] = TRUE;
+		//if (!bRtn[1])
+		//	bDone[1] = TRUE;
 
 		if (bDualTest)
 		{
@@ -22914,8 +23124,8 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 			}
 			else
 				bDone[2] = TRUE;
-			if (!bRtn[2])
-				bDone[2] = TRUE;
+			//if (!bRtn[2])
+			//	bDone[2] = TRUE;
 
 			if (pDoc->m_pReelMapAllUp)
 			{
@@ -22924,8 +23134,8 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 			}
 			else
 				bDone[3] = TRUE;
-			if (!bRtn[3])
-				bDone[3] = TRUE;
+			//if (!bRtn[3])
+			//	bDone[3] = TRUE;
 
 			if (pDoc->m_pReelMapAllDn)
 			{
@@ -22934,62 +23144,53 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 			}
 			else
 				bDone[4] = TRUE;
-			if (!bRtn[4])
-				bDone[4] = TRUE;
+			//if (!bRtn[4])
+			//	bDone[4] = TRUE;
 
 		}
-		else
-		{
-			bDone[2] = TRUE;
-			bDone[3] = TRUE;
-			bDone[4] = TRUE;
-		}
+		//else
+		//{
+		//	bDone[2] = TRUE;
+		//	bDone[3] = TRUE;
+		//	bDone[4] = TRUE;
+		//}
 
-		//nProc = nRatio[0] + nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4];
 		nProc = nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4];
 
-		//if (bDone[0] && bDone[1] && bDone[2] && bDone[3] && bDone[4])
 		if (bDone[1] && bDone[2] && bDone[3] && bDone[4])
-			break;
-		else
-		{
-			dlg.SetPos(nProc);
-			Sleep(100);
-		}
-	}
-
-	dlg.DestroyWindow();
-
-	if (bDualTest)
-	{
-		for (int i = 1; i<5; i++)
-		{
-			if (!bRtn[i])
-				return FALSE;
-		}
-		//for (int i = 0; i<5; i++)
+			return TRUE;
+			//break;
+		//else
 		//{
-		//	if (!bRtn[i])
-		//		return FALSE;
+		//	dlg.SetPos(nProc);
+		//	Sleep(100);
 		//}
-	}
-	else
-	{
-		if (!bRtn[1])
-			return FALSE;
-		//for (int i = 0; i<2; i++)
-		//{
-		//	if (!bRtn[i])
-		//		return FALSE;
-		//}
-	}
+	//}
 
-	if (pDoc->GetTestMode() == MODE_OUTER)
-	{
-		return ReloadReelmapInner();
-	}
+	//dlg.DestroyWindow();
 
-	return TRUE;
+	//if (bDualTest)
+	//{
+	//	for (int i = 1; i<5; i++)
+	//	{
+	//		if (!bRtn[i])
+	//			return FALSE;
+	//	}
+	//}
+	//else
+	//{
+	//	if (!bRtn[1])
+	//		return FALSE;
+	//}
+
+	//if (pDoc->GetTestMode() == MODE_OUTER)
+	//{
+	//	return ReloadReelmapInner();
+	//}
+
+	//return TRUE;
+
+		return FALSE;
 }
 
 void CGvisR2R_PunchView::ReloadReelmapUp()
@@ -29762,183 +29963,183 @@ BOOL CGvisR2R_PunchView::SetMkIts(BOOL bRun)	// Marking Start
 }
 
 
-BOOL CGvisR2R_PunchView::ReloadReelmapInner()
-{
-	double dRatio = 0.0;
-	CString sVal = _T("");
-	CDlgProgress dlg;
-	sVal.Format(_T("On Reloading InnerReelmap."));
-	dlg.Create(sVal);
-	//dlg.SetRange(0, 500);
-
-	//GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
-
-
-	BOOL bRtn[7];
-	if (pDoc->m_pReelMapInner)
-		bRtn[0] = pDoc->m_pReelMapInner->ReloadReelmap();
-	//dlg.SetPos(1);
-	if (pDoc->m_pReelMapInnerUp)
-		bRtn[1] = pDoc->m_pReelMapInnerUp->ReloadReelmap();
-	//dlg.SetPos(2);
-
-	if (pDoc->m_pReelMapIts)
-		bRtn[2] = pDoc->m_pReelMapIts->ReloadReelmap();
-
-	//if (pDoc->m_pReelMapInOuterUp)
-	//	bRtn[2] = pDoc->m_pReelMapInOuterUp->ReloadReelmap();
-
-	//if (pDoc->m_pReelMapInOuterDn)
-	//	bRtn[3] = pDoc->m_pReelMapInOuterDn->ReloadReelmap();
-
-	if (bDualTest)
-	{
-		if (pDoc->m_pReelMapInnerDn)
-			bRtn[4] = pDoc->m_pReelMapInnerDn->ReloadReelmap();
-		//dlg.SetPos(3);
-		if (pDoc->m_pReelMapInnerAllUp)
-			bRtn[5] = pDoc->m_pReelMapInnerAllUp->ReloadReelmap();
-		//dlg.SetPos(4);
-		if (pDoc->m_pReelMapInnerAllDn)
-			bRtn[6] = pDoc->m_pReelMapInnerAllDn->ReloadReelmap();
-		//dlg.SetPos(5);
-	}
-
-	int nRatio[7] = { 0 };
-	BOOL bDone[7] = { 0 };
-	int nTo = 0;
-	if (bDualTest)
-		nTo = 600; //[%]
-	else
-		nTo = 300; //[%]
-
-	dlg.SetRange(0, nTo);
-
-	for (int nProc = 0; nProc < nTo;)
-	{
-		if (pDoc->m_pReelMapInner)
-		{
-			nRatio[0] = pDoc->m_pReelMapInner->GetProgressReloadReelmap();
-			bDone[0] = pDoc->m_pReelMapInner->IsDoneReloadReelmap();
-		}
-		else
-			bDone[0] = TRUE;
-		if (!bRtn[0])
-			bDone[0] = TRUE;
-
-		if (pDoc->m_pReelMapInnerUp)
-		{
-			nRatio[1] = pDoc->m_pReelMapInnerUp->GetProgressReloadReelmap();
-			bDone[1] = pDoc->m_pReelMapInnerUp->IsDoneReloadReelmap();
-		}
-		else
-			bDone[1] = TRUE;
-		if (!bRtn[1])
-			bDone[1] = TRUE;
-
-		//if (pDoc->m_pReelMapInOuterUp)
-		//{
-		//	nRatio[2] = pDoc->m_pReelMapInOuterUp->GetProgressReloadReelmap();
-		//	bDone[2] = pDoc->m_pReelMapInOuterUp->IsDoneReloadReelmap();
-		//}
-		//else
-		//	bDone[2] = TRUE;
-		//if (!bRtn[2])
-		//	bDone[2] = TRUE;
-
-		//if (pDoc->m_pReelMapInOuterDn)
-		//{
-		//	nRatio[3] = pDoc->m_pReelMapInOuterDn->GetProgressReloadReelmap();
-		//	bDone[3] = pDoc->m_pReelMapInOuterDn->IsDoneReloadReelmap();
-		//}
-		//else
-		//	bDone[3] = TRUE;
-		//if (!bRtn[3])
-			bDone[3] = TRUE;
-
-		if (pDoc->m_pReelMapIts)
-		{
-			nRatio[2] = pDoc->m_pReelMapIts->GetProgressReloadReelmap();
-			bDone[2] = pDoc->m_pReelMapIts->IsDoneReloadReelmap();
-		}
-		else
-			bDone[2] = TRUE;
-		if (!bRtn[2])
-			bDone[2] = TRUE;
-
-		if (bDualTest)
-		{
-			if (pDoc->m_pReelMapInnerDn)
-			{
-				nRatio[4] = pDoc->m_pReelMapInnerDn->GetProgressReloadReelmap();
-				bDone[4] = pDoc->m_pReelMapInnerDn->IsDoneReloadReelmap();
-			}
-			else
-				bDone[4] = TRUE;
-			if (!bRtn[4])
-				bDone[4] = TRUE;
-
-			if (pDoc->m_pReelMapInnerAllUp)
-			{
-				nRatio[5] = pDoc->m_pReelMapInnerAllUp->GetProgressReloadReelmap();
-				bDone[5] = pDoc->m_pReelMapInnerAllUp->IsDoneReloadReelmap();
-			}
-			else
-				bDone[5] = TRUE;
-			if (!bRtn[5])
-				bDone[5] = TRUE;
-
-			if (pDoc->m_pReelMapAllDn)
-			{
-				nRatio[6] = pDoc->m_pReelMapInnerAllDn->GetProgressReloadReelmap();
-				bDone[6] = pDoc->m_pReelMapInnerAllDn->IsDoneReloadReelmap();
-			}
-			else
-				bDone[6] = TRUE;
-			if (!bRtn[6])
-				bDone[6] = TRUE;
-
-		}
-		else
-		{
-			bDone[4] = TRUE;
-			bDone[5] = TRUE;
-			bDone[6] = TRUE;
-		}
-
-		nProc = nRatio[0] + nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4] + nRatio[5] + nRatio[6];
-
-		if (bDone[0] && bDone[1] && bDone[2] && bDone[3] && bDone[4] && bDone[5] && bDone[6])
-			break;
-		else
-		{
-			dlg.SetPos(nProc);
-			Sleep(30);
-		}
-	}
-
-	dlg.DestroyWindow();
-
-	if (bDualTest)
-	{
-		for (int i = 0; i < 7; i++)
-		{
-			if (!bRtn[i])
-				return FALSE;
-		}
-	}
-	else
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			if (!bRtn[i])
-				return FALSE;
-		}
-	}
-
-	return TRUE;
-}
+//BOOL CGvisR2R_PunchView::ReloadReelmapInner()
+//{
+//	double dRatio = 0.0;
+//	CString sVal = _T("");
+//	CDlgProgress dlg;
+//	sVal.Format(_T("On Reloading InnerReelmap."));
+//	dlg.Create(sVal);
+//	//dlg.SetRange(0, 500);
+//
+//	//GetCurrentInfoEng();
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
+//
+//
+//	BOOL bRtn[7];
+//	if (pDoc->m_pReelMapInner)
+//		bRtn[0] = pDoc->m_pReelMapInner->ReloadReelmap();
+//	//dlg.SetPos(1);
+//	if (pDoc->m_pReelMapInnerUp)
+//		bRtn[1] = pDoc->m_pReelMapInnerUp->ReloadReelmap();
+//	//dlg.SetPos(2);
+//
+//	if (pDoc->m_pReelMapIts)
+//		bRtn[2] = pDoc->m_pReelMapIts->ReloadReelmap();
+//
+//	//if (pDoc->m_pReelMapInOuterUp)
+//	//	bRtn[2] = pDoc->m_pReelMapInOuterUp->ReloadReelmap();
+//
+//	//if (pDoc->m_pReelMapInOuterDn)
+//	//	bRtn[3] = pDoc->m_pReelMapInOuterDn->ReloadReelmap();
+//
+//	if (bDualTest)
+//	{
+//		if (pDoc->m_pReelMapInnerDn)
+//			bRtn[4] = pDoc->m_pReelMapInnerDn->ReloadReelmap();
+//		//dlg.SetPos(3);
+//		if (pDoc->m_pReelMapInnerAllUp)
+//			bRtn[5] = pDoc->m_pReelMapInnerAllUp->ReloadReelmap();
+//		//dlg.SetPos(4);
+//		if (pDoc->m_pReelMapInnerAllDn)
+//			bRtn[6] = pDoc->m_pReelMapInnerAllDn->ReloadReelmap();
+//		//dlg.SetPos(5);
+//	}
+//
+//	int nRatio[7] = { 0 };
+//	BOOL bDone[7] = { 0 };
+//	int nTo = 0;
+//	if (bDualTest)
+//		nTo = 600; //[%]
+//	else
+//		nTo = 300; //[%]
+//
+//	dlg.SetRange(0, nTo);
+//
+//	for (int nProc = 0; nProc < nTo;)
+//	{
+//		if (pDoc->m_pReelMapInner)
+//		{
+//			nRatio[0] = pDoc->m_pReelMapInner->GetProgressReloadReelmap();
+//			bDone[0] = pDoc->m_pReelMapInner->IsDoneReloadReelmap();
+//		}
+//		else
+//			bDone[0] = TRUE;
+//		if (!bRtn[0])
+//			bDone[0] = TRUE;
+//
+//		if (pDoc->m_pReelMapInnerUp)
+//		{
+//			nRatio[1] = pDoc->m_pReelMapInnerUp->GetProgressReloadReelmap();
+//			bDone[1] = pDoc->m_pReelMapInnerUp->IsDoneReloadReelmap();
+//		}
+//		else
+//			bDone[1] = TRUE;
+//		if (!bRtn[1])
+//			bDone[1] = TRUE;
+//
+//		//if (pDoc->m_pReelMapInOuterUp)
+//		//{
+//		//	nRatio[2] = pDoc->m_pReelMapInOuterUp->GetProgressReloadReelmap();
+//		//	bDone[2] = pDoc->m_pReelMapInOuterUp->IsDoneReloadReelmap();
+//		//}
+//		//else
+//		//	bDone[2] = TRUE;
+//		//if (!bRtn[2])
+//		//	bDone[2] = TRUE;
+//
+//		//if (pDoc->m_pReelMapInOuterDn)
+//		//{
+//		//	nRatio[3] = pDoc->m_pReelMapInOuterDn->GetProgressReloadReelmap();
+//		//	bDone[3] = pDoc->m_pReelMapInOuterDn->IsDoneReloadReelmap();
+//		//}
+//		//else
+//		//	bDone[3] = TRUE;
+//		//if (!bRtn[3])
+//			bDone[3] = TRUE;
+//
+//		if (pDoc->m_pReelMapIts)
+//		{
+//			nRatio[2] = pDoc->m_pReelMapIts->GetProgressReloadReelmap();
+//			bDone[2] = pDoc->m_pReelMapIts->IsDoneReloadReelmap();
+//		}
+//		else
+//			bDone[2] = TRUE;
+//		if (!bRtn[2])
+//			bDone[2] = TRUE;
+//
+//		if (bDualTest)
+//		{
+//			if (pDoc->m_pReelMapInnerDn)
+//			{
+//				nRatio[4] = pDoc->m_pReelMapInnerDn->GetProgressReloadReelmap();
+//				bDone[4] = pDoc->m_pReelMapInnerDn->IsDoneReloadReelmap();
+//			}
+//			else
+//				bDone[4] = TRUE;
+//			if (!bRtn[4])
+//				bDone[4] = TRUE;
+//
+//			if (pDoc->m_pReelMapInnerAllUp)
+//			{
+//				nRatio[5] = pDoc->m_pReelMapInnerAllUp->GetProgressReloadReelmap();
+//				bDone[5] = pDoc->m_pReelMapInnerAllUp->IsDoneReloadReelmap();
+//			}
+//			else
+//				bDone[5] = TRUE;
+//			if (!bRtn[5])
+//				bDone[5] = TRUE;
+//
+//			if (pDoc->m_pReelMapAllDn)
+//			{
+//				nRatio[6] = pDoc->m_pReelMapInnerAllDn->GetProgressReloadReelmap();
+//				bDone[6] = pDoc->m_pReelMapInnerAllDn->IsDoneReloadReelmap();
+//			}
+//			else
+//				bDone[6] = TRUE;
+//			if (!bRtn[6])
+//				bDone[6] = TRUE;
+//
+//		}
+//		else
+//		{
+//			bDone[4] = TRUE;
+//			bDone[5] = TRUE;
+//			bDone[6] = TRUE;
+//		}
+//
+//		nProc = nRatio[0] + nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4] + nRatio[5] + nRatio[6];
+//
+//		if (bDone[0] && bDone[1] && bDone[2] && bDone[3] && bDone[4] && bDone[5] && bDone[6])
+//			break;
+//		else
+//		{
+//			dlg.SetPos(nProc);
+//			Sleep(30);
+//		}
+//	}
+//
+//	dlg.DestroyWindow();
+//
+//	if (bDualTest)
+//	{
+//		for (int i = 0; i < 7; i++)
+//		{
+//			if (!bRtn[i])
+//				return FALSE;
+//		}
+//	}
+//	else
+//	{
+//		for (int i = 0; i < 3; i++)
+//		{
+//			if (!bRtn[i])
+//				return FALSE;
+//		}
+//	}
+//
+//	return TRUE;
+//}
 
 BOOL CGvisR2R_PunchView::ReloadReelmapInner(int nSerial)
 {
