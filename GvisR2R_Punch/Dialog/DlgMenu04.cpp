@@ -1920,7 +1920,7 @@ void CDlgMenu04::OnStc84()
 
 	CString sData;
 	GetDlgItem(IDC_STC_84)->GetWindowText(sData);
- 	pDoc->SetAverDist1(_tstoi(sData));		
+ 	pDoc->SetAverDist1(_tstof(sData));		
 
 #ifdef USE_ENGRAVE
 	if (pView && pView->m_pEngrave)
