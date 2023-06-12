@@ -23101,7 +23101,6 @@ BOOL CGvisR2R_PunchView::IsDoneReloadReelmap(int& nProc)
 		}
 		else
 			bDone[4] = TRUE;
-
 	}
 
 	nProc = nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4];
