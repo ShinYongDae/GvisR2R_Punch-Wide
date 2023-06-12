@@ -1163,6 +1163,7 @@ public:
 	void InitReelmapInnerDn();
 	BOOL ReloadReelmapInner();
 	BOOL ReloadReelmapInner(int nSerial);
+	BOOL IsDoneReloadReelmapInner(int& nProc);
 	void UpdateRstInner();
 	void OpenReelmapInner();
 	void OpenReelmapInnerUp();

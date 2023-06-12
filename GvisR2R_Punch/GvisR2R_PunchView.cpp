@@ -22840,17 +22840,13 @@ BOOL CGvisR2R_PunchView::ReloadReelmapInner()
 {
 	double dRatio = 0.0;
 	CString sVal = _T("");
-	CDlgProgress dlg;
-	sVal.Format(_T("On Reloading InnerReelmap."));
-	dlg.Create(sVal);
 
-	//GetCurrentInfoEng();
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
+	BOOL bRtn[7] = { 1 };
+	//if (pDoc->m_pReelMapInner)
+	//	bRtn[0] = pDoc->m_pReelMapInner->ReloadReelmap();
 
-	BOOL bRtn[7];
-	if (pDoc->m_pReelMapInner)
-		bRtn[0] = pDoc->m_pReelMapInner->ReloadReelmap();
 	if (pDoc->m_pReelMapInnerUp)
 		bRtn[1] = pDoc->m_pReelMapInnerUp->ReloadReelmap();
 
@@ -22868,128 +22864,91 @@ BOOL CGvisR2R_PunchView::ReloadReelmapInner()
 			bRtn[6] = pDoc->m_pReelMapInnerAllDn->ReloadReelmap();
 	}
 
-	int nRatio[7] = { 0 };
-	BOOL bDone[7] = { 0 };
-	int nTo = 0;
-	if (bDualTest)
-		nTo = 600; //[%]
-	else
-		nTo = 300; //[%]
-
-	dlg.SetRange(0, nTo);
-
-	for (int nProc = 0; nProc < nTo;)
+	for (int i = 1; i < 7; i++)
 	{
-		if (pDoc->m_pReelMapInner)
-		{
-			nRatio[0] = pDoc->m_pReelMapInner->GetProgressReloadReelmap();
-			bDone[0] = pDoc->m_pReelMapInner->IsDoneReloadReelmap();
-		}
-		else
-			bDone[0] = TRUE;
-		if (!bRtn[0])
-			bDone[0] = TRUE;
-
-		if (pDoc->m_pReelMapInnerUp)
-		{
-			nRatio[1] = pDoc->m_pReelMapInnerUp->GetProgressReloadReelmap();
-			bDone[1] = pDoc->m_pReelMapInnerUp->IsDoneReloadReelmap();
-		}
-		else
-			bDone[1] = TRUE;
-		if (!bRtn[1])
-			bDone[1] = TRUE;
-
-		bDone[3] = TRUE;
-
-		if (pDoc->m_pReelMapIts)
-		{
-			nRatio[2] = pDoc->m_pReelMapIts->GetProgressReloadReelmap();
-			bDone[2] = pDoc->m_pReelMapIts->IsDoneReloadReelmap();
-		}
-		else
-			bDone[2] = TRUE;
-		if (!bRtn[2])
-			bDone[2] = TRUE;
-
-		if (bDualTest)
-		{
-			if (pDoc->m_pReelMapInnerDn)
-			{
-				nRatio[4] = pDoc->m_pReelMapInnerDn->GetProgressReloadReelmap();
-				bDone[4] = pDoc->m_pReelMapInnerDn->IsDoneReloadReelmap();
-			}
-			else
-				bDone[4] = TRUE;
-			if (!bRtn[4])
-				bDone[4] = TRUE;
-
-			if (pDoc->m_pReelMapInnerAllUp)
-			{
-				nRatio[5] = pDoc->m_pReelMapInnerAllUp->GetProgressReloadReelmap();
-				bDone[5] = pDoc->m_pReelMapInnerAllUp->IsDoneReloadReelmap();
-			}
-			else
-				bDone[5] = TRUE;
-			if (!bRtn[5])
-				bDone[5] = TRUE;
-
-			if (pDoc->m_pReelMapAllDn)
-			{
-				nRatio[6] = pDoc->m_pReelMapInnerAllDn->GetProgressReloadReelmap();
-				bDone[6] = pDoc->m_pReelMapInnerAllDn->IsDoneReloadReelmap();
-			}
-			else
-				bDone[6] = TRUE;
-			if (!bRtn[6])
-				bDone[6] = TRUE;
-
-		}
-		else
-		{
-			bDone[4] = TRUE;
-			bDone[5] = TRUE;
-			bDone[6] = TRUE;
-		}
-
-		nProc = nRatio[0] + nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4] + nRatio[5] + nRatio[6];
-
-		if (bDone[0] && bDone[1] && bDone[2] && bDone[3] && bDone[4] && bDone[5] && bDone[6])
-			break;
-		else
-		{
-			dlg.SetPos(nProc);
-			Sleep(30);
-		}
-	}
-
-	dlg.DestroyWindow();
-
-	if (bDualTest)
-	{
-		for (int i = 0; i < 7; i++)
-		{
-			if (!bRtn[i])
-				return FALSE;
-		}
-	}
-	else
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			if (!bRtn[i])
-				return FALSE;
-		}
+		if (!bRtn[i])
+			return FALSE;
 	}
 
 	return TRUE;
 }
 
+
+BOOL CGvisR2R_PunchView::IsDoneReloadReelmapInner(int& nProc)
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
+
+	int nRatio[7] = { 0 };
+	BOOL bDone[7] = { 0 };
+
+	bDone[0] = TRUE;
+
+	if (pDoc->m_pReelMapInnerUp)
+	{
+		nRatio[1] = pDoc->m_pReelMapInnerUp->GetProgressReloadReelmap();
+		bDone[1] = pDoc->m_pReelMapInnerUp->IsDoneReloadReelmap();
+	}
+	else
+		bDone[1] = TRUE;
+
+	if (pDoc->m_pReelMapIts)
+	{
+		nRatio[2] = pDoc->m_pReelMapIts->GetProgressReloadReelmap();
+		bDone[2] = pDoc->m_pReelMapIts->IsDoneReloadReelmap();
+	}
+	else
+		bDone[2] = TRUE;
+
+	bDone[3] = TRUE;
+
+	if (bDualTest)
+	{
+		if (pDoc->m_pReelMapInnerDn)
+		{
+			nRatio[4] = pDoc->m_pReelMapInnerDn->GetProgressReloadReelmap();
+			bDone[4] = pDoc->m_pReelMapInnerDn->IsDoneReloadReelmap();
+		}
+		else
+			bDone[4] = TRUE;
+
+		if (pDoc->m_pReelMapInnerAllUp)
+		{
+			nRatio[5] = pDoc->m_pReelMapInnerAllUp->GetProgressReloadReelmap();
+			bDone[5] = pDoc->m_pReelMapInnerAllUp->IsDoneReloadReelmap();
+		}
+		else
+			bDone[5] = TRUE;
+
+		if (pDoc->m_pReelMapAllDn)
+		{
+			nRatio[6] = pDoc->m_pReelMapInnerAllDn->GetProgressReloadReelmap();
+			bDone[6] = pDoc->m_pReelMapInnerAllDn->IsDoneReloadReelmap();
+		}
+		else
+			bDone[6] = TRUE;
+	}
+	else
+	{
+		bDone[4] = TRUE;
+		bDone[5] = TRUE;
+		bDone[6] = TRUE;
+	}
+
+	nProc = nRatio[0] + nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4] + nRatio[5] + nRatio[6];
+
+	if (bDone[0] && bDone[1] && bDone[2] && bDone[3] && bDone[4] && bDone[5] && bDone[6])
+		return TRUE;
+
+	return FALSE;
+}
+
 BOOL CGvisR2R_PunchView::ReloadReelmap()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	BOOL bDualTestInner = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
-	BOOL bRtn[5] = { 0 };
+
+	BOOL bRtn[5] = { 1 };
 
 	if (pDoc->m_pReelMapUp)
 		bRtn[1] = pDoc->m_pReelMapUp->ReloadReelmap();
@@ -23011,6 +22970,15 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 		bRtn[0] = ReloadReelmapInner();
 	}
 
+	for (int i = 1; i < 5; i++)
+	{
+		if (!bRtn[i])
+		{
+			AfxMessageBox(_T("ReloadReelmap() is Failed."));
+			return FALSE;
+		}
+	}
+
 	double dRatio = 0.0;
 	CString sVal = _T("");
 	CDlgProgress dlg;
@@ -23021,61 +22989,75 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 	BOOL bDone[5] = { 0 };
 	int nTo = 0;
 	if (bDualTest)
-		nTo = 400; //[%]
+	{
+		if (pDoc->GetTestMode() == MODE_OUTER)
+		{
+			if (bDualTestInner)
+				nTo = 400 + 500; //[%]
+			else
+				nTo = 400 + 200; //[%]
+		}
+		else
+		{
+			nTo = 400; //[%]
+		}
+	}
 	else
-		nTo = 100; //[%]
+	{
+		if (pDoc->GetTestMode() == MODE_OUTER)
+		{
+			if (bDualTestInner)
+				nTo = 100 + 500; //[%]
+			else
+				nTo = 100 + 200; //[%]
+		}
+		else
+		{
+			nTo = 100; //[%]
+		}
+	}
+
 
 	dlg.SetRange(0, nTo);
 	dlg.SetPos(1);
 
-	for (int nProc = 0; nProc < nTo;)
-	{
-		if (bDone[0] = IsDoneReloadReelmap(nProc))
-			break;
-		else
-		{
-			dlg.SetPos(nProc);
-			Sleep(100);
-		}
-	}
-
-	dlg.DestroyWindow();
-	
-	if (!bDone[0])
-	{
-		AfxMessageBox(_T("IsDoneReloadReelmap is FALSE."));
-		return FALSE;
-	}
-
-	if (bDualTest)
+	int nProc=0, nProcOutter=0, nProcInner=0;
+	for (nProc = 0; nProc < nTo;)
 	{
 		if (pDoc->GetTestMode() == MODE_OUTER)
 		{
+			if ( (bDone[0] = IsDoneReloadReelmap(nProcOutter)) && (bDone[1] = IsDoneReloadReelmapInner(nProcInner)) )
+				break;
+			nProc = nProcOutter + nProcInner;
 		}
 		else
 		{
-			for (int i = 1; i < 5; i++)
-			{
-				if (!bRtn[i])
-					return FALSE;
-			}
+			if (bDone[0] = IsDoneReloadReelmap(nProc))
+				break;
+		}
+		dlg.SetPos(nProc);
+		Sleep(100);
+	}
+
+	dlg.DestroyWindow();	
+
+
+	if (pDoc->GetTestMode() == MODE_OUTER)
+	{
+		if (!bDone[0] || !bDone[1])
+		{
+			AfxMessageBox(_T("IsDoneReloadReelmap or IsDoneReloadReelmapInner is FALSE."));
+			return FALSE;
 		}
 	}
 	else
 	{
-		if (!bRtn[1])
+		if (!bDone[0])
+		{
+			AfxMessageBox(_T("IsDoneReloadReelmap is FALSE."));
 			return FALSE;
+		}
 	}
-
-	if (pDoc->GetTestMode() == MODE_OUTER)
-	{
-		if (!bRtn[0])
-			return FALSE;
-	}
-	//if (pDoc->GetTestMode() == MODE_OUTER)
-	//{
-	//	return ReloadReelmapInner();
-	//}
 
 	return TRUE;
 }
@@ -23084,113 +23066,50 @@ BOOL CGvisR2R_PunchView::IsDoneReloadReelmap(int& nProc)
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	//double dRatio = 0.0;
-	//CString sVal = _T("");
-	//CDlgProgress dlg;
-	//sVal.Format(_T("On Reloading Reelmap."));
-	//dlg.Create(sVal);
-
-	//BOOL bRtn[5] = { 0 };
-
 	int nRatio[5] = { 0 };
 	BOOL bDone[5] = { 0 };
-	//int nTo = 0;
-	//if (bDualTest)
-	//	nTo = 400; //[%]
-	//else
-	//	nTo = 100; //[%]
 
-	//dlg.SetRange(0, nTo);
-	//dlg.SetPos(1);
+	if (pDoc->m_pReelMapUp)
+	{
+		nRatio[1] = pDoc->m_pReelMapUp->GetProgressReloadReelmap();
+		bDone[1] = pDoc->m_pReelMapUp->IsDoneReloadReelmap();
+	}
+	else
+		bDone[1] = TRUE;
 
-	//for (int nProc = 0; nProc<nTo;)
-	//{
-		if (pDoc->m_pReelMapUp)
+	if (bDualTest)
+	{
+		if (pDoc->m_pReelMapDn)
 		{
-			nRatio[1] = pDoc->m_pReelMapUp->GetProgressReloadReelmap();
-			bDone[1] = pDoc->m_pReelMapUp->IsDoneReloadReelmap();
+			nRatio[2] = pDoc->m_pReelMapDn->GetProgressReloadReelmap();
+			bDone[2] = pDoc->m_pReelMapDn->IsDoneReloadReelmap();
 		}
 		else
-			bDone[1] = TRUE;
-		//if (!bRtn[1])
-		//	bDone[1] = TRUE;
-
-		if (bDualTest)
+			bDone[2] = TRUE;
+		if (pDoc->m_pReelMapAllUp)
 		{
-			if (pDoc->m_pReelMapDn)
-			{
-				nRatio[2] = pDoc->m_pReelMapDn->GetProgressReloadReelmap();
-				bDone[2] = pDoc->m_pReelMapDn->IsDoneReloadReelmap();
-			}
-			else
-				bDone[2] = TRUE;
-			//if (!bRtn[2])
-			//	bDone[2] = TRUE;
-
-			if (pDoc->m_pReelMapAllUp)
-			{
-				nRatio[3] = pDoc->m_pReelMapAllUp->GetProgressReloadReelmap();
-				bDone[3] = pDoc->m_pReelMapAllUp->IsDoneReloadReelmap();
-			}
-			else
-				bDone[3] = TRUE;
-			//if (!bRtn[3])
-			//	bDone[3] = TRUE;
-
-			if (pDoc->m_pReelMapAllDn)
-			{
-				nRatio[4] = pDoc->m_pReelMapAllDn->GetProgressReloadReelmap();
-				bDone[4] = pDoc->m_pReelMapAllDn->IsDoneReloadReelmap();
-			}
-			else
-				bDone[4] = TRUE;
-			//if (!bRtn[4])
-			//	bDone[4] = TRUE;
-
+			nRatio[3] = pDoc->m_pReelMapAllUp->GetProgressReloadReelmap();
+			bDone[3] = pDoc->m_pReelMapAllUp->IsDoneReloadReelmap();
 		}
-		//else
-		//{
-		//	bDone[2] = TRUE;
-		//	bDone[3] = TRUE;
-		//	bDone[4] = TRUE;
-		//}
+		else
+			bDone[3] = TRUE;
 
-		nProc = nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4];
+		if (pDoc->m_pReelMapAllDn)
+		{
+			nRatio[4] = pDoc->m_pReelMapAllDn->GetProgressReloadReelmap();
+			bDone[4] = pDoc->m_pReelMapAllDn->IsDoneReloadReelmap();
+		}
+		else
+			bDone[4] = TRUE;
 
-		if (bDone[1] && bDone[2] && bDone[3] && bDone[4])
-			return TRUE;
-			//break;
-		//else
-		//{
-		//	dlg.SetPos(nProc);
-		//	Sleep(100);
-		//}
-	//}
+	}
 
-	//dlg.DestroyWindow();
+	nProc = nRatio[1] + nRatio[2] + nRatio[3] + nRatio[4];
 
-	//if (bDualTest)
-	//{
-	//	for (int i = 1; i<5; i++)
-	//	{
-	//		if (!bRtn[i])
-	//			return FALSE;
-	//	}
-	//}
-	//else
-	//{
-	//	if (!bRtn[1])
-	//		return FALSE;
-	//}
+	if (bDone[1] && bDone[2] && bDone[3] && bDone[4])
+		return TRUE;
 
-	//if (pDoc->GetTestMode() == MODE_OUTER)
-	//{
-	//	return ReloadReelmapInner();
-	//}
-
-	//return TRUE;
-
-		return FALSE;
+	return FALSE;
 }
 
 void CGvisR2R_PunchView::ReloadReelmapUp()
