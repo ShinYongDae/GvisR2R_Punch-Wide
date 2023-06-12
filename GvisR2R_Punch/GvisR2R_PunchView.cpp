@@ -22949,6 +22949,7 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 
 
 	BOOL bRtn[5] = { 1 };
+	int nSt = 0;
 
 	if (pDoc->m_pReelMapUp)
 		bRtn[1] = pDoc->m_pReelMapUp->ReloadReelmap();
@@ -22969,8 +22970,10 @@ BOOL CGvisR2R_PunchView::ReloadReelmap()
 	{
 		bRtn[0] = ReloadReelmapInner();
 	}
+	else
+		nSt = 1;
 
-	for (int i = 1; i < 5; i++)
+	for (int i = nSt; i < 5; i++)
 	{
 		if (!bRtn[i])
 		{
