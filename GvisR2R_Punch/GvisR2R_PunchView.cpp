@@ -1081,7 +1081,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 				}
 
 			}
-/*
+
 			// ChkCollision
 			if (!m_bThread[1])
 				m_Thread[1].Start(GetSafeHwnd(), this, ThreadProc1);
@@ -1233,7 +1233,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			// UpdataeYieldIts
 			if (!m_bThread[38])
 				m_Thread[38].Start(GetSafeHwnd(), this, ThreadProc38);
-*/
+
 			MoveInitPos1();
 			Sleep(30);
 			MoveInitPos0();
@@ -17635,6 +17635,7 @@ BOOL CGvisR2R_PunchView::DoAutoGetLotEndSignal()
 		case LOT_END:
 			ReloadReelmap(nSerial);
 			UpdateRst();
+			pDoc->UpdateYieldOnRmap(); // 20230614
 			m_nLotEndAuto++;
 			break;
 		case LOT_END + 1:
@@ -18305,6 +18306,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 				{
 					m_nLastProcAuto = LAST_PROC;
 					m_bLastProc = TRUE;
+					nSerial = GetShareUp();
 
 					if (IsVs())
 					{
@@ -18537,7 +18539,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 			}
 			else
 			{
-				if (nSerial == 1)
+				if (m_nShareUpS == 1)
 				{
 					pDoc->m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
 					if ((pDoc->m_nAoiCamInfoStrPcs[0] == 1 ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
@@ -18600,7 +18602,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 					if (IsVs())
 					{
 						if (m_nAoiLastSerial[0] < 1)
-							m_nAoiLastSerial[0] = nSerial;
+							m_nAoiLastSerial[0] = m_nShareUpS;
 
 						m_nPrevStepAuto = m_nStepAuto;
 						m_nStepAuto = LAST_PROC_VS_ALL;		 // 잔량처리 3
@@ -18684,7 +18686,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 
 		if (m_nShareDnS > 0)
 		{
-			if (nSerial % 2)
+			if (m_nShareDnS % 2)
 				m_nShareDnSerial[0] = m_nShareDnS; // 홀수
 			else
 				m_nShareDnSerial[1] = m_nShareDnS; // 짝수
@@ -18703,7 +18705,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 			}
 			else
 			{
-				if (nSerial == 1)
+				if (m_nShareDnS == 1)
 				{
 					pDoc->m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
 					if ((pDoc->m_nAoiCamInfoStrPcs[1] == 1 ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
@@ -18751,7 +18753,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 						if (!IsSetLotEnd())
 							SetLotEnd(m_nShareDnS - pDoc->AoiDummyShot[1]);
 						if (m_nAoiLastSerial[0] < 1)
-							m_nAoiLastSerial[0] = nSerial;
+							m_nAoiLastSerial[0] = m_nShareDnS;
 						if (bDualTest)
 						{
 							m_bLastProc = TRUE;
@@ -18767,7 +18769,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 					if (IsVs())
 					{
 						if (m_nAoiLastSerial[0] < 1)
-							m_nAoiLastSerial[0] = nSerial;
+							m_nAoiLastSerial[0] = m_nShareDnS;
 
 						m_nPrevStepAuto = m_nStepAuto;
 						m_nStepAuto = LAST_PROC_VS_ALL;		 // 잔량처리 3
@@ -19199,6 +19201,8 @@ void CGvisR2R_PunchView::Mk2PtChkSerial()
 			break;
 
 		case MK_ST + (Mk2PtIdx::ChkSn) + 2:
+			pDoc->UpdateYieldOnRmap(); // 20230614
+
 #ifdef USE_SR1000W
 			if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
 			{
@@ -31345,7 +31349,7 @@ void CGvisR2R_PunchView::Shift2Mk()
 		if (m_pDlgFrameHigh)
 			m_pDlgFrameHigh->SetMkLastShot(nSerialL);
 
-		pDoc->UpdateYieldOnRmap();
+		//pDoc->UpdateYieldOnRmap(); // 20230614
 	}
 	else
 	{
@@ -31363,7 +31367,7 @@ void CGvisR2R_PunchView::Shift2Mk()
 			if (m_pDlgFrameHigh)
 				m_pDlgFrameHigh->SetMkLastShot(nLastShot);
 
-			pDoc->UpdateYieldOnRmap();
+			//pDoc->UpdateYieldOnRmap(); // 20230614
 		}
 	}
 
