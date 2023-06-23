@@ -103,6 +103,8 @@ BEGIN_MESSAGE_MAP(CDlgInfo, CDialog)
 	ON_STN_CLICKED(IDC_STC_17, &CDlgInfo::OnStnClickedStc17)
 	ON_STN_CLICKED(IDC_STC_41, &CDlgInfo::OnStnClickedStc41)
 	ON_STN_CLICKED(IDC_STC_43, &CDlgInfo::OnStnClickedStc43)
+	ON_STN_CLICKED(IDC_STC_82, &CDlgInfo::OnStnClickedStc82)
+	ON_STN_CLICKED(IDC_STC_83, &CDlgInfo::OnStnClickedStc83)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -405,8 +407,11 @@ void CDlgInfo::InitStcTitle()
 	myStcTitle[61].SubclassDlgItem(IDC_STC_37, this); //Shot
 
 	myStcTitle[62].SubclassDlgItem(IDC_STC_16, this); //ITS코드 라벨
-	myStcTitle[63].SubclassDlgItem(IDC_STC_40, this); //ITS코드 라벨
-	myStcTitle[64].SubclassDlgItem(IDC_STC_42, this); //ITS코드 라벨
+	myStcTitle[63].SubclassDlgItem(IDC_STC_40, this); //Shot수 현재값
+	myStcTitle[64].SubclassDlgItem(IDC_STC_42, this); //Shot수 설정값
+
+	myStcTitle[65].SubclassDlgItem(IDC_STC_185, this); //검사부 AOI 상하면 재작업 알람 시간
+	myStcTitle[66].SubclassDlgItem(IDC_STC_186, this); //마킹부 재작업 알람 시간
 
 	for(int i=0; i<MAX_INFO_STC; i++)
 	{
@@ -424,6 +429,8 @@ void CDlgInfo::InitStcTitle()
 		case 62:
 		case 63:
 		case 64:
+		case 65:
+		case 66:
 			myStcTitle[i].SetTextColor(RGB_NAVY);
 			myStcTitle[i].SetBkColor(RGB_LTDKORANGE);
 			myStcTitle[i].SetFontBold(TRUE);
@@ -489,6 +496,8 @@ void CDlgInfo::InitStcData()
 	myStcData[17].SubclassDlgItem(IDC_STC_41, this); // Shot수 현재값
 	myStcData[18].SubclassDlgItem(IDC_STC_43, this); // Shot수 설정값
 
+	myStcData[19].SubclassDlgItem(IDC_STC_82, this); // 검사부 AOI 상하면 재작업 알람 시간
+	myStcData[20].SubclassDlgItem(IDC_STC_83, this); // 마킹부 재작업 알람 시간
 
 	for(int i=0; i<MAX_INFO_STC_DATA; i++)
 	{
@@ -562,6 +571,10 @@ void CDlgInfo::Disp()
 	myStcData[16].SetText(pDoc->WorkingInfo.LastJob.sEngItsCode);		// IDC_STC_17	ITS코드
 	myStcData[17].SetText(pDoc->WorkingInfo.LastJob.sCurrentShotNum);	// IDC_STC_41	Shot수 현재값
 	myStcData[18].SetText(pDoc->WorkingInfo.LastJob.sSettingShotNum);	// IDC_STC_43	Shot수 설정값
+	str.Format(_T("%d"), pDoc->WorkingInfo.LastJob.nAlarmTimeAoi);
+	myStcData[19].SetText(str);											// IDC_STC_82	검사부 AOI 상하면 재작업 알람 시간
+	str.Format(_T("%d"), pDoc->WorkingInfo.LastJob.nAlarmTimePunch);
+	myStcData[20].SetText(str);											// IDC_STC_83	마킹부 재작업 알람 시간
 
 	if(pDoc->WorkingInfo.LastJob.bLotSep)
 		myBtn[1].SetCheck(TRUE);
@@ -703,12 +716,21 @@ void CDlgInfo::Disp()
 		break;
 	}
 
-	str.Format(_T("%d"), pDoc->m_pMpeData[2][7]) ; // Shot수 현재값
-	myStcData[17].SetWindowText(str);
+	if (pDoc && pDoc->m_pMpeData)
+	{
+		str.Format(_T("%d"), pDoc->m_pMpeData[2][7]); // Shot수 현재값
+		myStcData[17].SetWindowText(str);
 
-	str.Format(_T("%d"), pDoc->m_pMpeData[7][6]) ; //Shot수 설정값
-	myStcData[18].SetWindowText(str);
+		str.Format(_T("%d"), pDoc->m_pMpeData[7][6]); //Shot수 설정값
+		myStcData[18].SetWindowText(str);
 
+
+		str.Format(_T("%d"), pDoc->m_pMpeData[0][10]); //검사부 AOI 상[10]하[11]면 재작업 알람 시간
+		myStcData[19].SetWindowText(str);
+
+		str.Format(_T("%d"), pDoc->m_pMpeData[0][12]); //마킹부[12] 재작업 알람 시간
+		myStcData[20].SetWindowText(str);
+	}
 
 	if (pView->IsAuto())
 	{
@@ -2026,6 +2048,7 @@ void CDlgInfo::OnStnClickedStc41()
 
 	CString sData;
 	GetDlgItem(IDC_STC_41)->GetWindowText(sData);
+	pDoc->WorkingInfo.LastJob.sCurrentShotNum = sData;
 	::WritePrivateProfileString(_T("Last Job"), _T("Current ShotNum"), sData, PATH_WORKING_INFO);
 #ifdef USE_MPE
 	pView->m_pMpe->Write(_T("ML44098"), _ttoi(sData)); // Shot수 현재값
@@ -2049,8 +2072,56 @@ void CDlgInfo::OnStnClickedStc43()
 
 	CString sData;
 	GetDlgItem(IDC_STC_43)->GetWindowText(sData);
-	::WritePrivateProfileString(_T("Last Job"), _T("Current ShotNum"), sData, PATH_WORKING_INFO);
+	pDoc->WorkingInfo.LastJob.sSettingShotNum = sData;
+	::WritePrivateProfileString(_T("Last Job"), _T("Setting ShotNum"), sData, PATH_WORKING_INFO);
 #ifdef USE_MPE
 	pView->m_pMpe->Write(_T("ML45108"), _ttoi(sData)); // Shot수 설정값
+#endif
+}
+
+void CDlgInfo::OnStnClickedStc82()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	myStcData[19].SetBkColor(RGB_RED);
+	myStcData[19].RedrawWindow();
+
+	CPoint pt;	CRect rt;
+	GetDlgItem(IDC_STC_82)->GetWindowRect(&rt);
+	pt.x = rt.right; pt.y = rt.bottom;
+	ShowKeypad(IDC_STC_82, pt, TO_BOTTOM | TO_RIGHT);
+
+	myStcData[19].SetBkColor(RGB_WHITE);
+	myStcData[19].RedrawWindow();
+
+	CString sData;
+	GetDlgItem(IDC_STC_82)->GetWindowText(sData);
+	pDoc->WorkingInfo.LastJob.nAlarmTimeAoi = _ttoi(sData);
+	::WritePrivateProfileString(_T("Last Job"), _T("Alarm Time AOI"), sData, PATH_WORKING_INFO);
+#ifdef USE_MPE
+	pView->m_pMpe->Write(_T("ML44040"), _ttoi(sData)); // 검사부 AOI 상면 재작업 알람 시간 [초]
+	pView->m_pMpe->Write(_T("ML44042"), _ttoi(sData)); // 검사부 AOI 하면 재작업 알람 시간 [초]
+#endif
+}
+
+void CDlgInfo::OnStnClickedStc83()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	myStcData[20].SetBkColor(RGB_RED);
+	myStcData[20].RedrawWindow();
+
+	CPoint pt;	CRect rt;
+	GetDlgItem(IDC_STC_83)->GetWindowRect(&rt);
+	pt.x = rt.right; pt.y = rt.bottom;
+	ShowKeypad(IDC_STC_83, pt, TO_BOTTOM | TO_RIGHT);
+
+	myStcData[20].SetBkColor(RGB_WHITE);
+	myStcData[20].RedrawWindow();
+
+	CString sData;
+	GetDlgItem(IDC_STC_83)->GetWindowText(sData);
+	pDoc->WorkingInfo.LastJob.nAlarmTimePunch = _ttoi(sData);
+	::WritePrivateProfileString(_T("Last Job"), _T("Alarm Time Puncking"), sData, PATH_WORKING_INFO);
+#ifdef USE_MPE
+	pView->m_pMpe->Write(_T("ML44044"), _ttoi(sData)); // 마킹부 재작업 알람 시간 [초]
 #endif
 }

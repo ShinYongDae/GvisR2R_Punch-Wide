@@ -47,7 +47,7 @@
 
 class CDlgMenu02 : public CDialog
 {
-	CDlgUtil01 *m_pDlgUtil01;
+	//CDlgUtil01 *m_pDlgUtil01;
 	CMyStatic myStcPcsImg;//, myStcPinImg;
 
 	CMyBtn myBtn[MAX_MENU02_BTN];
@@ -58,7 +58,7 @@ class CDlgMenu02 : public CDialog
 	CMyLabel myStcTitle2[MAX_MENU02_STC_DUO];
 	CMyStatic myStcData2[MAX_MENU02_STC_DATA_DUO];
 
-	CMyGL *m_pPcsGL;//, *m_pPinGL;
+	//CMyGL *m_pPcsGL;//, *m_pPinGL;
 	BOOL m_bLoadImg, m_bLockTimer;
 
 	BOOL m_bTIM_LIGHT_UP, m_bTIM_LIGHT_DN, m_bTIM_LIGHT_UP2, m_bTIM_LIGHT_DN2, m_bTIM_BUF_ENC;

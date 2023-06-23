@@ -32,11 +32,11 @@ CDlgMenu02::CDlgMenu02(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	int nCam, nPoint;
 
-	m_pDlgUtil01 = NULL;
+	//m_pDlgUtil01 = NULL;
 
 	m_pRect = NULL;
 	m_bLoadImg = FALSE;
-	m_pPcsGL = NULL;
+	//m_pPcsGL = NULL;
 //	m_pPinGL = NULL;
 
 	m_bTIM_LIGHT_UP = FALSE;
@@ -97,11 +97,11 @@ CDlgMenu02::~CDlgMenu02()
 // 	}
 
 
-	if(m_pDlgUtil01 != NULL) 
-	{
-		delete m_pDlgUtil01;
-		m_pDlgUtil01 = NULL;
-	}
+	//if(m_pDlgUtil01 != NULL) 
+	//{
+	//	delete m_pDlgUtil01;
+	//	m_pDlgUtil01 = NULL;
+	//}
 
 	DelImg();
 
@@ -111,11 +111,11 @@ CDlgMenu02::~CDlgMenu02()
 		m_pRect = NULL;
 	}
 
-	if(m_pPcsGL)
-	{
-		delete m_pPcsGL;
-		m_pPcsGL = NULL;
-	}
+	//if(m_pPcsGL)
+	//{
+	//	delete m_pPcsGL;
+	//	m_pPcsGL = NULL;
+	//}
 
 // 	if(m_pPinGL)
 // 	{
@@ -293,11 +293,11 @@ void CDlgMenu02::AtDlgHide()
 {
 	DelImg();
 
-	if(pView->m_pDlgUtil01)
-	{
-		if(pView->m_pDlgUtil01->IsWindowVisible())
-			pView->m_pDlgUtil01->ShowWindow(SW_HIDE);
-	}
+	//if(pView->m_pDlgUtil01)
+	//{
+	//	if(pView->m_pDlgUtil01->IsWindowVisible())
+	//		pView->m_pDlgUtil01->ShowWindow(SW_HIDE);
+	//}
 
 	if(m_pDlgUtil03)
 	{

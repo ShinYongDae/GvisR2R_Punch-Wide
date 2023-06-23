@@ -44,6 +44,7 @@ class CDlgFrameHigh : public CDialog
 	void DispFdOffset();
 	void SetChk(int nID);
 	void ChkFdEnc();
+	void DispFdCnt();
 
 // Construction
 public:

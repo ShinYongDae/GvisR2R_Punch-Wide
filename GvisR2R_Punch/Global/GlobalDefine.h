@@ -765,6 +765,7 @@ struct stLastJob
 	BOOL bUseEngraveUltrasonic, bUseAoiDnUltrasonic;
 	BOOL bVelEngraveUltrasonic, bVelAoiDnUltrasonic;
 	CString sCurrentShotNum, sSettingShotNum;
+	int nAlarmTimePunch, nAlarmTimeAoi;
 
 	stLastJob()
 	{
@@ -817,6 +818,8 @@ struct stLastJob
 		bUseAoiUpCleanRoler = FALSE; bUseAoiDnCleanRoler = FALSE;
 		sEngItsCode = _T("");
 		sCurrentShotNum = _T(""); sSettingShotNum = _T("");
+
+		nAlarmTimePunch = 10800; nAlarmTimeAoi = 10800;
 	}
 };
 

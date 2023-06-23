@@ -1890,6 +1890,16 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	else
 		WorkingInfo.LastJob.sSettingShotNum = _T("");
 
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Alarm Time AOI"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.nAlarmTimeAoi = _ttoi(szData);
+	else
+		WorkingInfo.LastJob.nAlarmTimeAoi = 10800;
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Alarm Time Puncking"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.nAlarmTimePunch = _ttoi(szData);
+	else
+		WorkingInfo.LastJob.nAlarmTimePunch = 10800;
+
 
 	// 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Light Value"), NULL, szData, sizeof(szData), sPath))
 	// 		WorkingInfo.LastJob.sLightVal = CString(szData);
@@ -8548,10 +8558,10 @@ void CGvisR2R_PunchDoc::UpdateYieldOnRmap()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	pView->m_bTHREAD_REELMAP_YIELD_UP = TRUE;
+	pView->m_bTHREAD_REELMAP_YIELD_UP = TRUE;		// UpdateReelmapYieldUp(); // Yield Reelmap
 	if (bDualTest)
 	{
-		pView->m_bTHREAD_REELMAP_YIELD_DN = TRUE;
+		pView->m_bTHREAD_REELMAP_YIELD_DN = TRUE;	// UpdateReelmapYieldDn(); // Yield Reelmap
 		//pView->m_bTHREAD_REELMAP_YIELD_ALLUP = TRUE;
 		//pView->m_bTHREAD_REELMAP_YIELD_ALLDN = TRUE;
 	}

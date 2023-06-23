@@ -516,9 +516,12 @@ void CDlgFrameHigh::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	if(nIDEvent==TIM_SIG_AOI)
 	{
 		KillTimer(TIM_SIG_AOI);
+
 		DispSigAoi();
 		DispFdOffset();
 		ChkFdEnc();
+		DispFdCnt();
+
 		if(m_bTIM_SIG_AOI)
 			SetTimer(TIM_SIG_AOI, 100, NULL);
 	}
@@ -541,6 +544,21 @@ void CDlgFrameHigh::ChkFdEnc()
 // 		if(pView->m_pMotion)
 // 			pView->m_pMotion->SetOriginPos(AXIS_AOIFD);
 // 	}
+}
+
+void CDlgFrameHigh::DispFdCnt()
+{
+	if (!pDoc || !pDoc->m_pMpeData)
+		return;
+
+	CString str;
+	int nFeedCntEng = (int)pDoc->m_pMpeData[1][4];	// °¢ÀÎºÎ Feeding È½¼ö
+	int nFeedCntAoi = (int)pDoc->m_pMpeData[1][5];	// °Ë»çºÎ Feeding È½¼ö
+	int nFeedCntMk = (int)pDoc->m_pMpeData[1][6];	// ¸¶Å·ºÎ Feeding È½¼ö
+
+	//str.Format(_T("%d,%d,%d"), nFeedCntMk, nFeedCntAoi, nFeedCntEng);
+	str.Format(_T("%d"), nFeedCntAoi);
+	pView->DispStsBar(str, 0);
 }
 
 void CDlgFrameHigh::DispFdOffset()

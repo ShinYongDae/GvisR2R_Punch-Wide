@@ -117,9 +117,9 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_pDlgMenu04 = NULL;
 	m_pDlgMenu05 = NULL;
 	m_pDlgMenu06 = NULL;
-	m_pDlgUtil01 = NULL;
-	m_pDlgUtil02 = NULL;
-	// 	m_pDlgUtil03 = NULL;
+	//m_pDlgUtil01 = NULL;
+	//m_pDlgUtil02 = NULL;
+	//m_pDlgUtil03 = NULL;
 
 	m_nCntTowerWinker = 0;
 	m_bTimTowerWinker = FALSE;
@@ -550,6 +550,7 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	pView->m_bIsBuf[1] = FALSE;
 
 	m_bUpdateYield = FALSE;
+	m_bUpdateYieldOnRmap = FALSE;
 }
 
 CGvisR2R_PunchView::~CGvisR2R_PunchView()
@@ -2243,37 +2244,37 @@ void CGvisR2R_PunchView::ShowDlg(int nID)
 		}
 		break;
 
-	case IDD_DLG_UTIL_01:
-		// 		if(!m_pDlgUtil01)
-		// 		{
-		// 			m_pDlgUtil01 = new CDlgUtil01(this);
-		// 			if(m_pDlgUtil01->GetSafeHwnd() == 0)
-		// 			{
-		// 				m_pDlgUtil01->Create();
-		// 				m_pDlgUtil01->ShowWindow(SW_SHOW);
-		// 			}
-		// 		}
-		// 		else
-		// 		{
-		// 			m_pDlgUtil01->ShowWindow(SW_SHOW);
-		// 		}
-		break;
+	//case IDD_DLG_UTIL_01:
+	//	if (!m_pDlgUtil01)
+	//	{
+	//		m_pDlgUtil01 = new CDlgUtil01(this);
+	//		if (m_pDlgUtil01->GetSafeHwnd() == 0)
+	//		{
+	//			m_pDlgUtil01->Create();
+	//			m_pDlgUtil01->ShowWindow(SW_SHOW);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		m_pDlgUtil01->ShowWindow(SW_SHOW);
+	//	}
+	//	break;
 
-	case IDD_DLG_UTIL_02:
-		if (!m_pDlgUtil02)
-		{
-			m_pDlgUtil02 = new CDlgUtil02(this);
-			if (m_pDlgUtil02->GetSafeHwnd() == 0)
-			{
-				m_pDlgUtil02->Create();
-				m_pDlgUtil02->ShowWindow(SW_SHOW);
-			}
-		}
-		else
-		{
-			m_pDlgUtil02->ShowWindow(SW_SHOW);
-		}
-		break;
+	//case IDD_DLG_UTIL_02:
+	//	if (!m_pDlgUtil02)
+	//	{
+	//		m_pDlgUtil02 = new CDlgUtil02(this);
+	//		if (m_pDlgUtil02->GetSafeHwnd() == 0)
+	//		{
+	//			m_pDlgUtil02->Create();
+	//			m_pDlgUtil02->ShowWindow(SW_SHOW);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		m_pDlgUtil02->ShowWindow(SW_SHOW);
+	//	}
+	//	break;
 
 		// 	case IDD_DLG_UTIL_03:
 		// 		if(!m_pDlgUtil03)
@@ -2331,16 +2332,16 @@ void CGvisR2R_PunchView::HideAllDlg()
 			m_pDlgMenu06->ShowWindow(SW_HIDE);
 	}
 
-	if (m_pDlgUtil01 && m_pDlgUtil01->GetSafeHwnd())
-	{
-		if (m_pDlgUtil01->IsWindowVisible())
-			m_pDlgUtil01->ShowWindow(SW_HIDE);
-	}
-	if (m_pDlgUtil02 && m_pDlgUtil02->GetSafeHwnd())
-	{
-		if (m_pDlgUtil02->IsWindowVisible())
-			m_pDlgUtil02->ShowWindow(SW_HIDE);
-	}
+	//if (m_pDlgUtil01 && m_pDlgUtil01->GetSafeHwnd())
+	//{
+	//	if (m_pDlgUtil01->IsWindowVisible())
+	//		m_pDlgUtil01->ShowWindow(SW_HIDE);
+	//}
+	//if (m_pDlgUtil02 && m_pDlgUtil02->GetSafeHwnd())
+	//{
+	//	if (m_pDlgUtil02->IsWindowVisible())
+	//		m_pDlgUtil02->ShowWindow(SW_HIDE);
+	//}
 	// 	if(m_pDlgUtil03 && m_pDlgUtil03->GetSafeHwnd())
 	// 	{
 	// 		if(m_pDlgUtil03->IsWindowVisible())
@@ -2360,16 +2361,16 @@ void CGvisR2R_PunchView::DelAllDlg()
 	// 		delete m_pDlgUtil03;
 	// 		m_pDlgUtil03 = NULL;
 	// 	}
-	if (m_pDlgUtil02 != NULL)
-	{
-		delete m_pDlgUtil02;
-		m_pDlgUtil02 = NULL;
-	}
-	if (m_pDlgUtil01 != NULL)
-	{
-		delete m_pDlgUtil01;
-		m_pDlgUtil01 = NULL;
-	}
+	//if (m_pDlgUtil02 != NULL)
+	//{
+	//	delete m_pDlgUtil02;
+	//	m_pDlgUtil02 = NULL;
+	//}
+	//if (m_pDlgUtil01 != NULL)
+	//{
+	//	delete m_pDlgUtil01;
+	//	m_pDlgUtil01 = NULL;
+	//}
 
 	if (m_pDlgMenu06 != NULL)
 	{
@@ -2439,9 +2440,9 @@ void CGvisR2R_PunchView::DispIo()
 
 void CGvisR2R_PunchView::DispDatabaseConnection()
 {
-	ClrDispMsg();
-	CDlgUtil07 Dlg;
-	Dlg.DoModal();
+	//ClrDispMsg();
+	//CDlgUtil07 Dlg;
+	//Dlg.DoModal();
 }
 
 void CGvisR2R_PunchView::TowerLamp(COLORREF color, BOOL bOn, BOOL bWink)
@@ -17633,10 +17634,13 @@ BOOL CGvisR2R_PunchView::DoAutoGetLotEndSignal()
 		switch (m_nLotEndAuto)
 		{
 		case LOT_END:
-			ReloadReelmap(nSerial);
-			UpdateRst();
-			pDoc->UpdateYieldOnRmap(); // 20230614
-			m_nLotEndAuto++;
+			if (!m_bTHREAD_REELMAP_YIELD_UP && !m_bTHREAD_REELMAP_YIELD_DN && !m_bTHREAD_REELMAP_YIELD_ALLUP && !m_bTHREAD_REELMAP_YIELD_ALLDN) // Yield Reelmap
+			{
+				ReloadReelmap(nSerial);
+				UpdateRst();
+				//pDoc->UpdateYieldOnRmap(); // 20230614
+				m_nLotEndAuto++;
+			}
 			break;
 		case LOT_END + 1:
 			m_pMpe->Write(_T("MB440180"), 1);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
@@ -17647,7 +17651,7 @@ BOOL CGvisR2R_PunchView::DoAutoGetLotEndSignal()
 			Stop();
 			TowerLamp(RGB_YELLOW, TRUE);
 			Buzzer(TRUE, 0);
-			LotEnd();
+			LotEnd();									// MakeResultMDS
 			m_nLotEndAuto++;
 			break;
 
@@ -17986,9 +17990,11 @@ void CGvisR2R_PunchView::DoAutoDispMsg()
 	BOOL bDispMsg = FALSE;
 	int idx, nStepDispMsg;
 
+	// [2] : 고정불량-상, [3] : 고정불량-하, [5] : nSerialL <= 0, [6] : CopyDefImg 우측 Camera,  
+	// [7] : CopyDefImg 좌측 Camera, [8] : 보이스코일(좌) 초기위치 이동, [9] : 보이스코일(우) 초기위치 이동
 	for (idx = 0; idx < 10; idx++)
 	{
-		if (m_bDispMsgDoAuto[idx])
+		if (m_bDispMsgDoAuto[idx]) 
 		{
 			bDispMsg = TRUE;
 			nStepDispMsg = m_nStepDispMsg[idx];
@@ -19201,7 +19207,7 @@ void CGvisR2R_PunchView::Mk2PtChkSerial()
 			break;
 
 		case MK_ST + (Mk2PtIdx::ChkSn) + 2:
-			pDoc->UpdateYieldOnRmap(); // 20230614
+			//pDoc->UpdateYieldOnRmap(); // 20230614
 
 #ifdef USE_SR1000W
 			if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
@@ -20042,6 +20048,23 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			}
 			break;
 
+		case MK_ST + (Mk2PtIdx::DoMk) + 2:
+			if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
+			{
+				if (!m_bUpdateYieldOnRmap)
+				{
+					m_bUpdateYieldOnRmap = TRUE;
+					pDoc->UpdateYieldOnRmap(); // 20230614
+					m_nMkStAuto++;
+				}
+				else
+				{
+					Sleep(100);
+					m_nMkStAuto++;
+				}
+			}
+			break;
+
 		case MK_ST + (Mk2PtIdx::Verify) :
 			if (IsMkDone() && IsMoveDone())
 			{
@@ -20091,7 +20114,7 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 		case MK_ST + (Mk2PtIdx::DoneMk) :	 // Align변수 초기화
 			if (!IsRun()) 
 				break;
-
+			
 			if (m_bInitAuto)
 			{
 				m_bInitAuto = FALSE;
@@ -20149,6 +20172,7 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			m_nPrevMkStAuto = 0;
 
 			m_bUpdateYield = FALSE;
+			m_bUpdateYieldOnRmap = FALSE;
 
 			for (a = 0; a < 2; a++)
 			{
@@ -20207,8 +20231,8 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 #endif
 			break;
 		case MK_ST + (Mk2PtIdx::DoneMk) + 4:
-			sMsg.Format(_T("%d%d%d%d%d"), m_bTHREAD_SHIFT2MK ? 1 : 0, m_bTHREAD_REELMAP_YIELD_UP ? 1 : 0, m_bTHREAD_REELMAP_YIELD_DN ? 1 : 0, m_bTHREAD_REELMAP_YIELD_ALLUP ? 1 : 0, m_bTHREAD_REELMAP_YIELD_ALLDN ? 1 : 0);
-			DispStsBar(sMsg, 0);
+			//sMsg.Format(_T("%d%d%d%d%d"), m_bTHREAD_SHIFT2MK ? 1 : 0, m_bTHREAD_REELMAP_YIELD_UP ? 1 : 0, m_bTHREAD_REELMAP_YIELD_DN ? 1 : 0, m_bTHREAD_REELMAP_YIELD_ALLUP ? 1 : 0, m_bTHREAD_REELMAP_YIELD_ALLDN ? 1 : 0);
+			//DispStsBar(sMsg, 0);
 
 			if (!m_bTHREAD_SHIFT2MK && !m_bTHREAD_REELMAP_YIELD_UP && !m_bTHREAD_REELMAP_YIELD_DN && !m_bTHREAD_REELMAP_YIELD_ALLUP && !m_bTHREAD_REELMAP_YIELD_ALLDN) // Yield Reelmap
 			{
@@ -30927,10 +30951,13 @@ void CGvisR2R_PunchView::MakeResultMDS()
 	//	AfxMessageBox(strMsg, MB_ICONWARNING | MB_OK);
 	//}
 
-	GetResult();
-	MakeResult(); // Result.txt
-	MakeResultIts(); // Result.txt
-	MakeSapp3();
+
+	// for SAPP3
+	GetResult();		// Load data From Reelmap.txt
+	MakeResult();		// Result.txt
+	MakeResultIts();	// Result.txt
+	MakeSapp3();		// GetSapp3Txt()
+
 	RemakeReelmap();
 
 	if (pDoc->GetTestMode() == MODE_OUTER)

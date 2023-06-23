@@ -483,9 +483,11 @@
 #define IDC_STC_GD_RA_ALL_UP            1165
 #define IDC_STC_RES_Y4                  1165
 #define IDC_STC_021                     1165
+#define IDC_STC_185                     1165
 #define IDC_STC_ST                      1166
 #define IDC_STC_RESOLUTION_X2           1166
 #define IDC_STC_020                     1166
+#define IDC_STC_186                     1166
 #define IDC_STC_ST_UP                   1167
 #define IDC_STC_RESOLUTION_Y2           1167
 #define IDC_STC_21                      1167

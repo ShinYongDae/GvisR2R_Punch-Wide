@@ -105,7 +105,7 @@ namespace Mk2PtIdx
 	typedef enum Index {
 		Start = 2, ChkSn = 4, InitMk = 10, Move0Cam1 = 12, Move0Cam0 = 14, Align1_0 = 17, Align0_0 = 18,
 		Move1Cam1 = 21, Move1Cam0 = 23, Align1_1 = 26, Align0_1 = 27, MoveInitPt = 29, ChkElec = 32, DoMk = 35,
-		Verify = 37, DoneMk = 38, LotDiff = 50, Shift2Mk = 60
+		Verify = 38, DoneMk = 39, LotDiff = 50, Shift2Mk = 60
 	}; 
 }
 
@@ -373,9 +373,9 @@ public:
 	CDlgMenu04 *m_pDlgMenu04;
 	CDlgMenu05 *m_pDlgMenu05;
 	CDlgMenu06 *m_pDlgMenu06;
-	CDlgUtil01 *m_pDlgUtil01;
-	CDlgUtil02 *m_pDlgUtil02;
-	// 	CDlgUtil03 *m_pDlgUtil03;
+	//CDlgUtil01 *m_pDlgUtil01;
+	//CDlgUtil02 *m_pDlgUtil02;
+	//CDlgUtil03 *m_pDlgUtil03;
 
 
 	int m_nLotEndSerial;
@@ -534,7 +534,7 @@ public:
 
 // 작업입니다.
 public:
-	BOOL m_bShift2Mk, m_bUpdateYield;
+	BOOL m_bShift2Mk, m_bUpdateYield, m_bUpdateYieldOnRmap;
 
 	void SetLastSerialEng(int nSerial);
 	int MsgBox(CString sMsg, int nThreadIdx = 0, int nType = MB_OK, int nTimOut = DEFAULT_TIME_OUT, BOOL bEngave = TRUE);		// SyncMsgBox
