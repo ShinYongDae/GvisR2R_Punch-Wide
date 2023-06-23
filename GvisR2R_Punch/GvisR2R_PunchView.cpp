@@ -20053,9 +20053,12 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			{
 				if (!m_bUpdateYieldOnRmap)
 				{
-					m_bUpdateYieldOnRmap = TRUE;
-					pDoc->UpdateYieldOnRmap(); // 20230614
-					m_nMkStAuto++;
+					if (!m_bTHREAD_UPDATE_YIELD_UP && !m_bTHREAD_UPDATE_YIELD_DN && !m_bTHREAD_UPDATE_YIELD_ALLUP && !m_bTHREAD_UPDATE_YIELD_ALLDN)
+					{
+						m_bUpdateYieldOnRmap = TRUE;
+						pDoc->UpdateYieldOnRmap(); // 20230614
+						m_nMkStAuto++;
+					}
 				}
 				else
 				{
