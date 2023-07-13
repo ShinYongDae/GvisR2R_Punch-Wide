@@ -534,13 +534,13 @@ void CMyGL::DrawRgn()
 			if(!bDualTest)
 				nTestMode=0;
 			
-			int nIdx = pDoc->GetPcrIdx1(m_pPnlNum[k]);
+			int nIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_pPnlNum[k]);
 
 			if (m_nCtrlId == IDC_STC_REELMAP_IMG)
 			{
 				if(pDoc->GetTestMode() == MODE_OUTER)
 				{ 
-					if (pDoc->m_pPcrIts[nIdx]->m_nErrPnl == -1 || pDoc->m_pPcrIts[nIdx]->m_nErrPnl == -2)
+					if (pDoc->m_mgrReelmap.m_pPcrIts[nIdx]->m_nErrPnl == -1 || pDoc->m_mgrReelmap.m_pPcrIts[nIdx]->m_nErrPnl == -2)
 					{
 						// Draw Cross....
 						GVertex vtPnt[4];
@@ -569,7 +569,7 @@ void CMyGL::DrawRgn()
 				}
 				else
 				{
-					if (pDoc->m_pPcr[nTestMode][nIdx]->m_nErrPnl == -1 || pDoc->m_pPcr[nTestMode][nIdx]->m_nErrPnl == -2)
+					if (pDoc->m_mgrReelmap.m_pPcr[nTestMode][nIdx]->m_nErrPnl == -1 || pDoc->m_mgrReelmap.m_pPcr[nTestMode][nIdx]->m_nErrPnl == -2)
 					{
 						// Draw Cross....
 						GVertex vtPnt[4];
@@ -599,7 +599,7 @@ void CMyGL::DrawRgn()
 			}
 			else if (m_nCtrlId == IDC_STC_REELMAP_INNER)
 			{
-				if (pDoc->m_pPcrInner[nTestMode][nIdx]->m_nErrPnl == -1 || pDoc->m_pPcrInner[nTestMode][nIdx]->m_nErrPnl == -2)
+				if (pDoc->m_mgrReelmap.m_pPcrInner[nTestMode][nIdx]->m_nErrPnl == -1 || pDoc->m_mgrReelmap.m_pPcrInner[nTestMode][nIdx]->m_nErrPnl == -2)
 				{
 					// Draw Cross....
 					GVertex vtPnt[4];

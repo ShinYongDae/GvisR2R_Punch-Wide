@@ -590,8 +590,8 @@ void CDlgMenu01::DispMkInfoUp()
 	else
 		nMaxMaxDispDefImg = _tstoi(pDoc->WorkingInfo.System.sMaxDispDefImg);
 
-	if (nMaxMaxDispDefImg > 0 && pDoc->m_pPcr[0][nIdx]->m_nTotDef - nMaxMaxDispDefImg > 0)
-		m_nIdxDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef - nMaxMaxDispDefImg; // 불량이미지 인덱스.
+	if (nMaxMaxDispDefImg > 0 && pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotDef - nMaxMaxDispDefImg > 0)
+		m_nIdxDef[0] = pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotDef - nMaxMaxDispDefImg; // 불량이미지 인덱스.
 	else
 		m_nIdxDef[0] = 0; // 불량이미지 인덱스.
 
@@ -609,12 +609,12 @@ void CDlgMenu01::DispMkInfoUp()
 #ifdef TEST_MODE
 	m_nDef[0] = m_nIdxMkInfo[0] + 15; // DefNum : 15
 #else
-	if(pDoc->m_pPcr[0])
+	if(pDoc->m_mgrReelmap.m_pPcr[0])
 	{
-		if(pDoc->m_pPcr[0][nIdx])
+		if(pDoc->m_mgrReelmap.m_pPcr[0][nIdx])
 		{
-			m_nDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef; // m_nDef : m_nIdxMkInfo + Display Def Num.
-			pDoc->m_pPcr[0][nIdx]->m_nTotRealDef = 0;
+			m_nDef[0] = pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotDef; // m_nDef : m_nIdxMkInfo + Display Def Num.
+			pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotRealDef = 0;
 		}
 	}
 #endif
@@ -626,7 +626,7 @@ void CDlgMenu01::DispMkInfoDn()
 	if(!bDualTest)
 		return;
 
-	int nIdx = pDoc->GetPcrIdx1(m_nSerial);
+	int nIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
 	m_nDef[1] = 0;
 
 	int nMaxMaxDispDefImg = _tstoi(pDoc->WorkingInfo.System.sMaxDispDefImg);
@@ -635,8 +635,8 @@ void CDlgMenu01::DispMkInfoDn()
 	else
 		nMaxMaxDispDefImg = _tstoi(pDoc->WorkingInfo.System.sMaxDispDefImg);
 
-	if(nMaxMaxDispDefImg > 0 && pDoc->m_pPcr[1][nIdx]->m_nTotDef - nMaxMaxDispDefImg > 0)
-		m_nIdxDef[1] = pDoc->m_pPcr[1][nIdx]->m_nTotDef - nMaxMaxDispDefImg; // 불량이미지 인덱스.
+	if(nMaxMaxDispDefImg > 0 && pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_nTotDef - nMaxMaxDispDefImg > 0)
+		m_nIdxDef[1] = pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_nTotDef - nMaxMaxDispDefImg; // 불량이미지 인덱스.
 	else
 		m_nIdxDef[1] = 0; // 불량이미지 인덱스.
 
@@ -645,12 +645,12 @@ void CDlgMenu01::DispMkInfoDn()
 #ifdef TEST_MODE
 	m_nDef[1] = m_nIdxMkInfo[1] + 15; // DefNum : 15
 #else
-	if(pDoc->m_pPcr[1])
+	if(pDoc->m_mgrReelmap.m_pPcr[1])
 	{
-		if(pDoc->m_pPcr[1][nIdx])
+		if(pDoc->m_mgrReelmap.m_pPcr[1][nIdx])
 		{
-			m_nDef[1] = pDoc->m_pPcr[1][nIdx]->m_nTotDef; // m_nDef : m_nIdxMkInfo + Display Def Num.
-			pDoc->m_pPcr[1][nIdx]->m_nTotRealDef = 0;
+			m_nDef[1] = pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_nTotDef; // m_nDef : m_nIdxMkInfo + Display Def Num.
+			pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_nTotRealDef = 0;
 		}
 	}
 #endif
@@ -1492,21 +1492,21 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 
 			int nIdx = pDoc->GetPcrIdx0(nSerial);
 			int nDefImg;
-			if(pDoc->m_pPcr[0])
+			if(pDoc->m_mgrReelmap.m_pPcr[0])
 			{
-				if(pDoc->m_pPcr[0][nIdx])
+				if(pDoc->m_mgrReelmap.m_pPcr[0][nIdx])
 				{
-					if(pDoc->m_pPcr[0][nIdx]->m_pImg)
+					if(pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_pImg)
 					{
-						if(pDoc->m_pPcr[0][nIdx]->m_pMk[m_nIdxDef[0]] != -2) // -2 (NoMarking)
+						if(pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_pMk[m_nIdxDef[0]] != -2) // -2 (NoMarking)
 						{	
-							if(m_nIdxDef[0] < pDoc->m_pPcr[0][nIdx]->m_nTotDef)
+							if(m_nIdxDef[0] < pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotDef)
 							{
 								if(m_nIdxMkInfo[0] >= MENU01_STC_DEFINFO_HARF)
 									ShiftDefInfoUp();
  								pView->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
 								pView->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
-								nDefImg = pDoc->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]]; // 화면에 표시할 불량이미지 인덱스
+								nDefImg = pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]]; // 화면에 표시할 불량이미지 인덱스
 								pView->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
 								ShowDefInfoUp(nIdxMkInfo); // 화면의 IDC 인덱스
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
@@ -1514,7 +1514,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								//SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++; // 화면의 IDC 인덱스
 								m_nIdxDef[0]++; // 화면에 표시할 불량피스 인덱스 ( 0 ~ TotalDef )
-								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
+								(pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotRealDef)++;
 							}
 							else
 								m_nIdxMkInfo[0]++;
@@ -1535,21 +1535,21 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 
 			int nIdx = pDoc->GetPcrIdx0(nSerial);
 			int nDefImg;
-			if(pDoc->m_pPcr[0])
+			if(pDoc->m_mgrReelmap.m_pPcr[0])
 			{
-				if(pDoc->m_pPcr[0][nIdx])
+				if(pDoc->m_mgrReelmap.m_pPcr[0][nIdx])
 				{
-					if(pDoc->m_pPcr[0][nIdx]->m_pImg)
+					if(pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_pImg)
 					{
-						if(pDoc->m_pPcr[0][nIdx]->m_pMk[m_nIdxDef[0]] != -2) // -2 (NoMarking)
+						if(pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_pMk[m_nIdxDef[0]] != -2) // -2 (NoMarking)
 						{	
-							if(m_nIdxDef[0] < pDoc->m_pPcr[0][nIdx]->m_nTotDef)
+							if(m_nIdxDef[0] < pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotDef)
 							{
 								if(m_nIdxMkInfo[0] >= MENU01_STC_DEFINFO_HARF*2)
 									ShiftDefInfoUp();
  								pView->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
 								pView->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
-								nDefImg = pDoc->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]];
+								nDefImg = pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]];
 								pView->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
 								ShowDefInfoUp(nIdxMkInfo);
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg);
@@ -1557,7 +1557,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 								//SaveDefImgPosUp(nSerial, nIdxMkInfo, nDefImg);
 								m_nIdxMkInfo[0]++;
 								m_nIdxDef[0]++;
-								(pDoc->m_pPcr[0][nIdx]->m_nTotRealDef)++;
+								(pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotRealDef)++;
 							}
 							else
 								m_nIdxMkInfo[0]++;
@@ -1591,23 +1591,23 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
  		int nIdxMkInfo = (m_nIdxMkInfo[1] < MENU01_STC_DEFINFO_HARF) ? m_nIdxMkInfo[1] : (MENU01_STC_DEFINFO_HARF-1);	
 //		int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
 
-		int nIdx = pDoc->GetPcrIdx1(nSerial);
+		int nIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
 		int nDefImg;
-		if(pDoc->m_pPcr[1])
+		if(pDoc->m_mgrReelmap.m_pPcr[1])
 		{
-			if(pDoc->m_pPcr[1][nIdx])
+			if(pDoc->m_mgrReelmap.m_pPcr[1][nIdx])
 			{
-				if(pDoc->m_pPcr[1][nIdx]->m_pImg)
+				if(pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_pImg)
 				{
-					if(pDoc->m_pPcr[1][nIdx]->m_pMk[m_nIdxDef[1]] != -2) // -2 (NoMarking)
+					if(pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_pMk[m_nIdxDef[1]] != -2) // -2 (NoMarking)
 					{	
-						if(m_nIdxDef[1] < pDoc->m_pPcr[1][nIdx]->m_nTotDef)
+						if(m_nIdxDef[1] < pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_nTotDef)
 						{
  							if(m_nIdxMkInfo[1] >= MENU01_STC_DEFINFO_HARF)
 								ShiftDefInfoDn();
  							pView->m_pVision[1]->ShowDispCad(nIdxMkInfo, nSerial, 1, m_nIdxDef[1]);
 							pView->m_pVision[1]->ShowOvrCad(nIdxMkInfo, nSerial);
-							nDefImg = pDoc->m_pPcr[1][nIdx]->m_pImg[m_nIdxDef[1]];
+							nDefImg = pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_pImg[m_nIdxDef[1]];
 							pView->m_pVision[1]->ShowDispDef(nIdxMkInfo, nSerial, 1, nDefImg);
 							ShowDefInfoDn(nIdxMkInfo);
 							WriteDefInfoDn(nSerial, nIdxMkInfo, m_nIdxDef[1], nDefImg);
@@ -1615,7 +1615,7 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 							//SaveDefImgPosDn(nSerial, nIdxMkInfo, nDefImg);
 							m_nIdxMkInfo[1]++;
 							m_nIdxDef[1]++;
-							(pDoc->m_pPcr[1][nIdx]->m_nTotRealDef)++;
+							(pDoc->m_mgrReelmap.m_pPcr[1][nIdx]->m_nTotRealDef)++;
 						}
 						else
 							m_nIdxMkInfo[1]++;
@@ -1707,13 +1707,13 @@ void CDlgMenu01::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 #ifdef TEST_MODE 
 // 	nDefCode = pDoc->m_pReelMap->pPcsDef[2][28];
  	int nPcrIdx = pDoc->GetPcrIdx0(m_nSerial);
-	if(pDoc->m_pPcr[0][nPcrIdx]->m_pMk[m_nIdxDef[0]] == -2) // -2 (NoMarking)
+	if(pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pMk[m_nIdxDef[0]] == -2) // -2 (NoMarking)
 		return;
-	int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]]; //m_pImg[m_nIdxDef];
-	nDefCode = pDoc->m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
+	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]]; //m_pImg[m_nIdxDef];
+	nDefCode = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
 	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];
-	if(pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
+		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
 	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
 // 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
 // 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
@@ -1722,15 +1722,15 @@ void CDlgMenu01::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 #else
  	int nPcrIdx = pDoc->GetPcrIdx0(m_nSerial);
 // 	int nSelMkPnl = pDoc->m_pReelMap->m_nSelMarkingPnl;
-	if(pDoc->m_pPcr[0][nPcrIdx]->m_pMk[m_nIdxDef[0]] == -2) // -2 (NoMarking)
+	if(pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pMk[m_nIdxDef[0]] == -2) // -2 (NoMarking)
 		return;
-	int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]]; //m_pImg[m_nIdxDef];
-	nDefCode = pDoc->m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
+	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]]; //m_pImg[m_nIdxDef];
+	nDefCode = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
 // 	nDefCode = pDoc->m_pReelMap->pPcsDef[nSelMkPnl][nPcsIdx];
  	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];	
 // 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
-	if(pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
+	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
+		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
 	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
 // 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
 #endif
@@ -1758,30 +1758,30 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 	COLORREF rgbDef;
 
 #ifdef TEST_MODE 
- 	int nPcrIdx = pDoc->GetPcrIdx1(m_nSerial);
-	if(pDoc->m_pPcr[1][nPcrIdx]->m_pMk[m_nIdxDef[1]] == -2) // -2 (NoMarking)
+ 	int nPcrIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
+	if(pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pMk[m_nIdxDef[1]] == -2) // -2 (NoMarking)
 		return;
-	int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]]; //m_pImg[m_nIdxDef];
-	nDefCode = pDoc->m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
+	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]]; //m_pImg[m_nIdxDef];
+	nDefCode = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
 // 	nDefCode = pDoc->m_pReelMap->pPcsDef[2][28];
 	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];
-	if(pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
+	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
+		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
 	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
 // 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
 // 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
 // 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[28]);
 #else
- 	int nPcrIdx = pDoc->GetPcrIdx1(m_nSerial);
+ 	int nPcrIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
 // 	int nSelMkPnl = pDoc->m_pReelMap->m_nSelMarkingPnl;
-	if(pDoc->m_pPcr[1][nPcrIdx]->m_pMk[m_nIdxDef[1]] == -2) // -2 (NoMarking)
+	if(pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pMk[m_nIdxDef[1]] == -2) // -2 (NoMarking)
 		return;
-	int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]]; //m_pImg[m_nIdxDef];
-	nDefCode = pDoc->m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
+	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]]; //m_pImg[m_nIdxDef];
+	nDefCode = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
 // 	nDefCode = pDoc->m_pReelMap->pPcsDef[nSelMkPnl][nPcsIdx];
 	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];	
-	if(pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
+	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
+		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
 	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
 // 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
 // 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
@@ -1826,10 +1826,10 @@ BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 {
 	int nStrip=-1, nCol=-1, nRow=-1;
 	int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
-	int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]];
-	int nDefCode = pDoc->m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
-	if (pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]];
+	int nDefCode = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
+	if (pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
+		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
 
 	CString strDefImgPathS, strDefImgPathD, strTemp;
 
@@ -1869,11 +1869,11 @@ BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 BOOL CDlgMenu01::SaveDefImgPosDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 {
 	int nStrip = -1, nCol = -1, nRow = -1;
-	int nPcrIdx = pDoc->GetPcrIdx1(nSerial);
-	int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]];
-	int nDefCode = pDoc->m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
-	if (pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+	int nPcrIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
+	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]];
+	int nDefCode = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
+	if (pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
+		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
 
 	CString strDefImgPathS, strDefImgPathD, strTemp;
 
@@ -1976,7 +1976,7 @@ void CDlgMenu01::WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdx
 	int nIdx = pDoc->GetPcrIdx0(m_nSerial);
 	CString sItem, sData;
 
-	sData.Format(_T("%d"), pDoc->m_pPcr[2][nIdx]->m_nTotDef);
+	sData.Format(_T("%d"), pDoc->m_mgrReelmap.m_pPcr[2][nIdx]->m_nTotDef);
 	::WritePrivateProfileString(_T("Info"), _T("MergedTotalDef"), sData, sPath);
 
 	sData.Format(_T("%d"), m_nDef[1]);
@@ -2688,7 +2688,7 @@ void CDlgMenu01::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 			DispMkInfo(m_nSerialDispMkInfo);	// DispMkInfo(m_nSerial);
 
 //	 		if(m_nIdxMkInfo < m_nDef)
-			if(m_nIdxDef[0] < m_nDef[0] || m_nIdxDef[1] < m_nDef[1]) // m_nIdxDef(불량이미지 인덱스) , m_nDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef; // m_nDef[up] : 릴맵 화면 표시 인덱스의 Display Def Num.
+			if(m_nIdxDef[0] < m_nDef[0] || m_nIdxDef[1] < m_nDef[1]) // m_nIdxDef(불량이미지 인덱스) , m_nDef[0] = pDoc->m_mgrReelmap.m_pPcr[0][nIdx]->m_nTotDef; // m_nDef[up] : 릴맵 화면 표시 인덱스의 Display Def Num.
 			{
 				if(m_bTIM_DISP_DEF_IMG)
 					SetTimer(TIM_DISP_DEF_IMG, 100, NULL);

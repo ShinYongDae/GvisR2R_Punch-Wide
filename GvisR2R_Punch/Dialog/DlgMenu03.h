@@ -93,8 +93,6 @@ class CDlgMenu03 : public CDialog
 // 	void MyBtnDown(int nCtrlID);
 // 	void MyBtnUp(int nCtrlID);
 	void ChkDoneMkAoi();
-	void DoReady();
-	BOOL DoReset();
 	void SwRcRelationTim();
 	void SwUcRelationTim();
 

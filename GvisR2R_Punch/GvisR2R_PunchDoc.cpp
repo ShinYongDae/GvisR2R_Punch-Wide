@@ -47,40 +47,43 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 	pDoc = this;
 	m_strUserNameList = _T("");
 
-	m_bBufEmpty[0] = FALSE; // Exist
-	m_bBufEmpty[1] = FALSE; // Exist
-	m_bBufEmptyF[0] = FALSE; // Exist
-	m_bBufEmptyF[1] = FALSE; // Exist
+	m_bUpdateForNewJob[0] = FALSE;
+	m_bUpdateForNewJob[1] = FALSE;
+
+	//m_bBufEmpty[0] = FALSE; // Exist
+	//m_bBufEmpty[1] = FALSE; // Exist
+	//m_bBufEmptyF[0] = FALSE; // Exist
+	//m_bBufEmptyF[1] = FALSE; // Exist
 
 
 	// 	m_pCellRgn = NULL;
 	// 	m_pPcsRgn = NULL;
-	m_pReelMapDisp = NULL;
-	m_pReelMap = NULL;
-	m_pReelMapUp = NULL;
-	m_pReelMapDn = NULL;
-	m_pReelMapAllUp = NULL;
-	m_pReelMapAllDn = NULL;
+	//m_pReelMapDisp = NULL;
+	//m_pReelMap = NULL;
+	//m_pReelMapUp = NULL;
+	//m_pReelMapDn = NULL;
+	//m_pReelMapAllUp = NULL;
+	//m_pReelMapAllDn = NULL;
 
-	m_pReelMapInner = NULL;
-	m_pReelMapInnerUp = NULL;
-	m_pReelMapInnerDn = NULL;
-	m_pReelMapInnerAllUp = NULL;
-	m_pReelMapInnerAllDn = NULL;
+	//m_pReelMapInner = NULL;
+	//m_pReelMapInnerUp = NULL;
+	//m_pReelMapInnerDn = NULL;
+	//m_pReelMapInnerAllUp = NULL;
+	//m_pReelMapInnerAllDn = NULL;
 	//m_pReelMapInOuterUp = NULL;
 	//m_pReelMapInOuterDn = NULL;
-	m_pReelMapIts = NULL;
+	//m_pReelMapIts = NULL;
 
-	for (i = 0; i < MAX_PCR; i++)
-	{
-		for (k = 0; k < MAX_PCR_PNL; k++)
-		{
-			m_pPcr[i][k] = NULL;
-			m_pPcrInner[i][k] = NULL;
-		}
-	}
-	for (k = 0; k < MAX_PCR_PNL; k++)
-		m_pPcrIts[k] = NULL;
+	//for (i = 0; i < MAX_PCR; i++)
+	//{
+	//	for (k = 0; k < MAX_PCR_PNL; k++)
+	//	{
+	//		m_pPcr[i][k] = NULL;
+	//		m_pPcrInner[i][k] = NULL;
+	//	}
+	//}
+	//for (k = 0; k < MAX_PCR_PNL; k++)
+	//	m_pPcrIts[k] = NULL;
 
 	//for (k = 0; k < MAX_PCR_PNL; k++)
 	//{
@@ -88,7 +91,7 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 	//	m_pPcrMkInner[k] = NULL;
 	//}
 
-	pMkInfo = NULL;
+	//pMkInfo = NULL;
 
 	AoiDummyShot[0] = 3;
 	AoiDummyShot[1] = 3;
@@ -278,11 +281,11 @@ void CGvisR2R_PunchDoc::DestroyDoc()
 		m_pFile = NULL;
 	}
 
-	if (pMkInfo)
-	{
-		delete[] pMkInfo;
-		pMkInfo = NULL;
-	}
+	//if (pMkInfo)
+	//{
+	//	delete[] pMkInfo;
+	//	pMkInfo = NULL;
+	//}
 }
 
 CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
@@ -291,89 +294,58 @@ CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
 
 	SaveWorkingInfo();
 
-	// 	PinImgFree();
-	// 	AlignImgFree();
-	// 	PcsImgFree();
-	// 	CADLinkImgFree();
-
-	//DestroyDoc();
-
-	//if (m_pReelMap)
+	//if (m_pReelMapUp)
 	//{
-	//	delete m_pReelMap;
-	//	m_pReelMap = NULL;
+	//	delete m_pReelMapUp;
+	//	m_pReelMapUp = NULL;
 	//}
 
-	if (m_pReelMapUp)
-	{
-		delete m_pReelMapUp;
-		m_pReelMapUp = NULL;
-	}
-
-	if (m_pReelMapDn)
-	{
-		delete m_pReelMapDn;
-		m_pReelMapDn = NULL;
-	}
-
-	if (m_pReelMapAllUp)
-	{
-		delete m_pReelMapAllUp;
-		m_pReelMapAllUp = NULL;
-	}
-
-	if (m_pReelMapAllDn)
-	{
-		delete m_pReelMapAllDn;
-		m_pReelMapAllDn = NULL;
-	}
-
-	if (m_pReelMapIts)
-	{
-		delete m_pReelMapIts;
-		m_pReelMapIts = NULL;
-	}
-
-	//if (m_pReelMapInner)
+	//if (m_pReelMapDn)
 	//{
-	//	delete m_pReelMapInner;
-	//	m_pReelMapInner = NULL;
+	//	delete m_pReelMapDn;
+	//	m_pReelMapDn = NULL;
 	//}
 
-	if (m_pReelMapInnerUp)
-	{
-		delete m_pReelMapInnerUp;
-		m_pReelMapInnerUp = NULL;
-	}
-
-	if (m_pReelMapInnerDn)
-	{
-		delete m_pReelMapInnerDn;
-		m_pReelMapInnerDn = NULL;
-	}
-
-	if (m_pReelMapInnerAllUp)
-	{
-		delete m_pReelMapInnerAllUp;
-		m_pReelMapInnerAllUp = NULL;
-	}
-
-	if (m_pReelMapInnerAllDn)
-	{
-		delete m_pReelMapInnerAllDn;
-		m_pReelMapInnerAllDn = NULL;
-	}
-
-	//if (m_pReelMapInOuterUp)
+	//if (m_pReelMapAllUp)
 	//{
-	//	delete m_pReelMapInOuterUp;
-	//	m_pReelMapInOuterUp = NULL;
+	//	delete m_pReelMapAllUp;
+	//	m_pReelMapAllUp = NULL;
 	//}
 
-	//if (m_pReelMapInOuterDn)
+	//if (m_pReelMapAllDn)
 	//{
-	//	delete m_pReelMapInOuterDn;
-	//	m_pReelMapInOuterDn = NULL;
+	//	delete m_pReelMapAllDn;
+	//	m_pReelMapAllDn = NULL;
+	//}
+
+	//if (m_pReelMapIts)
+	//{
+	//	delete m_pReelMapIts;
+	//	m_pReelMapIts = NULL;
+	//}
+
+	//if (m_pReelMapInnerUp)
+	//{
+	//	delete m_pReelMapInnerUp;
+	//	m_pReelMapInnerUp = NULL;
+	//}
+
+	//if (m_pReelMapInnerDn)
+	//{
+	//	delete m_pReelMapInnerDn;
+	//	m_pReelMapInnerDn = NULL;
+	//}
+
+	//if (m_pReelMapInnerAllUp)
+	//{
+	//	delete m_pReelMapInnerAllUp;
+	//	m_pReelMapInnerAllUp = NULL;
+	//}
+
+	//if (m_pReelMapInnerAllDn)
+	//{
+	//	delete m_pReelMapInnerAllDn;
+	//	m_pReelMapInnerAllDn = NULL;
 	//}
 
 	if (m_pMpeIb)
@@ -420,59 +392,35 @@ CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
 		m_pMpeData = NULL;
 	}
 
-// 	if(m_pPrevMpeIo)
-// 	{
-// 		delete[] m_pPrevMpeIo;
-// 		m_pPrevMpeIo = NULL;
-// 	}
-
 	if (m_pSpecLocal)
 	{
 		delete m_pSpecLocal;
 		m_pSpecLocal = NULL;
 	}
 
-	//Sleep(3000);
+	//for (i = 0; i < MAX_PCR; i++)
+	//{
+	//	for (k = 0; k < MAX_PCR_PNL; k++)
+	//	{
+	//		if (m_pPcr[i][k])
+	//		{
+	//			delete m_pPcr[i][k];
+	//			m_pPcr[i][k] = NULL;
+	//		}
 
-	for (i = 0; i < MAX_PCR; i++)
-	{
-		for (k = 0; k < MAX_PCR_PNL; k++)
-		{
-			if (m_pPcr[i][k])
-			{
-				delete m_pPcr[i][k];
-				m_pPcr[i][k] = NULL;
-			}
-
-			if (m_pPcrInner[i][k])
-			{
-				delete m_pPcrInner[i][k];
-				m_pPcrInner[i][k] = NULL;
-			}
-		}
-		//delete[] m_pPcr[i];
-		//m_pPcr[i] = NULL;
-	}
-	for (k = 0; k < MAX_PCR_PNL; k++)
-	{
-		if (m_pPcrIts[k])
-		{
-			delete m_pPcrIts[k];
-			m_pPcrIts[k] = NULL;
-		}
-	}
-
+	//		if (m_pPcrInner[i][k])
+	//		{
+	//			delete m_pPcrInner[i][k];
+	//			m_pPcrInner[i][k] = NULL;
+	//		}
+	//	}
+	//}
 	//for (k = 0; k < MAX_PCR_PNL; k++)
 	//{
-	//	if (m_pPcrMk[k])
+	//	if (m_pPcrIts[k])
 	//	{
-	//		delete m_pPcrMk[k];
-	//		m_pPcrMk[k] = NULL;
-	//	}
-	//	if (m_pPcrMkInner[k])
-	//	{
-	//		delete m_pPcrMkInner[k];
-	//		m_pPcrMkInner[k] = NULL;
+	//		delete m_pPcrIts[k];
+	//		m_pPcrIts[k] = NULL;
 	//	}
 	//}
 
@@ -4093,1096 +4041,1077 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 }
 
 
-void CGvisR2R_PunchDoc::ClrPcr()
-{
-	//CString sMsg;
-
-	int nIdx, i, k;
-	for (i = 0; i < MAX_PCR; i++)
-	{
-		for (nIdx = 0; nIdx < MAX_PCR_PNL; nIdx++)
-		{
-			if (m_pPcr[i][0])
-			{
-				m_pPcr[i][nIdx]->m_nIdx = 0;							// m_nIdx : From 0 to nTot.....
-				m_pPcr[i][nIdx]->m_nSerial = 0;
-				m_pPcr[i][nIdx]->m_nErrPnl = 0;
-				m_pPcr[i][nIdx]->m_sModel = _T("");
-				m_pPcr[i][nIdx]->m_sLayer = _T("");
-				m_pPcr[i][nIdx]->m_sLot = _T("");
-
-				m_pPcr[i][nIdx]->m_nCamId = 0;
-				m_pPcr[i][nIdx]->m_nTotDef = 0;
-				m_pPcr[i][nIdx]->m_nTotRealDef = 0;
-			}
-
-			if (m_pPcrInner[i][0])
-			{
-				m_pPcrInner[i][nIdx]->m_nIdx = 0;							// m_nIdx : From 0 to nTot.....
-				m_pPcrInner[i][nIdx]->m_nSerial = 0;
-				m_pPcrInner[i][nIdx]->m_nErrPnl = 0;
-				m_pPcrInner[i][nIdx]->m_sModel = _T("");
-				m_pPcrInner[i][nIdx]->m_sLayer = _T("");
-				m_pPcrInner[i][nIdx]->m_sLot = _T("");
-
-				m_pPcrInner[i][nIdx]->m_nCamId = 0;
-				m_pPcrInner[i][nIdx]->m_nTotDef = 0;
-				m_pPcrInner[i][nIdx]->m_nTotRealDef = 0;
-			}
-		}
-	}
-
-	for (k = 0; k < MAX_PCR_PNL; k++)
-	{
-		if (m_pPcrIts[k])
-		{
-			m_pPcrIts[k]->m_nIdx = 0;							// m_nIdx : From 0 to nTot.....
-			m_pPcrIts[k]->m_nSerial = 0;
-			m_pPcrIts[k]->m_nErrPnl = 0;
-			m_pPcrIts[k]->m_sModel = _T("");
-			m_pPcrIts[k]->m_sLayer = _T("");
-			m_pPcrIts[k]->m_sLot = _T("");
-
-			m_pPcrIts[k]->m_nCamId = 0;
-			m_pPcrIts[k]->m_nTotDef = 0;
-			m_pPcrIts[k]->m_nTotRealDef = 0;
-		}
-	}
-}
-
-BOOL CGvisR2R_PunchDoc::InitReelmap()
-{
-	if (!m_Master[0].m_pPcsRgn)
-	{
-		CString strMsg;
-		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
-		//pView->MsgBox(strMsg);
-		pView->ClrDispMsg();
-		AfxMessageBox(strMsg, MB_ICONSTOP);
-		return FALSE;
-	}
-
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	//if (m_pReelMap)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMap;
-	//	m_pReelMap = NULL;
-	//}
-	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
-
-	if (m_pReelMapUp)
-	{
-		//m_pReelMapUp->ResetReelmap();
-		delete m_pReelMapUp;
-		m_pReelMapUp = NULL;
-	}
-	m_pReelMapUp = new CReelMap(RMAP_UP, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapUp->m_nLayer = RMAP_UP;
-
-	if (bDualTest)
-	{
-		if (m_pReelMapDn)
-		{
-			//m_pReelMapDn->ResetReelmap();
-			delete m_pReelMapDn;
-			m_pReelMapDn = NULL;
-		}
-		m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapDn->m_nLayer = RMAP_DN;
-
-		if (m_pReelMapAllUp)
-		{
-			//m_pReelMapAllUp->ResetReelmap();
-			delete m_pReelMapAllUp;
-			m_pReelMapAllUp = NULL;
-		}
-		m_pReelMapAllUp = new CReelMap(RMAP_ALLUP, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
-
-		if (m_pReelMapAllDn)
-		{
-			//m_pReelMapAllDn->ResetReelmap();
-			delete m_pReelMapAllDn;
-			m_pReelMapAllDn = NULL;
-		}
-		m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
-
-		if(pDoc->GetTestMode() != MODE_OUTER)
-			m_pReelMap = m_pReelMapAllUp;
-		else
-		{
-			if (m_pReelMapIts)
-			{
-				//m_pReelMap->ResetReelmap();
-				delete m_pReelMapIts;
-				m_pReelMapIts = NULL;
-			}
-			m_pReelMapIts = new CReelMap(RMAP_ITS, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-			m_pReelMap = m_pReelMapIts;
-		}
-	}
-	else
-	{
-		if (pDoc->GetTestMode() != MODE_OUTER)
-			m_pReelMap = m_pReelMapUp;
-		else
-		{
-			if (m_pReelMapIts)
-				m_pReelMap = m_pReelMapIts;
-		}
-	}
-
-	if (pMkInfo)
-	{
-		delete[] pMkInfo;
-		pMkInfo = NULL;
-	}
-	if (!pMkInfo)
-		pMkInfo = new CString[nTotPcs];
-
-	//CString sPath = m_pReelMap->GetIpPath();
-	//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
-
-	if (m_pReelMap)
-	{
-		m_pReelMapDisp = m_pReelMap;
-
-		if (bDualTest)
-			pView->m_pDlgMenu01->SelMap(ALL);
-		else
-			pView->m_pDlgMenu01->SelMap(UP);
-	}
-	return TRUE;
-}
-
-BOOL CGvisR2R_PunchDoc::InitReelmapUp()
-{
-	if (!m_Master[0].m_pPcsRgn)
-	{
-		CString strMsg;
-		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
-		pView->MsgBox(strMsg);
-		// 		AfxMessageBox(strMsg,MB_ICONSTOP);
-		return FALSE;
-	}
-
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-
-	//if (m_pReelMap)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMap;
-	//	m_pReelMap = NULL;
-	//}
-	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
-
-
-	//if (m_pReelMap->m_nLayer < 0)
-	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
-
-	if (m_pReelMapUp)
-	{
-		//m_pReelMapUp->ResetReelmap();
-		delete m_pReelMapUp;
-		m_pReelMapUp = NULL;
-	}
-	m_pReelMapUp = new CReelMap(RMAP_UP, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapUp->m_nLayer = RMAP_UP;
-
-	if (bDualTest)
-	{
-		if (m_pReelMapAllUp)
-		{
-			//m_pReelMapAllUp->ResetReelmap();
-			delete m_pReelMapAllUp;
-			m_pReelMapAllUp = NULL;
-		}
-		m_pReelMapAllUp = new CReelMap(RMAP_ALLUP, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
-
-		if (pDoc->GetTestMode() != MODE_OUTER)
- 			m_pReelMap = m_pReelMapAllUp;
-		else
-		{
-			if (m_pReelMapIts)
-				m_pReelMap = m_pReelMapIts;
-		}
-	}
-	else
-	{
-		if (pDoc->GetTestMode() != MODE_OUTER)
-			m_pReelMap = m_pReelMapUp;
-		else
-		{
-			if (m_pReelMapIts)
-				m_pReelMap = m_pReelMapIts;
-		}
-	}
-
-	if (m_pReelMap->m_nLayer == RMAP_UP || m_pReelMap->m_nLayer == RMAP_ALLUP)
-	{
-		//if (m_pReelMap)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMap;
-		//	m_pReelMap = NULL;
-		//}
-		//m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
-
-		if (pMkInfo)
-		{
-			delete[] pMkInfo;
-			pMkInfo = NULL;
-		}
-		if (!pMkInfo)
-			pMkInfo = new CString[nTotPcs];
-	}
-
-	//CString sPath = m_pReelMap->GetIpPath();
-	//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
-
-	if (pView->m_pDlgMenu01)
-		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_nSelRmap);
-
-	return TRUE;
-}
-
-BOOL CGvisR2R_PunchDoc::InitReelmapDn()
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return TRUE;
-
-	if (!m_Master[0].m_pPcsRgn)
-	{
-		CString strMsg;
-		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
-		pView->MsgBox(strMsg);
-		// 		AfxMessageBox(strMsg,MB_ICONSTOP);
-		return FALSE;
-	}
-
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-
-	//if (m_pReelMap)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMap;
-	//	m_pReelMap = NULL;
-	//}
-	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
-
-
-	//if (m_pReelMap->m_nLayer < 0)
-	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
-
-	if (m_pReelMapDn)
-	{
-		//m_pReelMapDn->ResetReelmap();
-		delete m_pReelMapDn;
-		m_pReelMapDn = NULL;
-	}
-	m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapDn->m_nLayer = RMAP_DN;
-
-	if (m_pReelMapAllDn)
-	{
-		//m_pReelMapAllDn->ResetReelmap();
-		delete m_pReelMapAllDn;
-		m_pReelMapAllDn = NULL;
-	}
-	m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
-
-	if (m_pReelMap->m_nLayer == RMAP_DN || m_pReelMap->m_nLayer == RMAP_ALLDN)
-	{
-		//if (m_pReelMap)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMap;
-		//	m_pReelMap = NULL;
-		//}
-		//m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
-
-		if (pMkInfo)
-		{
-			delete[] pMkInfo;
-			pMkInfo = NULL;
-		}
-		if (!pMkInfo)
-			pMkInfo = new CString[nTotPcs];
-	}
-
-	if (pView->m_pDlgMenu01)
-		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_nSelRmap);
-
-	return TRUE;
-}
-
-void CGvisR2R_PunchDoc::InitPcr()
-{
-	int k, i;
-	for (i = 0; i < MAX_PCR; i++)
-	{
-		for (k = 0; k < MAX_PCR_PNL; k++)
-		{
-			if (m_pPcr[i][k])
-			{
-				delete m_pPcr[i][k];
-				m_pPcr[i][k] = NULL;
-			}
-
-			m_pPcr[i][k] = new CDataMarking();
-
-			if (m_pPcrInner[i][k])
-			{
-				delete m_pPcrInner[i][k];
-				m_pPcrInner[i][k] = NULL;
-			}
-
-			m_pPcrInner[i][k] = new CDataMarking();
-		}
-	}
-
-	for (k = 0; k < MAX_PCR_PNL; k++)
-	{
-		if (m_pPcrIts[k])
-		{
-			delete m_pPcrIts[k];
-			m_pPcrIts[k] = NULL;
-		}
-
-		m_pPcrIts[k] = new CDataMarking();
-	}
-
-	//for (k = 0; k < MAX_PCR_PNL; k++)
-	//{
-	//	if (m_pPcrMk[k])
-	//	{
-	//		delete m_pPcrMk[k];
-	//		m_pPcrMk[k] = NULL;
-	//	}
-
-	//	m_pPcrMk[k] = new CDataMarking();
-
-	//	if (m_pPcrMkInner[k])
-	//	{
-	//		delete m_pPcrMkInner[k];
-	//		m_pPcrMkInner[k] = NULL;
-	//	}
-
-	//	m_pPcrMkInner[k] = new CDataMarking();
-	//}
-}
-
-void CGvisR2R_PunchDoc::SetReelmap(int nDir)
-{
-	if (!m_pReelMap || !m_Master[0].m_pPcsRgn)
-		return;
-
-	if (!m_pReelMap->pFrmRgn || !m_pReelMap->pPcsRgn)
-		return;
-
-	int i, k;
-	double fData1, fData2, fData3, fData4, fDistX, fDistY;
-	double fWidth, fHeight, fRight, fBottom;
-
-	m_pReelMap->nDir = nDir;
-
-	int nTotPnl = m_pReelMap->nTotPnl;
-	int nTotPcs = m_pReelMap->nTotPcs;
-
-	// 	double dScale = (MasterInfo.dPixelSize/10.0);
-	double dScale = (m_Master[0].MasterInfo.dPixelSize / 10.0);
-	m_pReelMap->SetAdjRatio(dScale);
-	dScale = m_pReelMap->GetAdjRatio();
-
-	for (k = 0; k < nTotPnl; k++)
-	{
-		switch (nDir)
-		{
-		case ROT_NONE:
-			fWidth = (m_Master[0].m_pPcsRgn->pPcs[0].right - m_Master[0].m_pPcsRgn->pPcs[0].left);
-			fHeight = (m_Master[0].m_pPcsRgn->pPcs[0].bottom - m_Master[0].m_pPcsRgn->pPcs[0].top);
-			fRight = m_Master[0].m_pPcsRgn->rtFrm.right - fWidth * (1.0 - RMAP_PCS_SCALE);
-			fBottom = m_Master[0].m_pPcsRgn->rtFrm.bottom - fHeight * (1.0 - RMAP_PCS_SCALE);;
-			m_pReelMap->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.left;
-			m_pReelMap->pFrmRgn[k].top = m_Master[0].m_pPcsRgn->rtFrm.top;
-			m_pReelMap->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fRight;
-			m_pReelMap->pFrmRgn[k].bottom = fBottom;
-			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
-			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
-			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
-			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
-			if (m_pReelMapDisp)
-			{
-				m_pReelMapDisp->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.left;
-				m_pReelMapDisp->pFrmRgn[k].top = m_Master[0].m_pPcsRgn->rtFrm.top;
-				m_pReelMapDisp->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fRight;
-				m_pReelMapDisp->pFrmRgn[k].bottom = fBottom;
-			}
-
-			for (i = 0; i < nTotPcs; i++)
-			{
-				fWidth = (m_Master[0].m_pPcsRgn->pPcs[i].right - m_Master[0].m_pPcsRgn->pPcs[i].left);
-				fHeight = (m_Master[0].m_pPcsRgn->pPcs[i].bottom - m_Master[0].m_pPcsRgn->pPcs[i].top);
-				fData1 = m_Master[0].m_pPcsRgn->pPcs[i].left;	// left
-				fData2 = m_Master[0].m_pPcsRgn->pPcs[i].top;	// top
-				fData3 = fData1 + fWidth * RMAP_PCS_SCALE; // right
-				fData4 = fData2 + fHeight * RMAP_PCS_SCALE; // bottom
-
-				m_pReelMap->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
-				m_pReelMap->pPcsRgn[k][i].top = fData2;
-				m_pReelMap->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
-				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
-
-				if (m_pReelMapDisp)
-				{
-					m_pReelMapDisp->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
-					m_pReelMapDisp->pPcsRgn[k][i].top = fData2;
-					m_pReelMapDisp->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
-					m_pReelMapDisp->pPcsRgn[k][i].bottom = fData4;
-				}
-			}
-			break;
-			// 		case ROT_NONE:
-			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
-			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
-			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
-			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
-			// 
-			// 			for(i=0; i<nTotPcs; i++)
-			// 			{
-			// 				fData1 = m_pPcsRgn->pPcs[i].left; // left
-			// 				fData2 = m_pPcsRgn->pPcs[i].top; // top
-			// 				fData3 = m_pPcsRgn->pPcs[i].right; // right
-			// 				fData4 = m_pPcsRgn->pPcs[i].bottom; // bottom
-			// 
-			// 				m_pReelMap->pPcsRgn[k][i].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData1;
-			// 				m_pReelMap->pPcsRgn[k][i].top = fData2;
-			// 				m_pReelMap->pPcsRgn[k][i].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData3;
-			// 				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
-			// 			}
-			// 			break;
-		case ROT_CCW_90: // right->bottom, top->left, bottom->right, left->top ; Dir (x *= 1, y *= -1) 
-			fDistX = 0;
-			fDistY = m_Master[0].m_pPcsRgn->rtFrm.left + m_Master[0].m_pPcsRgn->rtFrm.right;
-			m_pReelMap->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.top;
-			m_pReelMap->pFrmRgn[k].top = fDistY - m_Master[0].m_pPcsRgn->rtFrm.right;
-			m_pReelMap->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.bottom;
-			m_pReelMap->pFrmRgn[k].bottom = fDistY - m_Master[0].m_pPcsRgn->rtFrm.left;
-
-			if (m_pReelMapDisp)
-			{
-				m_pReelMapDisp->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.top;
-				m_pReelMapDisp->pFrmRgn[k].top = fDistY - m_Master[0].m_pPcsRgn->rtFrm.right;
-				m_pReelMapDisp->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.bottom;
-				m_pReelMapDisp->pFrmRgn[k].bottom = fDistY - m_Master[0].m_pPcsRgn->rtFrm.left;
-			}
-
-			for (i = 0; i < nTotPcs; i++)
-			{
-				fData1 = m_Master[0].m_pPcsRgn->pPcs[i].top;	// left
-				fData2 = fDistY - m_Master[0].m_pPcsRgn->pPcs[i].right;	// top
-				fData3 = m_Master[0].m_pPcsRgn->pPcs[i].bottom;	// right
-				fData4 = fDistY - m_Master[0].m_pPcsRgn->pPcs[i].left; // bottom
-
-				m_pReelMap->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
-				m_pReelMap->pPcsRgn[k][i].top = fData2;
-				m_pReelMap->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
-				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
-
-				if (m_pReelMapDisp)
-				{
-					m_pReelMapDisp->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
-					m_pReelMapDisp->pPcsRgn[k][i].top = fData2;
-					m_pReelMapDisp->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
-					m_pReelMapDisp->pPcsRgn[k][i].bottom = fData4;
-				}
-			}
-			break;
-		}
-	}
-}
-
-CString CGvisR2R_PunchDoc::GetCamPxlRes()
-{
-	CString sRes = _T("");
-	CString sPath;
-#ifdef TEST_MODE
-	sPath = PATH_PIN_IMG_;
-#else
-	if (pDoc->WorkingInfo.System.sPathCamSpecDir.Right(1) != "\\")
-		sPath.Format(_T("%s\\%s\\%s.mst"), pDoc->WorkingInfo.System.sPathCamSpecDir, pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerUp);
-	else
-		sPath.Format(_T("%s%s\\%s.mst"), pDoc->WorkingInfo.System.sPathCamSpecDir, pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerUp);
-#endif
-
-	int nPos = sPath.ReverseFind('-');
-	if (nPos > 0)
-	{
-		sRes = sPath.Right(sPath.GetLength() - (nPos + 1));
-		nPos = sRes.ReverseFind('.');
-		if (nPos > 0)
-			sRes = sRes.Left(nPos);
-		WorkingInfo.Vision[0].sCamPxlRes = sRes;
-		WorkingInfo.Vision[1].sCamPxlRes = sRes;
-	}
-	return sRes;
-}
-
-int CGvisR2R_PunchDoc::GetPcrIdx(int nSerial, BOOL bNewLot)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.8"));
-		return 0;
-	}
-
-	int nIdx = -1;
-	// 	if(!bNewLot)
-	// 		nIdx = (nSerial-1)%MAX_PCR_PNL;
-	// 	else // New Lot...
-	// 		nIdx = (m_nLotLastShot + nSerial - 1)%MAX_PCR_PNL;
-
-	return nIdx;
-}
-
-int CGvisR2R_PunchDoc::GetPcrIdx0(int nSerial, BOOL bNewLot)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.9"));
-		return 0;
-	}
-
-	int nIdx;
-
-	if (!bNewLot)
-	{
-		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
-		{
-			if (!m_bDoneChgLot && nSerial <= m_nLotLastShot)
-				nIdx = (nSerial - 1) % MAX_PCR_PNL;
-			else // New Lot...
-				nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
-		}
-		else
-		{
-			nIdx = (nSerial - 1) % MAX_PCR_PNL;
-		}
-	}
-	else
-	{
-		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
-			nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
-		else
-			nIdx = (nSerial - 1) % MAX_PCR_PNL;
-	}
-	return nIdx;
-}
-
-int CGvisR2R_PunchDoc::GetPcrIdx1(int nSerial, BOOL bNewLot)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.10"));
-		return 0;
-	}
-
-	int nIdx;
-
-	if (!bNewLot)
-	{
-		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
-		{
-			if (!m_bDoneChgLot && nSerial <= m_nLotLastShot)
-				nIdx = (nSerial - 1) % MAX_PCR_PNL;
-			else // New Lot...
-				nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
-		}
-		else
-		{
-			nIdx = (nSerial - 1) % MAX_PCR_PNL;
-		}
-	}
-	else
-	{
-		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
-			nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
-		else
-			nIdx = (nSerial - 1) % MAX_PCR_PNL;
-	}
-	return nIdx;
-}
-
-BOOL CGvisR2R_PunchDoc::GetAoiUpInfo(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.11"));
-		return 0;
-	}
-
-	BOOL Info0;//, Info1;
-	Info0 = GetAoiInfoUp(nSerial, pNewLot, bFromBuf);
-
-	if (Info0)
-		return TRUE;
-
-	// 	double dCurPosMkFd = (double)m_pMpeData[0][0];	// 마킹부 Feeding 엔코더 값(단위 mm )
-	// 	double dTgtFd = _tstof(WorkingInfo.Motion.sFdAoiAoiDistShot) * _tstof(WorkingInfo.Motion.sAoiFdDist);
-	// 	if(dCurPosMkFd < dTgtFd-_tstof(WorkingInfo.Motion.sAoiFdDist) + 10.0)
-	// 	{
-	// 		if(Info0)
-	// 			return TRUE;
-	// 	}
-	// 	else
-	// 	{
-	// 		Info1 = GetAoiInfoDn(nSerial);
-	// 		if(Info0 && Info1)
-	// 			return TRUE;
-	// 	}
-
-	return FALSE;
-}
-
-BOOL CGvisR2R_PunchDoc::GetAoiDnInfo(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.12"));
-		return 0;
-	}
-
-	BOOL Info1;//Info0, 
-			   // 	Info0 = GetAoiInfoUp(nSerial);
-
-			   // 	double dCurPosMkFd = (double)m_pMpeData[0][0];	// 마킹부 Feeding 엔코더 값(단위 mm )
-			   // 	double dTgtFd = _tstof(WorkingInfo.Motion.sFdAoiAoiDistShot) * _tstof(WorkingInfo.Motion.sAoiFdDist);
-			   // 	if(dCurPosMkFd < dTgtFd-_tstof(WorkingInfo.Motion.sAoiFdDist) + 10.0)
-			   // 		return FALSE;
-			   // 	else
-	{
-		Info1 = GetAoiInfoDn(nSerial, pNewLot, bFromBuf);
-		if (Info1)
-			return TRUE;
-	}
-
-	return FALSE;
-}
-
-BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
-{
-
-	FILE *fp;
-	char FileD[200];
-	size_t nFileSize, nRSize;
-	char *FileData;
-	CString strFileData;
-	int nTemp;// , i;
-	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
-	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
-		strCellNum, strImageSize, strImageNum, strMarkingCode;
-
-	if (nSerial < 1)
-	{
-		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
-		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
-		return(FALSE);
-	}
-
-	CString sPath;
-
-#ifdef TEST_MODE
-	sPath = PATH_PCR;	// for Test
-#else
-	//	if(bFromBuf)
-	sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufUp, nSerial);
-	// 	else
-	// 		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareUp, nSerial);
-#endif
-
-	//strcpy(FileD, sPath);
-	//_tcscpy(FileD, sPath);
-	StringToChar(sPath, FileD);
-
-	if ((fp = fopen(FileD, "r")) != NULL)
-	{
-		fseek(fp, 0, SEEK_END);
-		nFileSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		/* Allocate space for a path name */
-		//FileData = (char*)malloc( nFileSize );
-		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
-
-		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
-		//strFileData.Format(_T("%s"), CharToString(FileData));
-		strFileData = CharToString(FileData);
-		fclose(fp);
-		free(FileData);
-	}
-	else
-	{
-		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), sPath);
-		pView->MsgBox(strFileData);
-		return(FALSE);
-	}
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	nTemp = strFileData.Find(',', 0);
-	strHeaderErrorInfo = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	// 	m_pPcr[nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
-
-	// Model
-	nTemp = strFileData.Find(',', 0);
-	strModel = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	Status.PcrShare[0].sModel = strModel;
-
-	// Layer
-	nTemp = strFileData.Find(',', 0);
-	strLayer = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	Status.PcrShare[0].sLayer = strLayer;
-
-	if (WorkingInfo.System.bUseITS)
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[0].sLot = strLot;
-
-		// Its Code
-		nTemp = strFileData.Find('\n', 0);
-		sItsCode = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[0].sItsCode = sItsCode;
-		//m_pPcr[0][nIdx]->m_sItsCode = sItsCode;
-	}
-	else
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[0].sLot = strLot;
-
-		// Lot
-		nTemp = strFileData.Find('\n', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[0].sLot = strLot;
-	}
-
-	nTemp = strFileData.Find('\n', 0);
-	strTotalBadPieceNum = strFileData.Left(nTemp);;
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-
-	int nTotDef = _tstoi(strTotalBadPieceNum);
-
-
-
-	if (Status.PcrShare[0].sModel.IsEmpty() || Status.PcrShare[0].sLayer.IsEmpty() || Status.PcrShare[0].sLot.IsEmpty())
-	{
-		pView->MsgBox(_T("Error - Aoi Information."));
-		// 		AfxMessageBox(_T("Error - Aoi Information."));
-		return FALSE;
-	}
-
-	BOOL bUpdate = FALSE;
-
-	if (WorkingInfo.LastJob.sLotUp != Status.PcrShare[0].sLot || WorkingInfo.LastJob.sEngItsCode != Status.PcrShare[0].sItsCode)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sLotUp = Status.PcrShare[0].sLot;
-		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = Status.PcrShare[0].sItsCode;
-	}
-
-	if (WorkingInfo.LastJob.sModelUp != Status.PcrShare[0].sModel || WorkingInfo.LastJob.sLayerUp != Status.PcrShare[0].sLayer || pView->m_bInitAutoLoadMstInfo)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sModelUp = Status.PcrShare[0].sModel;
-		WorkingInfo.LastJob.sLayerUp = Status.PcrShare[0].sLayer;
-
-		if (m_bBufEmptyF[0])
-		{
-			if (!m_bBufEmpty[0])
-				m_bBufEmptyF[0] = FALSE;
-
-			m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
-			if (m_nAoiCamInfoStrPcs[0] > -1)
-			{
-				if ((m_nAoiCamInfoStrPcs[0] == 1 ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
-				{
-					//if(m_nAoiCamInfoStrPcs[0])
-					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
-					//else
-					//	pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n상면 AOI는 일반 모드에서 검사를 진행하였습니다."));
-					return FALSE;
-				}
-			}
-
-			pView->m_bInitAutoLoadMstInfo = FALSE;
-			return TRUE;
-		}
-
-		if (pView->m_bInitAutoLoadMstInfo)
-		{
-			pView->m_bInitAutoLoadMstInfo = FALSE;
-			return TRUE;
-		}
-	}
-
-	if (bUpdate)
-	{
-		WriteChangedModel();
-
-		if (pView->m_pDlgMenu01)
-			pView->m_pDlgMenu01->UpdateData();
-
-		if (m_pReelMapUp)
-			m_pReelMapUp->ResetReelmapPath();
-
-		if (GetTestMode() == MODE_OUTER)
-		{
-			BOOL bDualTestInner;
-			CString sLot, sLayerUp, sLayerDn, str;
-			if (!pDoc->GetItsSerialInfo(nSerial, bDualTestInner, sLot, sLayerUp, sLayerDn))
-			{
-				str.Format(_T("It is trouble to read GetItsSerialInfo()."));
-				pView->MsgBox(str);
-				return FALSE; // TRUE: CHANGED, FALSE: NO CHANGED 
-			}
-
-			if(m_pReelMapInnerUp)
-				m_pReelMapInnerUp->ResetReelmapPath();
-
-			if (bDualTestInner)
-			{
-				if (m_pReelMapInnerDn)
-					m_pReelMapInnerDn->ResetReelmapPath();
-				if (m_pReelMapInnerAllUp)
-					m_pReelMapInnerAllUp->ResetReelmapPath();
-				if (m_pReelMapInnerAllDn)
-					m_pReelMapInnerAllDn->ResetReelmapPath();
-			}
-		}
-	}
-
-	return FALSE; // TRUE: CHANGED, FALSE: NO CHANGED 
-}
-
-BOOL CGvisR2R_PunchDoc::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return TRUE;
-
-	FILE *fp;
-	char FileD[200];
-	size_t nFileSize, nRSize;
-	char *FileData;
-	CString strFileData;
-	int nTemp;// , i;
-	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
-	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
-		strCellNum, strImageSize, strImageNum, strMarkingCode;
-
-	if (nSerial < 1)
-	{
-		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
-		pView->MsgBox(strFileData);
-		//AfxMessageBox(strFileData);
-		return(FALSE);
-	}
-
-	CString sPath;
-
-#ifdef TEST_MODE
-	sPath = PATH_PCR;	// for Test
-#else
-	// 	if(bFromBuf)
-	sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufDn, nSerial);
-	// 	else
-	// 		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareDn, nSerial);
-#endif
-
-	//strcpy(FileD, sPath);
-	//_tcscpy(FileD, sPath);
-	StringToChar(sPath, FileD);
-
-	if ((fp = fopen(FileD, "r")) != NULL)
-	{
-		fseek(fp, 0, SEEK_END);
-		nFileSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		/* Allocate space for a path name */
-		//FileData = (char*)malloc( nFileSize );
-		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
-
-		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
-		strFileData.Format(_T("%s"), CharToString(FileData));
-		fclose(fp);
-		free(FileData);
-	}
-	else
-	{
-		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), sPath);
-		pView->MsgBox(strFileData);
-		return(FALSE);
-	}
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	nTemp = strFileData.Find(',', 0);
-	strHeaderErrorInfo = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	// 	m_pPcr[nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
-
-	// Model
-	nTemp = strFileData.Find(',', 0);
-	strModel = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	Status.PcrShare[1].sModel = strModel;
-
-	// Layer
-	nTemp = strFileData.Find(',', 0);
-	strLayer = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	Status.PcrShare[1].sLayer = strLayer;
-
-	if (WorkingInfo.System.bUseITS)
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[1].sLot = strLot;
-
-		// Its Code
-		nTemp = strFileData.Find('\n', 0);
-		sItsCode = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[1].sItsCode = sItsCode;
-		//m_pPcr[1][nIdx]->m_sItsCode = sItsCode;
-	}
-	else
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[1].sLot = strLot;
-
-		// Lot
-		nTemp = strFileData.Find('\n', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		Status.PcrShare[1].sLot = strLot;
-	}
-
-	nTemp = strFileData.Find('\n', 0);
-	strTotalBadPieceNum = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-
-	int nTotDef = _tstoi(strTotalBadPieceNum);
-
-
-
-	if (Status.PcrShare[1].sModel.IsEmpty() || Status.PcrShare[1].sLayer.IsEmpty() || Status.PcrShare[1].sLot.IsEmpty())
-	{
-		pView->MsgBox(_T("Error - Aoi Information."));
-		// 		AfxMessageBox(_T("Error - Aoi Information."));
-		return FALSE;
-	}
-
-	BOOL bUpdate = FALSE;
-
-	if (WorkingInfo.LastJob.sLotDn != Status.PcrShare[1].sLot || WorkingInfo.LastJob.sEngItsCode != Status.PcrShare[1].sItsCode)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sLotDn = Status.PcrShare[1].sLot;
-		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = Status.PcrShare[1].sItsCode;
-	}
-
-	if (WorkingInfo.LastJob.sModelDn != Status.PcrShare[1].sModel || WorkingInfo.LastJob.sLayerDn != Status.PcrShare[1].sLayer)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sModelDn = Status.PcrShare[1].sModel;
-		WorkingInfo.LastJob.sLayerDn = Status.PcrShare[1].sLayer;
-
-		if (m_bBufEmptyF[1])
-		{
-			if (!m_bBufEmpty[1])
-				m_bBufEmptyF[1] = FALSE;
-
-			m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
-			if (m_nAoiCamInfoStrPcs[1] > -1)
-			{
-				if ((m_nAoiCamInfoStrPcs[1] == 1 ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
-				{
-					//if (m_nAoiCamInfoStrPcs[1])
-					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
-					//else
-					//	pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n하면 AOI는 일반 모드에서 검사를 진행하였습니다."));
-					return FALSE;
-				}
-			}
-
-			return TRUE;
-		}
-	}
-
-	if (bUpdate)
-	{
-		WriteChangedModel();
-
-		if (pView->m_pDlgMenu01)
-			pView->m_pDlgMenu01->UpdateData();
-
-		if (m_pReelMapDn)
-			m_pReelMapDn->ResetReelmapPath();
-
-		if (m_pReelMapAllUp)
-			m_pReelMapAllUp->ResetReelmapPath();
-
-		if (m_pReelMapAllDn)
-			m_pReelMapAllDn->ResetReelmapPath();
-	}
-
-	return FALSE;
-}
+//void CGvisR2R_PunchDoc::ClrPcr()
+//{
+//	//CString sMsg;
+//
+//	int nIdx, i, k;
+//	for (i = 0; i < MAX_PCR; i++)
+//	{
+//		for (nIdx = 0; nIdx < MAX_PCR_PNL; nIdx++)
+//		{
+//			if (m_pPcr[i][0])
+//			{
+//				m_pPcr[i][nIdx]->m_nIdx = 0;							// m_nIdx : From 0 to nTot.....
+//				m_pPcr[i][nIdx]->m_nSerial = 0;
+//				m_pPcr[i][nIdx]->m_nErrPnl = 0;
+//				m_pPcr[i][nIdx]->m_sModel = _T("");
+//				m_pPcr[i][nIdx]->m_sLayer = _T("");
+//				m_pPcr[i][nIdx]->m_sLot = _T("");
+//
+//				m_pPcr[i][nIdx]->m_nCamId = 0;
+//				m_pPcr[i][nIdx]->m_nTotDef = 0;
+//				m_pPcr[i][nIdx]->m_nTotRealDef = 0;
+//			}
+//
+//			if (m_pPcrInner[i][0])
+//			{
+//				m_pPcrInner[i][nIdx]->m_nIdx = 0;							// m_nIdx : From 0 to nTot.....
+//				m_pPcrInner[i][nIdx]->m_nSerial = 0;
+//				m_pPcrInner[i][nIdx]->m_nErrPnl = 0;
+//				m_pPcrInner[i][nIdx]->m_sModel = _T("");
+//				m_pPcrInner[i][nIdx]->m_sLayer = _T("");
+//				m_pPcrInner[i][nIdx]->m_sLot = _T("");
+//
+//				m_pPcrInner[i][nIdx]->m_nCamId = 0;
+//				m_pPcrInner[i][nIdx]->m_nTotDef = 0;
+//				m_pPcrInner[i][nIdx]->m_nTotRealDef = 0;
+//			}
+//		}
+//	}
+//
+//	for (k = 0; k < MAX_PCR_PNL; k++)
+//	{
+//		if (m_pPcrIts[k])
+//		{
+//			m_pPcrIts[k]->m_nIdx = 0;							// m_nIdx : From 0 to nTot.....
+//			m_pPcrIts[k]->m_nSerial = 0;
+//			m_pPcrIts[k]->m_nErrPnl = 0;
+//			m_pPcrIts[k]->m_sModel = _T("");
+//			m_pPcrIts[k]->m_sLayer = _T("");
+//			m_pPcrIts[k]->m_sLot = _T("");
+//
+//			m_pPcrIts[k]->m_nCamId = 0;
+//			m_pPcrIts[k]->m_nTotDef = 0;
+//			m_pPcrIts[k]->m_nTotRealDef = 0;
+//		}
+//	}
+//}
+
+//BOOL CGvisR2R_PunchDoc::InitReelmap()
+//{
+//	if (!m_Master[0].m_pPcsRgn)
+//	{
+//		CString strMsg;
+//		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
+//		//pView->MsgBox(strMsg);
+//		pView->ClrDispMsg();
+//		AfxMessageBox(strMsg, MB_ICONSTOP);
+//		return FALSE;
+//	}
+//
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//	//if (m_pReelMap)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMap;
+//	//	m_pReelMap = NULL;
+//	//}
+//	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
+//
+//	if (m_pReelMapUp)
+//	{
+//		//m_pReelMapUp->ResetReelmap();
+//		delete m_pReelMapUp;
+//		m_pReelMapUp = NULL;
+//	}
+//	m_pReelMapUp = new CReelMap(RMAP_UP, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapUp->m_nLayer = RMAP_UP;
+//
+//	if (bDualTest)
+//	{
+//		if (m_pReelMapDn)
+//		{
+//			//m_pReelMapDn->ResetReelmap();
+//			delete m_pReelMapDn;
+//			m_pReelMapDn = NULL;
+//		}
+//		m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapDn->m_nLayer = RMAP_DN;
+//
+//		if (m_pReelMapAllUp)
+//		{
+//			//m_pReelMapAllUp->ResetReelmap();
+//			delete m_pReelMapAllUp;
+//			m_pReelMapAllUp = NULL;
+//		}
+//		m_pReelMapAllUp = new CReelMap(RMAP_ALLUP, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
+//
+//		if (m_pReelMapAllDn)
+//		{
+//			//m_pReelMapAllDn->ResetReelmap();
+//			delete m_pReelMapAllDn;
+//			m_pReelMapAllDn = NULL;
+//		}
+//		m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
+//
+//		if(pDoc->GetTestMode() != MODE_OUTER)
+//			m_pReelMap = m_pReelMapAllUp;
+//		else
+//		{
+//			if (m_pReelMapIts)
+//			{
+//				//m_pReelMap->ResetReelmap();
+//				delete m_pReelMapIts;
+//				m_pReelMapIts = NULL;
+//			}
+//			m_pReelMapIts = new CReelMap(RMAP_ITS, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//			m_pReelMap = m_pReelMapIts;
+//		}
+//	}
+//	else
+//	{
+//		if (pDoc->GetTestMode() != MODE_OUTER)
+//			m_pReelMap = m_pReelMapUp;
+//		else
+//		{
+//			if (m_pReelMapIts)
+//				m_pReelMap = m_pReelMapIts;
+//		}
+//	}
+//
+//	if (pMkInfo)
+//	{
+//		delete[] pMkInfo;
+//		pMkInfo = NULL;
+//	}
+//	if (!pMkInfo)
+//		pMkInfo = new CString[nTotPcs];
+//
+//	//CString sPath = m_pReelMap->GetIpPath();
+//	//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+//
+//	if (m_pReelMap)
+//	{
+//		m_pReelMapDisp = m_pReelMap;
+//
+//		if (bDualTest)
+//			pView->m_pDlgMenu01->SelMap(ALL);
+//		else
+//			pView->m_pDlgMenu01->SelMap(UP);
+//	}
+//	return TRUE;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::InitReelmapUp()
+//{
+//	if (!m_Master[0].m_pPcsRgn)
+//	{
+//		CString strMsg;
+//		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
+//		pView->MsgBox(strMsg);
+//		// 		AfxMessageBox(strMsg,MB_ICONSTOP);
+//		return FALSE;
+//	}
+//
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//
+//	//if (m_pReelMap)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMap;
+//	//	m_pReelMap = NULL;
+//	//}
+//	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
+//
+//
+//	//if (m_pReelMap->m_nLayer < 0)
+//	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
+//
+//	if (m_pReelMapUp)
+//	{
+//		//m_pReelMapUp->ResetReelmap();
+//		delete m_pReelMapUp;
+//		m_pReelMapUp = NULL;
+//	}
+//	m_pReelMapUp = new CReelMap(RMAP_UP, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapUp->m_nLayer = RMAP_UP;
+//
+//	if (bDualTest)
+//	{
+//		if (m_pReelMapAllUp)
+//		{
+//			//m_pReelMapAllUp->ResetReelmap();
+//			delete m_pReelMapAllUp;
+//			m_pReelMapAllUp = NULL;
+//		}
+//		m_pReelMapAllUp = new CReelMap(RMAP_ALLUP, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
+//
+//		if (pDoc->GetTestMode() != MODE_OUTER)
+// 			m_pReelMap = m_pReelMapAllUp;
+//		else
+//		{
+//			if (m_pReelMapIts)
+//				m_pReelMap = m_pReelMapIts;
+//		}
+//	}
+//	else
+//	{
+//		if (pDoc->GetTestMode() != MODE_OUTER)
+//			m_pReelMap = m_pReelMapUp;
+//		else
+//		{
+//			if (m_pReelMapIts)
+//				m_pReelMap = m_pReelMapIts;
+//		}
+//	}
+//
+//	if (m_pReelMap->m_nLayer == RMAP_UP || m_pReelMap->m_nLayer == RMAP_ALLUP)
+//	{
+//		//if (m_pReelMap)
+//		//{
+//		//	//m_pReelMap->ResetReelmap();
+//		//	delete m_pReelMap;
+//		//	m_pReelMap = NULL;
+//		//}
+//		//m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
+//
+//		if (pMkInfo)
+//		{
+//			delete[] pMkInfo;
+//			pMkInfo = NULL;
+//		}
+//		if (!pMkInfo)
+//			pMkInfo = new CString[nTotPcs];
+//	}
+//
+//	//CString sPath = m_pReelMap->GetIpPath();
+//	//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+//
+//	if (pView->m_pDlgMenu01)
+//		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_nSelRmap);
+//
+//	return TRUE;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::InitReelmapDn()
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return TRUE;
+//
+//	if (!m_Master[0].m_pPcsRgn)
+//	{
+//		CString strMsg;
+//		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
+//		pView->MsgBox(strMsg);
+//		// 		AfxMessageBox(strMsg,MB_ICONSTOP);
+//		return FALSE;
+//	}
+//
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//
+//	//if (m_pReelMap)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMap;
+//	//	m_pReelMap = NULL;
+//	//}
+//	//m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
+//
+//
+//	//if (m_pReelMap->m_nLayer < 0)
+//	//	m_pReelMap->m_nLayer = pView->m_nSelRmap;
+//
+//	if (m_pReelMapDn)
+//	{
+//		//m_pReelMapDn->ResetReelmap();
+//		delete m_pReelMapDn;
+//		m_pReelMapDn = NULL;
+//	}
+//	m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapDn->m_nLayer = RMAP_DN;
+//
+//	if (m_pReelMapAllDn)
+//	{
+//		//m_pReelMapAllDn->ResetReelmap();
+//		delete m_pReelMapAllDn;
+//		m_pReelMapAllDn = NULL;
+//	}
+//	m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
+//
+//	if (m_pReelMap->m_nLayer == RMAP_DN || m_pReelMap->m_nLayer == RMAP_ALLDN)
+//	{
+//		//if (m_pReelMap)
+//		//{
+//		//	//m_pReelMap->ResetReelmap();
+//		//	delete m_pReelMap;
+//		//	m_pReelMap = NULL;
+//		//}
+//		//m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
+//
+//		if (pMkInfo)
+//		{
+//			delete[] pMkInfo;
+//			pMkInfo = NULL;
+//		}
+//		if (!pMkInfo)
+//			pMkInfo = new CString[nTotPcs];
+//	}
+//
+//	if (pView->m_pDlgMenu01)
+//		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_nSelRmap);
+//
+//	return TRUE;
+//}
+
+//void CGvisR2R_PunchDoc::InitPcr()
+//{
+//	int k, i;
+//	for (i = 0; i < MAX_PCR; i++)
+//	{
+//		for (k = 0; k < MAX_PCR_PNL; k++)
+//		{
+//			if (m_pPcr[i][k])
+//			{
+//				delete m_pPcr[i][k];
+//				m_pPcr[i][k] = NULL;
+//			}
+//
+//			m_pPcr[i][k] = new CDataMarking();
+//
+//			if (m_pPcrInner[i][k])
+//			{
+//				delete m_pPcrInner[i][k];
+//				m_pPcrInner[i][k] = NULL;
+//			}
+//
+//			m_pPcrInner[i][k] = new CDataMarking();
+//		}
+//	}
+//
+//	for (k = 0; k < MAX_PCR_PNL; k++)
+//	{
+//		if (m_pPcrIts[k])
+//		{
+//			delete m_pPcrIts[k];
+//			m_pPcrIts[k] = NULL;
+//		}
+//
+//		m_pPcrIts[k] = new CDataMarking();
+//	}
+//}
+//
+//void CGvisR2R_PunchDoc::SetReelmap(int nDir)
+//{
+//	if (!m_pReelMap || !m_Master[0].m_pPcsRgn)
+//		return;
+//
+//	if (!m_pReelMap->pFrmRgn || !m_pReelMap->pPcsRgn)
+//		return;
+//
+//	int i, k;
+//	double fData1, fData2, fData3, fData4, fDistX, fDistY;
+//	double fWidth, fHeight, fRight, fBottom;
+//
+//	m_pReelMap->nDir = nDir;
+//
+//	int nTotPnl = m_pReelMap->nTotPnl;
+//	int nTotPcs = m_pReelMap->nTotPcs;
+//
+//	// 	double dScale = (MasterInfo.dPixelSize/10.0);
+//	double dScale = (m_Master[0].MasterInfo.dPixelSize / 10.0);
+//	m_pReelMap->SetAdjRatio(dScale);
+//	dScale = m_pReelMap->GetAdjRatio();
+//
+//	for (k = 0; k < nTotPnl; k++)
+//	{
+//		switch (nDir)
+//		{
+//		case ROT_NONE:
+//			fWidth = (m_Master[0].m_pPcsRgn->pPcs[0].right - m_Master[0].m_pPcsRgn->pPcs[0].left);
+//			fHeight = (m_Master[0].m_pPcsRgn->pPcs[0].bottom - m_Master[0].m_pPcsRgn->pPcs[0].top);
+//			fRight = m_Master[0].m_pPcsRgn->rtFrm.right - fWidth * (1.0 - RMAP_PCS_SCALE);
+//			fBottom = m_Master[0].m_pPcsRgn->rtFrm.bottom - fHeight * (1.0 - RMAP_PCS_SCALE);;
+//			m_pReelMap->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.left;
+//			m_pReelMap->pFrmRgn[k].top = m_Master[0].m_pPcsRgn->rtFrm.top;
+//			m_pReelMap->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fRight;
+//			m_pReelMap->pFrmRgn[k].bottom = fBottom;
+//			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
+//			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
+//			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
+//			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
+//			if (m_pReelMapDisp)
+//			{
+//				m_pReelMapDisp->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.left;
+//				m_pReelMapDisp->pFrmRgn[k].top = m_Master[0].m_pPcsRgn->rtFrm.top;
+//				m_pReelMapDisp->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fRight;
+//				m_pReelMapDisp->pFrmRgn[k].bottom = fBottom;
+//			}
+//
+//			for (i = 0; i < nTotPcs; i++)
+//			{
+//				fWidth = (m_Master[0].m_pPcsRgn->pPcs[i].right - m_Master[0].m_pPcsRgn->pPcs[i].left);
+//				fHeight = (m_Master[0].m_pPcsRgn->pPcs[i].bottom - m_Master[0].m_pPcsRgn->pPcs[i].top);
+//				fData1 = m_Master[0].m_pPcsRgn->pPcs[i].left;	// left
+//				fData2 = m_Master[0].m_pPcsRgn->pPcs[i].top;	// top
+//				fData3 = fData1 + fWidth * RMAP_PCS_SCALE; // right
+//				fData4 = fData2 + fHeight * RMAP_PCS_SCALE; // bottom
+//
+//				m_pReelMap->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+//				m_pReelMap->pPcsRgn[k][i].top = fData2;
+//				m_pReelMap->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+//				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
+//
+//				if (m_pReelMapDisp)
+//				{
+//					m_pReelMapDisp->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+//					m_pReelMapDisp->pPcsRgn[k][i].top = fData2;
+//					m_pReelMapDisp->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+//					m_pReelMapDisp->pPcsRgn[k][i].bottom = fData4;
+//				}
+//			}
+//			break;
+//			// 		case ROT_NONE:
+//			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
+//			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
+//			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
+//			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
+//			// 
+//			// 			for(i=0; i<nTotPcs; i++)
+//			// 			{
+//			// 				fData1 = m_pPcsRgn->pPcs[i].left; // left
+//			// 				fData2 = m_pPcsRgn->pPcs[i].top; // top
+//			// 				fData3 = m_pPcsRgn->pPcs[i].right; // right
+//			// 				fData4 = m_pPcsRgn->pPcs[i].bottom; // bottom
+//			// 
+//			// 				m_pReelMap->pPcsRgn[k][i].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData1;
+//			// 				m_pReelMap->pPcsRgn[k][i].top = fData2;
+//			// 				m_pReelMap->pPcsRgn[k][i].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData3;
+//			// 				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
+//			// 			}
+//			// 			break;
+//		case ROT_CCW_90: // right->bottom, top->left, bottom->right, left->top ; Dir (x *= 1, y *= -1) 
+//			fDistX = 0;
+//			fDistY = m_Master[0].m_pPcsRgn->rtFrm.left + m_Master[0].m_pPcsRgn->rtFrm.right;
+//			m_pReelMap->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.top;
+//			m_pReelMap->pFrmRgn[k].top = fDistY - m_Master[0].m_pPcsRgn->rtFrm.right;
+//			m_pReelMap->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.bottom;
+//			m_pReelMap->pFrmRgn[k].bottom = fDistY - m_Master[0].m_pPcsRgn->rtFrm.left;
+//
+//			if (m_pReelMapDisp)
+//			{
+//				m_pReelMapDisp->pFrmRgn[k].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.top;
+//				m_pReelMapDisp->pFrmRgn[k].top = fDistY - m_Master[0].m_pPcsRgn->rtFrm.right;
+//				m_pReelMapDisp->pFrmRgn[k].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_Master[0].m_pPcsRgn->rtFrm.bottom;
+//				m_pReelMapDisp->pFrmRgn[k].bottom = fDistY - m_Master[0].m_pPcsRgn->rtFrm.left;
+//			}
+//
+//			for (i = 0; i < nTotPcs; i++)
+//			{
+//				fData1 = m_Master[0].m_pPcsRgn->pPcs[i].top;	// left
+//				fData2 = fDistY - m_Master[0].m_pPcsRgn->pPcs[i].right;	// top
+//				fData3 = m_Master[0].m_pPcsRgn->pPcs[i].bottom;	// right
+//				fData4 = fDistY - m_Master[0].m_pPcsRgn->pPcs[i].left; // bottom
+//
+//				m_pReelMap->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+//				m_pReelMap->pPcsRgn[k][i].top = fData2;
+//				m_pReelMap->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+//				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
+//
+//				if (m_pReelMapDisp)
+//				{
+//					m_pReelMapDisp->pPcsRgn[k][i].left = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+//					m_pReelMapDisp->pPcsRgn[k][i].top = fData2;
+//					m_pReelMapDisp->pPcsRgn[k][i].right = (m_Master[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+//					m_pReelMapDisp->pPcsRgn[k][i].bottom = fData4;
+//				}
+//			}
+//			break;
+//		}
+//	}
+//}
+//
+//CString CGvisR2R_PunchDoc::GetCamPxlRes()
+//{
+//	CString sRes = _T("");
+//	CString sPath;
+//#ifdef TEST_MODE
+//	sPath = PATH_PIN_IMG_;
+//#else
+//	if (pDoc->WorkingInfo.System.sPathCamSpecDir.Right(1) != "\\")
+//		sPath.Format(_T("%s\\%s\\%s.mst"), pDoc->WorkingInfo.System.sPathCamSpecDir, pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerUp);
+//	else
+//		sPath.Format(_T("%s%s\\%s.mst"), pDoc->WorkingInfo.System.sPathCamSpecDir, pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerUp);
+//#endif
+//
+//	int nPos = sPath.ReverseFind('-');
+//	if (nPos > 0)
+//	{
+//		sRes = sPath.Right(sPath.GetLength() - (nPos + 1));
+//		nPos = sRes.ReverseFind('.');
+//		if (nPos > 0)
+//			sRes = sRes.Left(nPos);
+//		WorkingInfo.Vision[0].sCamPxlRes = sRes;
+//		WorkingInfo.Vision[1].sCamPxlRes = sRes;
+//	}
+//	return sRes;
+//}
+//
+//int CGvisR2R_PunchDoc::GetPcrIdx(int nSerial, BOOL bNewLot)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.8"));
+//		return 0;
+//	}
+//
+//	int nIdx = -1;
+//	// 	if(!bNewLot)
+//	// 		nIdx = (nSerial-1)%MAX_PCR_PNL;
+//	// 	else // New Lot...
+//	// 		nIdx = (m_nLotLastShot + nSerial - 1)%MAX_PCR_PNL;
+//
+//	return nIdx;
+//}
+//
+//int CGvisR2R_PunchDoc::GetPcrIdx0(int nSerial, BOOL bNewLot)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.9"));
+//		return 0;
+//	}
+//
+//	int nIdx;
+//
+//	if (!bNewLot)
+//	{
+//		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
+//		{
+//			if (!m_bDoneChgLot && nSerial <= m_nLotLastShot)
+//				nIdx = (nSerial - 1) % MAX_PCR_PNL;
+//			else // New Lot...
+//				nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
+//		}
+//		else
+//		{
+//			nIdx = (nSerial - 1) % MAX_PCR_PNL;
+//		}
+//	}
+//	else
+//	{
+//		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
+//			nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
+//		else
+//			nIdx = (nSerial - 1) % MAX_PCR_PNL;
+//	}
+//	return nIdx;
+//}
+//
+//int CGvisR2R_PunchDoc::GetPcrIdx1(int nSerial, BOOL bNewLot)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.10"));
+//		return 0;
+//	}
+//
+//	int nIdx;
+//
+//	if (!bNewLot)
+//	{
+//		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
+//		{
+//			if (!m_bDoneChgLot && nSerial <= m_nLotLastShot)
+//				nIdx = (nSerial - 1) % MAX_PCR_PNL;
+//			else // New Lot...
+//				nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
+//		}
+//		else
+//		{
+//			nIdx = (nSerial - 1) % MAX_PCR_PNL;
+//		}
+//	}
+//	else
+//	{
+//		if (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot)
+//			nIdx = (m_nLotLastShot + nSerial - 1) % MAX_PCR_PNL;
+//		else
+//			nIdx = (nSerial - 1) % MAX_PCR_PNL;
+//	}
+//	return nIdx;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::GetAoiUpInfo(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.11"));
+//		return 0;
+//	}
+//
+//	BOOL Info0;//, Info1;
+//	Info0 = GetAoiInfoUp(nSerial, pNewLot, bFromBuf);
+//
+//	if (Info0)
+//		return TRUE;
+//
+//	// 	double dCurPosMkFd = (double)m_pMpeData[0][0];	// 마킹부 Feeding 엔코더 값(단위 mm )
+//	// 	double dTgtFd = _tstof(WorkingInfo.Motion.sFdAoiAoiDistShot) * _tstof(WorkingInfo.Motion.sAoiFdDist);
+//	// 	if(dCurPosMkFd < dTgtFd-_tstof(WorkingInfo.Motion.sAoiFdDist) + 10.0)
+//	// 	{
+//	// 		if(Info0)
+//	// 			return TRUE;
+//	// 	}
+//	// 	else
+//	// 	{
+//	// 		Info1 = GetAoiInfoDn(nSerial);
+//	// 		if(Info0 && Info1)
+//	// 			return TRUE;
+//	// 	}
+//
+//	return FALSE;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::GetAoiDnInfo(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.12"));
+//		return 0;
+//	}
+//
+//	BOOL Info1;//Info0, 
+//			   // 	Info0 = GetAoiInfoUp(nSerial);
+//
+//			   // 	double dCurPosMkFd = (double)m_pMpeData[0][0];	// 마킹부 Feeding 엔코더 값(단위 mm )
+//			   // 	double dTgtFd = _tstof(WorkingInfo.Motion.sFdAoiAoiDistShot) * _tstof(WorkingInfo.Motion.sAoiFdDist);
+//			   // 	if(dCurPosMkFd < dTgtFd-_tstof(WorkingInfo.Motion.sAoiFdDist) + 10.0)
+//			   // 		return FALSE;
+//			   // 	else
+//	{
+//		Info1 = GetAoiInfoDn(nSerial, pNewLot, bFromBuf);
+//		if (Info1)
+//			return TRUE;
+//	}
+//
+//	return FALSE;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
+//{
+//
+//	FILE *fp;
+//	char FileD[200];
+//	size_t nFileSize, nRSize;
+//	char *FileData;
+//	CString strFileData;
+//	int nTemp;// , i;
+//	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
+//	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
+//		strCellNum, strImageSize, strImageNum, strMarkingCode;
+//
+//	if (nSerial < 1)
+//	{
+//		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
+//		pView->MsgBox(strFileData);
+//		// 		AfxMessageBox(strFileData);
+//		return(FALSE);
+//	}
+//
+//	CString sPath;
+//
+//#ifdef TEST_MODE
+//	sPath = PATH_PCR;	// for Test
+//#else
+//	//	if(bFromBuf)
+//	sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufUp, nSerial);
+//	// 	else
+//	// 		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareUp, nSerial);
+//#endif
+//
+//	//strcpy(FileD, sPath);
+//	//_tcscpy(FileD, sPath);
+//	StringToChar(sPath, FileD);
+//
+//	if ((fp = fopen(FileD, "r")) != NULL)
+//	{
+//		fseek(fp, 0, SEEK_END);
+//		nFileSize = ftell(fp);
+//		fseek(fp, 0, SEEK_SET);
+//
+//		/* Allocate space for a path name */
+//		//FileData = (char*)malloc( nFileSize );
+//		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
+//
+//		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
+//		//strFileData.Format(_T("%s"), CharToString(FileData));
+//		strFileData = CharToString(FileData);
+//		fclose(fp);
+//		free(FileData);
+//	}
+//	else
+//	{
+//		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), sPath);
+//		pView->MsgBox(strFileData);
+//		return(FALSE);
+//	}
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	nTemp = strFileData.Find(',', 0);
+//	strHeaderErrorInfo = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	// 	m_pPcr[nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
+//
+//	// Model
+//	nTemp = strFileData.Find(',', 0);
+//	strModel = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	Status.PcrShare[0].sModel = strModel;
+//
+//	// Layer
+//	nTemp = strFileData.Find(',', 0);
+//	strLayer = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	Status.PcrShare[0].sLayer = strLayer;
+//
+//	if (WorkingInfo.System.bUseITS)
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[0].sLot = strLot;
+//
+//		// Its Code
+//		nTemp = strFileData.Find('\n', 0);
+//		sItsCode = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[0].sItsCode = sItsCode;
+//		//m_pPcr[0][nIdx]->m_sItsCode = sItsCode;
+//	}
+//	else
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[0].sLot = strLot;
+//
+//		// Lot
+//		nTemp = strFileData.Find('\n', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[0].sLot = strLot;
+//	}
+//
+//	nTemp = strFileData.Find('\n', 0);
+//	strTotalBadPieceNum = strFileData.Left(nTemp);;
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//
+//	int nTotDef = _tstoi(strTotalBadPieceNum);
+//
+//
+//
+//	if (Status.PcrShare[0].sModel.IsEmpty() || Status.PcrShare[0].sLayer.IsEmpty() || Status.PcrShare[0].sLot.IsEmpty())
+//	{
+//		pView->MsgBox(_T("Error - Aoi Information."));
+//		// 		AfxMessageBox(_T("Error - Aoi Information."));
+//		return FALSE;
+//	}
+//
+//	BOOL bUpdate = FALSE;
+//
+//	if (WorkingInfo.LastJob.sLotUp != Status.PcrShare[0].sLot || WorkingInfo.LastJob.sEngItsCode != Status.PcrShare[0].sItsCode)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sLotUp = Status.PcrShare[0].sLot;
+//		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = Status.PcrShare[0].sItsCode;
+//	}
+//
+//	if (WorkingInfo.LastJob.sModelUp != Status.PcrShare[0].sModel || WorkingInfo.LastJob.sLayerUp != Status.PcrShare[0].sLayer || pView->m_bInitAutoLoadMstInfo)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sModelUp = Status.PcrShare[0].sModel;
+//		WorkingInfo.LastJob.sLayerUp = Status.PcrShare[0].sLayer;
+//
+//		if (m_bBufEmptyF[0])
+//		{
+//			if (!m_bBufEmpty[0])
+//				m_bBufEmptyF[0] = FALSE;
+//
+//			m_nAoiCamInfoStrPcs[0] = GetAoiUpCamMstInfo();
+//			if (m_nAoiCamInfoStrPcs[0] > -1)
+//			{
+//				if ((m_nAoiCamInfoStrPcs[0] == 1 ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
+//				{
+//					//if(m_nAoiCamInfoStrPcs[0])
+//					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+//					//else
+//					//	pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n상면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+//					return FALSE;
+//				}
+//			}
+//
+//			pView->m_bInitAutoLoadMstInfo = FALSE;
+//			return TRUE;
+//		}
+//
+//		if (pView->m_bInitAutoLoadMstInfo)
+//		{
+//			pView->m_bInitAutoLoadMstInfo = FALSE;
+//			return TRUE;
+//		}
+//	}
+//
+//	if (bUpdate)
+//	{
+//		WriteChangedModel();
+//
+//		if (pView->m_pDlgMenu01)
+//			pView->m_pDlgMenu01->UpdateData();
+//
+//		if (m_pReelMapUp)
+//			m_pReelMapUp->ResetReelmapPath();
+//
+//		if (GetTestMode() == MODE_OUTER)
+//		{
+//			BOOL bDualTestInner;
+//			CString sLot, sLayerUp, sLayerDn, str;
+//			if (!pDoc->GetItsSerialInfo(nSerial, bDualTestInner, sLot, sLayerUp, sLayerDn))
+//			{
+//				str.Format(_T("It is trouble to read GetItsSerialInfo()."));
+//				pView->MsgBox(str);
+//				return FALSE; // TRUE: CHANGED, FALSE: NO CHANGED 
+//			}
+//
+//			if(m_pReelMapInnerUp)
+//				m_pReelMapInnerUp->ResetReelmapPath();
+//
+//			if (bDualTestInner)
+//			{
+//				if (m_pReelMapInnerDn)
+//					m_pReelMapInnerDn->ResetReelmapPath();
+//				if (m_pReelMapInnerAllUp)
+//					m_pReelMapInnerAllUp->ResetReelmapPath();
+//				if (m_pReelMapInnerAllDn)
+//					m_pReelMapInnerAllDn->ResetReelmapPath();
+//			}
+//		}
+//	}
+//
+//	return FALSE; // TRUE: CHANGED, FALSE: NO CHANGED 
+//}
+//
+//BOOL CGvisR2R_PunchDoc::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) // TRUE: CHANGED, FALSE: NO CHANGED 
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return TRUE;
+//
+//	FILE *fp;
+//	char FileD[200];
+//	size_t nFileSize, nRSize;
+//	char *FileData;
+//	CString strFileData;
+//	int nTemp;// , i;
+//	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
+//	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
+//		strCellNum, strImageSize, strImageNum, strMarkingCode;
+//
+//	if (nSerial < 1)
+//	{
+//		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
+//		pView->MsgBox(strFileData);
+//		//AfxMessageBox(strFileData);
+//		return(FALSE);
+//	}
+//
+//	CString sPath;
+//
+//#ifdef TEST_MODE
+//	sPath = PATH_PCR;	// for Test
+//#else
+//	// 	if(bFromBuf)
+//	sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufDn, nSerial);
+//	// 	else
+//	// 		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareDn, nSerial);
+//#endif
+//
+//	//strcpy(FileD, sPath);
+//	//_tcscpy(FileD, sPath);
+//	StringToChar(sPath, FileD);
+//
+//	if ((fp = fopen(FileD, "r")) != NULL)
+//	{
+//		fseek(fp, 0, SEEK_END);
+//		nFileSize = ftell(fp);
+//		fseek(fp, 0, SEEK_SET);
+//
+//		/* Allocate space for a path name */
+//		//FileData = (char*)malloc( nFileSize );
+//		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
+//
+//		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
+//		strFileData.Format(_T("%s"), CharToString(FileData));
+//		fclose(fp);
+//		free(FileData);
+//	}
+//	else
+//	{
+//		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), sPath);
+//		pView->MsgBox(strFileData);
+//		return(FALSE);
+//	}
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	nTemp = strFileData.Find(',', 0);
+//	strHeaderErrorInfo = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	// 	m_pPcr[nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
+//
+//	// Model
+//	nTemp = strFileData.Find(',', 0);
+//	strModel = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	Status.PcrShare[1].sModel = strModel;
+//
+//	// Layer
+//	nTemp = strFileData.Find(',', 0);
+//	strLayer = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	Status.PcrShare[1].sLayer = strLayer;
+//
+//	if (WorkingInfo.System.bUseITS)
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[1].sLot = strLot;
+//
+//		// Its Code
+//		nTemp = strFileData.Find('\n', 0);
+//		sItsCode = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[1].sItsCode = sItsCode;
+//		//m_pPcr[1][nIdx]->m_sItsCode = sItsCode;
+//	}
+//	else
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[1].sLot = strLot;
+//
+//		// Lot
+//		nTemp = strFileData.Find('\n', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		Status.PcrShare[1].sLot = strLot;
+//	}
+//
+//	nTemp = strFileData.Find('\n', 0);
+//	strTotalBadPieceNum = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//
+//	int nTotDef = _tstoi(strTotalBadPieceNum);
+//
+//
+//
+//	if (Status.PcrShare[1].sModel.IsEmpty() || Status.PcrShare[1].sLayer.IsEmpty() || Status.PcrShare[1].sLot.IsEmpty())
+//	{
+//		pView->MsgBox(_T("Error - Aoi Information."));
+//		// 		AfxMessageBox(_T("Error - Aoi Information."));
+//		return FALSE;
+//	}
+//
+//	BOOL bUpdate = FALSE;
+//
+//	if (WorkingInfo.LastJob.sLotDn != Status.PcrShare[1].sLot || WorkingInfo.LastJob.sEngItsCode != Status.PcrShare[1].sItsCode)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sLotDn = Status.PcrShare[1].sLot;
+//		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = Status.PcrShare[1].sItsCode;
+//	}
+//
+//	if (WorkingInfo.LastJob.sModelDn != Status.PcrShare[1].sModel || WorkingInfo.LastJob.sLayerDn != Status.PcrShare[1].sLayer)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sModelDn = Status.PcrShare[1].sModel;
+//		WorkingInfo.LastJob.sLayerDn = Status.PcrShare[1].sLayer;
+//
+//		if (m_bBufEmptyF[1])
+//		{
+//			if (!m_bBufEmpty[1])
+//				m_bBufEmptyF[1] = FALSE;
+//
+//			m_nAoiCamInfoStrPcs[1] = GetAoiDnCamMstInfo();
+//			if (m_nAoiCamInfoStrPcs[1] > -1)
+//			{
+//				if ((m_nAoiCamInfoStrPcs[1] == 1 ? TRUE : FALSE) != WorkingInfo.System.bStripPcsRgnBin)
+//				{
+//					//if (m_nAoiCamInfoStrPcs[1])
+//					//	pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
+//					//else
+//					//	pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n하면 AOI는 일반 모드에서 검사를 진행하였습니다."));
+//					return FALSE;
+//				}
+//			}
+//
+//			return TRUE;
+//		}
+//	}
+//
+//	if (bUpdate)
+//	{
+//		WriteChangedModel();
+//
+//		if (pView->m_pDlgMenu01)
+//			pView->m_pDlgMenu01->UpdateData();
+//
+//		if (m_pReelMapDn)
+//			m_pReelMapDn->ResetReelmapPath();
+//
+//		if (m_pReelMapAllUp)
+//			m_pReelMapAllUp->ResetReelmapPath();
+//
+//		if (m_pReelMapAllDn)
+//			m_pReelMapAllDn->ResetReelmapPath();
+//	}
+//
+//	return FALSE;
+//}
 
 //int CGvisR2R_PunchDoc::LoadPCR(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
 //{
@@ -5220,1840 +5149,1840 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) /
 //	return (1); // 1(정상)
 //}
 
-int CGvisR2R_PunchDoc::LoadPCR0(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-{
-	BOOL bDualTest = WorkingInfo.LastJob.bDualTest;
-
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.14"));
-		return 0;
-	}
-
-	int nRtn[2] = { 1 };
-	nRtn[0] = LoadPCRUp(nSerial, bFromShare);
-	//nRtn[1] = LoadPCRAllUp(nSerial, bFromShare);
-
-	if (nRtn[0] != 1)
-		return nRtn[0];
-	//if (nRtn[1] != 1)
-	//	return nRtn[1];
-
-	if (GetTestMode() == MODE_OUTER)
-	{
-		int nRtnInner[5] = { 1 };
-		nRtnInner[0] = LoadPCRUpInner(nSerial, bFromShare);
-		nRtnInner[1] = LoadPCRDnInner(nSerial, bFromShare);
-		nRtnInner[2] = LoadPCRAllUpInner(nSerial, bFromShare);
-		nRtnInner[3] = LoadPCRAllDnInner(nSerial, bFromShare);
-
-		if (nRtnInner[0] != 1)
-			return nRtnInner[0];
-		if (nRtnInner[1] != 1)
-			return nRtnInner[1];
-		if (nRtnInner[2] != 1)
-			return nRtnInner[2];
-		if (nRtnInner[3] != 1)
-			return nRtnInner[3];
-
-		if (!bDualTest)
-		{
-			nRtnInner[4] = LoadPCRIts(nSerial, bFromShare);
-			if (nRtnInner[4] != 1)
-				return nRtnInner[4];
-		}
-	}
-
-	return (1); // 1(정상)
-}
-
-int CGvisR2R_PunchDoc::LoadPCR1(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.15"));
-		return 0;
-	}
-
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 0;
-
-	int nRtn[4] = { 1 };
-	nRtn[0] = LoadPCRDn(nSerial, bFromShare);
-	nRtn[1] = LoadPCRAllDn(nSerial, bFromShare);
-	nRtn[2] = LoadPCRAllUp(nSerial, bFromShare);
-
-	if (nRtn[0] != 1)
-		return nRtn[0];
-	if (nRtn[1] != 1)
-		return nRtn[1];
-	if (nRtn[2] != 1)
-		return nRtn[2];
-
-	if (GetTestMode() == MODE_OUTER)
-	{
-		nRtn[3] = LoadPCRIts(nSerial, bFromShare);
-		if (nRtn[3] != 1)
-			return nRtn[3];
-	}
-
-	return (1); // 1(정상)
-}
-
-int CGvisR2R_PunchDoc::LoadPCRAllUp(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-{
-#ifdef TEST_MODE
-	return 0;
-#endif
-
-	BOOL bDualTest = WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 0;
-
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.16"));
-		return 0;
-	}
-
-	int i, idx;//, k
-	CString str;
-
-	if (nSerial < 0)
-	{
-		str.Format(_T("PCR파일이 설정되지 않았습니다."));
-		pView->MsgBox(str);
-		//AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	if (!m_pPcr[2])
-	{
-		str.Format(_T("PCR[2]관련 메모리가 할당되지 않았습니다."));
-		pView->MsgBox(str);
-		//AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	int nIdx;
-	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
-		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
-	else
-		nIdx = GetPcrIdx0(nSerial);
-
-	if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
-		return(2);
-	if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
-		return(2);
-
-	m_pPcr[2][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
-	m_pPcr[2][nIdx]->m_nSerial = nSerial;
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	if (m_pPcr[0][nIdx]->m_nErrPnl < 0)
-		m_pPcr[2][nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
-	else if (m_pPcr[1][nIdx]->m_nErrPnl < 0)
-		m_pPcr[2][nIdx]->m_nErrPnl = m_pPcr[1][nIdx]->m_nErrPnl;
-	else
-		m_pPcr[2][nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
-
-	// Model
-	m_pPcr[2][nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
-
-	// Layer
-	m_pPcr[2][nIdx]->m_sLayer = m_pPcr[0][nIdx]->m_sLayer;
-
-	// Lot
-	m_pPcr[2][nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
-
-	int nTotDef[3] = { 0 };									// [0]: 상면, [1]: 하면, [2]: 상/하면 Merge
-	nTotDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef;			// 상면 불량 피스 수
-	nTotDef[1] = pDoc->m_pPcr[1][nIdx]->m_nTotDef;			// 하면 불량 피스 수
-
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
-
-	int nPcsId;												// nPcsId : CamMaster Pcs Index
-															//pPcrMgr테이블의 nIdx에 하면의 불량을 먼저 기록하고 상면의 불량을 엎어서 최종 merge불량 테이블을 만듬.
-	for (i = 0; i < nTotDef[1]; i++)						// 하면 불량 피스 수
-	{
-		nPcsId = m_pPcr[1][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// Up+Dn				// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxDn = i; // Dn					// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
-	}
-	for (i = 0; i < nTotDef[0]; i++)						// 상면 불량 피스 수
-	{
-		nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// Up+Dn				// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxUp = i;	// Up					// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
-	}
-
-
-	nTotDef[2] = 0;
-	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
-	{
-		if (pPcrMgr[i].nIdx > -1)	// Up+Dn				// 상하면 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-			nTotDef[2]++;									// 상 / 하면 Merge한 총 불량피스수.
-	}
-
-	m_pPcr[2][nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
-
-	int nId[2], Ord; // [0]: 상면 0~불량피스순서, [1]: 하면 0~불량피스순서
-	idx = 0; // 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
-	if (nTotDef[2] > 0) // 상 / 하면 Merge한 총 불량피스수.
-	{
-		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
-		{
-			nId[0] = pPcrMgr[nPcsId].nIdxUp; // 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 상면에서의 PCR파일순서 인덱스
-			nId[1] = pPcrMgr[nPcsId].nIdxDn; // 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 하면에서의 PCR파일순서 인덱스
-
-			if (nId[0] > -1)
-			{
-				Ord = nId[0];
-				// Cam ID
-				m_pPcr[2][nIdx]->m_nCamId = m_pPcr[0][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcr[2][nIdx]->m_pDefPcs[idx] = m_pPcr[0][nIdx]->m_pDefPcs[Ord];
-				m_pPcr[2][nIdx]->m_pLayer[idx] = m_pPcr[0][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcr[2][nIdx]->m_pDefPos[idx].x = m_pPcr[0][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcr[2][nIdx]->m_pDefPos[idx].y = m_pPcr[0][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcr[2][nIdx]->m_pDefType[idx] = m_pPcr[0][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcr[2][nIdx]->m_pCell[idx] = m_pPcr[0][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcr[2][nIdx]->m_pImgSz[idx] = m_pPcr[0][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcr[2][nIdx]->m_pImg[idx] = m_pPcr[0][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcr[2][nIdx]->m_pMk[idx] = m_pPcr[0][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-			else if (nId[1] > -1)
-			{
-				Ord = nId[1];
-				// Cam ID
-				m_pPcr[2][nIdx]->m_nCamId = m_pPcr[1][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcr[2][nIdx]->m_pDefPcs[idx] = m_pPcr[1][nIdx]->m_pDefPcs[Ord];
-				m_pPcr[2][nIdx]->m_pLayer[idx] = m_pPcr[1][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcr[2][nIdx]->m_pDefPos[idx].x = m_pPcr[1][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcr[2][nIdx]->m_pDefPos[idx].y = m_pPcr[1][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcr[2][nIdx]->m_pDefType[idx] = m_pPcr[1][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcr[2][nIdx]->m_pCell[idx] = m_pPcr[1][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcr[2][nIdx]->m_pImgSz[idx] = m_pPcr[1][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcr[2][nIdx]->m_pImg[idx] = m_pPcr[1][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcr[2][nIdx]->m_pMk[idx] = m_pPcr[1][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-		}
-	}
-
-	delete[] pPcrMgr;
-
-	return (1); // 1(정상)
-}
-
-int CGvisR2R_PunchDoc::LoadPCRAllDn(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 1;
-
-	int i, idx;//k, 
-	CString str;
-
-	if (nSerial <= 0)
-	{
-		str.Format(_T("PCR파일이 설정되지 않았습니다."));
-		pView->MsgBox(str);
-		// 		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	if (!m_pPcr[3])
-	{
-		str.Format(_T("PCR[3]관련 메모리가 할당되지 않았습니다."));
-		pView->MsgBox(str);
-		// 		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	int nIdx;
-	if (m_bNewLotShare[1] && (pDoc->WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
-		nIdx = GetPcrIdx1(nSerial, TRUE);
-	else
-		nIdx = GetPcrIdx1(nSerial);
-
-	if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[3])
-		return(2);
-	if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[3][nIdx])
-		return(2);
-
-	m_pPcr[3][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
-	m_pPcr[3][nIdx]->m_nSerial = nSerial;
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	if (m_pPcr[1][nIdx]->m_nErrPnl < 0)
-		m_pPcr[3][nIdx]->m_nErrPnl = m_pPcr[1][nIdx]->m_nErrPnl;
-	else if (m_pPcr[0][nIdx]->m_nErrPnl < 0)
-		m_pPcr[3][nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
-	else
-		m_pPcr[3][nIdx]->m_nErrPnl = m_pPcr[1][nIdx]->m_nErrPnl;
-
-	// Model
-	m_pPcr[3][nIdx]->m_sModel = m_pPcr[1][nIdx]->m_sModel;
-
-	// Layer
-	m_pPcr[3][nIdx]->m_sLayer = m_pPcr[1][nIdx]->m_sLayer;
-
-	// Lot
-	m_pPcr[3][nIdx]->m_sLot = m_pPcr[1][nIdx]->m_sLot;
-
-	int nTotDef[3];
-	nTotDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef;
-	nTotDef[1] = pDoc->m_pPcr[1][nIdx]->m_nTotDef;
-	//	nTotDef[2] = nTotDef[0] + nTotDef[1];
-
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
-
-	int nComp, nPcsId;
-	if (nTotDef[0] > nTotDef[1])
-		nComp = nTotDef[0];
-	else
-		nComp = nTotDef[1];
-
-	// 	for(i=0; i<nComp; i++)
-	// 	{
-	// 		if(i<nTotDef[0])
-	// 		{
-	// 			nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];
-	// 			pPcrMgr[nPcsId].nIdx = i;
-	// 			pPcrMgr[nPcsId].nIdxUp = i;	// Up
-	// 		}
-	// 		if(i<nTotDef[1])
-	// 		{
-	// 			nPcsId = m_pPcr[1][nIdx]->m_pDefPcs[i];
-	// 			pPcrMgr[nPcsId].nIdx = i;
-	// 			pPcrMgr[nPcsId].nIdxDn = i; // Dn
-	// 		}
-	// 	}
-	for (i = 0; i < nTotDef[0]; i++)
-	{
-		nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];
-		pPcrMgr[nPcsId].nIdx = i;
-		pPcrMgr[nPcsId].nIdxUp = i;	// Up
-	}
-	for (i = 0; i < nTotDef[1]; i++)
-	{
-		nPcsId = m_pPcr[1][nIdx]->m_pDefPcs[i];
-		pPcrMgr[nPcsId].nIdx = i;
-		pPcrMgr[nPcsId].nIdxDn = i; // Dn
-	}
-
-	nTotDef[2] = 0;
-	for (i = 0; i < nTotPcs; i++)
-	{
-		if (pPcrMgr[i].nIdx > -1)
-			nTotDef[2]++;
-	}
-
-	m_pPcr[3][nIdx]->Init(nSerial, nTotDef[2]);
-
-	int nId[2], Ord;
-	idx = 0;
-	if (nTotDef[2] > 0)
-	{
-		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
-		{
-			nId[0] = pPcrMgr[nPcsId].nIdxUp;
-			nId[1] = pPcrMgr[nPcsId].nIdxDn;
-
-			if (nId[1] > -1)
-			{
-				Ord = nId[1];
-				// Cam ID
-				m_pPcr[3][nIdx]->m_nCamId = m_pPcr[1][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcr[3][nIdx]->m_pDefPcs[idx] = m_pPcr[1][nIdx]->m_pDefPcs[Ord];
-				m_pPcr[3][nIdx]->m_pLayer[idx] = m_pPcr[1][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcr[3][nIdx]->m_pDefPos[idx].x = m_pPcr[1][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcr[3][nIdx]->m_pDefPos[idx].y = m_pPcr[1][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcr[3][nIdx]->m_pDefType[idx] = m_pPcr[1][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcr[3][nIdx]->m_pCell[idx] = m_pPcr[1][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcr[3][nIdx]->m_pImgSz[idx] = m_pPcr[1][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcr[3][nIdx]->m_pImg[idx] = m_pPcr[1][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcr[3][nIdx]->m_pMk[idx] = m_pPcr[1][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-			else if (nId[0] > -1)
-			{
-				Ord = nId[0];
-				// Cam ID
-				m_pPcr[3][nIdx]->m_nCamId = m_pPcr[0][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcr[3][nIdx]->m_pDefPcs[idx] = m_pPcr[0][nIdx]->m_pDefPcs[Ord];
-				m_pPcr[3][nIdx]->m_pLayer[idx] = m_pPcr[0][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcr[3][nIdx]->m_pDefPos[idx].x = m_pPcr[0][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcr[3][nIdx]->m_pDefPos[idx].y = m_pPcr[0][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcr[3][nIdx]->m_pDefType[idx] = m_pPcr[0][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcr[3][nIdx]->m_pCell[idx] = m_pPcr[0][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcr[3][nIdx]->m_pImgSz[idx] = m_pPcr[0][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcr[3][nIdx]->m_pImg[idx] = m_pPcr[0][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcr[3][nIdx]->m_pMk[idx] = m_pPcr[0][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-		}
-	}
-
-	delete[] pPcrMgr;
-
-	return (1); // 1(정상)
-}
-
-int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-{
-	FILE *fp;
-	char FileD[200];
-	size_t nFileSize, nRSize;
-	char *FileData;
-	CString strFileData;
-	int nTemp, i, nC, nR;
-	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
-	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
-		strCellNum, strImageSize, strImageNum, strMarkingCode;
-
-	if (nSerial <= 0)
-	{
-		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
-		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	if (!m_pPcr[0])
-	{
-		strFileData.Format(_T("PCR[0]관련 메모리가 할당되지 않았습니다."));
-		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	int nIdx;
-	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
-		nIdx = GetPcrIdx0(nSerial, TRUE);
-	else
-		nIdx = GetPcrIdx0(nSerial);
-
-	CString sPath;
-
-#ifdef TEST_MODE
-	sPath = PATH_PCR;	// for Test
-#else
-	if (bFromShare)
-		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareUp, nSerial);
-	else
-		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufUp, nSerial);
-#endif
-
-	//strcpy(FileD, sPath);
-	//_tcscpy(FileD, sPath);
-	StringToChar(sPath, FileD);
-
-	if ((fp = fopen(FileD, "r")) != NULL)
-	{
-		fseek(fp, 0, SEEK_END);
-		nFileSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		/* Allocate space for a path name */
-		//FileData = (char*)malloc( nFileSize );
-		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
-
-		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
-		//strFileData.Format(_T("%s"), CharToString(FileData));
-		strFileData = CharToString(FileData);
-		fclose(fp);
-		free(FileData);
-	}
-	else
-	{
-		strFileData.Format(_T("PCR[Up] 파일이 존재하지 않습니다.\r\n%s"), sPath);
-		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	if (!m_pPcr[0])
-		return(2);
-	if (!m_pPcr[0][nIdx])
-		return(2);
-
-	BOOL bResetMkInfo = FALSE;
-
-	m_pPcr[0][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
-	m_pPcr[0][nIdx]->m_nSerial = nSerial;
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	nTemp = strFileData.Find(',', 0);
-	strHeaderErrorInfo = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	m_pPcr[0][nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
-
-	if (m_pPcrInner[1][nIdx]->m_nErrPnl == -1)
-	{
-		int syd = 1;
-	}
-
-	// Model
-	nTemp = strFileData.Find(',', 0);
-	strModel = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	m_pPcr[0][nIdx]->m_sModel = strModel;
-
-	// Layer
-	nTemp = strFileData.Find(',', 0);
-	strLayer = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	m_pPcr[0][nIdx]->m_sLayer = strLayer;
-
-	if (WorkingInfo.System.bUseITS)
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[0][nIdx]->m_sLot = strLot;
-
-		// Its Code
-		nTemp = strFileData.Find('\n', 0);
-		sItsCode = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[0][nIdx]->m_sItsCode = sItsCode;
-	}
-	else
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[0][nIdx]->m_sLot = strLot;
-
-		// Lot
-		nTemp = strFileData.Find('\n', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[0][nIdx]->m_sLot = strLot;
-	}
-
-	nTemp = strFileData.Find('\n', 0);
-	strTotalBadPieceNum = strFileData.Left(nTemp);;
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-
-	if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
-	{
-		pDoc->m_sEngModel = strModel;
-		pDoc->m_sEngLotNum = strLot;
-		pDoc->m_sEngLayerUp = strLayer;
-		//pDoc->m_sEngLayerDn = strModel;
-		if (WorkingInfo.System.bUseITS)
-			pDoc->m_sItsCode = sItsCode;
-	}
-
-	BOOL bUpdate = FALSE;
-
-	if (WorkingInfo.LastJob.sLotUp != strLot || WorkingInfo.LastJob.sEngItsCode != sItsCode)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sLotUp = strLot;
-		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = sItsCode;
-	}
-
-	if (WorkingInfo.LastJob.sModelUp != strModel || WorkingInfo.LastJob.sLayerUp != strLayer)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sModelUp = strModel;
-		WorkingInfo.LastJob.sLayerUp = strLayer;
-
-		//if (!WorkingInfo.LastJob.bDualTest)
-		{
-			pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-		}
-	}
-
-	if (bUpdate)
-	{
-		WriteChangedModel();
-
-		if (pView->m_pDlgMenu01)
-			pView->m_pDlgMenu01->UpdateData();
-
-		if (GetTestMode() == MODE_OUTER)
-		{
-			BOOL bDualTestInner;
-			CString sLot, sLayerUp, sLayerDn, str;
-			if (!pDoc->GetItsSerialInfo(nSerial, bDualTestInner, sLot, sLayerUp, sLayerDn))
-			{
-				str.Format(_T("It is trouble to read GetItsSerialInfo()."));
-				pView->MsgBox(str);
-				return FALSE; // TRUE: CHANGED, FALSE: NO CHANGED 
-			}
-
-			if (m_pReelMapInnerUp)
-				m_pReelMapInnerUp->ResetReelmapPath();
-
-			if (m_pReelMapIts)
-				m_pReelMapIts->ResetReelmapPath();
-
-			if (bDualTestInner)
-			{
-				if (m_pReelMapInnerDn)
-					m_pReelMapInnerDn->ResetReelmapPath();
-				if (m_pReelMapInnerAllUp)
-					m_pReelMapInnerAllUp->ResetReelmapPath();
-				if (m_pReelMapInnerAllDn)
-					m_pReelMapInnerAllDn->ResetReelmapPath();
-			}
-		}
-
-		//CString sPath = m_pReelMap->GetIpPath();
-		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
-
-		//CString sPathUp = m_pReelMapUp->GetIpPath();
-		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapUpPath"), sPathUp);
-	}
-
-	int nTotDef = _tstoi(strTotalBadPieceNum);
-
-	m_pPcr[0][nIdx]->Init(nSerial, nTotDef);
-
-	if (nTotDef > 0)
-	{
-		for (i = 0; i < nTotDef; i++)
-		{
-			// Cam ID
-			nTemp = strFileData.Find(',', 0);
-			strCamID = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_nCamId = _tstoi(strCamID);
-
-			// Piece Number
-			nTemp = strFileData.Find(',', 0);
-			strPieceID = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-
-			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
-			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
-			{
-				m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-
-				//switch (m_Master[0].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
-				//{
-				//case 0:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//case 1:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));
-				//	break;
-				//case 3:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
-				//	break;
-				//default:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//}
-			}
-			else
-				m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-
-			m_pPcr[0][nIdx]->m_pLayer[i] = 0; // Up
-
-			// BadPointPosX
-			nTemp = strFileData.Find(',', 0);
-			strBadPointPosX = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_pDefPos[i].x = (long)_tstoi(strBadPointPosX);
-
-			// BadPointPosY
-			nTemp = strFileData.Find(',', 0);
-			strBadPointPosY = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_pDefPos[i].y = (long)_tstoi(strBadPointPosY);
-
-			// BadName
-			nTemp = strFileData.Find(',', 0);
-			strBadName = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_pDefType[i] = _tstoi(strBadName);
-
-			pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(m_pPcr[0][nIdx]->m_pDefPcs[i], nC, nR);
-			m_pPcr[0][nIdx]->m_arDefType[nR][nC] = m_pPcr[0][nIdx]->m_pDefType[i];
-
-			// CellNum
-			nTemp = strFileData.Find(',', 0);
-			strCellNum = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_pCell[i] = _tstoi(strCellNum);
-
-			// ImageSize
-			nTemp = strFileData.Find(',', 0);
-			strImageSize = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_pImgSz[i] = _tstoi(strImageSize);
-
-			// ImageNum
-			nTemp = strFileData.Find(',', 0);
-			strImageNum = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_pImg[i] = _tstoi(strImageNum);
-
-			// strMarkingCode : -2 (NoMarking)
-			nTemp = strFileData.Find('\n', 0);
-			strMarkingCode = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[0][nIdx]->m_pMk[i] = _tstoi(strMarkingCode);
-		}
-	}
-
-	return (1); // 1(정상)
-				// 	return(m_pPcr[0][nIdx]->m_nErrPnl);
-}
-
-int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 1;
-
-	FILE *fp;
-	char FileD[200];
-	size_t nFileSize, nRSize;
-	char *FileData;
-	CString strFileData;
-	int nTemp, i, nC, nR;
-	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
-	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
-		strCellNum, strImageSize, strImageNum, strMarkingCode;
-
-	if (nSerial <= 0)
-	{
-		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
-		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	if (!m_pPcr[1])
-	{
-		strFileData.Format(_T("PCR[1]관련 메모리가 할당되지 않았습니다."));
-		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	int nIdx;
-	if (m_bNewLotShare[1] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
-		nIdx = GetPcrIdx1(nSerial, TRUE);
-	else
-		nIdx = GetPcrIdx1(nSerial);
-	CString sPath;
-
-#ifdef TEST_MODE
-	sPath = PATH_PCR;	// for Test
-#else
-	if (bFromShare)
-		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareDn, nSerial);
-	else
-		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufDn, nSerial);
-#endif
-
-	//strcpy(FileD, sPath);
-	//_tcscpy(FileD, sPath);
-	StringToChar(sPath, FileD);
-
-	if ((fp = fopen(FileD, "r")) != NULL)
-	{
-		fseek(fp, 0, SEEK_END);
-		nFileSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		/* Allocate space for a path name */
-		//FileData = (char*)malloc( nFileSize );
-		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
-
-		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
-		//strFileData.Format(_T("%s"), CharToString(FileData));
-		strFileData = CharToString(FileData);
-		fclose(fp);
-		free(FileData);
-	}
-	else
-	{
-		strFileData.Format(_T("PCR[Dn] 파일이 존재하지 않습니다.\r\n%s"), sPath);
-		pView->MsgBox(strFileData);
-		//		AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	if (!m_pPcr[1])
-		return(2);
-	if (!m_pPcr[1][nIdx])
-		return(2);
-
-	m_pPcr[1][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
-	m_pPcr[1][nIdx]->m_nSerial = nSerial;
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	nTemp = strFileData.Find(',', 0);
-	strHeaderErrorInfo = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	m_pPcr[1][nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
-
-	if (m_pPcrInner[1][nIdx]->m_nErrPnl == -1)
-	{
-		int syd = 1;
-	}
-
-
-	// Model
-	nTemp = strFileData.Find(',', 0);
-	strModel = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	m_pPcr[1][nIdx]->m_sModel = strModel;
-
-	// Layer
-	nTemp = strFileData.Find(',', 0);
-	strLayer = strFileData.Left(nTemp);
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-	m_pPcr[1][nIdx]->m_sLayer = strLayer;
-
-	if (WorkingInfo.System.bUseITS)
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[1][nIdx]->m_sLot = strLot;
-
-		// Its Code
-		nTemp = strFileData.Find('\n', 0);
-		sItsCode = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[1][nIdx]->m_sItsCode = sItsCode;
-	}
-	else
-	{
-		// Lot
-		nTemp = strFileData.Find(',', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[1][nIdx]->m_sLot = strLot;
-
-		// Lot
-		nTemp = strFileData.Find('\n', 0);
-		strLot = strFileData.Left(nTemp);
-		strFileData.Delete(0, nTemp + 1);
-		nFileSize = nFileSize - nTemp - 1;
-		m_pPcr[1][nIdx]->m_sLot = strLot;
-	}
-
-	nTemp = strFileData.Find('\n', 0);
-	strTotalBadPieceNum = strFileData.Left(nTemp);;
-	strFileData.Delete(0, nTemp + 1);
-	nFileSize = nFileSize - nTemp - 1;
-
-
-	if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
-	{
-		pDoc->m_sEngModel = strModel;
-		pDoc->m_sEngLotNum = strLot;
-		//pDoc->m_sEngLayerUp = strLayer;
-		pDoc->m_sEngLayerDn = strLayer;
-		if (WorkingInfo.System.bUseITS)
-			pDoc->m_sItsCode = sItsCode;
-	}
-
-	BOOL bUpdate = FALSE;
-
-	if (WorkingInfo.LastJob.sLotDn != strLot || WorkingInfo.LastJob.sEngItsCode != sItsCode)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sLotDn = strLot;
-		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = sItsCode;
-	}
-
-	if (WorkingInfo.LastJob.sModelDn != strModel || WorkingInfo.LastJob.sLayerDn != strLayer)
-	{
-		bUpdate = TRUE;
-		WorkingInfo.LastJob.sModelDn = strModel;
-		WorkingInfo.LastJob.sLayerDn = strLayer;
-
-		//if (WorkingInfo.LastJob.bDualTest)
-		//{
-		//	pView->ResetMkInfo(0); // CAD 데이터 리로딩 --->  0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-		//}
-	}
-
-	if (bUpdate)
-	{
-		WriteChangedModel();
-
-		if (pView->m_pDlgMenu01)
-			pView->m_pDlgMenu01->UpdateData();
-	}
-
-	//if (!strModel.IsEmpty() && !strLot.IsEmpty() && !strLayer.IsEmpty())
-	//{
-	//	if (WorkingInfo.LastJob.sModelDn.IsEmpty() || WorkingInfo.LastJob.sLotDn.IsEmpty() || WorkingInfo.LastJob.sLayerDn.IsEmpty())
-	//	{
-	//		WorkingInfo.LastJob.sModelDn = strModel;
-	//		WorkingInfo.LastJob.sLotDn = strLot;
-	//		WorkingInfo.LastJob.sLayerDn = strLayer;
-
-	//		if (WorkingInfo.LastJob.bDualTest)
-	//		{
-	//			pView->ResetMkInfo(2); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//		}
-	//	}
-	//	else if (WorkingInfo.LastJob.sModelDn != strModel || WorkingInfo.LastJob.sLayerDn != strLayer /*|| WorkingInfo.LastJob.sLotDn != strLot*/)
-	//	{
-	//		WorkingInfo.LastJob.sModelDn = strModel;
-	//		WorkingInfo.LastJob.sLotDn = strLot;
-	//		WorkingInfo.LastJob.sLayerDn = strLayer;
-
-	//		if (WorkingInfo.LastJob.bDualTest)
-	//		{
-	//			pView->ResetMkInfo(2); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//		}
-	//	}
-	//}
-
-
-	int nTotDef = _tstoi(strTotalBadPieceNum);
-
-	m_pPcr[1][nIdx]->Init(nSerial, nTotDef);
-
-	if (nTotDef > 0)
-	{
-		for (i = 0; i < nTotDef; i++)
-		{
-			// Cam ID
-			nTemp = strFileData.Find(',', 0);
-			strCamID = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_nCamId = _tstoi(strCamID);
-
-			// Piece Number
-			nTemp = strFileData.Find(',', 0);
-			strPieceID = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-
-			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
-			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
-			{
-				m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-
-				//switch (m_Master[1].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
-				//{
-				//case 0:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//case 1:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));
-				//	break;
-				//case 3:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
-				//	break;
-				//default:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//}
-			}
-			else
-				m_pPcr[1][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));	// 초기 양면검사기용
-
-			m_pPcr[1][nIdx]->m_pLayer[i] = 1; // Dn
-
-			// BadPointPosX
-			nTemp = strFileData.Find(',', 0);
-			strBadPointPosX = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_pDefPos[i].x = (long)_tstoi(strBadPointPosX);
-
-			// BadPointPosY
-			nTemp = strFileData.Find(',', 0);
-			strBadPointPosY = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_pDefPos[i].y = (long)_tstoi(strBadPointPosY);
-
-			// BadName
-			nTemp = strFileData.Find(',', 0);
-			strBadName = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_pDefType[i] = _tstoi(strBadName);
-
-			// Temp for ITS - m_pPcr[0][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
-			pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(Rotate180(m_pPcr[1][nIdx]->m_pDefPcs[i]), nC, nR);
-			m_pPcr[1][nIdx]->m_arDefType[nR][nC] = m_pPcr[1][nIdx]->m_pDefType[i];
-
-			// CellNum
-			nTemp = strFileData.Find(',', 0);
-			strCellNum = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_pCell[i] = _tstoi(strCellNum);
-
-			// ImageSize
-			nTemp = strFileData.Find(',', 0);
-			strImageSize = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_pImgSz[i] = _tstoi(strImageSize);
-
-			// ImageNum
-			nTemp = strFileData.Find(',', 0);
-			strImageNum = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_pImg[i] = _tstoi(strImageNum);
-
-			// strMarkingCode : -2 (NoMarking)
-			nTemp = strFileData.Find('\n', 0);
-			strMarkingCode = strFileData.Left(nTemp);
-			strFileData.Delete(0, nTemp + 1);
-			nFileSize = nFileSize - nTemp - 1;
-			m_pPcr[1][nIdx]->m_pMk[i] = _tstoi(strMarkingCode);
-		}
-	}
-
-	return (1); // 1(정상)
-	//return(m_pPcr[1][nIdx]->m_nErrPnl);
-}
-
-BOOL CGvisR2R_PunchDoc::CopyDefImg(int nSerial)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.17"));
-		return 0;
-	}
-
-	BOOL bRtn[2];
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (bDualTest)
-	{
-		bRtn[0] = CopyDefImgUp(nSerial);
-		bRtn[1] = CopyDefImgDn(nSerial);
-
-		if (!bRtn[0] || !bRtn[1])
-			return FALSE;
-	}
-	else
-	{
-		bRtn[0] = CopyDefImgUp(nSerial);
-
-		if (!bRtn[0])
-			return FALSE;
-	}
-	return TRUE;
-}
-
-BOOL CGvisR2R_PunchDoc::CopyDefImg(int nSerial, CString sNewLot)
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	BOOL bUp, bDn;
-	if (bDualTest)
-	{
-		bUp = CopyDefImgUp(nSerial, sNewLot);
-		bDn = CopyDefImgDn(nSerial, sNewLot);
-
-		if (!bUp || !bDn)
-			return FALSE;
-	}
-	else
-	{
-		bUp = CopyDefImgUp(nSerial, sNewLot);
-
-		if (!bUp)
-			return FALSE;
-	}
-
-	return TRUE;
-}
-
-void CGvisR2R_PunchDoc::MakeImageDirUp(int nSerial)
-{
-	CString strDefImgPathS, strDefImgPathD, strMakeFolderPath;
-	CString sLot = WorkingInfo.LastJob.sLotUp;
-
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp);
-	else
-		strMakeFolderPath.Format(_T("%s%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp,
-			nSerial);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp,
-			nSerial);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp,
-			nSerial);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp,
-			nSerial);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp,
-			nSerial);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerUp,
-			nSerial);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-}
-
-BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.18"));
-		return 0;
-	}
-
-	CString strDefImgPathS, strDefImgPathD;// , strMakeFolderPath;
-	int i;
-	CFileFind finder;
-	CString strTemp;
-	CString sLot;
-
-	CString strAOIImgDataPath;
-	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiUpDefImg);
-
-	if (sNewLot.IsEmpty())
-		sLot = WorkingInfo.LastJob.sLotUp;
-	else
-		sLot = sNewLot;
-
-	MakeImageDirUp(nSerial);
-
-	int nIdx = GetIdxPcrBufUp(nSerial);
-	if (nIdx < 0)
-		return FALSE;
-
-	int nTotDef = 0;
-	if (m_pPcr[0])
-	{
-		if (m_pPcr[0][nIdx])
-			nTotDef = m_pPcr[0][nIdx]->m_nTotDef;
-	}
-	if (nTotDef <= 0)
-		return TRUE;
-
-	int nErrorCnt = 0;
-	for (i = 0; i < nTotDef; i++)
-	{
-		if (pDoc->m_pPcr[0][nIdx]->m_pMk[i] != -2) // -2 (NoMarking)
-		{
-			int nDefImg = pDoc->m_pPcr[0][nIdx]->m_pImg[i];
-			if (strAOIImgDataPath.Right(1) != "\\")
-				strDefImgPathS.Format(_T("%s\\%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
-					WorkingInfo.LastJob.sModelUp,
-					WorkingInfo.LastJob.sLayerUp,
-					sLot,
-					nSerial,
-					nDefImg);
-			else
-				strDefImgPathS.Format(_T("%s%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
-					WorkingInfo.LastJob.sModelUp,
-					WorkingInfo.LastJob.sLayerUp,
-					sLot,
-					nSerial,
-					nDefImg);
-
-			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					sLot,
-					WorkingInfo.LastJob.sLayerUp,
-					nSerial,
-					nDefImg);
-			else
-				strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					sLot,
-					WorkingInfo.LastJob.sLayerUp,
-					nSerial,
-					nDefImg);
-
-			if (finder.FindFile(strDefImgPathS))
-			{
-				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-				{
-					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-					{
-						strTemp.Format(_T("%s \r\n: Defect Image File Copy Fail"), strDefImgPathS);
-						pView->MsgBox(strTemp);
-						return FALSE;
-					}
-				}
-			}
-			else
-			{
-				Sleep(30);
-				if (nErrorCnt > 10)
-				{
-					nErrorCnt = 0;
-					strTemp.Format(_T("%s \r\n: Defect Image File Not Exist"), strDefImgPathS);
-					//AfxMessageBox(strTemp);
-					return TRUE;
-				}
-				else
-				{
-					nErrorCnt++;
-					i--;
-					continue;
-				}
-			}
-
-
-			int nStrip = -1, nCol = -1, nRow = -1;
-			int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
-			int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[i];
-			int nDefCode = pDoc->m_pPcr[0][nPcrIdx]->m_pDefType[i];
-			if (pDoc->m_Master[0].m_pPcsRgn)
-				pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
-
-			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-			{
-				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					sLot,
-					WorkingInfo.LastJob.sLayerUp,
-					nSerial,
-					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
-			}
-			else
-			{
-				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					sLot,
-					WorkingInfo.LastJob.sLayerUp,
-					nSerial,
-					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
-			}
-
-			if (finder.FindFile(strDefImgPathS))
-			{
-				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-				{
-					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-					{
-						strTemp.Format(_T("%s \r\n: Defect Image Position File Copy Fail"), strDefImgPathS);
-						pView->MsgBox(strTemp);
-						return FALSE;
-					}
-				}
-			}
-			else
-			{
-				Sleep(30);
-				if (nErrorCnt > 10)
-				{
-					nErrorCnt = 0;
-					strTemp.Format(_T("%s \r\n: Defect Image Position File Not Exist"), strDefImgPathS);
-					//AfxMessageBox(strTemp);
-					return TRUE;
-				}
-				else
-				{
-					nErrorCnt++;
-					i--;
-					continue;
-				}
-			}
-
-
-
-		}
-	}
-
-	return TRUE;
-}
-
-
-void CGvisR2R_PunchDoc::MakeImageDirDn(int nSerial)
-{
-	CString strDefImgPathS, strDefImgPathD, strMakeFolderPath;
-	CString sLot = WorkingInfo.LastJob.sLotDn;
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp);
-	//WorkingInfo.LastJob.sModelDn);
-	else
-		strMakeFolderPath.Format(_T("%s%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp);
-	//WorkingInfo.LastJob.sModelDn);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn,
-			nSerial);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn,
-			nSerial);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn,
-			nSerial);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn,
-			nSerial);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-
-
-	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn,
-			nSerial);
-	else
-		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
-			WorkingInfo.LastJob.sModelUp,
-			//WorkingInfo.LastJob.sModelDn,
-			sLot,
-			WorkingInfo.LastJob.sLayerDn,
-			nSerial);
-
-	if (!pDoc->DirectoryExists(strMakeFolderPath))
-		CreateDirectory(strMakeFolderPath, NULL);
-}
-
-BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 0;
-
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.19"));
-		return 0;
-	}
-
-	CString strDefImgPathS, strDefImgPathD;// , strMakeFolderPath;
-	int i;
-	CFileFind finder;
-	CString strTemp;
-	CString sLot;
-
-	if (sNewLot.IsEmpty())
-		sLot = WorkingInfo.LastJob.sLotDn;
-	else
-		sLot = sNewLot;
-
-	CString strAOIImgDataPath;
-	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiDnDefImg);
-
-	MakeImageDirDn(nSerial);
-
-	int nIdx = GetIdxPcrBufDn(nSerial);
-	if (nIdx < 0)
-		return FALSE;
-
-	int nTotDef = 0;
-	if (m_pPcr[1])
-	{
-		if (m_pPcr[1][nIdx])
-			nTotDef = m_pPcr[1][nIdx]->m_nTotDef;
-	}
-	if (nTotDef <= 0)
-		return TRUE;
-
-	int nErrorCnt = 0;
-	for (i = 0; i < nTotDef; i++)
-	{
-		if (pDoc->m_pPcr[1][nIdx]->m_pMk[i] != -2) // -2 (NoMarking)
-		{
-			int nDefImg = pDoc->m_pPcr[1][nIdx]->m_pImg[i];
-
-			if (strAOIImgDataPath.Right(1) != "\\")
-				strDefImgPathS.Format(_T("%s\\%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
-					WorkingInfo.LastJob.sModelUp,
-					//WorkingInfo.LastJob.sModelDn,
-					WorkingInfo.LastJob.sLayerDn,
-					sLot,
-					nSerial,
-					nDefImg);
-			else
-				strDefImgPathS.Format(_T("%s%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
-					WorkingInfo.LastJob.sModelUp,
-					//WorkingInfo.LastJob.sModelDn,
-					WorkingInfo.LastJob.sLayerDn,
-					sLot,
-					nSerial,
-					nDefImg);
-
-			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					//WorkingInfo.LastJob.sModelDn,
-					sLot,
-					WorkingInfo.LastJob.sLayerDn,
-					nSerial,
-					nDefImg);
-			else
-				strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					//WorkingInfo.LastJob.sModelDn,
-					sLot,
-					WorkingInfo.LastJob.sLayerDn,
-					nSerial,
-					nDefImg);
-
-			if (finder.FindFile(strDefImgPathS))
-			{
-				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-				{
-					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-					{
-						strTemp.Format(_T("%s \r\n: Defect Image File Copy Fail"), strDefImgPathS);
-						pView->MsgBox(strTemp);
-						return FALSE;
-					}
-				}
-			}
-			else
-			{
-				Sleep(30);
-				if (nErrorCnt > 10)
-				{
-					nErrorCnt = 0;
-					strTemp.Format(_T("%s \r\n: Defect Image File Not Exist"), strDefImgPathS);
-					//AfxMessageBox(strTemp);
-					return TRUE;
-				}
-				else
-				{
-					nErrorCnt++;
-					i--;
-					continue;
-				}
-			}
-
-
-			int nStrip = -1, nCol = -1, nRow = -1;
-			int nPcrIdx = pDoc->GetPcrIdx1(nSerial);
-			int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[i];
-			int nDefCode = pDoc->m_pPcr[1][nPcrIdx]->m_pDefType[i];
-			if (pDoc->m_Master[0].m_pPcsRgn)
-				pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
-
-			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
-			{
-				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					sLot,
-					WorkingInfo.LastJob.sLayerDn,
-					nSerial,
-					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
-			}
-			else
-			{
-				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
-					WorkingInfo.LastJob.sModelUp,
-					sLot,
-					WorkingInfo.LastJob.sLayerDn,
-					nSerial,
-					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
-			}
-
-			if (finder.FindFile(strDefImgPathS))
-			{
-				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-				{
-					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
-					{
-						strTemp.Format(_T("%s \r\n: Defect Image Position File Copy Fail"), strDefImgPathS);
-						pView->MsgBox(strTemp);
-						return FALSE;
-					}
-				}
-			}
-			else
-			{
-				Sleep(30);
-				if (nErrorCnt > 10)
-				{
-					nErrorCnt = 0;
-					strTemp.Format(_T("%s \r\n: Defect Image Position File Not Exist"), strDefImgPathS);
-					//AfxMessageBox(strTemp);
-					return TRUE;
-				}
-				else
-				{
-					nErrorCnt++;
-					i--;
-					continue;
-				}
-			}
-
-
-		}
-	}
-
-	return TRUE;
-}
-
-
-int CGvisR2R_PunchDoc::GetIdxPcrBuf(int nSerial) // 릴맵화면표시의 판넬 인덱스를 반환(MAX_PCR_PNL)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.20"));
-		return 0;
-	}
-
-	int i, nIdx = -1;
-
-	if (m_pPcr[0])
-	{
-		for (i = 0; i < MAX_PCR_PNL; i++)
-		{
-			if (m_pPcr[0][i]->m_nSerial == nSerial)
-			{
-				nIdx = i;
-				break;
-			}
-		}
-	}
-
-	return nIdx;
-}
-
-int CGvisR2R_PunchDoc::GetIdxPcrBufUp(int nSerial)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.21"));
-		return 0;
-	}
-
-	int i, nIdx = -1;
-
-	if (m_pPcr[0])
-	{
-		for (i = 0; i < MAX_PCR_PNL; i++)
-		{
-			if (m_pPcr[0][i]->m_nSerial == nSerial)
-			{
-				nIdx = i;
-				break;
-			}
-		}
-	}
-
-	return nIdx;
-}
-
-int CGvisR2R_PunchDoc::GetIdxPcrBufDn(int nSerial)
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 0;
-
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.22"));
-		return 0;
-	}
-
-	int i, nIdx = -1;
-
-	if (m_pPcr[1])
-	{
-		for (i = 0; i < MAX_PCR_PNL; i++)
-		{
-			if (m_pPcr[1][i]->m_nSerial == nSerial)
-			{
-				nIdx = i;
-				break;
-			}
-		}
-	}
-
-	return nIdx;
-}
+//int CGvisR2R_PunchDoc::LoadPCR0(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//{
+//	BOOL bDualTest = WorkingInfo.LastJob.bDualTest;
+//
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.14"));
+//		return 0;
+//	}
+//
+//	int nRtn[2] = { 1 };
+//	nRtn[0] = LoadPCRUp(nSerial, bFromShare);
+//	//nRtn[1] = LoadPCRAllUp(nSerial, bFromShare);
+//
+//	if (nRtn[0] != 1)
+//		return nRtn[0];
+//	//if (nRtn[1] != 1)
+//	//	return nRtn[1];
+//
+//	if (GetTestMode() == MODE_OUTER)
+//	{
+//		int nRtnInner[5] = { 1 };
+//		nRtnInner[0] = LoadPCRUpInner(nSerial, bFromShare);
+//		nRtnInner[1] = LoadPCRDnInner(nSerial, bFromShare);
+//		nRtnInner[2] = LoadPCRAllUpInner(nSerial, bFromShare);
+//		nRtnInner[3] = LoadPCRAllDnInner(nSerial, bFromShare);
+//
+//		if (nRtnInner[0] != 1)
+//			return nRtnInner[0];
+//		if (nRtnInner[1] != 1)
+//			return nRtnInner[1];
+//		if (nRtnInner[2] != 1)
+//			return nRtnInner[2];
+//		if (nRtnInner[3] != 1)
+//			return nRtnInner[3];
+//
+//		if (!bDualTest)
+//		{
+//			nRtnInner[4] = LoadPCRIts(nSerial, bFromShare);
+//			if (nRtnInner[4] != 1)
+//				return nRtnInner[4];
+//		}
+//	}
+//
+//	return (1); // 1(정상)
+//}
+//
+//int CGvisR2R_PunchDoc::LoadPCR1(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.15"));
+//		return 0;
+//	}
+//
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 0;
+//
+//	int nRtn[4] = { 1 };
+//	nRtn[0] = LoadPCRDn(nSerial, bFromShare);
+//	nRtn[1] = LoadPCRAllDn(nSerial, bFromShare);
+//	nRtn[2] = LoadPCRAllUp(nSerial, bFromShare);
+//
+//	if (nRtn[0] != 1)
+//		return nRtn[0];
+//	if (nRtn[1] != 1)
+//		return nRtn[1];
+//	if (nRtn[2] != 1)
+//		return nRtn[2];
+//
+//	if (GetTestMode() == MODE_OUTER)
+//	{
+//		nRtn[3] = LoadPCRIts(nSerial, bFromShare);
+//		if (nRtn[3] != 1)
+//			return nRtn[3];
+//	}
+//
+//	return (1); // 1(정상)
+//}
+//
+//int CGvisR2R_PunchDoc::LoadPCRAllUp(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//{
+//#ifdef TEST_MODE
+//	return 0;
+//#endif
+//
+//	BOOL bDualTest = WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 0;
+//
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.16"));
+//		return 0;
+//	}
+//
+//	int i, idx;//, k
+//	CString str;
+//
+//	if (nSerial < 0)
+//	{
+//		str.Format(_T("PCR파일이 설정되지 않았습니다."));
+//		pView->MsgBox(str);
+//		//AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	if (!m_pPcr[2])
+//	{
+//		str.Format(_T("PCR[2]관련 메모리가 할당되지 않았습니다."));
+//		pView->MsgBox(str);
+//		//AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	int nIdx;
+//	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
+//		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
+//	else
+//		nIdx = GetPcrIdx0(nSerial);
+//
+//	if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
+//		return(2);
+//	if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
+//		return(2);
+//
+//	m_pPcr[2][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
+//	m_pPcr[2][nIdx]->m_nSerial = nSerial;
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	if (m_pPcr[0][nIdx]->m_nErrPnl < 0)
+//		m_pPcr[2][nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
+//	else if (m_pPcr[1][nIdx]->m_nErrPnl < 0)
+//		m_pPcr[2][nIdx]->m_nErrPnl = m_pPcr[1][nIdx]->m_nErrPnl;
+//	else
+//		m_pPcr[2][nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
+//
+//	// Model
+//	m_pPcr[2][nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
+//
+//	// Layer
+//	m_pPcr[2][nIdx]->m_sLayer = m_pPcr[0][nIdx]->m_sLayer;
+//
+//	// Lot
+//	m_pPcr[2][nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
+//
+//	int nTotDef[3] = { 0 };									// [0]: 상면, [1]: 하면, [2]: 상/하면 Merge
+//	nTotDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef;			// 상면 불량 피스 수
+//	nTotDef[1] = pDoc->m_pPcr[1][nIdx]->m_nTotDef;			// 하면 불량 피스 수
+//
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
+//
+//	int nPcsId;												// nPcsId : CamMaster Pcs Index
+//															//pPcrMgr테이블의 nIdx에 하면의 불량을 먼저 기록하고 상면의 불량을 엎어서 최종 merge불량 테이블을 만듬.
+//	for (i = 0; i < nTotDef[1]; i++)						// 하면 불량 피스 수
+//	{
+//		nPcsId = m_pPcr[1][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// Up+Dn				// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxDn = i; // Dn					// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
+//	}
+//	for (i = 0; i < nTotDef[0]; i++)						// 상면 불량 피스 수
+//	{
+//		nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// Up+Dn				// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxUp = i;	// Up					// 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
+//	}
+//
+//
+//	nTotDef[2] = 0;
+//	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
+//	{
+//		if (pPcrMgr[i].nIdx > -1)	// Up+Dn				// 상하면 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//			nTotDef[2]++;									// 상 / 하면 Merge한 총 불량피스수.
+//	}
+//
+//	m_pPcr[2][nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
+//
+//	int nId[2], Ord; // [0]: 상면 0~불량피스순서, [1]: 하면 0~불량피스순서
+//	idx = 0; // 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
+//	if (nTotDef[2] > 0) // 상 / 하면 Merge한 총 불량피스수.
+//	{
+//		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
+//		{
+//			nId[0] = pPcrMgr[nPcsId].nIdxUp; // 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 상면에서의 PCR파일순서 인덱스
+//			nId[1] = pPcrMgr[nPcsId].nIdxDn; // 상하면 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 하면에서의 PCR파일순서 인덱스
+//
+//			if (nId[0] > -1)
+//			{
+//				Ord = nId[0];
+//				// Cam ID
+//				m_pPcr[2][nIdx]->m_nCamId = m_pPcr[0][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcr[2][nIdx]->m_pDefPcs[idx] = m_pPcr[0][nIdx]->m_pDefPcs[Ord];
+//				m_pPcr[2][nIdx]->m_pLayer[idx] = m_pPcr[0][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcr[2][nIdx]->m_pDefPos[idx].x = m_pPcr[0][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcr[2][nIdx]->m_pDefPos[idx].y = m_pPcr[0][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcr[2][nIdx]->m_pDefType[idx] = m_pPcr[0][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcr[2][nIdx]->m_pCell[idx] = m_pPcr[0][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcr[2][nIdx]->m_pImgSz[idx] = m_pPcr[0][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcr[2][nIdx]->m_pImg[idx] = m_pPcr[0][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcr[2][nIdx]->m_pMk[idx] = m_pPcr[0][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//			else if (nId[1] > -1)
+//			{
+//				Ord = nId[1];
+//				// Cam ID
+//				m_pPcr[2][nIdx]->m_nCamId = m_pPcr[1][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcr[2][nIdx]->m_pDefPcs[idx] = m_pPcr[1][nIdx]->m_pDefPcs[Ord];
+//				m_pPcr[2][nIdx]->m_pLayer[idx] = m_pPcr[1][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcr[2][nIdx]->m_pDefPos[idx].x = m_pPcr[1][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcr[2][nIdx]->m_pDefPos[idx].y = m_pPcr[1][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcr[2][nIdx]->m_pDefType[idx] = m_pPcr[1][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcr[2][nIdx]->m_pCell[idx] = m_pPcr[1][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcr[2][nIdx]->m_pImgSz[idx] = m_pPcr[1][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcr[2][nIdx]->m_pImg[idx] = m_pPcr[1][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcr[2][nIdx]->m_pMk[idx] = m_pPcr[1][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//		}
+//	}
+//
+//	delete[] pPcrMgr;
+//
+//	return (1); // 1(정상)
+//}
+//
+//int CGvisR2R_PunchDoc::LoadPCRAllDn(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 1;
+//
+//	int i, idx;//k, 
+//	CString str;
+//
+//	if (nSerial <= 0)
+//	{
+//		str.Format(_T("PCR파일이 설정되지 않았습니다."));
+//		pView->MsgBox(str);
+//		// 		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	if (!m_pPcr[3])
+//	{
+//		str.Format(_T("PCR[3]관련 메모리가 할당되지 않았습니다."));
+//		pView->MsgBox(str);
+//		// 		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	int nIdx;
+//	if (m_bNewLotShare[1] && (pDoc->WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
+//		nIdx = GetPcrIdx1(nSerial, TRUE);
+//	else
+//		nIdx = GetPcrIdx1(nSerial);
+//
+//	if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[3])
+//		return(2);
+//	if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[3][nIdx])
+//		return(2);
+//
+//	m_pPcr[3][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
+//	m_pPcr[3][nIdx]->m_nSerial = nSerial;
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	if (m_pPcr[1][nIdx]->m_nErrPnl < 0)
+//		m_pPcr[3][nIdx]->m_nErrPnl = m_pPcr[1][nIdx]->m_nErrPnl;
+//	else if (m_pPcr[0][nIdx]->m_nErrPnl < 0)
+//		m_pPcr[3][nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
+//	else
+//		m_pPcr[3][nIdx]->m_nErrPnl = m_pPcr[1][nIdx]->m_nErrPnl;
+//
+//	// Model
+//	m_pPcr[3][nIdx]->m_sModel = m_pPcr[1][nIdx]->m_sModel;
+//
+//	// Layer
+//	m_pPcr[3][nIdx]->m_sLayer = m_pPcr[1][nIdx]->m_sLayer;
+//
+//	// Lot
+//	m_pPcr[3][nIdx]->m_sLot = m_pPcr[1][nIdx]->m_sLot;
+//
+//	int nTotDef[3];
+//	nTotDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef;
+//	nTotDef[1] = pDoc->m_pPcr[1][nIdx]->m_nTotDef;
+//	//	nTotDef[2] = nTotDef[0] + nTotDef[1];
+//
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
+//
+//	int nComp, nPcsId;
+//	if (nTotDef[0] > nTotDef[1])
+//		nComp = nTotDef[0];
+//	else
+//		nComp = nTotDef[1];
+//
+//	// 	for(i=0; i<nComp; i++)
+//	// 	{
+//	// 		if(i<nTotDef[0])
+//	// 		{
+//	// 			nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];
+//	// 			pPcrMgr[nPcsId].nIdx = i;
+//	// 			pPcrMgr[nPcsId].nIdxUp = i;	// Up
+//	// 		}
+//	// 		if(i<nTotDef[1])
+//	// 		{
+//	// 			nPcsId = m_pPcr[1][nIdx]->m_pDefPcs[i];
+//	// 			pPcrMgr[nPcsId].nIdx = i;
+//	// 			pPcrMgr[nPcsId].nIdxDn = i; // Dn
+//	// 		}
+//	// 	}
+//	for (i = 0; i < nTotDef[0]; i++)
+//	{
+//		nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];
+//		pPcrMgr[nPcsId].nIdx = i;
+//		pPcrMgr[nPcsId].nIdxUp = i;	// Up
+//	}
+//	for (i = 0; i < nTotDef[1]; i++)
+//	{
+//		nPcsId = m_pPcr[1][nIdx]->m_pDefPcs[i];
+//		pPcrMgr[nPcsId].nIdx = i;
+//		pPcrMgr[nPcsId].nIdxDn = i; // Dn
+//	}
+//
+//	nTotDef[2] = 0;
+//	for (i = 0; i < nTotPcs; i++)
+//	{
+//		if (pPcrMgr[i].nIdx > -1)
+//			nTotDef[2]++;
+//	}
+//
+//	m_pPcr[3][nIdx]->Init(nSerial, nTotDef[2]);
+//
+//	int nId[2], Ord;
+//	idx = 0;
+//	if (nTotDef[2] > 0)
+//	{
+//		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
+//		{
+//			nId[0] = pPcrMgr[nPcsId].nIdxUp;
+//			nId[1] = pPcrMgr[nPcsId].nIdxDn;
+//
+//			if (nId[1] > -1)
+//			{
+//				Ord = nId[1];
+//				// Cam ID
+//				m_pPcr[3][nIdx]->m_nCamId = m_pPcr[1][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcr[3][nIdx]->m_pDefPcs[idx] = m_pPcr[1][nIdx]->m_pDefPcs[Ord];
+//				m_pPcr[3][nIdx]->m_pLayer[idx] = m_pPcr[1][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcr[3][nIdx]->m_pDefPos[idx].x = m_pPcr[1][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcr[3][nIdx]->m_pDefPos[idx].y = m_pPcr[1][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcr[3][nIdx]->m_pDefType[idx] = m_pPcr[1][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcr[3][nIdx]->m_pCell[idx] = m_pPcr[1][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcr[3][nIdx]->m_pImgSz[idx] = m_pPcr[1][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcr[3][nIdx]->m_pImg[idx] = m_pPcr[1][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcr[3][nIdx]->m_pMk[idx] = m_pPcr[1][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//			else if (nId[0] > -1)
+//			{
+//				Ord = nId[0];
+//				// Cam ID
+//				m_pPcr[3][nIdx]->m_nCamId = m_pPcr[0][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcr[3][nIdx]->m_pDefPcs[idx] = m_pPcr[0][nIdx]->m_pDefPcs[Ord];
+//				m_pPcr[3][nIdx]->m_pLayer[idx] = m_pPcr[0][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcr[3][nIdx]->m_pDefPos[idx].x = m_pPcr[0][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcr[3][nIdx]->m_pDefPos[idx].y = m_pPcr[0][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcr[3][nIdx]->m_pDefType[idx] = m_pPcr[0][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcr[3][nIdx]->m_pCell[idx] = m_pPcr[0][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcr[3][nIdx]->m_pImgSz[idx] = m_pPcr[0][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcr[3][nIdx]->m_pImg[idx] = m_pPcr[0][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcr[3][nIdx]->m_pMk[idx] = m_pPcr[0][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//		}
+//	}
+//
+//	delete[] pPcrMgr;
+//
+//	return (1); // 1(정상)
+//}
+//
+//int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//{
+//	FILE *fp;
+//	char FileD[200];
+//	size_t nFileSize, nRSize;
+//	char *FileData;
+//	CString strFileData;
+//	int nTemp, i, nC, nR;
+//	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
+//	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
+//		strCellNum, strImageSize, strImageNum, strMarkingCode;
+//
+//	if (nSerial <= 0)
+//	{
+//		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
+//		pView->MsgBox(strFileData);
+//		// 		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	if (!m_pPcr[0])
+//	{
+//		strFileData.Format(_T("PCR[0]관련 메모리가 할당되지 않았습니다."));
+//		pView->MsgBox(strFileData);
+//		// 		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	int nIdx;
+//	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
+//		nIdx = GetPcrIdx0(nSerial, TRUE);
+//	else
+//		nIdx = GetPcrIdx0(nSerial);
+//
+//	CString sPath;
+//
+//#ifdef TEST_MODE
+//	sPath = PATH_PCR;	// for Test
+//#else
+//	if (bFromShare)
+//		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareUp, nSerial);
+//	else
+//		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufUp, nSerial);
+//#endif
+//
+//	//strcpy(FileD, sPath);
+//	//_tcscpy(FileD, sPath);
+//	StringToChar(sPath, FileD);
+//
+//	if ((fp = fopen(FileD, "r")) != NULL)
+//	{
+//		fseek(fp, 0, SEEK_END);
+//		nFileSize = ftell(fp);
+//		fseek(fp, 0, SEEK_SET);
+//
+//		/* Allocate space for a path name */
+//		//FileData = (char*)malloc( nFileSize );
+//		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
+//
+//		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
+//		//strFileData.Format(_T("%s"), CharToString(FileData));
+//		strFileData = CharToString(FileData);
+//		fclose(fp);
+//		free(FileData);
+//	}
+//	else
+//	{
+//		strFileData.Format(_T("PCR[Up] 파일이 존재하지 않습니다.\r\n%s"), sPath);
+//		pView->MsgBox(strFileData);
+//		// 		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	if (!m_pPcr[0])
+//		return(2);
+//	if (!m_pPcr[0][nIdx])
+//		return(2);
+//
+//	BOOL bResetMkInfo = FALSE;
+//
+//	m_pPcr[0][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
+//	m_pPcr[0][nIdx]->m_nSerial = nSerial;
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	nTemp = strFileData.Find(',', 0);
+//	strHeaderErrorInfo = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	m_pPcr[0][nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
+//
+//	if (m_pPcrInner[1][nIdx]->m_nErrPnl == -1)
+//	{
+//		int syd = 1;
+//	}
+//
+//	// Model
+//	nTemp = strFileData.Find(',', 0);
+//	strModel = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	m_pPcr[0][nIdx]->m_sModel = strModel;
+//
+//	// Layer
+//	nTemp = strFileData.Find(',', 0);
+//	strLayer = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	m_pPcr[0][nIdx]->m_sLayer = strLayer;
+//
+//	if (WorkingInfo.System.bUseITS)
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[0][nIdx]->m_sLot = strLot;
+//
+//		// Its Code
+//		nTemp = strFileData.Find('\n', 0);
+//		sItsCode = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[0][nIdx]->m_sItsCode = sItsCode;
+//	}
+//	else
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[0][nIdx]->m_sLot = strLot;
+//
+//		// Lot
+//		nTemp = strFileData.Find('\n', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[0][nIdx]->m_sLot = strLot;
+//	}
+//
+//	nTemp = strFileData.Find('\n', 0);
+//	strTotalBadPieceNum = strFileData.Left(nTemp);;
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//
+//	if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
+//	{
+//		pDoc->m_sEngModel = strModel;
+//		pDoc->m_sEngLotNum = strLot;
+//		pDoc->m_sEngLayerUp = strLayer;
+//		//pDoc->m_sEngLayerDn = strModel;
+//		if (WorkingInfo.System.bUseITS)
+//			pDoc->m_sItsCode = sItsCode;
+//	}
+//
+//	BOOL bUpdate = FALSE;
+//
+//	if (WorkingInfo.LastJob.sLotUp != strLot || WorkingInfo.LastJob.sEngItsCode != sItsCode)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sLotUp = strLot;
+//		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = sItsCode;
+//	}
+//
+//	if (WorkingInfo.LastJob.sModelUp != strModel || WorkingInfo.LastJob.sLayerUp != strLayer)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sModelUp = strModel;
+//		WorkingInfo.LastJob.sLayerUp = strLayer;
+//
+//		//if (!WorkingInfo.LastJob.bDualTest)
+//		{
+//			pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
+//		}
+//	}
+//
+//	if (bUpdate)
+//	{
+//		WriteChangedModel();
+//
+//		if (pView->m_pDlgMenu01)
+//			pView->m_pDlgMenu01->UpdateData();
+//
+//		if (GetTestMode() == MODE_OUTER)
+//		{
+//			BOOL bDualTestInner;
+//			CString sLot, sLayerUp, sLayerDn, str;
+//			if (!pDoc->GetItsSerialInfo(nSerial, bDualTestInner, sLot, sLayerUp, sLayerDn))
+//			{
+//				str.Format(_T("It is trouble to read GetItsSerialInfo()."));
+//				pView->MsgBox(str);
+//				return FALSE; // TRUE: CHANGED, FALSE: NO CHANGED 
+//			}
+//
+//			if (m_pReelMapInnerUp)
+//				m_pReelMapInnerUp->ResetReelmapPath();
+//
+//			if (m_pReelMapIts)
+//				m_pReelMapIts->ResetReelmapPath();
+//
+//			if (bDualTestInner)
+//			{
+//				if (m_pReelMapInnerDn)
+//					m_pReelMapInnerDn->ResetReelmapPath();
+//				if (m_pReelMapInnerAllUp)
+//					m_pReelMapInnerAllUp->ResetReelmapPath();
+//				if (m_pReelMapInnerAllDn)
+//					m_pReelMapInnerAllDn->ResetReelmapPath();
+//			}
+//		}
+//
+//		//CString sPath = m_pReelMap->GetIpPath();
+//		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+//
+//		//CString sPathUp = m_pReelMapUp->GetIpPath();
+//		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapUpPath"), sPathUp);
+//	}
+//
+//	int nTotDef = _tstoi(strTotalBadPieceNum);
+//
+//	m_pPcr[0][nIdx]->Init(nSerial, nTotDef);
+//
+//	if (nTotDef > 0)
+//	{
+//		for (i = 0; i < nTotDef; i++)
+//		{
+//			// Cam ID
+//			nTemp = strFileData.Find(',', 0);
+//			strCamID = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_nCamId = _tstoi(strCamID);
+//
+//			// Piece Number
+//			nTemp = strFileData.Find(',', 0);
+//			strPieceID = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//
+//			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
+//			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
+//			{
+//				m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+//
+//				//switch (m_Master[0].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
+//				//{
+//				//case 0:
+//				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+//				//	break;
+//				//case 1:
+//				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));
+//				//	break;
+//				//case 3:
+//				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
+//				//	break;
+//				//default:
+//				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+//				//	break;
+//				//}
+//			}
+//			else
+//				m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+//
+//			m_pPcr[0][nIdx]->m_pLayer[i] = 0; // Up
+//
+//			// BadPointPosX
+//			nTemp = strFileData.Find(',', 0);
+//			strBadPointPosX = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_pDefPos[i].x = (long)_tstoi(strBadPointPosX);
+//
+//			// BadPointPosY
+//			nTemp = strFileData.Find(',', 0);
+//			strBadPointPosY = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_pDefPos[i].y = (long)_tstoi(strBadPointPosY);
+//
+//			// BadName
+//			nTemp = strFileData.Find(',', 0);
+//			strBadName = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_pDefType[i] = _tstoi(strBadName);
+//
+//			pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(m_pPcr[0][nIdx]->m_pDefPcs[i], nC, nR);
+//			m_pPcr[0][nIdx]->m_arDefType[nR][nC] = m_pPcr[0][nIdx]->m_pDefType[i];
+//
+//			// CellNum
+//			nTemp = strFileData.Find(',', 0);
+//			strCellNum = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_pCell[i] = _tstoi(strCellNum);
+//
+//			// ImageSize
+//			nTemp = strFileData.Find(',', 0);
+//			strImageSize = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_pImgSz[i] = _tstoi(strImageSize);
+//
+//			// ImageNum
+//			nTemp = strFileData.Find(',', 0);
+//			strImageNum = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_pImg[i] = _tstoi(strImageNum);
+//
+//			// strMarkingCode : -2 (NoMarking)
+//			nTemp = strFileData.Find('\n', 0);
+//			strMarkingCode = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[0][nIdx]->m_pMk[i] = _tstoi(strMarkingCode);
+//		}
+//	}
+//
+//	return (1); // 1(정상)
+//				// 	return(m_pPcr[0][nIdx]->m_nErrPnl);
+//}
+//
+//int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 1;
+//
+//	FILE *fp;
+//	char FileD[200];
+//	size_t nFileSize, nRSize;
+//	char *FileData;
+//	CString strFileData;
+//	int nTemp, i, nC, nR;
+//	CString strHeaderErrorInfo, strModel, strLayer, strLot, sItsCode, strTotalBadPieceNum;
+//	CString strCamID, strPieceID, strBadPointPosX, strBadPointPosY, strBadName,
+//		strCellNum, strImageSize, strImageNum, strMarkingCode;
+//
+//	if (nSerial <= 0)
+//	{
+//		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
+//		pView->MsgBox(strFileData);
+//		// 		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	if (!m_pPcr[1])
+//	{
+//		strFileData.Format(_T("PCR[1]관련 메모리가 할당되지 않았습니다."));
+//		pView->MsgBox(strFileData);
+//		// 		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	int nIdx;
+//	if (m_bNewLotShare[1] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
+//		nIdx = GetPcrIdx1(nSerial, TRUE);
+//	else
+//		nIdx = GetPcrIdx1(nSerial);
+//	CString sPath;
+//
+//#ifdef TEST_MODE
+//	sPath = PATH_PCR;	// for Test
+//#else
+//	if (bFromShare)
+//		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsShareDn, nSerial);
+//	else
+//		sPath.Format(_T("%s%04d.pcr"), WorkingInfo.System.sPathVrsBufDn, nSerial);
+//#endif
+//
+//	//strcpy(FileD, sPath);
+//	//_tcscpy(FileD, sPath);
+//	StringToChar(sPath, FileD);
+//
+//	if ((fp = fopen(FileD, "r")) != NULL)
+//	{
+//		fseek(fp, 0, SEEK_END);
+//		nFileSize = ftell(fp);
+//		fseek(fp, 0, SEEK_SET);
+//
+//		/* Allocate space for a path name */
+//		//FileData = (char*)malloc( nFileSize );
+//		FileData = (char*)calloc(nFileSize + 1, sizeof(char));
+//
+//		nRSize = fread(FileData, sizeof(char), nFileSize, fp);
+//		//strFileData.Format(_T("%s"), CharToString(FileData));
+//		strFileData = CharToString(FileData);
+//		fclose(fp);
+//		free(FileData);
+//	}
+//	else
+//	{
+//		strFileData.Format(_T("PCR[Dn] 파일이 존재하지 않습니다.\r\n%s"), sPath);
+//		pView->MsgBox(strFileData);
+//		//		AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	if (!m_pPcr[1])
+//		return(2);
+//	if (!m_pPcr[1][nIdx])
+//		return(2);
+//
+//	m_pPcr[1][nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
+//	m_pPcr[1][nIdx]->m_nSerial = nSerial;
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	nTemp = strFileData.Find(',', 0);
+//	strHeaderErrorInfo = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	m_pPcr[1][nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
+//
+//	if (m_pPcrInner[1][nIdx]->m_nErrPnl == -1)
+//	{
+//		int syd = 1;
+//	}
+//
+//
+//	// Model
+//	nTemp = strFileData.Find(',', 0);
+//	strModel = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	m_pPcr[1][nIdx]->m_sModel = strModel;
+//
+//	// Layer
+//	nTemp = strFileData.Find(',', 0);
+//	strLayer = strFileData.Left(nTemp);
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//	m_pPcr[1][nIdx]->m_sLayer = strLayer;
+//
+//	if (WorkingInfo.System.bUseITS)
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[1][nIdx]->m_sLot = strLot;
+//
+//		// Its Code
+//		nTemp = strFileData.Find('\n', 0);
+//		sItsCode = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[1][nIdx]->m_sItsCode = sItsCode;
+//	}
+//	else
+//	{
+//		// Lot
+//		nTemp = strFileData.Find(',', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[1][nIdx]->m_sLot = strLot;
+//
+//		// Lot
+//		nTemp = strFileData.Find('\n', 0);
+//		strLot = strFileData.Left(nTemp);
+//		strFileData.Delete(0, nTemp + 1);
+//		nFileSize = nFileSize - nTemp - 1;
+//		m_pPcr[1][nIdx]->m_sLot = strLot;
+//	}
+//
+//	nTemp = strFileData.Find('\n', 0);
+//	strTotalBadPieceNum = strFileData.Left(nTemp);;
+//	strFileData.Delete(0, nTemp + 1);
+//	nFileSize = nFileSize - nTemp - 1;
+//
+//
+//	if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
+//	{
+//		pDoc->m_sEngModel = strModel;
+//		pDoc->m_sEngLotNum = strLot;
+//		//pDoc->m_sEngLayerUp = strLayer;
+//		pDoc->m_sEngLayerDn = strLayer;
+//		if (WorkingInfo.System.bUseITS)
+//			pDoc->m_sItsCode = sItsCode;
+//	}
+//
+//	BOOL bUpdate = FALSE;
+//
+//	if (WorkingInfo.LastJob.sLotDn != strLot || WorkingInfo.LastJob.sEngItsCode != sItsCode)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sLotDn = strLot;
+//		m_sItsCode = WorkingInfo.LastJob.sEngItsCode = sItsCode;
+//	}
+//
+//	if (WorkingInfo.LastJob.sModelDn != strModel || WorkingInfo.LastJob.sLayerDn != strLayer)
+//	{
+//		bUpdate = TRUE;
+//		WorkingInfo.LastJob.sModelDn = strModel;
+//		WorkingInfo.LastJob.sLayerDn = strLayer;
+//
+//		//if (WorkingInfo.LastJob.bDualTest)
+//		//{
+//		//	pView->ResetMkInfo(0); // CAD 데이터 리로딩 --->  0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
+//		//}
+//	}
+//
+//	if (bUpdate)
+//	{
+//		WriteChangedModel();
+//
+//		if (pView->m_pDlgMenu01)
+//			pView->m_pDlgMenu01->UpdateData();
+//	}
+//
+//	//if (!strModel.IsEmpty() && !strLot.IsEmpty() && !strLayer.IsEmpty())
+//	//{
+//	//	if (WorkingInfo.LastJob.sModelDn.IsEmpty() || WorkingInfo.LastJob.sLotDn.IsEmpty() || WorkingInfo.LastJob.sLayerDn.IsEmpty())
+//	//	{
+//	//		WorkingInfo.LastJob.sModelDn = strModel;
+//	//		WorkingInfo.LastJob.sLotDn = strLot;
+//	//		WorkingInfo.LastJob.sLayerDn = strLayer;
+//
+//	//		if (WorkingInfo.LastJob.bDualTest)
+//	//		{
+//	//			pView->ResetMkInfo(2); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
+//	//		}
+//	//	}
+//	//	else if (WorkingInfo.LastJob.sModelDn != strModel || WorkingInfo.LastJob.sLayerDn != strLayer /*|| WorkingInfo.LastJob.sLotDn != strLot*/)
+//	//	{
+//	//		WorkingInfo.LastJob.sModelDn = strModel;
+//	//		WorkingInfo.LastJob.sLotDn = strLot;
+//	//		WorkingInfo.LastJob.sLayerDn = strLayer;
+//
+//	//		if (WorkingInfo.LastJob.bDualTest)
+//	//		{
+//	//			pView->ResetMkInfo(2); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
+//	//		}
+//	//	}
+//	//}
+//
+//
+//	int nTotDef = _tstoi(strTotalBadPieceNum);
+//
+//	m_pPcr[1][nIdx]->Init(nSerial, nTotDef);
+//
+//	if (nTotDef > 0)
+//	{
+//		for (i = 0; i < nTotDef; i++)
+//		{
+//			// Cam ID
+//			nTemp = strFileData.Find(',', 0);
+//			strCamID = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_nCamId = _tstoi(strCamID);
+//
+//			// Piece Number
+//			nTemp = strFileData.Find(',', 0);
+//			strPieceID = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//
+//			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
+//			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
+//			{
+//				m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+//
+//				//switch (m_Master[1].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
+//				//{
+//				//case 0:
+//				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+//				//	break;
+//				//case 1:
+//				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));
+//				//	break;
+//				//case 3:
+//				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
+//				//	break;
+//				//default:
+//				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+//				//	break;
+//				//}
+//			}
+//			else
+//				m_pPcr[1][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));	// 초기 양면검사기용
+//
+//			m_pPcr[1][nIdx]->m_pLayer[i] = 1; // Dn
+//
+//			// BadPointPosX
+//			nTemp = strFileData.Find(',', 0);
+//			strBadPointPosX = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_pDefPos[i].x = (long)_tstoi(strBadPointPosX);
+//
+//			// BadPointPosY
+//			nTemp = strFileData.Find(',', 0);
+//			strBadPointPosY = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_pDefPos[i].y = (long)_tstoi(strBadPointPosY);
+//
+//			// BadName
+//			nTemp = strFileData.Find(',', 0);
+//			strBadName = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_pDefType[i] = _tstoi(strBadName);
+//
+//			// Temp for ITS - m_pPcr[0][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
+//			pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(Rotate180(m_pPcr[1][nIdx]->m_pDefPcs[i]), nC, nR);
+//			m_pPcr[1][nIdx]->m_arDefType[nR][nC] = m_pPcr[1][nIdx]->m_pDefType[i];
+//
+//			// CellNum
+//			nTemp = strFileData.Find(',', 0);
+//			strCellNum = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_pCell[i] = _tstoi(strCellNum);
+//
+//			// ImageSize
+//			nTemp = strFileData.Find(',', 0);
+//			strImageSize = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_pImgSz[i] = _tstoi(strImageSize);
+//
+//			// ImageNum
+//			nTemp = strFileData.Find(',', 0);
+//			strImageNum = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_pImg[i] = _tstoi(strImageNum);
+//
+//			// strMarkingCode : -2 (NoMarking)
+//			nTemp = strFileData.Find('\n', 0);
+//			strMarkingCode = strFileData.Left(nTemp);
+//			strFileData.Delete(0, nTemp + 1);
+//			nFileSize = nFileSize - nTemp - 1;
+//			m_pPcr[1][nIdx]->m_pMk[i] = _tstoi(strMarkingCode);
+//		}
+//	}
+//
+//	return (1); // 1(정상)
+//	//return(m_pPcr[1][nIdx]->m_nErrPnl);
+//}
+//
+//BOOL CGvisR2R_PunchDoc::CopyDefImg(int nSerial)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.17"));
+//		return 0;
+//	}
+//
+//	BOOL bRtn[2];
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (bDualTest)
+//	{
+//		bRtn[0] = CopyDefImgUp(nSerial);
+//		bRtn[1] = CopyDefImgDn(nSerial);
+//
+//		if (!bRtn[0] || !bRtn[1])
+//			return FALSE;
+//	}
+//	else
+//	{
+//		bRtn[0] = CopyDefImgUp(nSerial);
+//
+//		if (!bRtn[0])
+//			return FALSE;
+//	}
+//	return TRUE;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::CopyDefImg(int nSerial, CString sNewLot)
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	BOOL bUp, bDn;
+//	if (bDualTest)
+//	{
+//		bUp = CopyDefImgUp(nSerial, sNewLot);
+//		bDn = CopyDefImgDn(nSerial, sNewLot);
+//
+//		if (!bUp || !bDn)
+//			return FALSE;
+//	}
+//	else
+//	{
+//		bUp = CopyDefImgUp(nSerial, sNewLot);
+//
+//		if (!bUp)
+//			return FALSE;
+//	}
+//
+//	return TRUE;
+//}
+//
+//void CGvisR2R_PunchDoc::MakeImageDirUp(int nSerial)
+//{
+//	CString strDefImgPathS, strDefImgPathD, strMakeFolderPath;
+//	CString sLot = WorkingInfo.LastJob.sLotUp;
+//
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp,
+//			nSerial);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp,
+//			nSerial);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp,
+//			nSerial);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp,
+//			nSerial);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp,
+//			nSerial);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerUp,
+//			nSerial);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//}
+//
+//BOOL CGvisR2R_PunchDoc::CopyDefImgUp(int nSerial, CString sNewLot)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.18"));
+//		return 0;
+//	}
+//
+//	CString strDefImgPathS, strDefImgPathD;// , strMakeFolderPath;
+//	int i;
+//	CFileFind finder;
+//	CString strTemp;
+//	CString sLot;
+//
+//	CString strAOIImgDataPath;
+//	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiUpDefImg);
+//
+//	if (sNewLot.IsEmpty())
+//		sLot = WorkingInfo.LastJob.sLotUp;
+//	else
+//		sLot = sNewLot;
+//
+//	MakeImageDirUp(nSerial);
+//
+//	int nIdx = GetIdxPcrBufUp(nSerial);
+//	if (nIdx < 0)
+//		return FALSE;
+//
+//	int nTotDef = 0;
+//	if (m_pPcr[0])
+//	{
+//		if (m_pPcr[0][nIdx])
+//			nTotDef = m_pPcr[0][nIdx]->m_nTotDef;
+//	}
+//	if (nTotDef <= 0)
+//		return TRUE;
+//
+//	int nErrorCnt = 0;
+//	for (i = 0; i < nTotDef; i++)
+//	{
+//		if (pDoc->m_pPcr[0][nIdx]->m_pMk[i] != -2) // -2 (NoMarking)
+//		{
+//			int nDefImg = pDoc->m_pPcr[0][nIdx]->m_pImg[i];
+//			if (strAOIImgDataPath.Right(1) != "\\")
+//				strDefImgPathS.Format(_T("%s\\%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
+//					WorkingInfo.LastJob.sModelUp,
+//					WorkingInfo.LastJob.sLayerUp,
+//					sLot,
+//					nSerial,
+//					nDefImg);
+//			else
+//				strDefImgPathS.Format(_T("%s%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
+//					WorkingInfo.LastJob.sModelUp,
+//					WorkingInfo.LastJob.sLayerUp,
+//					sLot,
+//					nSerial,
+//					nDefImg);
+//
+//			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerUp,
+//					nSerial,
+//					nDefImg);
+//			else
+//				strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerUp,
+//					nSerial,
+//					nDefImg);
+//
+//			if (finder.FindFile(strDefImgPathS))
+//			{
+//				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//				{
+//					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//					{
+//						strTemp.Format(_T("%s \r\n: Defect Image File Copy Fail"), strDefImgPathS);
+//						pView->MsgBox(strTemp);
+//						return FALSE;
+//					}
+//				}
+//			}
+//			else
+//			{
+//				Sleep(30);
+//				if (nErrorCnt > 10)
+//				{
+//					nErrorCnt = 0;
+//					strTemp.Format(_T("%s \r\n: Defect Image File Not Exist"), strDefImgPathS);
+//					//AfxMessageBox(strTemp);
+//					return TRUE;
+//				}
+//				else
+//				{
+//					nErrorCnt++;
+//					i--;
+//					continue;
+//				}
+//			}
+//
+//
+//			int nStrip = -1, nCol = -1, nRow = -1;
+//			int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
+//			int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[i];
+//			int nDefCode = pDoc->m_pPcr[0][nPcrIdx]->m_pDefType[i];
+//			if (pDoc->m_Master[0].m_pPcsRgn)
+//				pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+//
+//			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//			{
+//				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerUp,
+//					nSerial,
+//					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+//			}
+//			else
+//			{
+//				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerUp,
+//					nSerial,
+//					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+//			}
+//
+//			if (finder.FindFile(strDefImgPathS))
+//			{
+//				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//				{
+//					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//					{
+//						strTemp.Format(_T("%s \r\n: Defect Image Position File Copy Fail"), strDefImgPathS);
+//						pView->MsgBox(strTemp);
+//						return FALSE;
+//					}
+//				}
+//			}
+//			else
+//			{
+//				Sleep(30);
+//				if (nErrorCnt > 10)
+//				{
+//					nErrorCnt = 0;
+//					strTemp.Format(_T("%s \r\n: Defect Image Position File Not Exist"), strDefImgPathS);
+//					//AfxMessageBox(strTemp);
+//					return TRUE;
+//				}
+//				else
+//				{
+//					nErrorCnt++;
+//					i--;
+//					continue;
+//				}
+//			}
+//
+//
+//
+//		}
+//	}
+//
+//	return TRUE;
+//}
+//
+//
+//void CGvisR2R_PunchDoc::MakeImageDirDn(int nSerial)
+//{
+//	CString strDefImgPathS, strDefImgPathD, strMakeFolderPath;
+//	CString sLot = WorkingInfo.LastJob.sLotDn;
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp);
+//	//WorkingInfo.LastJob.sModelDn);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp);
+//	//WorkingInfo.LastJob.sModelDn);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn,
+//			nSerial);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn,
+//			nSerial);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn,
+//			nSerial);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\DefImagePos\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn,
+//			nSerial);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//
+//
+//	if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//		strMakeFolderPath.Format(_T("%s\\%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn,
+//			nSerial);
+//	else
+//		strMakeFolderPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d"), WorkingInfo.System.sPathOldFile,
+//			WorkingInfo.LastJob.sModelUp,
+//			//WorkingInfo.LastJob.sModelDn,
+//			sLot,
+//			WorkingInfo.LastJob.sLayerDn,
+//			nSerial);
+//
+//	if (!pDoc->DirectoryExists(strMakeFolderPath))
+//		CreateDirectory(strMakeFolderPath, NULL);
+//}
+//
+//BOOL CGvisR2R_PunchDoc::CopyDefImgDn(int nSerial, CString sNewLot)
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 0;
+//
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.19"));
+//		return 0;
+//	}
+//
+//	CString strDefImgPathS, strDefImgPathD;// , strMakeFolderPath;
+//	int i;
+//	CFileFind finder;
+//	CString strTemp;
+//	CString sLot;
+//
+//	if (sNewLot.IsEmpty())
+//		sLot = WorkingInfo.LastJob.sLotDn;
+//	else
+//		sLot = sNewLot;
+//
+//	CString strAOIImgDataPath;
+//	strAOIImgDataPath.Format(_T("%s\\VRSImage"), WorkingInfo.System.sPathAoiDnDefImg);
+//
+//	MakeImageDirDn(nSerial);
+//
+//	int nIdx = GetIdxPcrBufDn(nSerial);
+//	if (nIdx < 0)
+//		return FALSE;
+//
+//	int nTotDef = 0;
+//	if (m_pPcr[1])
+//	{
+//		if (m_pPcr[1][nIdx])
+//			nTotDef = m_pPcr[1][nIdx]->m_nTotDef;
+//	}
+//	if (nTotDef <= 0)
+//		return TRUE;
+//
+//	int nErrorCnt = 0;
+//	for (i = 0; i < nTotDef; i++)
+//	{
+//		if (pDoc->m_pPcr[1][nIdx]->m_pMk[i] != -2) // -2 (NoMarking)
+//		{
+//			int nDefImg = pDoc->m_pPcr[1][nIdx]->m_pImg[i];
+//
+//			if (strAOIImgDataPath.Right(1) != "\\")
+//				strDefImgPathS.Format(_T("%s\\%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
+//					WorkingInfo.LastJob.sModelUp,
+//					//WorkingInfo.LastJob.sModelDn,
+//					WorkingInfo.LastJob.sLayerDn,
+//					sLot,
+//					nSerial,
+//					nDefImg);
+//			else
+//				strDefImgPathS.Format(_T("%s%s\\%s\\%s\\%d\\%05d.tif"), strAOIImgDataPath,
+//					WorkingInfo.LastJob.sModelUp,
+//					//WorkingInfo.LastJob.sModelDn,
+//					WorkingInfo.LastJob.sLayerDn,
+//					sLot,
+//					nSerial,
+//					nDefImg);
+//
+//			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					//WorkingInfo.LastJob.sModelDn,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerDn,
+//					nSerial,
+//					nDefImg);
+//			else
+//				strDefImgPathD.Format(_T("%s%s\\%s\\%s\\DefImage\\%d\\%05d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					//WorkingInfo.LastJob.sModelDn,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerDn,
+//					nSerial,
+//					nDefImg);
+//
+//			if (finder.FindFile(strDefImgPathS))
+//			{
+//				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//				{
+//					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//					{
+//						strTemp.Format(_T("%s \r\n: Defect Image File Copy Fail"), strDefImgPathS);
+//						pView->MsgBox(strTemp);
+//						return FALSE;
+//					}
+//				}
+//			}
+//			else
+//			{
+//				Sleep(30);
+//				if (nErrorCnt > 10)
+//				{
+//					nErrorCnt = 0;
+//					strTemp.Format(_T("%s \r\n: Defect Image File Not Exist"), strDefImgPathS);
+//					//AfxMessageBox(strTemp);
+//					return TRUE;
+//				}
+//				else
+//				{
+//					nErrorCnt++;
+//					i--;
+//					continue;
+//				}
+//			}
+//
+//
+//			int nStrip = -1, nCol = -1, nRow = -1;
+//			int nPcrIdx = pDoc->GetPcrIdx1(nSerial);
+//			int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[i];
+//			int nDefCode = pDoc->m_pPcr[1][nPcrIdx]->m_pDefType[i];
+//			if (pDoc->m_Master[0].m_pPcsRgn)
+//				pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+//
+//			if (WorkingInfo.System.sPathOldFile.Right(1) != "\\")
+//			{
+//				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerDn,
+//					nSerial,
+//					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+//			}
+//			else
+//			{
+//				strDefImgPathD.Format(_T("%s\\%s\\%s\\%s\\DefImagePos\\%d\\%05d_%s_%c_%d_%d.tif"), WorkingInfo.System.sPathOldFile,
+//					WorkingInfo.LastJob.sModelUp,
+//					sLot,
+//					WorkingInfo.LastJob.sLayerDn,
+//					nSerial,
+//					nDefImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+//			}
+//
+//			if (finder.FindFile(strDefImgPathS))
+//			{
+//				if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//				{
+//					if (!CopyFile((LPCTSTR)strDefImgPathS, (LPCTSTR)strDefImgPathD, FALSE))
+//					{
+//						strTemp.Format(_T("%s \r\n: Defect Image Position File Copy Fail"), strDefImgPathS);
+//						pView->MsgBox(strTemp);
+//						return FALSE;
+//					}
+//				}
+//			}
+//			else
+//			{
+//				Sleep(30);
+//				if (nErrorCnt > 10)
+//				{
+//					nErrorCnt = 0;
+//					strTemp.Format(_T("%s \r\n: Defect Image Position File Not Exist"), strDefImgPathS);
+//					//AfxMessageBox(strTemp);
+//					return TRUE;
+//				}
+//				else
+//				{
+//					nErrorCnt++;
+//					i--;
+//					continue;
+//				}
+//			}
+//
+//
+//		}
+//	}
+//
+//	return TRUE;
+//}
+//
+//
+//int CGvisR2R_PunchDoc::GetIdxPcrBuf(int nSerial) // 릴맵화면표시의 판넬 인덱스를 반환(MAX_PCR_PNL)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.20"));
+//		return 0;
+//	}
+//
+//	int i, nIdx = -1;
+//
+//	if (m_pPcr[0])
+//	{
+//		for (i = 0; i < MAX_PCR_PNL; i++)
+//		{
+//			if (m_pPcr[0][i]->m_nSerial == nSerial)
+//			{
+//				nIdx = i;
+//				break;
+//			}
+//		}
+//	}
+//
+//	return nIdx;
+//}
+//
+//int CGvisR2R_PunchDoc::GetIdxPcrBufUp(int nSerial)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.21"));
+//		return 0;
+//	}
+//
+//	int i, nIdx = -1;
+//
+//	if (m_pPcr[0])
+//	{
+//		for (i = 0; i < MAX_PCR_PNL; i++)
+//		{
+//			if (m_pPcr[0][i]->m_nSerial == nSerial)
+//			{
+//				nIdx = i;
+//				break;
+//			}
+//		}
+//	}
+//
+//	return nIdx;
+//}
+//
+//int CGvisR2R_PunchDoc::GetIdxPcrBufDn(int nSerial)
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 0;
+//
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.22"));
+//		return 0;
+//	}
+//
+//	int i, nIdx = -1;
+//
+//	if (m_pPcr[1])
+//	{
+//		for (i = 0; i < MAX_PCR_PNL; i++)
+//		{
+//			if (m_pPcr[1][i]->m_nSerial == nSerial)
+//			{
+//				nIdx = i;
+//				break;
+//			}
+//		}
+//	}
+//
+//	return nIdx;
+//}
 
 void CGvisR2R_PunchDoc::DeleteFileInFolder(CString sPathDir)
 {
@@ -7227,11 +7156,11 @@ int CGvisR2R_PunchDoc::GetLotSerial()
 	return nLotSerial;
 }
 
-void CGvisR2R_PunchDoc::SetMkPnt(int nCam)	// Pin위치에 의한 정렬.
-{
-	if (m_Master[0].m_pPcsRgn)
-		m_Master[0].m_pPcsRgn->SetMkPnt(nCam);
-}
+//void CGvisR2R_PunchDoc::SetMkPnt(int nCam)	// Pin위치에 의한 정렬.
+//{
+//	if (m_Master[0].m_pPcsRgn)
+//		m_Master[0].m_pPcsRgn->SetMkPnt(nCam);
+//}
 
 void CGvisR2R_PunchDoc::SetOnePnlLen(double dLen)
 {
@@ -8241,151 +8170,152 @@ double CGvisR2R_PunchDoc::GetEngraveToq()
 	return (_tstof(WorkingInfo.Motion.sEngraveTq));
 }
 
-int CGvisR2R_PunchDoc::CopyPcrAll()  // return : Serial
-{
-	int nS0, nS1;
-	if (pView->m_bLoadShare[0])
-	{
-		nS0 = CopyPcrUp();
-		// 		if(pView->m_pDlgFrameHigh)
-		// 			pView->m_pDlgFrameHigh->SetAoiLastShot(0, nS0);
-	}
-	if (pView->m_bLoadShare[1])
-	{
-		nS1 = CopyPcrDn();
-		// 		if(pView->m_pDlgFrameHigh)
-		// 			pView->m_pDlgFrameHigh->SetAoiLastShot(1, nS1);
-	}
-
-	if (pView->m_bLoadShare[0] && pView->m_bLoadShare[1])
-	{
-		if (nS0 > 0 && nS1 > 0)
-			return TRUE;
-	}
-	else if (pView->m_bLoadShare[0] && !pView->m_bLoadShare[1])
-	{
-		if (nS0 > 0)
-			return TRUE;
-	}
-	else if (!pView->m_bLoadShare[0] && pView->m_bLoadShare[1])
-	{
-		if (nS1 > 0)
-			return TRUE;
-	}
-
-	return FALSE;
-}
-
-int CGvisR2R_PunchDoc::CopyPcrUp()  // return : Serial
-{
-	int nSerial;
-	CString sSrc = WorkingInfo.System.sPathVrsShareUp;
-	CString sDest = WorkingInfo.System.sPathVrsBufUp;
-
-	if (m_pFile)
-		nSerial = m_pFile->CopyPcrAll(sSrc, sDest);
-
-	return nSerial;
-}
-
-int CGvisR2R_PunchDoc::CopyPcrDn()  // return : Serial
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 0;
-
-	int nSerial;
-	CString sSrc = WorkingInfo.System.sPathVrsShareDn;
-	CString sDest = WorkingInfo.System.sPathVrsBufDn;
-
-	if (m_pFile)
-		nSerial = m_pFile->CopyPcrAll(sSrc, sDest);
-
-	return nSerial;
-}
-
-void CGvisR2R_PunchDoc::DelSharePcr()
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (bDualTest)
-	{
-		if (pView->m_bLoadShare[0])
-			DelSharePcrUp();
-		if (pView->m_bLoadShare[1])
-			DelSharePcrDn();
-	}
-	else
-	{
-		if (pView->m_bLoadShare[0])
-			DelSharePcrUp();
-		if (pView->IsShareDn())
-			DelSharePcrDn();
-	}
-}
-void CGvisR2R_PunchDoc::DelSharePcrUp()
-{
-	CString sPath = WorkingInfo.System.sPathVrsShareUp;
-
-	if (m_pFile)
-	{
-		while(m_pFile->IsPcrExist(sPath))
-		{
-			m_pFile->DelPcrAll(sPath);
-			Sleep(30);
-		}
-	}
-}
-
-void CGvisR2R_PunchDoc::DelSharePcrDn()
-{
-	CString sPath = WorkingInfo.System.sPathVrsShareDn;
-
-	while (m_pFile->IsPcrExist(sPath))
-	{
-		if (m_pFile)
-			m_pFile->DelPcrAll(sPath);
-		Sleep(30);
-	}
-}
-
-void CGvisR2R_PunchDoc::DelPcrAll()
-{
-	DelSharePcrUp();
-	DelSharePcrDn();
-
-	DelPcrUp();
-	DelPcrDn();
-
-	pView->m_bIsBuf[0] = FALSE;
-	pView->m_bIsBuf[1] = FALSE;
-
-}
-
-void CGvisR2R_PunchDoc::DelPcrUp()
-{
-	CString sPath;
-
-	if (m_pFile)
-	{
-		sPath = WorkingInfo.System.sPathVrsShareUp;
-		m_pFile->DelPcrAll(sPath);
-		sPath = WorkingInfo.System.sPathVrsBufUp;
-		m_pFile->DelPcrAll(sPath);
-	}
-}
-
-void CGvisR2R_PunchDoc::DelPcrDn()
-{
-	CString sPath;
-
-	if (m_pFile)
-	{
-		sPath = WorkingInfo.System.sPathVrsShareDn;
-		m_pFile->DelPcrAll(sPath);
-		sPath = WorkingInfo.System.sPathVrsBufDn;
-		m_pFile->DelPcrAll(sPath);
-	}
-}
+//int CGvisR2R_PunchDoc::CopyPcrAll()  // return : Serial
+//{
+//	int nS0, nS1;
+//	if (pView->m_bLoadShare[0])
+//	{
+//		nS0 = CopyPcrUp();
+//		// 		if(pView->m_pDlgFrameHigh)
+//		// 			pView->m_pDlgFrameHigh->SetAoiLastShot(0, nS0);
+//	}
+//	if (pView->m_bLoadShare[1])
+//	{
+//		nS1 = CopyPcrDn();
+//		// 		if(pView->m_pDlgFrameHigh)
+//		// 			pView->m_pDlgFrameHigh->SetAoiLastShot(1, nS1);
+//	}
+//
+//	if (pView->m_bLoadShare[0] && pView->m_bLoadShare[1])
+//	{
+//		if (nS0 > 0 && nS1 > 0)
+//			return TRUE;
+//	}
+//	else if (pView->m_bLoadShare[0] && !pView->m_bLoadShare[1])
+//	{
+//		if (nS0 > 0)
+//			return TRUE;
+//	}
+//	else if (!pView->m_bLoadShare[0] && pView->m_bLoadShare[1])
+//	{
+//		if (nS1 > 0)
+//			return TRUE;
+//	}
+//
+//	return FALSE;
+//}
+//
+//int CGvisR2R_PunchDoc::CopyPcrUp()  // return : Serial
+//{
+//	int nSerial;
+//	CString sSrc = WorkingInfo.System.sPathVrsShareUp;
+//	CString sDest = WorkingInfo.System.sPathVrsBufUp;
+//
+//	if (m_pFile)
+//		nSerial = m_pFile->CopyPcrAll(sSrc, sDest);
+//
+//	return nSerial;
+//}
+//
+//int CGvisR2R_PunchDoc::CopyPcrDn()  // return : Serial
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 0;
+//
+//	int nSerial;
+//	CString sSrc = WorkingInfo.System.sPathVrsShareDn;
+//	CString sDest = WorkingInfo.System.sPathVrsBufDn;
+//
+//	if (m_pFile)
+//		nSerial = m_pFile->CopyPcrAll(sSrc, sDest);
+//
+//	return nSerial;
+//}
+//
+//void CGvisR2R_PunchDoc::DelSharePcr()
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (bDualTest)
+//	{
+//		if (pView->m_bLoadShare[0])
+//			DelSharePcrUp();
+//		if (pView->m_bLoadShare[1])
+//			DelSharePcrDn();
+//	}
+//	else
+//	{
+//		if (pView->m_bLoadShare[0])
+//			DelSharePcrUp();
+//		if (pView->IsShareDn())
+//			DelSharePcrDn();
+//	}
+//}
+//
+//void CGvisR2R_PunchDoc::DelSharePcrUp()
+//{
+//	CString sPath = WorkingInfo.System.sPathVrsShareUp;
+//
+//	if (m_pFile)
+//	{
+//		while(m_pFile->IsPcrExist(sPath))
+//		{
+//			m_pFile->DelPcrAll(sPath);
+//			Sleep(30);
+//		}
+//	}
+//}
+//
+//void CGvisR2R_PunchDoc::DelSharePcrDn()
+//{
+//	CString sPath = WorkingInfo.System.sPathVrsShareDn;
+//
+//	while (m_pFile->IsPcrExist(sPath))
+//	{
+//		if (m_pFile)
+//			m_pFile->DelPcrAll(sPath);
+//		Sleep(30);
+//	}
+//}
+//
+//void CGvisR2R_PunchDoc::DelPcrAll()
+//{
+//	DelSharePcrUp();
+//	DelSharePcrDn();
+//
+//	DelPcrUp();
+//	DelPcrDn();
+//
+//	pView->m_bIsBuf[0] = FALSE;
+//	pView->m_bIsBuf[1] = FALSE;
+//
+//}
+//
+//void CGvisR2R_PunchDoc::DelPcrUp()
+//{
+//	CString sPath;
+//
+//	if (m_pFile)
+//	{
+//		sPath = WorkingInfo.System.sPathVrsShareUp;
+//		m_pFile->DelPcrAll(sPath);
+//		sPath = WorkingInfo.System.sPathVrsBufUp;
+//		m_pFile->DelPcrAll(sPath);
+//	}
+//}
+//
+//void CGvisR2R_PunchDoc::DelPcrDn()
+//{
+//	CString sPath;
+//
+//	if (m_pFile)
+//	{
+//		sPath = WorkingInfo.System.sPathVrsShareDn;
+//		m_pFile->DelPcrAll(sPath);
+//		sPath = WorkingInfo.System.sPathVrsBufDn;
+//		m_pFile->DelPcrAll(sPath);
+//	}
+//}
 
 void CGvisR2R_PunchDoc::SaveLotTime(DWORD dwStTick)
 {
@@ -8581,103 +8511,103 @@ void CGvisR2R_PunchDoc::UpdateYieldOnRmap()
 
 }
 
-void CGvisR2R_PunchDoc::UpdateYield(int nSerial)
-{
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.66"));
-		return;
-	}
-
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	if (m_pReelMapUp)
-		m_pReelMapUp->UpdateYield(nSerial);
-	if (bDualTest)
-	{
-		if (m_pReelMapDn)
-			m_pReelMapDn->UpdateYield(nSerial);
-		if (m_pReelMapAllUp)
-			m_pReelMapAllUp->UpdateYield(nSerial);
-		if (m_pReelMapAllDn)
-			m_pReelMapAllDn->UpdateYield(nSerial);
-	}
-
-	if (pDoc->GetTestMode() == MODE_OUTER)
-	{
-		if (m_pReelMapInnerUp)
-			m_pReelMapInnerUp->UpdateYield(nSerial);
-
-		if (m_pReelMapIts)
-			m_pReelMapIts->UpdateYield(nSerial);
-
-		if (WorkingInfo.LastJob.bDualTestInner)
-		{
-			if (m_pReelMapInnerDn)
-				m_pReelMapInnerDn->UpdateYield(nSerial);
-			if (m_pReelMapInnerAllUp)
-				m_pReelMapInnerAllUp->UpdateYield(nSerial);
-			if (m_pReelMapInnerAllDn)
-				m_pReelMapInnerAllDn->UpdateYield(nSerial);
-		}
-	}
-
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldUp(int nSerial)
-{
-	if (m_pReelMapUp)
-		m_pReelMapUp->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldDn(int nSerial)
-{
-	if (m_pReelMapDn)
-		m_pReelMapDn->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldAllUp(int nSerial)
-{
-	if (m_pReelMapAllUp)
-		m_pReelMapAllUp->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldAllDn(int nSerial)
-{
-	if (m_pReelMapAllDn)
-		m_pReelMapAllDn->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldInnerUp(int nSerial)
-{
-	if (m_pReelMapInnerUp)
-		m_pReelMapInnerUp->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldInnerDn(int nSerial)
-{
-	if (m_pReelMapInnerDn)
-		m_pReelMapInnerDn->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldInnerAllUp(int nSerial)
-{
-	if (m_pReelMapInnerAllUp)
-		m_pReelMapInnerAllUp->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldInnerAllDn(int nSerial)
-{
-	if (m_pReelMapInnerAllDn)
-		m_pReelMapInnerAllDn->UpdateYield(nSerial);
-}
-
-void CGvisR2R_PunchDoc::UpdateYieldIts(int nSerial)
-{
-	if (m_pReelMapIts)
-		m_pReelMapIts->UpdateYield(nSerial);
-}
+//void CGvisR2R_PunchDoc::UpdateYield(int nSerial)
+//{
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.66"));
+//		return;
+//	}
+//
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//	if (m_pReelMapUp)
+//		m_pReelMapUp->UpdateYield(nSerial);
+//	if (bDualTest)
+//	{
+//		if (m_pReelMapDn)
+//			m_pReelMapDn->UpdateYield(nSerial);
+//		if (m_pReelMapAllUp)
+//			m_pReelMapAllUp->UpdateYield(nSerial);
+//		if (m_pReelMapAllDn)
+//			m_pReelMapAllDn->UpdateYield(nSerial);
+//	}
+//
+//	if (pDoc->GetTestMode() == MODE_OUTER)
+//	{
+//		if (m_pReelMapInnerUp)
+//			m_pReelMapInnerUp->UpdateYield(nSerial);
+//
+//		if (m_pReelMapIts)
+//			m_pReelMapIts->UpdateYield(nSerial);
+//
+//		if (WorkingInfo.LastJob.bDualTestInner)
+//		{
+//			if (m_pReelMapInnerDn)
+//				m_pReelMapInnerDn->UpdateYield(nSerial);
+//			if (m_pReelMapInnerAllUp)
+//				m_pReelMapInnerAllUp->UpdateYield(nSerial);
+//			if (m_pReelMapInnerAllDn)
+//				m_pReelMapInnerAllDn->UpdateYield(nSerial);
+//		}
+//	}
+//
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldUp(int nSerial)
+//{
+//	if (m_pReelMapUp)
+//		m_pReelMapUp->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldDn(int nSerial)
+//{
+//	if (m_pReelMapDn)
+//		m_pReelMapDn->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldAllUp(int nSerial)
+//{
+//	if (m_pReelMapAllUp)
+//		m_pReelMapAllUp->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldAllDn(int nSerial)
+//{
+//	if (m_pReelMapAllDn)
+//		m_pReelMapAllDn->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldInnerUp(int nSerial)
+//{
+//	if (m_pReelMapInnerUp)
+//		m_pReelMapInnerUp->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldInnerDn(int nSerial)
+//{
+//	if (m_pReelMapInnerDn)
+//		m_pReelMapInnerDn->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldInnerAllUp(int nSerial)
+//{
+//	if (m_pReelMapInnerAllUp)
+//		m_pReelMapInnerAllUp->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldInnerAllDn(int nSerial)
+//{
+//	if (m_pReelMapInnerAllDn)
+//		m_pReelMapInnerAllDn->UpdateYield(nSerial);
+//}
+//
+//void CGvisR2R_PunchDoc::UpdateYieldIts(int nSerial)
+//{
+//	if (m_pReelMapIts)
+//		m_pReelMapIts->UpdateYield(nSerial);
+//}
 
 void CGvisR2R_PunchDoc::SetCompletedSerial(int nSerial)
 {
@@ -10662,423 +10592,300 @@ void CGvisR2R_PunchDoc::SetMkInfo(CString sMenu, CString sItem, CString sData)
 	::WritePrivateProfileString(sMenu, sItem, sData, sPath);
 }
 
-int CGvisR2R_PunchDoc::MirrorLR(int nPcsId) // 좌우 미러링
-{
-#ifdef TEST_MODE
-	return 0;
-#endif
+//int CGvisR2R_PunchDoc::MirrorLR(int nPcsId) // 좌우 미러링
+//{
+//#ifdef TEST_MODE
+//	return 0;
+//#endif
+//
+//	int nId, nCol, nRow, nC, nR;
+//	int nNodeX = m_Master[0].m_pPcsRgn->nCol; // 1 ~
+//	int nNodeY = m_Master[0].m_pPcsRgn->nRow; // 1 ~
+//
+//	nCol = int(nPcsId / nNodeY); // 0 ~
+//	if (nCol % 2)
+//		nRow = nNodeY*(nCol + 1) - nPcsId - 1;
+//	else
+//		nRow = nPcsId - nNodeY*nCol; // 0 ~
+//
+//	nR = nRow; // 0 ~
+//	nC = (nNodeX - 1) - nCol; // 0 ~
+//	if (nC % 2) // 홀수 : 시작 감소
+//		nId = nNodeY*(nC + 1) - nR - 1;
+//	else		// 짝수 : 시작 증가
+//		nId = nR + nNodeY*nC;
+//
+//	return nId;
+//}
+//
+//int CGvisR2R_PunchDoc::MirrorUD(int nPcsId) // 상하 미러링
+//{
+//#ifdef TEST_MODE
+//	return 0;
+//#endif
+//
+//	int nId, nCol, nRow, nC, nR;
+//	int nNodeX = m_Master[0].m_pPcsRgn->nCol; // 1 ~
+//	int nNodeY = m_Master[0].m_pPcsRgn->nRow; // 1 ~
+//
+//	nCol = int(nPcsId / nNodeY); // 0 ~
+//	if (nCol % 2)
+//		nRow = nPcsId - nNodeY*nCol; // 0 ~
+//	else
+//		nRow = nNodeY*(nCol + 1) - nPcsId - 1;
+//
+//	nR = nRow; // 0 ~
+//	nC = nCol; // 0 ~
+//	if (nC % 2) // 홀수 : 시작 감소
+//		nId = nNodeY*(nC + 1) - nR - 1;
+//	else		// 짝수 : 시작 증가
+//		nId = nR + nNodeY*nC;
+//
+//	return nId;
+//}
+//
+//int CGvisR2R_PunchDoc::Rotate180(int nPcsId) // 180도 회전
+//{
+//#ifdef TEST_MODE
+//	return 0;
+//#endif
+//
+//	int nId, nCol, nRow, nC, nR;
+//	int nNodeX = m_Master[0].m_pPcsRgn->nCol; // 1 ~
+//	int nNodeY = m_Master[0].m_pPcsRgn->nRow; // 1 ~
+//
+//	if (nNodeX % 2)		// 홀수 : 시작 감소
+//	{
+//		nCol = (nNodeX - 1) - int(nPcsId / nNodeY); // 0 ~
+//		if (nCol % 2)
+//			nRow = nPcsId - nNodeY * (nNodeX - nCol - 1); // 0 ~
+//		else
+//			nRow = nNodeY * (nNodeX - nCol) - nPcsId - 1; // 0 ~
+//
+//		//nR = (nNodeY - 1) - nRow; // 0 ~
+//		//nC = (nNodeX - 1) - nCol; // 0 ~
+//		nR = nRow;
+//		nC = nCol;
+//
+//		if (nC % 2)
+//			nId = nNodeY*(nC + 1) - nR - 1; // 0 ~
+//		else
+//			nId = nR + nNodeY*nC;
+//	}
+//	else				// 짝수 : 시작 증가
+//	{
+//		nCol = (nNodeX - 1) - int(nPcsId / nNodeY); // 0 ~
+//		if (nCol % 2)
+//			nRow = nNodeY * (nNodeX - nCol) - nPcsId - 1; // 0 ~
+//		else
+//			nRow = nPcsId - nNodeY * (nNodeX - nCol - 1); // 0 ~
+//
+//		//nR = (nNodeY - 1) - nRow; // 0 ~
+//		//nC = (nNodeX - 1) - nCol; // 0 ~
+//		nR = nRow;
+//		nC = nCol;
+//
+//		if (nC % 2)
+//			nId = nNodeY*(nC + 1) - nR - 1; // 0 ~
+//		else
+//			nId = nR + nNodeY*nC;
+//	}
+//	return nId;
+//}
+
 
-	int nId, nCol, nRow, nC, nR;
-	int nNodeX = m_Master[0].m_pPcsRgn->nCol; // 1 ~
-	int nNodeY = m_Master[0].m_pPcsRgn->nRow; // 1 ~
-
-	nCol = int(nPcsId / nNodeY); // 0 ~
-	if (nCol % 2)
-		nRow = nNodeY*(nCol + 1) - nPcsId - 1;
-	else
-		nRow = nPcsId - nNodeY*nCol; // 0 ~
-
-	nR = nRow; // 0 ~
-	nC = (nNodeX - 1) - nCol; // 0 ~
-	if (nC % 2) // 홀수 : 시작 감소
-		nId = nNodeY*(nC + 1) - nR - 1;
-	else		// 짝수 : 시작 증가
-		nId = nR + nNodeY*nC;
-
-	return nId;
-}
-
-int CGvisR2R_PunchDoc::MirrorUD(int nPcsId) // 상하 미러링
-{
-#ifdef TEST_MODE
-	return 0;
-#endif
-
-	int nId, nCol, nRow, nC, nR;
-	int nNodeX = m_Master[0].m_pPcsRgn->nCol; // 1 ~
-	int nNodeY = m_Master[0].m_pPcsRgn->nRow; // 1 ~
-
-	nCol = int(nPcsId / nNodeY); // 0 ~
-	if (nCol % 2)
-		nRow = nPcsId - nNodeY*nCol; // 0 ~
-	else
-		nRow = nNodeY*(nCol + 1) - nPcsId - 1;
-
-	nR = nRow; // 0 ~
-	nC = nCol; // 0 ~
-	if (nC % 2) // 홀수 : 시작 감소
-		nId = nNodeY*(nC + 1) - nR - 1;
-	else		// 짝수 : 시작 증가
-		nId = nR + nNodeY*nC;
-
-	return nId;
-}
-
-int CGvisR2R_PunchDoc::Rotate180(int nPcsId) // 180도 회전
-{
-#ifdef TEST_MODE
-	return 0;
-#endif
-
-	int nId, nCol, nRow, nC, nR;
-	int nNodeX = m_Master[0].m_pPcsRgn->nCol; // 1 ~
-	int nNodeY = m_Master[0].m_pPcsRgn->nRow; // 1 ~
-
-	if (nNodeX % 2)		// 홀수 : 시작 감소
-	{
-		nCol = (nNodeX - 1) - int(nPcsId / nNodeY); // 0 ~
-		if (nCol % 2)
-			nRow = nPcsId - nNodeY * (nNodeX - nCol - 1); // 0 ~
-		else
-			nRow = nNodeY * (nNodeX - nCol) - nPcsId - 1; // 0 ~
-
-		//nR = (nNodeY - 1) - nRow; // 0 ~
-		//nC = (nNodeX - 1) - nCol; // 0 ~
-		nR = nRow;
-		nC = nCol;
-
-		if (nC % 2)
-			nId = nNodeY*(nC + 1) - nR - 1; // 0 ~
-		else
-			nId = nR + nNodeY*nC;
-	}
-	else				// 짝수 : 시작 증가
-	{
-		nCol = (nNodeX - 1) - int(nPcsId / nNodeY); // 0 ~
-		if (nCol % 2)
-			nRow = nNodeY * (nNodeX - nCol) - nPcsId - 1; // 0 ~
-		else
-			nRow = nPcsId - nNodeY * (nNodeX - nCol - 1); // 0 ~
-
-		//nR = (nNodeY - 1) - nRow; // 0 ~
-		//nC = (nNodeX - 1) - nCol; // 0 ~
-		nR = nRow;
-		nC = nCol;
-
-		if (nC % 2)
-			nId = nNodeY*(nC + 1) - nR - 1; // 0 ~
-		else
-			nId = nR + nNodeY*nC;
-	}
-	return nId;
-}
-
-
-BOOL CGvisR2R_PunchDoc::MakeLayerMappingHeader()
-{
-	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	//FILE *fp = NULL;
-	//char FileName[MAX_PATH];
-	//BOOL bExist = FALSE;
-	//CString sName = _T("");
-	//CString str, sPath, Path[4];
-
-	//Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
-	//Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	////Path[1] = pDoc->m_sEngModel;
-	//Path[2] = pDoc->m_sItsCode;
-	//Path[3] = pDoc->m_sEngLotNum;
-
-	//if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty() || Path[3].IsEmpty())
-	//	return FALSE;
-
-	//if (bDualTest)
-	//{
-	//	if (pDoc->m_sEngLayerUp.IsEmpty() || pDoc->m_sEngLayerDn.IsEmpty())
-	//		return FALSE;
-	//}
-	//else
-	//{
-	//	if (pDoc->m_sEngLayerUp.IsEmpty())
-	//		return FALSE;
-	//}
-
-	//sName.Format(_T("%s.txt"), pDoc->m_sEngLotNum);
-	//sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // 로트명.txt
-
-	//CFileFind findfile;
-	//if (findfile.FindFile(sPath))
-	//{
-	//	bExist = TRUE;
-	//	return TRUE;
-	//}
-
-	//sPath.Format(_T("%s%s"), Path[0], Path[1]);					// 모델 폴더
-	//if (!pDoc->DirectoryExists(sPath))
-	//	CreateDirectory(sPath, NULL);
-
-	//sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);	// ITS 코드 폴더
-	//if (!pDoc->DirectoryExists(sPath))
-	//	CreateDirectory(sPath, NULL);
-
-	//// 로트명.txt 파일의 정보
-	//str.Format(_T("%d"), pDoc->GetTestMode());
-	//::WritePrivateProfileString(_T("Infomation"), _T("Test Mode"), str, sPath);
-	//str.Format(_T("%d"), (bDualTest ? 1 : 0));
-	//::WritePrivateProfileString(_T("Infomation"), _T("Dual Test"), str, sPath);
-	//::WritePrivateProfileString(_T("Infomation"), _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
-	//::WritePrivateProfileString(_T("Infomation"), _T("Current Model"), pDoc->m_sEngModel, sPath);
-	//::WritePrivateProfileString(_T("Infomation"), _T("Its Code"), pDoc->m_sItsCode, sPath);
-	//::WritePrivateProfileString(_T("Infomation"), _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
-	//::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
-
-	//if (bDualTest)
-	//	::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
-	//else
-	//	::WritePrivateProfileString(_T("Infomation"), _T("Current Layer Dn"), _T(""), sPath);
-
-	//::WritePrivateProfileString(_T("Infomation"), _T("Last Its Serial"), pDoc->m_sEngLayerUp, sPath);
-
-	return TRUE;
-}
-
-BOOL CGvisR2R_PunchDoc::MakeLayerMappingSerial(int nIdx, int nItsSerial)
-{
-	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	//FILE *fp = NULL;
-	//char FileName[MAX_PATH];
-	//BOOL bExist = FALSE;
-	//CString sName = _T("");
-	//CString str, sPath, Path[4];
-
-	//Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
-	//Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	////Path[1] = pDoc->m_sEngModel;
-	//Path[2] = pDoc->m_sItsCode;
-	//Path[3] = pDoc->m_sEngLotNum;
-
-	//sName.Format(_T("%s.txt"), pDoc->m_sEngLotNum);
-	//sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // 로트명.txt
-
-	//CFileFind findfile;
-	//if (!findfile.FindFile(sPath))
-	//{
-	//	if (!MakeLayerMappingHeader())
-	//	{
-	//		str.Format(_T("ITS를 위한 로트연결 파일을 생성하지 못했습니다.\r\n %s"), sPath);
-	//		AfxMessageBox(str);
-	//		return FALSE;
-	//	}
-	//}
-	//
-	//CString sItsSerail;
-	//sItsSerail.Format(_T("%d"), nItsSerial);
-
-	//// ITS_Code.txt 파일의 정보
-	//str.Format(_T("%d"), pDoc->GetTestMode());
-	//::WritePrivateProfileString(sItsSerail, _T("Test Mode"), str, sPath);
-	//str.Format(_T("%d"), (bDualTest ? 1 : 0));
-	//::WritePrivateProfileString(sItsSerail, _T("Dual Test"), str, sPath);
-	//::WritePrivateProfileString(sItsSerail, _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
-	//::WritePrivateProfileString(sItsSerail, _T("Current Model"), pDoc->m_sEngModel, sPath);
-	//::WritePrivateProfileString(sItsSerail, _T("Its Code"), pDoc->m_sItsCode, sPath);
-	//::WritePrivateProfileString(sItsSerail, _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
-	//::WritePrivateProfileString(sItsSerail, _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
-
-	//if (bDualTest)
-	//	::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
-	//else
-	//	::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), _T(""), sPath);
-
-
-	return TRUE;
-}
-
-
-BOOL CGvisR2R_PunchDoc::SetItsSerialInfo(int nItsSerial)
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	CString sName = _T("");
-	CString str, sPath, Path[6];
-
-	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
-	Path[1] = pDoc->m_sEngModel;
-	Path[2] = pDoc->m_sItsCode;
-	Path[3] = pDoc->m_sEngLotNum;
-	Path[4] = pDoc->m_sEngLayerUp;
-	Path[5] = pDoc->m_sEngLayerDn;
-
-	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty() || Path[3].IsEmpty() || Path[4].IsEmpty())
-	{
-		sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
-		str.Format(_T("It is trouble to write SetItsSerialInfo.txt\r\n%s"), sPath);
-		pView->MsgBox(str);
-		return FALSE;
-	}
-
-	if (bDualTest)
-	{
-		if (Path[5].IsEmpty())
-			return FALSE;
-	}
-
-	sPath.Format(_T("%s%s"), Path[0], Path[1]);					// 모델 폴더
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);	// ITS 코드 폴더
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sName.Format(_T("%s.txt"), pDoc->m_sItsCode);
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
-
-	CString sItsSerail;
-	sItsSerail.Format(_T("%d"), nItsSerial);
-
-	// ITS_Code.txt 파일의 정보
-	str.Format(_T("%d"), pDoc->GetTestMode());
-	::WritePrivateProfileString(sItsSerail, _T("Test Mode"), str, sPath);
-	str.Format(_T("%d"), (bDualTest ? 1 : 0));
-	::WritePrivateProfileString(sItsSerail, _T("Dual Test"), str, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Current Model"), pDoc->m_sEngModel, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Its Code"), pDoc->m_sItsCode, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
-	::WritePrivateProfileString(sItsSerail, _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
-
-	if (bDualTest)
-		::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
-	else
-		::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), _T(""), sPath);
-
-	return TRUE;
-}
-
-int CGvisR2R_PunchDoc::SearchFirstShotOnIts()
-{
-	CString sName, sPath, Path[3], sMsg;
-
-	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
-	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	//Path[1] = pDoc->m_sEngModel;
-	Path[2] = pDoc->m_sItsCode;
-
-	sName.Format(_T("%s.txt"), pDoc->m_sItsCode);
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
-
-	CDataFile *pDataFile = new CDataFile;
-
-	if (!pDataFile->Open(sPath))
-	{
-		sMsg.Format(_T("%s File not found."), sPath);
-		pView->MsgBox(sMsg);
-		delete pDataFile;
-		return 0;
-	}
-
-	int i = 0, nLastShot = 0; 
-	CString sLine;
-	int nTotLine = pDataFile->GetTotalLines();
-	for (i = 1; i <= nTotLine; i++)
-	{
-		sLine = pDataFile->GetLineString(i);
-		int nPos = sLine.Find(_T('['), 0);
-		if (nPos >= 0)
-		{
-			sLine.Delete(0, nPos+1);
-			nPos = sLine.ReverseFind(_T(']'));
-			sLine = sLine.Left(nPos);
-			nLastShot = _ttoi(sLine);
-			break;
-		}
-	}
-
-	delete pDataFile;
-
-	return nLastShot;
-}
-
-BOOL CGvisR2R_PunchDoc::GetItsSerialInfo(int nItsSerial, BOOL &bDualTest, CString &sLot, CString &sLayerUp, CString &sLayerDn, int nOption)		// 내층에서의 ITS 시리얼의 정보
-{
-	TCHAR szData[512];
-	CString str, sName, sPath, Path[3];
-
-	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
-	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	//Path[1] = pDoc->m_sEngModel;
-	Path[2] = pDoc->m_sItsCode;
-
-	sName.Format(_T("%s.txt"), pDoc->m_sItsCode);
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
-
-	if (sPath.IsEmpty())
-		return FALSE;
-
-	CString strTemp;
-	CFileFind finder;
-	if (finder.FindFile(sPath) == FALSE)
-	{
-		strTemp.Format(_T("GetItsSerialInfo - Didn't find file.\r\n%s"), sPath);
-		pView->MsgBox(strTemp);
-		return FALSE;
-	}
-
-	if (nItsSerial == 0)
-		nItsSerial = SearchFirstShotOnIts();
-
-	CString sItsSerail;
-	sItsSerail.Format(_T("%d"), nItsSerial);
-
-	// ITS_Code.txt 파일의 정보
-	//int nTestMode;
-	//CString sProcessCode;
-
-	
-	// Option 1
-	if (nOption == 0 || nOption == 1)
-	{
-		if (0 < ::GetPrivateProfileString(sItsSerail, _T("Dual Test"), NULL, szData, sizeof(szData), sPath))
-			bDualTest = (_ttoi(szData) > 0) ? TRUE : FALSE;
-		else
-			bDualTest = FALSE;
-
-		WorkingInfo.LastJob.bDualTestInner = bDualTest;
-	}
-
-	// Option 2
-	if (nOption == 0 || nOption == 2)
-	{
-		if (0 < ::GetPrivateProfileString(sItsSerail, _T("Current Lot"), NULL, szData, sizeof(szData), sPath))
-			sLot = CString(szData);
-		else
-			sLot = _T("");
-
-		WorkingInfo.LastJob.sInnerLotUp = WorkingInfo.LastJob.sInnerLotDn = sLot;
-	}
-
-	// Option 3
-	if (nOption == 0 || nOption == 3)
-	{
-		if (0 < ::GetPrivateProfileString(sItsSerail, _T("Current Layer Up"), NULL, szData, sizeof(szData), sPath))
-			sLayerUp = CString(szData);
-		else
-			sLayerUp = _T("");
-
-		WorkingInfo.LastJob.sInnerLayerUp = sLayerUp;
-	}
-
-	// Option 4
-	if (nOption == 0 || nOption == 4)
-	{
-		if (bDualTest)
-		{
-			if (0 < ::GetPrivateProfileString(sItsSerail, _T("Current Layer Dn"), NULL, szData, sizeof(szData), sPath))
-				sLayerDn = CString(szData);
-			else
-				sLayerDn = _T("");
-		}
-		else
-			sLayerDn = _T("");
-	
-		WorkingInfo.LastJob.sInnerLayerDn = sLayerDn;
-	}
-
-	return TRUE;
-}
+//BOOL CGvisR2R_PunchDoc::SetItsSerialInfo(int nItsSerial)
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//
+//	CString sName = _T("");
+//	CString str, sPath, Path[6];
+//
+//	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+//	Path[1] = pDoc->m_sEngModel;
+//	Path[2] = pDoc->m_sItsCode;
+//	Path[3] = pDoc->m_sEngLotNum;
+//	Path[4] = pDoc->m_sEngLayerUp;
+//	Path[5] = pDoc->m_sEngLayerDn;
+//
+//	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty() || Path[3].IsEmpty() || Path[4].IsEmpty())
+//	{
+//		sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
+//		str.Format(_T("It is trouble to write SetItsSerialInfo.txt\r\n%s"), sPath);
+//		pView->MsgBox(str);
+//		return FALSE;
+//	}
+//
+//	if (bDualTest)
+//	{
+//		if (Path[5].IsEmpty())
+//			return FALSE;
+//	}
+//
+//	sPath.Format(_T("%s%s"), Path[0], Path[1]);					// 모델 폴더
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]);	// ITS 코드 폴더
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sName.Format(_T("%s.txt"), pDoc->m_sItsCode);
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
+//
+//	CString sItsSerail;
+//	sItsSerail.Format(_T("%d"), nItsSerial);
+//
+//	// ITS_Code.txt 파일의 정보
+//	str.Format(_T("%d"), pDoc->GetTestMode());
+//	::WritePrivateProfileString(sItsSerail, _T("Test Mode"), str, sPath);
+//	str.Format(_T("%d"), (bDualTest ? 1 : 0));
+//	::WritePrivateProfileString(sItsSerail, _T("Dual Test"), str, sPath);
+//	::WritePrivateProfileString(sItsSerail, _T("Process Unit Code"), pDoc->m_sEngProcessNum, sPath);
+//	::WritePrivateProfileString(sItsSerail, _T("Current Model"), pDoc->m_sEngModel, sPath);
+//	::WritePrivateProfileString(sItsSerail, _T("Its Code"), pDoc->m_sItsCode, sPath);
+//	::WritePrivateProfileString(sItsSerail, _T("Current Lot"), pDoc->m_sEngLotNum, sPath);
+//	::WritePrivateProfileString(sItsSerail, _T("Current Layer Up"), pDoc->m_sEngLayerUp, sPath);
+//
+//	if (bDualTest)
+//		::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), pDoc->m_sEngLayerDn, sPath);
+//	else
+//		::WritePrivateProfileString(sItsSerail, _T("Current Layer Dn"), _T(""), sPath);
+//
+//	return TRUE;
+//}
+//
+//int CGvisR2R_PunchDoc::SearchFirstShotOnIts()
+//{
+//	CString sName, sPath, Path[3], sMsg;
+//
+//	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+//	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//	//Path[1] = pDoc->m_sEngModel;
+//	Path[2] = pDoc->m_sItsCode;
+//
+//	sName.Format(_T("%s.txt"), pDoc->m_sItsCode);
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
+//
+//	CDataFile *pDataFile = new CDataFile;
+//
+//	if (!pDataFile->Open(sPath))
+//	{
+//		sMsg.Format(_T("%s File not found."), sPath);
+//		pView->MsgBox(sMsg);
+//		delete pDataFile;
+//		return 0;
+//	}
+//
+//	int i = 0, nLastShot = 0; 
+//	CString sLine;
+//	int nTotLine = pDataFile->GetTotalLines();
+//	for (i = 1; i <= nTotLine; i++)
+//	{
+//		sLine = pDataFile->GetLineString(i);
+//		int nPos = sLine.Find(_T('['), 0);
+//		if (nPos >= 0)
+//		{
+//			sLine.Delete(0, nPos+1);
+//			nPos = sLine.ReverseFind(_T(']'));
+//			sLine = sLine.Left(nPos);
+//			nLastShot = _ttoi(sLine);
+//			break;
+//		}
+//	}
+//
+//	delete pDataFile;
+//
+//	return nLastShot;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::GetItsSerialInfo(int nItsSerial, BOOL &bDualTest, CString &sLot, CString &sLayerUp, CString &sLayerDn, int nOption)		// 내층에서의 ITS 시리얼의 정보
+//{
+//	TCHAR szData[512];
+//	CString str, sName, sPath, Path[3];
+//
+//	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+//	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//	//Path[1] = pDoc->m_sEngModel;
+//	Path[2] = pDoc->m_sItsCode;
+//
+//	sName.Format(_T("%s.txt"), pDoc->m_sItsCode);
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ITS_Code.txt
+//
+//	if (sPath.IsEmpty())
+//		return FALSE;
+//
+//	CString strTemp;
+//	CFileFind finder;
+//	if (finder.FindFile(sPath) == FALSE)
+//	{
+//		strTemp.Format(_T("GetItsSerialInfo - Didn't find file.\r\n%s"), sPath);
+//		pView->MsgBox(strTemp);
+//		return FALSE;
+//	}
+//
+//	if (nItsSerial == 0)
+//		nItsSerial = SearchFirstShotOnIts();
+//
+//	CString sItsSerail;
+//	sItsSerail.Format(_T("%d"), nItsSerial);
+//
+//	// ITS_Code.txt 파일의 정보
+//	//int nTestMode;
+//	//CString sProcessCode;
+//
+//	
+//	// Option 1
+//	if (nOption == 0 || nOption == 1)
+//	{
+//		if (0 < ::GetPrivateProfileString(sItsSerail, _T("Dual Test"), NULL, szData, sizeof(szData), sPath))
+//			bDualTest = (_ttoi(szData) > 0) ? TRUE : FALSE;
+//		else
+//			bDualTest = FALSE;
+//
+//		WorkingInfo.LastJob.bDualTestInner = bDualTest;
+//	}
+//
+//	// Option 2
+//	if (nOption == 0 || nOption == 2)
+//	{
+//		if (0 < ::GetPrivateProfileString(sItsSerail, _T("Current Lot"), NULL, szData, sizeof(szData), sPath))
+//			sLot = CString(szData);
+//		else
+//			sLot = _T("");
+//
+//		WorkingInfo.LastJob.sInnerLotUp = WorkingInfo.LastJob.sInnerLotDn = sLot;
+//	}
+//
+//	// Option 3
+//	if (nOption == 0 || nOption == 3)
+//	{
+//		if (0 < ::GetPrivateProfileString(sItsSerail, _T("Current Layer Up"), NULL, szData, sizeof(szData), sPath))
+//			sLayerUp = CString(szData);
+//		else
+//			sLayerUp = _T("");
+//
+//		WorkingInfo.LastJob.sInnerLayerUp = sLayerUp;
+//	}
+//
+//	// Option 4
+//	if (nOption == 0 || nOption == 4)
+//	{
+//		if (bDualTest)
+//		{
+//			if (0 < ::GetPrivateProfileString(sItsSerail, _T("Current Layer Dn"), NULL, szData, sizeof(szData), sPath))
+//				sLayerDn = CString(szData);
+//			else
+//				sLayerDn = _T("");
+//		}
+//		else
+//			sLayerDn = _T("");
+//	
+//		WorkingInfo.LastJob.sInnerLayerDn = sLayerDn;
+//	}
+//
+//	return TRUE;
+//}
 
 char* CGvisR2R_PunchDoc::StrToChar(CString str) // char* returned must be deleted... 
 {
@@ -11116,96 +10923,96 @@ void CGvisR2R_PunchDoc::StrToChar(CString str, char* pCh) // char* returned must
 	return;
 }
 
-BOOL CGvisR2R_PunchDoc::GetInnerFolderPath(int nItsSerial, CString  &sUp, CString &sDn)
-{
-	BOOL bDualTest;
-	CString sLot, sLayerUp, sLayerDn;
-	if (!GetItsSerialInfo(nItsSerial, bDualTest, sLot, sLayerUp, sLayerDn, 0))
-	{
-		CString str;
-		str.Format(_T("It is trouble to read GetItsSerialInfo()."));
-		pView->MsgBox(str);
-		return FALSE;
-	}
-
-	CString  Path[5];
-	CString sPath = _T("");
-
-	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
-	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	Path[2] = sLot;
-	Path[3] = sLayerUp;
-	Path[4] = sLayerDn;
-
-	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty() || Path[3].IsEmpty())
-		return FALSE;
-
-	sUp.Format(_T("%s%s\\%s\\%s\\"), Path[0], Path[1], Path[2], Path[3]); // ITS Inner Dn Folder Path
-	if (bDualTest)
-	{
-		if (Path[4].IsEmpty())
-			return FALSE;
-
-		sDn.Format(_T("%s%s\\%s\\%s\\"), Path[0], Path[1], Path[2], Path[4]); // ITS Inner Dn Folder Path
-	}
-	else
-		sDn = _T("");	
-
-	return TRUE;
-}
-
-CString CGvisR2R_PunchDoc::GetItsFolderPath()
-{
-	CString  Path[3];
-	CString sPath = _T("");
-
-	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
-	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	//Path[1] = pDoc->m_sEngModel;
-	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
-	//Path[2] = pDoc->m_sItsCode;
-
-	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty())
-		return sPath;
-
-	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]); // ITS Folder Path
-
-	return sPath;
-}
-
-CString CGvisR2R_PunchDoc::GetItsTargetFolderPath()
-{
-	CString sItsPath = pDoc->WorkingInfo.System.sPathIts;
-
-	if (sItsPath.IsEmpty())
-		return _T("");
-
-	int pos = sItsPath.ReverseFind('\\');
-	if (pos != -1)
-		sItsPath.Delete(pos, sItsPath.GetLength() - pos);
-
-	return sItsPath;
-}
-
-CString CGvisR2R_PunchDoc::GetItsReelmapPath()
-{
-	CString  Path[3];
-	CString sPath = _T("");
-	CString sName = _T("ReelMapDataIts.txt");
-
-	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
-	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
-	//Path[1] = pDoc->m_sEngModel;
-	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
-	//Path[2] = pDoc->m_sItsCode;
-
-	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty())
-		return sPath;
-
-	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ReelmapIts.txt
-
-	return sPath;
-}
+//BOOL CGvisR2R_PunchDoc::GetInnerFolderPath(int nItsSerial, CString  &sUp, CString &sDn)
+//{
+//	BOOL bDualTest;
+//	CString sLot, sLayerUp, sLayerDn;
+//	if (!GetItsSerialInfo(nItsSerial, bDualTest, sLot, sLayerUp, sLayerDn, 0))
+//	{
+//		CString str;
+//		str.Format(_T("It is trouble to read GetItsSerialInfo()."));
+//		pView->MsgBox(str);
+//		return FALSE;
+//	}
+//
+//	CString  Path[5];
+//	CString sPath = _T("");
+//
+//	Path[0] = pDoc->WorkingInfo.System.sPathOldFile;
+//	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//	Path[2] = sLot;
+//	Path[3] = sLayerUp;
+//	Path[4] = sLayerDn;
+//
+//	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty() || Path[3].IsEmpty())
+//		return FALSE;
+//
+//	sUp.Format(_T("%s%s\\%s\\%s\\"), Path[0], Path[1], Path[2], Path[3]); // ITS Inner Dn Folder Path
+//	if (bDualTest)
+//	{
+//		if (Path[4].IsEmpty())
+//			return FALSE;
+//
+//		sDn.Format(_T("%s%s\\%s\\%s\\"), Path[0], Path[1], Path[2], Path[4]); // ITS Inner Dn Folder Path
+//	}
+//	else
+//		sDn = _T("");	
+//
+//	return TRUE;
+//}
+//
+//CString CGvisR2R_PunchDoc::GetItsFolderPath()
+//{
+//	CString  Path[3];
+//	CString sPath = _T("");
+//
+//	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+//	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//	//Path[1] = pDoc->m_sEngModel;
+//	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+//	//Path[2] = pDoc->m_sItsCode;
+//
+//	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty())
+//		return sPath;
+//
+//	sPath.Format(_T("%s%s\\%s"), Path[0], Path[1], Path[2]); // ITS Folder Path
+//
+//	return sPath;
+//}
+//
+//CString CGvisR2R_PunchDoc::GetItsTargetFolderPath()
+//{
+//	CString sItsPath = pDoc->WorkingInfo.System.sPathIts;
+//
+//	if (sItsPath.IsEmpty())
+//		return _T("");
+//
+//	int pos = sItsPath.ReverseFind('\\');
+//	if (pos != -1)
+//		sItsPath.Delete(pos, sItsPath.GetLength() - pos);
+//
+//	return sItsPath;
+//}
+//
+//CString CGvisR2R_PunchDoc::GetItsReelmapPath()
+//{
+//	CString  Path[3];
+//	CString sPath = _T("");
+//	CString sName = _T("ReelMapDataIts.txt");
+//
+//	Path[0] = pDoc->WorkingInfo.System.sPathItsFile;
+//	Path[1] = pDoc->WorkingInfo.LastJob.sModelUp;
+//	//Path[1] = pDoc->m_sEngModel;
+//	Path[2] = pDoc->WorkingInfo.LastJob.sEngItsCode;
+//	//Path[2] = pDoc->m_sItsCode;
+//
+//	if (Path[0].IsEmpty() || Path[1].IsEmpty() || Path[2].IsEmpty())
+//		return sPath;
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), Path[0], Path[1], Path[2], sName); // ReelmapIts.txt
+//
+//	return sPath;
+//}
 
 
 // For MODE_OUTER ============================================
@@ -12098,1012 +11905,1011 @@ int CGvisR2R_PunchDoc::LoadPCRDnInner(int nSerial, BOOL bFromShare)	// return : 
 
 //============================================================
 
-int CGvisR2R_PunchDoc::GetLastItsSerial()
-{
-	return m_nWritedItsSerial;
-}
-
-
-int CGvisR2R_PunchDoc::LoadPCRIts(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-{
-#ifdef TEST_MODE
-	return 0;
-#endif
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.16"));
-		return 0;
-	}
-
-	if (!m_pPcrIts)
-	{
-		pView->ClrDispMsg();
-		pView->MsgBox(_T("PCR[2]관련 메모리가 할당되지 않았습니다."));
-		//AfxMessageBox(strFileData);
-		return(2);
-	}
-
-	BOOL bDualTestInner;
-	CString sLot, sLayerUp, sLayerDn;
-	if (!GetItsSerialInfo(nSerial, bDualTestInner, sLot, sLayerUp, sLayerDn, 0))
-	{
-		CString str;
-		str.Format(_T("It is trouble to read GetItsSerialInfo()."));
-		pView->MsgBox(str);
-		return FALSE;
-	}
-
-	BOOL bDualTest = WorkingInfo.LastJob.bDualTest;
-
-	if (bDualTest && bDualTestInner)	// 11 -> 외층 : 양면, 내층 : 양면
-		LoadPCRIts11(nSerial);
-	else if (bDualTest && !bDualTestInner)	// 10 -> 외층 : 양면, 내층 : 단면
-		LoadPCRIts10(nSerial);
-	else if (!bDualTest && bDualTestInner)	// 01 -> 외층 : 단면, 내층 : 양면
-		LoadPCRIts01(nSerial);
-	else 								// 00 -> 외층 : 단면, 내층 : 단면
-		LoadPCRIts00(nSerial);
-
-	return (1); // 1(정상)
-}
-
-void CGvisR2R_PunchDoc::LoadPCRIts11(int nSerial) // 11 -> 외층 : 양면, 내층 : 양면
-{
-	int i, idx;//, k
-	CString str;
-	int nIdx;
-
-	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
-		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
-	else
-		nIdx = GetPcrIdx0(nSerial);
-
-	//if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
-	//	return(2);
-	//if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
-	//	return(2);
-
-	m_pPcrIts[nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
-	m_pPcrIts[nIdx]->m_nSerial = nSerial;
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	if (m_pPcr[2][nIdx]->m_nErrPnl < 0)
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
-	else if (m_pPcrInner[2][nIdx]->m_nErrPnl < 0)
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcrInner[2][nIdx]->m_nErrPnl;
-	else
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
-
-	// Model
-	m_pPcrIts[nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
-
-	// Layer
-	m_pPcrIts[nIdx]->m_sLayerOutUp = m_pPcr[0][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerOutDn = m_pPcr[1][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerInUp = m_pPcrInner[0][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerInDn = m_pPcrInner[1][nIdx]->m_sLayer;
-
-	// Lot
-	m_pPcrIts[nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
-
-	int nTotDef[3] = { 0 };									// [0]: 외층, [1]: 내층, [2]: 내/외층 Merge
-	nTotDef[0] = pDoc->m_pPcr[2][nIdx]->m_nTotDef;			// 외층 불량 피스 수
-	nTotDef[1] = pDoc->m_pPcrInner[2][nIdx]->m_nTotDef;		// 내층 불량 피스 수
-
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
-
-	int nPcsId;												// nPcsId : CamMaster Pcs Index
-															// pPcrMgr테이블의 nIdx에 내층의 불량을 먼저 기록하고 외층의 불량을 엎어서 최종 merge불량 테이블을 만듬.
-	for (i = 0; i < nTotDef[1]; i++)						// 내층 불량 피스 수
-	{
-		nPcsId = m_pPcrInner[2][nIdx]->m_pDefPcs[i];		// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxDn = i; // 내층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
-	}
-	for (i = 0; i < nTotDef[0]; i++)						// 외층 불량 피스 수
-	{
-		nPcsId = m_pPcr[2][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxUp = i;	// 외층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
-	}
-
-
-	nTotDef[2] = 0;
-	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
-	{
-		if (pPcrMgr[i].nIdx > -1)	// 외층+내층			// 내외층 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-			nTotDef[2]++;									// 내외층 Merge한 총 불량피스수.
-	}
-
-	m_pPcrIts[nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
-
-	int nId[2], Ord;										// [0]: 외층 0~불량피스순서, [1]: 내층 0~불량피스순서
-	idx = 0;												// 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
-	if (nTotDef[2] > 0)										// 내외층 Merge한 총 불량피스수.
-	{
-		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
-		{
-			nId[0] = pPcrMgr[nPcsId].nIdxUp;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 외층에서의 PCR파일순서 인덱스
-			nId[1] = pPcrMgr[nPcsId].nIdxDn;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 내층에서의 PCR파일순서 인덱스
-
-			if (nId[0] > -1)
-			{
-				Ord = nId[0];
-				// Cam ID
-				m_pPcrIts[nIdx]->m_nCamId = m_pPcr[2][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcr[2][nIdx]->m_pDefPcs[Ord];
-				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcr[2][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcr[2][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcr[2][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcr[2][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcr[2][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcr[2][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcr[2][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcr[2][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-			else if (nId[1] > -1)
-			{
-				Ord = nId[1];
-				// Cam ID
-				m_pPcrIts[nIdx]->m_nCamId = m_pPcrInner[2][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcrInner[2][nIdx]->m_pDefPcs[Ord];
-				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcrInner[2][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcrInner[2][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcrInner[2][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcrInner[2][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcrInner[2][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcrInner[2][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-		}
-	}
-	delete[] pPcrMgr;
-}
-
-void CGvisR2R_PunchDoc::LoadPCRIts10(int nSerial) // 10 -> 외층 : 양면, 내층 : 단면
-{
-	int i, idx;//, k
-	CString str;
-	int nIdx;
-
-	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
-		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
-	else
-		nIdx = GetPcrIdx0(nSerial);
-
-	//if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
-	//	return(2);
-	//if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
-	//	return(2);
-
-	m_pPcrIts[nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
-	m_pPcrIts[nIdx]->m_nSerial = nSerial;
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	if (m_pPcr[2][nIdx]->m_nErrPnl < 0)
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
-	else if (m_pPcrInner[0][nIdx]->m_nErrPnl < 0)
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcrInner[0][nIdx]->m_nErrPnl;
-	else
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
-
-	// Model
-	m_pPcrIts[nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
-
-	// Layer
-	m_pPcrIts[nIdx]->m_sLayerOutUp = m_pPcr[0][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerOutDn = m_pPcr[1][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerInUp = m_pPcrInner[0][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerInDn = _T(""); // m_pPcrInner[1][nIdx]->m_sLayer;
-
-	// Lot
-	m_pPcrIts[nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
-
-	int nTotDef[3] = { 0 };									// [0]: 외층, [1]: 내층, [2]: 내/외층 Merge
-	nTotDef[0] = pDoc->m_pPcr[2][nIdx]->m_nTotDef;			// 외층 불량 피스 수
-	nTotDef[1] = pDoc->m_pPcrInner[0][nIdx]->m_nTotDef;		// 내층 불량 피스 수
-
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
-
-	int nPcsId;												// nPcsId : CamMaster Pcs Index
-															// pPcrMgr테이블의 nIdx에 내층의 불량을 먼저 기록하고 외층의 불량을 엎어서 최종 merge불량 테이블을 만듬.
-	for (i = 0; i < nTotDef[1]; i++)						// 내층 불량 피스 수
-	{
-		nPcsId = m_pPcrInner[0][nIdx]->m_pDefPcs[i];		// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxDn = i; // 내층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
-	}
-	for (i = 0; i < nTotDef[0]; i++)						// 외층 불량 피스 수
-	{
-		nPcsId = m_pPcr[2][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxUp = i;	// 외층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
-	}
-
-
-	nTotDef[2] = 0;
-	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
-	{
-		if (pPcrMgr[i].nIdx > -1)	// 외층+내층			// 내외층 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-			nTotDef[2]++;									// 내외층 Merge한 총 불량피스수.
-	}
-
-	m_pPcrIts[nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
-
-	int nId[2], Ord;										// [0]: 외층 0~불량피스순서, [1]: 내층 0~불량피스순서
-	idx = 0;												// 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
-	if (nTotDef[2] > 0)										// 내외층 Merge한 총 불량피스수.
-	{
-		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
-		{
-			nId[0] = pPcrMgr[nPcsId].nIdxUp;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 외층에서의 PCR파일순서 인덱스
-			nId[1] = pPcrMgr[nPcsId].nIdxDn;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 내층에서의 PCR파일순서 인덱스
-
-			if (nId[0] > -1)
-			{
-				Ord = nId[0];
-				// Cam ID
-				m_pPcrIts[nIdx]->m_nCamId = m_pPcr[2][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcr[2][nIdx]->m_pDefPcs[Ord];
-				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcr[2][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcr[2][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcr[2][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcr[2][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcr[2][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcr[2][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcr[2][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcr[2][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-			else if (nId[1] > -1)
-			{
-				Ord = nId[1];
-				// Cam ID
-				m_pPcrIts[nIdx]->m_nCamId = m_pPcrInner[0][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcrInner[0][nIdx]->m_pDefPcs[Ord];
-				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcrInner[0][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcrInner[0][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcrInner[0][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcrInner[0][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcrInner[0][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcrInner[0][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcrInner[0][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcrInner[0][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-		}
-	}
-	delete[] pPcrMgr;
-}
-
-void CGvisR2R_PunchDoc::LoadPCRIts01(int nSerial) // 11 -> 외층 : 단면, 내층 : 양면
-{
-	int i, idx;//, k
-	CString str;
-	int nIdx;
-
-	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
-		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
-	else
-		nIdx = GetPcrIdx0(nSerial);
-
-	//if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
-	//	return(2);
-	//if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
-	//	return(2);
-
-	m_pPcrIts[nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
-	m_pPcrIts[nIdx]->m_nSerial = nSerial;
-
-	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
-	if (m_pPcr[0][nIdx]->m_nErrPnl < 0)
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
-	else if (m_pPcrInner[2][nIdx]->m_nErrPnl < 0)
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcrInner[2][nIdx]->m_nErrPnl;
-	else
-		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
-
-	// Model
-	m_pPcrIts[nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
-
-	// Layer
-	m_pPcrIts[nIdx]->m_sLayerOutUp = m_pPcr[0][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerOutDn = _T(""); // m_pPcr[1][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerInUp = m_pPcrInner[0][nIdx]->m_sLayer;
-	m_pPcrIts[nIdx]->m_sLayerInDn = m_pPcrInner[1][nIdx]->m_sLayer;
-
-	// Lot
-	m_pPcrIts[nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
-
-	int nTotDef[3] = { 0 };									// [0]: 외층, [1]: 내층, [2]: 내/외층 Merge
-	nTotDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef;			// 외층 불량 피스 수
-	nTotDef[1] = pDoc->m_pPcrInner[2][nIdx]->m_nTotDef;		// 내층 불량 피스 수
-
-	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
-	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
-
-	int nPcsId;												// nPcsId : CamMaster Pcs Index
-															// pPcrMgr테이블의 nIdx에 내층의 불량을 먼저 기록하고 외층의 불량을 엎어서 최종 merge불량 테이블을 만듬.
-	for (i = 0; i < nTotDef[1]; i++)						// 내층 불량 피스 수
-	{
-		nPcsId = m_pPcrInner[2][nIdx]->m_pDefPcs[i];		// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxDn = i; // 내층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
-	}
-	for (i = 0; i < nTotDef[0]; i++)						// 외층 불량 피스 수
-	{
-		nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
-		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-		pPcrMgr[nPcsId].nIdxUp = i;	// 외층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
-	}
-
-
-	nTotDef[2] = 0;
-	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
-	{
-		if (pPcrMgr[i].nIdx > -1)	// 외층+내층			// 내외층 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
-			nTotDef[2]++;									// 내외층 Merge한 총 불량피스수.
-	}
-
-	m_pPcrIts[nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
-
-	int nId[2], Ord;										// [0]: 외층 0~불량피스순서, [1]: 내층 0~불량피스순서
-	idx = 0;												// 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
-	if (nTotDef[2] > 0)										// 내외층 Merge한 총 불량피스수.
-	{
-		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
-		{
-			nId[0] = pPcrMgr[nPcsId].nIdxUp;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 외층에서의 PCR파일순서 인덱스
-			nId[1] = pPcrMgr[nPcsId].nIdxDn;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 내층에서의 PCR파일순서 인덱스
-
-			if (nId[0] > -1)
-			{
-				Ord = nId[0];
-				// Cam ID
-				m_pPcrIts[nIdx]->m_nCamId = m_pPcr[0][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcr[0][nIdx]->m_pDefPcs[Ord];
-				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcr[0][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcr[0][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcr[0][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcr[0][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcr[0][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcr[0][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcr[0][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcr[0][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-			else if (nId[1] > -1)
-			{
-				Ord = nId[1];
-				// Cam ID
-				m_pPcrIts[nIdx]->m_nCamId = m_pPcrInner[2][nIdx]->m_nCamId;
-				// Piece Number
-				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcrInner[2][nIdx]->m_pDefPcs[Ord];
-				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcrInner[2][nIdx]->m_pLayer[Ord];
-				// BadPointPosX
-				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].x;
-				// BadPointPosY
-				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].y;
-				// BadName
-				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcrInner[2][nIdx]->m_pDefType[Ord];
-				// CellNum
-				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcrInner[2][nIdx]->m_pCell[Ord];
-				// ImageSize
-				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcrInner[2][nIdx]->m_pImgSz[Ord];
-				// ImageNum
-				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcrInner[2][nIdx]->m_pImg[Ord];
-				// strMarkingCode : -2 (NoMarking)
-				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcrInner[2][nIdx]->m_pMk[Ord];
-
-				idx++;
-			}
-		}
-	}
-	delete[] pPcrMgr;
-}
-
-void CGvisR2R_PunchDoc::LoadPCRIts00(int nSerial) // 10 -> 외층 : 단면, 내층 : 단면
-{
-	pView->ClrDispMsg();
-	pView->MsgBox(_T("LoadPCRIts00 - 내외층 모두 단면인 경우는 프로그램이 없습니다."));
-	return;
-}
-
-
-BOOL CGvisR2R_PunchDoc::InitReelmapInner()
-{
-	if (!m_MasterInner[0].m_pPcsRgn)
-	{
-		CString strMsg;
-		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
-		//pView->MsgBox(strMsg);
-		pView->ClrDispMsg();
-		AfxMessageBox(strMsg, MB_ICONSTOP);
-		return FALSE;
-	}
-	
-	//GetCurrentInfoEng();
-	int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
-	BOOL bDualTest = WorkingInfo.LastJob.bDualTestInner;
-
-	//if (m_pReelMapInner)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapInner;
-	//	m_pReelMapInner = NULL;
-	//}
-	//m_pReelMapInner = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	if (m_pReelMapInnerUp)
-	{
-		//m_pReelMapUp->ResetReelmap();
-		delete m_pReelMapInnerUp;
-		m_pReelMapInnerUp = NULL;
-	}
-	m_pReelMapInnerUp = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapUp->m_nLayer = RMAP_UP;
-
-	//if (m_pReelMapInOuterUp)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapInOuterUp;
-	//	m_pReelMapInOuterUp = NULL;
-	//}
-	//m_pReelMapInOuterUp = new CReelMap(RMAP_INOUTER_UP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	//if (m_pReelMapIts)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapIts;
-	//	m_pReelMapIts = NULL;
-	//}
-	//m_pReelMapIts = new CReelMap(RMAP_ITS, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	if (bDualTest)
-	{
-		if (m_pReelMapInnerDn)
-		{
-			//m_pReelMapDn->ResetReelmap();
-			delete m_pReelMapInnerDn;
-			m_pReelMapInnerDn = NULL;
-		}
-		m_pReelMapInnerDn = new CReelMap(RMAP_INNER_DN, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapDn->m_nLayer = RMAP_DN;
-
-		if (m_pReelMapInnerAllUp)
-		{
-			//m_pReelMapAllUp->ResetReelmap();
-			delete m_pReelMapInnerAllUp;
-			m_pReelMapInnerAllUp = NULL;
-		}
-		m_pReelMapInnerAllUp = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
-
-		if (m_pReelMapInnerAllDn)
-		{
-			//m_pReelMapAllDn->ResetReelmap();
-			delete m_pReelMapInnerAllDn;
-			m_pReelMapInnerAllDn = NULL;
-		}
-		m_pReelMapInnerAllDn = new CReelMap(RMAP_INNER_ALLDN, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
-
-		//if (m_pReelMapInOuterDn)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMapInOuterDn;
-		//	m_pReelMapInOuterDn = NULL;
-		//}
-		//m_pReelMapInOuterDn = new CReelMap(RMAP_INOUTER_DN, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-		//if (m_pReelMapInner)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMapInner;
-		//	m_pReelMapInner = NULL;
-		//}
-		//m_pReelMapInner = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-		m_pReelMapInner = m_pReelMapInnerAllUp;
-	}
-	else
-	{
-		//if (m_pReelMapInner)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMapInner;
-		//	m_pReelMapInner = NULL;
-		//}
-		//m_pReelMapInner = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-		m_pReelMapInner = m_pReelMapInnerUp;
-	}
-
-	if (pDoc->GetTestMode() == MODE_OUTER)
-	{
-		if(m_pReelMapIts)
-			m_pReelMap = m_pReelMapIts;
-
-		//CString sPath = m_pReelMap->GetIpPath();
-		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
-
-		//CString sPath = m_pReelMap->GetIpPath();
-		//CString sPathUp = m_pReelMapUp->GetIpPath();
-		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
-		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapUpPath"), sPathUp);
-	}
-
-	//if (pMkInfo)
-	//{
-	//	delete[] pMkInfo;
-	//	pMkInfo = NULL;
-	//}
-	//if (!pMkInfo)
-	//	pMkInfo = new CString[nTotPcs];
-
-	return TRUE;
-}
-
-BOOL CGvisR2R_PunchDoc::InitReelmapInnerUp()
-{
-	if (!m_MasterInner[0].m_pPcsRgn)
-	{
-		CString strMsg;
-		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
-		pView->MsgBox(strMsg);
-		//AfxMessageBox(strMsg,MB_ICONSTOP);
-		return FALSE;
-	}
-
-	//GetCurrentInfoEng();
-	BOOL bDualTest = WorkingInfo.LastJob.bDualTestInner;
-	int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
-	//int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
-	//int nTotPcs = m_MasterInner[0].m_pPcsRgn->nTotPcs;
-
-	//if (m_pReelMapInner)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapInner;
-	//	m_pReelMapInner = NULL;
-	//}
-	//m_pReelMapInner = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	if (m_pReelMapInnerUp)
-	{
-		//m_pReelMapUp->ResetReelmap();
-		delete m_pReelMapInnerUp;
-		m_pReelMapInnerUp = NULL;
-	}
-	m_pReelMapInnerUp = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapUp->m_nLayer = RMAP_UP;
-
-	//if (m_pReelMapInOuterUp)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapInOuterUp;
-	//	m_pReelMapInOuterUp = NULL;
-	//}
-	//m_pReelMapInOuterUp = new CReelMap(RMAP_INOUTER_UP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	//if (m_pReelMapIts)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapIts;
-	//	m_pReelMapIts = NULL;
-	//}
-	//m_pReelMapIts = new CReelMap(RMAP_ITS, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	if (bDualTest)
-	{
-
-		if (m_pReelMapInnerAllUp)
-		{
-			//m_pReelMapAllUp->ResetReelmap();
-			delete m_pReelMapInnerAllUp;
-			m_pReelMapInnerAllUp = NULL;
-		}
-		m_pReelMapInnerAllUp = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);
-		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
-
-		//if (m_pReelMapInner)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMapInner;
-		//	m_pReelMapInner = NULL;
-		//}
-		//m_pReelMapInner = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-		m_pReelMapInner = m_pReelMapInnerAllUp;
-	}
-	else
-	{
-		//if (m_pReelMapInner)
-		//{
-		//	//m_pReelMap->ResetReelmap();
-		//	delete m_pReelMapInner;
-		//	m_pReelMapInner = NULL;
-		//}
-		//m_pReelMapInner = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-		m_pReelMapInner = m_pReelMapInnerUp;
-	}
-
-	if (pDoc->GetTestMode() == MODE_OUTER)
-	{
-		m_pReelMap = m_pReelMapIts;
-
-		//CString sPath = m_pReelMap->GetIpPath();
-		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
-	}
-
-	return TRUE;
-}
-
-BOOL CGvisR2R_PunchDoc::InitReelmapInnerDn()
-{
-	//GetCurrentInfoEng();
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
-	if (!bDualTest)
-		return TRUE;
-
-	if (!m_MasterInner[0].m_pPcsRgn)
-	{
-		CString strMsg;
-		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
-		pView->MsgBox(strMsg);
-		//AfxMessageBox(strMsg,MB_ICONSTOP);
-		return FALSE;
-	}
-
-	//int nTotPcs = m_MasterInner[0].GetTotPcs();
-	int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
-	//int nTotPcs = m_MasterInner[0].m_pPcsRgn->nTotPcs;
-
-	//if (m_pReelMapInner)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapInner;
-	//	m_pReelMapInner = NULL;
-	//}
-	//m_pReelMapInner = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	if (m_pReelMapInnerDn)
-	{
-		//m_pReelMapDn->ResetReelmap();
-		delete m_pReelMapInnerDn;
-		m_pReelMapInnerDn = NULL;
-	}
-	m_pReelMapInnerDn = new CReelMap(RMAP_INNER_DN, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapDn->m_nLayer = RMAP_DN;
-
-	if (m_pReelMapInnerAllDn)
-	{
-		//m_pReelMapAllDn->ResetReelmap();
-		delete m_pReelMapInnerAllDn;
-		m_pReelMapInnerAllDn = NULL;
-	}
-	m_pReelMapInnerAllDn = new CReelMap(RMAP_INNER_ALLDN, MAX_DISP_PNL, nTotPcs);
-	//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
-
-	//if (m_pReelMapInOuterDn)
-	//{
-	//	//m_pReelMap->ResetReelmap();
-	//	delete m_pReelMapInOuterDn;
-	//	m_pReelMapInOuterDn = NULL;
-	//}
-	//m_pReelMapInOuterDn = new CReelMap(RMAP_INOUTER_DN, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
-
-	return TRUE;
-}
-
-
-void CGvisR2R_PunchDoc::SetReelmapInner(int nDir)
-{
-	if (!m_pReelMapInner || !m_MasterInner[0].m_pPcsRgn)
-		return;
-
-	if (!m_pReelMapInner->pFrmRgn || !m_pReelMapInner->pPcsRgn)
-		return;
-
-	int i, k;
-	double fData1, fData2, fData3, fData4, fDistX, fDistY;
-	double fWidth, fHeight, fRight, fBottom;
-
-	m_pReelMapInner->nDir = nDir;
-
-	int nTotPnl = m_pReelMapInner->nTotPnl;
-	int nTotPcs = m_pReelMapInner->nTotPcs;
-
-	// 	double dScale = (MasterInfo.dPixelSize/10.0);
-	double dScale = (m_MasterInner[0].MasterInfo.dPixelSize / 10.0);
-	m_pReelMapInner->SetAdjRatio(dScale);
-	dScale = m_pReelMapInner->GetAdjRatio();
-
-	for (k = 0; k < nTotPnl; k++)
-	{
-		switch (nDir)
-		{
-		case ROT_NONE:
-			fWidth = (m_MasterInner[0].m_pPcsRgn->pPcs[0].right - m_MasterInner[0].m_pPcsRgn->pPcs[0].left);
-			fHeight = (m_MasterInner[0].m_pPcsRgn->pPcs[0].bottom - m_MasterInner[0].m_pPcsRgn->pPcs[0].top);
-			fRight = m_MasterInner[0].m_pPcsRgn->rtFrm.right - fWidth * (1.0 - RMAP_PCS_SCALE);
-			fBottom = m_MasterInner[0].m_pPcsRgn->rtFrm.bottom - fHeight * (1.0 - RMAP_PCS_SCALE);;
-			m_pReelMapInner->pFrmRgn[k].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_MasterInner[0].m_pPcsRgn->rtFrm.left;
-			m_pReelMapInner->pFrmRgn[k].top = m_MasterInner[0].m_pPcsRgn->rtFrm.top;
-			m_pReelMapInner->pFrmRgn[k].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fRight;
-			m_pReelMapInner->pFrmRgn[k].bottom = fBottom;
-			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
-			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
-			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
-			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
-
-			for (i = 0; i < nTotPcs; i++)
-			{
-				fWidth = (m_MasterInner[0].m_pPcsRgn->pPcs[i].right - m_MasterInner[0].m_pPcsRgn->pPcs[i].left);
-				fHeight = (m_MasterInner[0].m_pPcsRgn->pPcs[i].bottom - m_MasterInner[0].m_pPcsRgn->pPcs[i].top);
-				fData1 = m_MasterInner[0].m_pPcsRgn->pPcs[i].left;	// left
-				fData2 = m_MasterInner[0].m_pPcsRgn->pPcs[i].top;	// top
-				fData3 = fData1 + fWidth * RMAP_PCS_SCALE; // right
-				fData4 = fData2 + fHeight * RMAP_PCS_SCALE; // bottom
-
-				m_pReelMapInner->pPcsRgn[k][i].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
-				m_pReelMapInner->pPcsRgn[k][i].top = fData2;
-				m_pReelMapInner->pPcsRgn[k][i].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
-				m_pReelMapInner->pPcsRgn[k][i].bottom = fData4;
-			}
-			break;
-			// 		case ROT_NONE:
-			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
-			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
-			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
-			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
-			// 
-			// 			for(i=0; i<nTotPcs; i++)
-			// 			{
-			// 				fData1 = m_pPcsRgn->pPcs[i].left; // left
-			// 				fData2 = m_pPcsRgn->pPcs[i].top; // top
-			// 				fData3 = m_pPcsRgn->pPcs[i].right; // right
-			// 				fData4 = m_pPcsRgn->pPcs[i].bottom; // bottom
-			// 
-			// 				m_pReelMap->pPcsRgn[k][i].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData1;
-			// 				m_pReelMap->pPcsRgn[k][i].top = fData2;
-			// 				m_pReelMap->pPcsRgn[k][i].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData3;
-			// 				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
-			// 			}
-			// 			break;
-		case ROT_CCW_90: // right->bottom, top->left, bottom->right, left->top ; Dir (x *= 1, y *= -1) 
-			fDistX = 0;
-			fDistY = m_MasterInner[0].m_pPcsRgn->rtFrm.left + m_MasterInner[0].m_pPcsRgn->rtFrm.right;
-			m_pReelMapInner->pFrmRgn[k].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_MasterInner[0].m_pPcsRgn->rtFrm.top;
-			m_pReelMapInner->pFrmRgn[k].top = fDistY - m_Master[0].m_pPcsRgn->rtFrm.right;
-			m_pReelMapInner->pFrmRgn[k].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_MasterInner[0].m_pPcsRgn->rtFrm.bottom;
-			m_pReelMapInner->pFrmRgn[k].bottom = fDistY - m_MasterInner[0].m_pPcsRgn->rtFrm.left;
-
-			for (i = 0; i < nTotPcs; i++)
-			{
-				fData1 = m_MasterInner[0].m_pPcsRgn->pPcs[i].top;	// left
-				fData2 = fDistY - m_MasterInner[0].m_pPcsRgn->pPcs[i].right;	// top
-				fData3 = m_MasterInner[0].m_pPcsRgn->pPcs[i].bottom;	// right
-				fData4 = fDistY - m_MasterInner[0].m_pPcsRgn->pPcs[i].left; // bottom
-
-				m_pReelMapInner->pPcsRgn[k][i].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
-				m_pReelMapInner->pPcsRgn[k][i].top = fData2;
-				m_pReelMapInner->pPcsRgn[k][i].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
-				m_pReelMapInner->pPcsRgn[k][i].bottom = fData4;
-			}
-			break;
-		}
-	}
-}
-
-CString CGvisR2R_PunchDoc::GetItsTargetPath(int nSerial, int nLayer)	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
-{
-	CString sPath, str;
-	CString sItsFolderPath = GetItsTargetFolderPath();
-	CString sTime = pView->GetTimeIts();
-
-	switch (nLayer)
-	{
-	case RMAP_UP: // 외층 Top
-		str.Format(_T("%s_L1_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
-		break;
-	case RMAP_DN: // 외층 Bottom
-		str.Format(_T("%s_L4_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
-		break;
-	case RMAP_INNER_UP: // 내층 Top
-		str.Format(_T("%s_L2_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
-		break;
-	case RMAP_INNER_DN: // 내층 Bottom
-		str.Format(_T("%s_L3_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
-		break;
-	}
-
-	return sPath;
-}
-
-
-CString CGvisR2R_PunchDoc::GetItsPath(int nSerial, int nLayer)	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
-{
-	CString sPath, str;
-	CString sItsFolderPath = GetItsFolderPath();
-	CString sTime = pView->GetTimeIts();
-
-	switch (nLayer)
-	{
-	case RMAP_UP: // 외층 Top
-		str.Format(_T("%s_L1_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
-		break;
-	case RMAP_DN: // 외층 Bottom
-		str.Format(_T("%s_L4_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
-		break;
-	case RMAP_INNER_UP: // 내층 Top
-		str.Format(_T("%s_L2_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\Inner\\%s"), sItsFolderPath, str);
-		break;
-	case RMAP_INNER_DN: // 내층 Bottom
-		str.Format(_T("%s_L3_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
-		sPath.Format(_T("%s\\Inner\\%s"), sItsFolderPath, str);
-		break;
-	}
-
-	return sPath;
-}
-
-int CGvisR2R_PunchDoc::GetItsDefCode(int nDefCode)
-{
-	CString sDefCode;
-	sDefCode.Format(_T("%c"), pDoc->m_cBigDefCode[nDefCode]);
-
-	// [Sapp3Code]
-	if (sDefCode == _T("N"))		//1 NICK = 137 -> m_nSapp3Code[SAPP3_NICK]
-		return m_nSapp3Code[SAPP3_NICK];
-	else if (sDefCode == _T("D"))	//2 SPACE_EXTRA_PROTRUSION = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] : PROTRUSION
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("A"))	//3 SPACE_EXTRA_PROTRUSION = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] : SPACE 
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("O"))	//4 OPEN = 102 -> m_nSapp3Code[SAPP3_OPEN]
-		return m_nSapp3Code[SAPP3_OPEN];
-	else if (sDefCode == _T("S"))	//5 SHORT = 129 -> m_nSapp3Code[SAPP3_SHORT]
-		return m_nSapp3Code[SAPP3_SHORT];
-	else if (sDefCode == _T("U"))	//6 USHORT = 129 -> m_nSapp3Code[SAPP3_USHORT]
-		return m_nSapp3Code[SAPP3_USHORT];
-	else if (sDefCode == _T("I"))	//7 PINHOLE = 134 -> m_nSapp3Code[SAPP3_PINHOLE]
-		return m_nSapp3Code[SAPP3_PINHOLE];
-	else if (sDefCode == _T("H"))	//8 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : No Hole
-		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
-	else if (sDefCode == _T("E"))	//9 SPACE_EXTRA_PROTRUSION = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] : EXTRA
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("P"))	//10 PAD = 316 -> m_nSapp3Code[SAPP3_PAD]
-		return m_nSapp3Code[SAPP3_PAD];
-	else if (sDefCode == _T("L"))	//11 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : Hole Align
-		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
-	else if (sDefCode == _T("X"))	//12 : POI -> m_nSapp3Code[SAPP3_SHORT]
-		return m_nSapp3Code[SAPP3_SHORT];
-	else if (sDefCode == _T("T"))	//13 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : VH Align
-		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
-	else if (sDefCode == _T("M"))	//14 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : No VH
-		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
-	else if (sDefCode == _T("F"))	//15 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : Hole Defect
-		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
-	else if (sDefCode == _T("C"))	//16 HOPEN = 308 -> m_nSapp3Code[SAPP3_HOPEN]
-		return m_nSapp3Code[SAPP3_HOPEN];
-	else if (sDefCode == _T("G"))	//17 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : VH Open
-		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
-	else if (sDefCode == _T("V"))	//18 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : VH Def
-		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
-	else if (sDefCode == _T("K"))	//19 E.Nick = 137 -> m_nSapp3Code[SAPP3_NICK]
-		return m_nSapp3Code[SAPP3_NICK];
-	else if (sDefCode == _T("R"))	//20 E.Prot = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("B"))	//21 E.Space = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("J"))	//22 UDD1 = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("Q"))	//23 Narrow = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("W"))	//24 Wide = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-	else if (sDefCode == _T("?"))	//25 Light = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
-		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
-
-	return 0;
-}
-
-BOOL CGvisR2R_PunchDoc::MakeItsDir(CString sModel, CString sLot, CString sLayer)
-{
-	CString sMsg = _T("");
-	CFileFind finder;
-	CString sPath;
-
-	sPath.Format(_T("%s"), pDoc->WorkingInfo.System.sPathItsFile);
-	int pos = sPath.ReverseFind('\\');
-	if (pos != -1)
-		sPath.Delete(pos, sPath.GetLength() - pos);
-
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	if (sModel.IsEmpty() || sLot.IsEmpty() || sLayer.IsEmpty())
-	{
-		sMsg.Format(_T("모델이나 로뜨 또는 레이어명이 없습니다."));
-		pView->ClrDispMsg();
-		AfxMessageBox(sMsg);
-		return FALSE;
-	}
-
-	sPath.Format(_T("%s%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel);
-
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-	
-	sPath.Format(_T("%s%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode);
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode, sLot);
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode, sLot, sLayer);
-	if (!pDoc->DirectoryExists(sPath))
-		CreateDirectory(sPath, NULL);
-
-	return TRUE;
-}
+//int CGvisR2R_PunchDoc::GetLastItsSerial()
+//{
+//	return m_nWritedItsSerial;
+//}
+//
+//int CGvisR2R_PunchDoc::LoadPCRIts(int nSerial, BOOL bFromShare)	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//{
+//#ifdef TEST_MODE
+//	return 0;
+//#endif
+//	if (nSerial <= 0)
+//	{
+//		pView->ClrDispMsg();
+//		AfxMessageBox(_T("Serial Error.16"));
+//		return 0;
+//	}
+//
+//	if (!m_pPcrIts)
+//	{
+//		pView->ClrDispMsg();
+//		pView->MsgBox(_T("PCR[2]관련 메모리가 할당되지 않았습니다."));
+//		//AfxMessageBox(strFileData);
+//		return(2);
+//	}
+//
+//	BOOL bDualTestInner;
+//	CString sLot, sLayerUp, sLayerDn;
+//	if (!GetItsSerialInfo(nSerial, bDualTestInner, sLot, sLayerUp, sLayerDn, 0))
+//	{
+//		CString str;
+//		str.Format(_T("It is trouble to read GetItsSerialInfo()."));
+//		pView->MsgBox(str);
+//		return FALSE;
+//	}
+//
+//	BOOL bDualTest = WorkingInfo.LastJob.bDualTest;
+//
+//	if (bDualTest && bDualTestInner)	// 11 -> 외층 : 양면, 내층 : 양면
+//		LoadPCRIts11(nSerial);
+//	else if (bDualTest && !bDualTestInner)	// 10 -> 외층 : 양면, 내층 : 단면
+//		LoadPCRIts10(nSerial);
+//	else if (!bDualTest && bDualTestInner)	// 01 -> 외층 : 단면, 내층 : 양면
+//		LoadPCRIts01(nSerial);
+//	else 								// 00 -> 외층 : 단면, 내층 : 단면
+//		LoadPCRIts00(nSerial);
+//
+//	return (1); // 1(정상)
+//}
+//
+//void CGvisR2R_PunchDoc::LoadPCRIts11(int nSerial) // 11 -> 외층 : 양면, 내층 : 양면
+//{
+//	int i, idx;//, k
+//	CString str;
+//	int nIdx;
+//
+//	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
+//		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
+//	else
+//		nIdx = GetPcrIdx0(nSerial);
+//
+//	//if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
+//	//	return(2);
+//	//if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
+//	//	return(2);
+//
+//	m_pPcrIts[nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
+//	m_pPcrIts[nIdx]->m_nSerial = nSerial;
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	if (m_pPcr[2][nIdx]->m_nErrPnl < 0)
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
+//	else if (m_pPcrInner[2][nIdx]->m_nErrPnl < 0)
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcrInner[2][nIdx]->m_nErrPnl;
+//	else
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
+//
+//	// Model
+//	m_pPcrIts[nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
+//
+//	// Layer
+//	m_pPcrIts[nIdx]->m_sLayerOutUp = m_pPcr[0][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerOutDn = m_pPcr[1][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerInUp = m_pPcrInner[0][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerInDn = m_pPcrInner[1][nIdx]->m_sLayer;
+//
+//	// Lot
+//	m_pPcrIts[nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
+//
+//	int nTotDef[3] = { 0 };									// [0]: 외층, [1]: 내층, [2]: 내/외층 Merge
+//	nTotDef[0] = pDoc->m_pPcr[2][nIdx]->m_nTotDef;			// 외층 불량 피스 수
+//	nTotDef[1] = pDoc->m_pPcrInner[2][nIdx]->m_nTotDef;		// 내층 불량 피스 수
+//
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
+//
+//	int nPcsId;												// nPcsId : CamMaster Pcs Index
+//															// pPcrMgr테이블의 nIdx에 내층의 불량을 먼저 기록하고 외층의 불량을 엎어서 최종 merge불량 테이블을 만듬.
+//	for (i = 0; i < nTotDef[1]; i++)						// 내층 불량 피스 수
+//	{
+//		nPcsId = m_pPcrInner[2][nIdx]->m_pDefPcs[i];		// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxDn = i; // 내층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
+//	}
+//	for (i = 0; i < nTotDef[0]; i++)						// 외층 불량 피스 수
+//	{
+//		nPcsId = m_pPcr[2][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxUp = i;	// 외층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
+//	}
+//
+//
+//	nTotDef[2] = 0;
+//	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
+//	{
+//		if (pPcrMgr[i].nIdx > -1)	// 외층+내층			// 내외층 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//			nTotDef[2]++;									// 내외층 Merge한 총 불량피스수.
+//	}
+//
+//	m_pPcrIts[nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
+//
+//	int nId[2], Ord;										// [0]: 외층 0~불량피스순서, [1]: 내층 0~불량피스순서
+//	idx = 0;												// 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
+//	if (nTotDef[2] > 0)										// 내외층 Merge한 총 불량피스수.
+//	{
+//		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
+//		{
+//			nId[0] = pPcrMgr[nPcsId].nIdxUp;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 외층에서의 PCR파일순서 인덱스
+//			nId[1] = pPcrMgr[nPcsId].nIdxDn;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 내층에서의 PCR파일순서 인덱스
+//
+//			if (nId[0] > -1)
+//			{
+//				Ord = nId[0];
+//				// Cam ID
+//				m_pPcrIts[nIdx]->m_nCamId = m_pPcr[2][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcr[2][nIdx]->m_pDefPcs[Ord];
+//				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcr[2][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcr[2][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcr[2][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcr[2][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcr[2][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcr[2][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcr[2][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcr[2][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//			else if (nId[1] > -1)
+//			{
+//				Ord = nId[1];
+//				// Cam ID
+//				m_pPcrIts[nIdx]->m_nCamId = m_pPcrInner[2][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcrInner[2][nIdx]->m_pDefPcs[Ord];
+//				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcrInner[2][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcrInner[2][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcrInner[2][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcrInner[2][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcrInner[2][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcrInner[2][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//		}
+//	}
+//	delete[] pPcrMgr;
+//}
+//
+//void CGvisR2R_PunchDoc::LoadPCRIts10(int nSerial) // 10 -> 외층 : 양면, 내층 : 단면
+//{
+//	int i, idx;//, k
+//	CString str;
+//	int nIdx;
+//
+//	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
+//		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
+//	else
+//		nIdx = GetPcrIdx0(nSerial);
+//
+//	//if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
+//	//	return(2);
+//	//if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
+//	//	return(2);
+//
+//	m_pPcrIts[nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
+//	m_pPcrIts[nIdx]->m_nSerial = nSerial;
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	if (m_pPcr[2][nIdx]->m_nErrPnl < 0)
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
+//	else if (m_pPcrInner[0][nIdx]->m_nErrPnl < 0)
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcrInner[0][nIdx]->m_nErrPnl;
+//	else
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[2][nIdx]->m_nErrPnl;
+//
+//	// Model
+//	m_pPcrIts[nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
+//
+//	// Layer
+//	m_pPcrIts[nIdx]->m_sLayerOutUp = m_pPcr[0][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerOutDn = m_pPcr[1][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerInUp = m_pPcrInner[0][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerInDn = _T(""); // m_pPcrInner[1][nIdx]->m_sLayer;
+//
+//	// Lot
+//	m_pPcrIts[nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
+//
+//	int nTotDef[3] = { 0 };									// [0]: 외층, [1]: 내층, [2]: 내/외층 Merge
+//	nTotDef[0] = pDoc->m_pPcr[2][nIdx]->m_nTotDef;			// 외층 불량 피스 수
+//	nTotDef[1] = pDoc->m_pPcrInner[0][nIdx]->m_nTotDef;		// 내층 불량 피스 수
+//
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
+//
+//	int nPcsId;												// nPcsId : CamMaster Pcs Index
+//															// pPcrMgr테이블의 nIdx에 내층의 불량을 먼저 기록하고 외층의 불량을 엎어서 최종 merge불량 테이블을 만듬.
+//	for (i = 0; i < nTotDef[1]; i++)						// 내층 불량 피스 수
+//	{
+//		nPcsId = m_pPcrInner[0][nIdx]->m_pDefPcs[i];		// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxDn = i; // 내층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
+//	}
+//	for (i = 0; i < nTotDef[0]; i++)						// 외층 불량 피스 수
+//	{
+//		nPcsId = m_pPcr[2][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxUp = i;	// 외층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
+//	}
+//
+//
+//	nTotDef[2] = 0;
+//	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
+//	{
+//		if (pPcrMgr[i].nIdx > -1)	// 외층+내층			// 내외층 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//			nTotDef[2]++;									// 내외층 Merge한 총 불량피스수.
+//	}
+//
+//	m_pPcrIts[nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
+//
+//	int nId[2], Ord;										// [0]: 외층 0~불량피스순서, [1]: 내층 0~불량피스순서
+//	idx = 0;												// 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
+//	if (nTotDef[2] > 0)										// 내외층 Merge한 총 불량피스수.
+//	{
+//		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
+//		{
+//			nId[0] = pPcrMgr[nPcsId].nIdxUp;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 외층에서의 PCR파일순서 인덱스
+//			nId[1] = pPcrMgr[nPcsId].nIdxDn;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 내층에서의 PCR파일순서 인덱스
+//
+//			if (nId[0] > -1)
+//			{
+//				Ord = nId[0];
+//				// Cam ID
+//				m_pPcrIts[nIdx]->m_nCamId = m_pPcr[2][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcr[2][nIdx]->m_pDefPcs[Ord];
+//				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcr[2][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcr[2][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcr[2][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcr[2][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcr[2][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcr[2][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcr[2][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcr[2][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//			else if (nId[1] > -1)
+//			{
+//				Ord = nId[1];
+//				// Cam ID
+//				m_pPcrIts[nIdx]->m_nCamId = m_pPcrInner[0][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcrInner[0][nIdx]->m_pDefPcs[Ord];
+//				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcrInner[0][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcrInner[0][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcrInner[0][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcrInner[0][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcrInner[0][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcrInner[0][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcrInner[0][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcrInner[0][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//		}
+//	}
+//	delete[] pPcrMgr;
+//}
+//
+//void CGvisR2R_PunchDoc::LoadPCRIts01(int nSerial) // 11 -> 외층 : 단면, 내층 : 양면
+//{
+//	int i, idx;//, k
+//	CString str;
+//	int nIdx;
+//
+//	if (m_bNewLotShare[0] && (WorkingInfo.LastJob.bLotSep || m_bDoneChgLot))
+//		nIdx = GetPcrIdx0(nSerial, TRUE); // 릴맵화면 표시 인덱스
+//	else
+//		nIdx = GetPcrIdx0(nSerial);
+//
+//	//if (!m_pPcr[0] || !m_pPcr[1] || !m_pPcr[2])
+//	//	return(2);
+//	//if (!m_pPcr[0][nIdx] || !m_pPcr[1][nIdx] || !m_pPcr[2][nIdx])
+//	//	return(2);
+//
+//	m_pPcrIts[nIdx]->m_nIdx = nIdx;							// m_nIdx : From 0 to nTot.....
+//	m_pPcrIts[nIdx]->m_nSerial = nSerial;
+//
+//	// Error Code											// 1(정상), -1(Align Error, 노광불량), -2(Lot End)
+//	if (m_pPcr[0][nIdx]->m_nErrPnl < 0)
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
+//	else if (m_pPcrInner[2][nIdx]->m_nErrPnl < 0)
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcrInner[2][nIdx]->m_nErrPnl;
+//	else
+//		m_pPcrIts[nIdx]->m_nErrPnl = m_pPcr[0][nIdx]->m_nErrPnl;
+//
+//	// Model
+//	m_pPcrIts[nIdx]->m_sModel = m_pPcr[0][nIdx]->m_sModel;
+//
+//	// Layer
+//	m_pPcrIts[nIdx]->m_sLayerOutUp = m_pPcr[0][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerOutDn = _T(""); // m_pPcr[1][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerInUp = m_pPcrInner[0][nIdx]->m_sLayer;
+//	m_pPcrIts[nIdx]->m_sLayerInDn = m_pPcrInner[1][nIdx]->m_sLayer;
+//
+//	// Lot
+//	m_pPcrIts[nIdx]->m_sLot = m_pPcr[0][nIdx]->m_sLot;
+//
+//	int nTotDef[3] = { 0 };									// [0]: 외층, [1]: 내층, [2]: 내/외층 Merge
+//	nTotDef[0] = pDoc->m_pPcr[0][nIdx]->m_nTotDef;			// 외층 불량 피스 수
+//	nTotDef[1] = pDoc->m_pPcrInner[2][nIdx]->m_nTotDef;		// 내층 불량 피스 수
+//
+//	int nTotPcs = m_Master[0].m_pPcsRgn->nTotPcs;
+//	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
+//
+//	int nPcsId;												// nPcsId : CamMaster Pcs Index
+//															// pPcrMgr테이블의 nIdx에 내층의 불량을 먼저 기록하고 외층의 불량을 엎어서 최종 merge불량 테이블을 만듬.
+//	for (i = 0; i < nTotDef[1]; i++)						// 내층 불량 피스 수
+//	{
+//		nPcsId = m_pPcrInner[2][nIdx]->m_pDefPcs[i];		// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxDn = i; // 내층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서임.
+//	}
+//	for (i = 0; i < nTotDef[0]; i++)						// 외층 불량 피스 수
+//	{
+//		nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];				// nPcsId : CamMaster Pcs Index
+//		pPcrMgr[nPcsId].nIdx = i;	// 외층+내층			// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//		pPcrMgr[nPcsId].nIdxUp = i;	// 외층					// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서임.
+//	}
+//
+//
+//	nTotDef[2] = 0;
+//	for (i = 0; i < nTotPcs; i++)							// Shot내 총 Piece수
+//	{
+//		if (pPcrMgr[i].nIdx > -1)	// 외층+내층			// 내외층 Merge [i:CamMaster Pcs Index]의 nIdx (0~)는 불량표시순서임.
+//			nTotDef[2]++;									// 내외층 Merge한 총 불량피스수.
+//	}
+//
+//	m_pPcrIts[nIdx]->Init(nSerial, nTotDef[2]);				// 제품시리얼, Shot내 총불량 피스수
+//
+//	int nId[2], Ord;										// [0]: 외층 0~불량피스순서, [1]: 내층 0~불량피스순서
+//	idx = 0;												// 마킹순서 0~불량피스수만큼 정하기위해 현시점의 idx를 초기화함.
+//	if (nTotDef[2] > 0)										// 내외층 Merge한 총 불량피스수.
+//	{
+//		for (nPcsId = 0; nPcsId < nTotPcs; nPcsId++)
+//		{
+//			nId[0] = pPcrMgr[nPcsId].nIdxUp;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxUp (0~)는 불량표시순서 임. nId[0]: 외층에서의 PCR파일순서 인덱스
+//			nId[1] = pPcrMgr[nPcsId].nIdxDn;				// 내외층 Merge [nPcsId:CamMaster Pcs Index]의 nIdxDn (0~)는 불량표시순서 임. nId[1]: 내층에서의 PCR파일순서 인덱스
+//
+//			if (nId[0] > -1)
+//			{
+//				Ord = nId[0];
+//				// Cam ID
+//				m_pPcrIts[nIdx]->m_nCamId = m_pPcr[0][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcr[0][nIdx]->m_pDefPcs[Ord];
+//				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcr[0][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcr[0][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcr[0][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcr[0][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcr[0][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcr[0][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcr[0][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcr[0][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//			else if (nId[1] > -1)
+//			{
+//				Ord = nId[1];
+//				// Cam ID
+//				m_pPcrIts[nIdx]->m_nCamId = m_pPcrInner[2][nIdx]->m_nCamId;
+//				// Piece Number
+//				m_pPcrIts[nIdx]->m_pDefPcs[idx] = m_pPcrInner[2][nIdx]->m_pDefPcs[Ord];
+//				m_pPcrIts[nIdx]->m_pLayer[idx] = m_pPcrInner[2][nIdx]->m_pLayer[Ord];
+//				// BadPointPosX
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].x = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].x;
+//				// BadPointPosY
+//				m_pPcrIts[nIdx]->m_pDefPos[idx].y = m_pPcrInner[2][nIdx]->m_pDefPos[Ord].y;
+//				// BadName
+//				m_pPcrIts[nIdx]->m_pDefType[idx] = m_pPcrInner[2][nIdx]->m_pDefType[Ord];
+//				// CellNum
+//				m_pPcrIts[nIdx]->m_pCell[idx] = m_pPcrInner[2][nIdx]->m_pCell[Ord];
+//				// ImageSize
+//				m_pPcrIts[nIdx]->m_pImgSz[idx] = m_pPcrInner[2][nIdx]->m_pImgSz[Ord];
+//				// ImageNum
+//				m_pPcrIts[nIdx]->m_pImg[idx] = m_pPcrInner[2][nIdx]->m_pImg[Ord];
+//				// strMarkingCode : -2 (NoMarking)
+//				m_pPcrIts[nIdx]->m_pMk[idx] = m_pPcrInner[2][nIdx]->m_pMk[Ord];
+//
+//				idx++;
+//			}
+//		}
+//	}
+//	delete[] pPcrMgr;
+//}
+//
+//void CGvisR2R_PunchDoc::LoadPCRIts00(int nSerial) // 10 -> 외층 : 단면, 내층 : 단면
+//{
+//	pView->ClrDispMsg();
+//	pView->MsgBox(_T("LoadPCRIts00 - 내외층 모두 단면인 경우는 프로그램이 없습니다."));
+//	return;
+//}
+//
+//
+//BOOL CGvisR2R_PunchDoc::InitReelmapInner()
+//{
+//	if (!m_MasterInner[0].m_pPcsRgn)
+//	{
+//		CString strMsg;
+//		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
+//		//pView->MsgBox(strMsg);
+//		pView->ClrDispMsg();
+//		AfxMessageBox(strMsg, MB_ICONSTOP);
+//		return FALSE;
+//	}
+//	
+//	//GetCurrentInfoEng();
+//	int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
+//	BOOL bDualTest = WorkingInfo.LastJob.bDualTestInner;
+//
+//	//if (m_pReelMapInner)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapInner;
+//	//	m_pReelMapInner = NULL;
+//	//}
+//	//m_pReelMapInner = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	if (m_pReelMapInnerUp)
+//	{
+//		//m_pReelMapUp->ResetReelmap();
+//		delete m_pReelMapInnerUp;
+//		m_pReelMapInnerUp = NULL;
+//	}
+//	m_pReelMapInnerUp = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapUp->m_nLayer = RMAP_UP;
+//
+//	//if (m_pReelMapInOuterUp)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapInOuterUp;
+//	//	m_pReelMapInOuterUp = NULL;
+//	//}
+//	//m_pReelMapInOuterUp = new CReelMap(RMAP_INOUTER_UP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	//if (m_pReelMapIts)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapIts;
+//	//	m_pReelMapIts = NULL;
+//	//}
+//	//m_pReelMapIts = new CReelMap(RMAP_ITS, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	if (bDualTest)
+//	{
+//		if (m_pReelMapInnerDn)
+//		{
+//			//m_pReelMapDn->ResetReelmap();
+//			delete m_pReelMapInnerDn;
+//			m_pReelMapInnerDn = NULL;
+//		}
+//		m_pReelMapInnerDn = new CReelMap(RMAP_INNER_DN, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapDn->m_nLayer = RMAP_DN;
+//
+//		if (m_pReelMapInnerAllUp)
+//		{
+//			//m_pReelMapAllUp->ResetReelmap();
+//			delete m_pReelMapInnerAllUp;
+//			m_pReelMapInnerAllUp = NULL;
+//		}
+//		m_pReelMapInnerAllUp = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
+//
+//		if (m_pReelMapInnerAllDn)
+//		{
+//			//m_pReelMapAllDn->ResetReelmap();
+//			delete m_pReelMapInnerAllDn;
+//			m_pReelMapInnerAllDn = NULL;
+//		}
+//		m_pReelMapInnerAllDn = new CReelMap(RMAP_INNER_ALLDN, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
+//
+//		//if (m_pReelMapInOuterDn)
+//		//{
+//		//	//m_pReelMap->ResetReelmap();
+//		//	delete m_pReelMapInOuterDn;
+//		//	m_pReelMapInOuterDn = NULL;
+//		//}
+//		//m_pReelMapInOuterDn = new CReelMap(RMAP_INOUTER_DN, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//		//if (m_pReelMapInner)
+//		//{
+//		//	//m_pReelMap->ResetReelmap();
+//		//	delete m_pReelMapInner;
+//		//	m_pReelMapInner = NULL;
+//		//}
+//		//m_pReelMapInner = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//		m_pReelMapInner = m_pReelMapInnerAllUp;
+//	}
+//	else
+//	{
+//		//if (m_pReelMapInner)
+//		//{
+//		//	//m_pReelMap->ResetReelmap();
+//		//	delete m_pReelMapInner;
+//		//	m_pReelMapInner = NULL;
+//		//}
+//		//m_pReelMapInner = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//		m_pReelMapInner = m_pReelMapInnerUp;
+//	}
+//
+//	if (pDoc->GetTestMode() == MODE_OUTER)
+//	{
+//		if(m_pReelMapIts)
+//			m_pReelMap = m_pReelMapIts;
+//
+//		//CString sPath = m_pReelMap->GetIpPath();
+//		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+//
+//		//CString sPath = m_pReelMap->GetIpPath();
+//		//CString sPathUp = m_pReelMapUp->GetIpPath();
+//		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+//		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapUpPath"), sPathUp);
+//	}
+//
+//	//if (pMkInfo)
+//	//{
+//	//	delete[] pMkInfo;
+//	//	pMkInfo = NULL;
+//	//}
+//	//if (!pMkInfo)
+//	//	pMkInfo = new CString[nTotPcs];
+//
+//	return TRUE;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::InitReelmapInnerUp()
+//{
+//	if (!m_MasterInner[0].m_pPcsRgn)
+//	{
+//		CString strMsg;
+//		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
+//		pView->MsgBox(strMsg);
+//		//AfxMessageBox(strMsg,MB_ICONSTOP);
+//		return FALSE;
+//	}
+//
+//	//GetCurrentInfoEng();
+//	BOOL bDualTest = WorkingInfo.LastJob.bDualTestInner;
+//	int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
+//	//int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
+//	//int nTotPcs = m_MasterInner[0].m_pPcsRgn->nTotPcs;
+//
+//	//if (m_pReelMapInner)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapInner;
+//	//	m_pReelMapInner = NULL;
+//	//}
+//	//m_pReelMapInner = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	if (m_pReelMapInnerUp)
+//	{
+//		//m_pReelMapUp->ResetReelmap();
+//		delete m_pReelMapInnerUp;
+//		m_pReelMapInnerUp = NULL;
+//	}
+//	m_pReelMapInnerUp = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapUp->m_nLayer = RMAP_UP;
+//
+//	//if (m_pReelMapInOuterUp)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapInOuterUp;
+//	//	m_pReelMapInOuterUp = NULL;
+//	//}
+//	//m_pReelMapInOuterUp = new CReelMap(RMAP_INOUTER_UP, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	//if (m_pReelMapIts)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapIts;
+//	//	m_pReelMapIts = NULL;
+//	//}
+//	//m_pReelMapIts = new CReelMap(RMAP_ITS, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	if (bDualTest)
+//	{
+//
+//		if (m_pReelMapInnerAllUp)
+//		{
+//			//m_pReelMapAllUp->ResetReelmap();
+//			delete m_pReelMapInnerAllUp;
+//			m_pReelMapInnerAllUp = NULL;
+//		}
+//		m_pReelMapInnerAllUp = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);
+//		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
+//
+//		//if (m_pReelMapInner)
+//		//{
+//		//	//m_pReelMap->ResetReelmap();
+//		//	delete m_pReelMapInner;
+//		//	m_pReelMapInner = NULL;
+//		//}
+//		//m_pReelMapInner = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//		m_pReelMapInner = m_pReelMapInnerAllUp;
+//	}
+//	else
+//	{
+//		//if (m_pReelMapInner)
+//		//{
+//		//	//m_pReelMap->ResetReelmap();
+//		//	delete m_pReelMapInner;
+//		//	m_pReelMapInner = NULL;
+//		//}
+//		//m_pReelMapInner = new CReelMap(RMAP_INNER_UP, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//		m_pReelMapInner = m_pReelMapInnerUp;
+//	}
+//
+//	if (pDoc->GetTestMode() == MODE_OUTER)
+//	{
+//		m_pReelMap = m_pReelMapIts;
+//
+//		//CString sPath = m_pReelMap->GetIpPath();
+//		//SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
+//	}
+//
+//	return TRUE;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::InitReelmapInnerDn()
+//{
+//	//GetCurrentInfoEng();
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
+//	if (!bDualTest)
+//		return TRUE;
+//
+//	if (!m_MasterInner[0].m_pPcsRgn)
+//	{
+//		CString strMsg;
+//		strMsg.Format(_T("피스 영역이 존재하지 않습니다."));
+//		pView->MsgBox(strMsg);
+//		//AfxMessageBox(strMsg,MB_ICONSTOP);
+//		return FALSE;
+//	}
+//
+//	//int nTotPcs = m_MasterInner[0].GetTotPcs();
+//	int nTotPcs = m_MasterInner[0].m_pPcsRgn->GetTotPcs();
+//	//int nTotPcs = m_MasterInner[0].m_pPcsRgn->nTotPcs;
+//
+//	//if (m_pReelMapInner)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapInner;
+//	//	m_pReelMapInner = NULL;
+//	//}
+//	//m_pReelMapInner = new CReelMap(RMAP_INNER_ALLUP, MAX_DISP_PNL, nTotPcs);	// Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	if (m_pReelMapInnerDn)
+//	{
+//		//m_pReelMapDn->ResetReelmap();
+//		delete m_pReelMapInnerDn;
+//		m_pReelMapInnerDn = NULL;
+//	}
+//	m_pReelMapInnerDn = new CReelMap(RMAP_INNER_DN, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapDn->m_nLayer = RMAP_DN;
+//
+//	if (m_pReelMapInnerAllDn)
+//	{
+//		//m_pReelMapAllDn->ResetReelmap();
+//		delete m_pReelMapInnerAllDn;
+//		m_pReelMapInnerAllDn = NULL;
+//	}
+//	m_pReelMapInnerAllDn = new CReelMap(RMAP_INNER_ALLDN, MAX_DISP_PNL, nTotPcs);
+//	//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
+//
+//	//if (m_pReelMapInOuterDn)
+//	//{
+//	//	//m_pReelMap->ResetReelmap();
+//	//	delete m_pReelMapInOuterDn;
+//	//	m_pReelMapInOuterDn = NULL;
+//	//}
+//	//m_pReelMapInOuterDn = new CReelMap(RMAP_INOUTER_DN, MAX_DISP_PNL, nTotPcs); // Default: RMAP_NONE (RMAP_INNER -> RMAP_INNER_UP)
+//
+//	return TRUE;
+//}
+//
+//
+//void CGvisR2R_PunchDoc::SetReelmapInner(int nDir)
+//{
+//	if (!m_pReelMapInner || !m_MasterInner[0].m_pPcsRgn)
+//		return;
+//
+//	if (!m_pReelMapInner->pFrmRgn || !m_pReelMapInner->pPcsRgn)
+//		return;
+//
+//	int i, k;
+//	double fData1, fData2, fData3, fData4, fDistX, fDistY;
+//	double fWidth, fHeight, fRight, fBottom;
+//
+//	m_pReelMapInner->nDir = nDir;
+//
+//	int nTotPnl = m_pReelMapInner->nTotPnl;
+//	int nTotPcs = m_pReelMapInner->nTotPcs;
+//
+//	// 	double dScale = (MasterInfo.dPixelSize/10.0);
+//	double dScale = (m_MasterInner[0].MasterInfo.dPixelSize / 10.0);
+//	m_pReelMapInner->SetAdjRatio(dScale);
+//	dScale = m_pReelMapInner->GetAdjRatio();
+//
+//	for (k = 0; k < nTotPnl; k++)
+//	{
+//		switch (nDir)
+//		{
+//		case ROT_NONE:
+//			fWidth = (m_MasterInner[0].m_pPcsRgn->pPcs[0].right - m_MasterInner[0].m_pPcsRgn->pPcs[0].left);
+//			fHeight = (m_MasterInner[0].m_pPcsRgn->pPcs[0].bottom - m_MasterInner[0].m_pPcsRgn->pPcs[0].top);
+//			fRight = m_MasterInner[0].m_pPcsRgn->rtFrm.right - fWidth * (1.0 - RMAP_PCS_SCALE);
+//			fBottom = m_MasterInner[0].m_pPcsRgn->rtFrm.bottom - fHeight * (1.0 - RMAP_PCS_SCALE);;
+//			m_pReelMapInner->pFrmRgn[k].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_MasterInner[0].m_pPcsRgn->rtFrm.left;
+//			m_pReelMapInner->pFrmRgn[k].top = m_MasterInner[0].m_pPcsRgn->rtFrm.top;
+//			m_pReelMapInner->pFrmRgn[k].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fRight;
+//			m_pReelMapInner->pFrmRgn[k].bottom = fBottom;
+//			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
+//			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
+//			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
+//			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
+//
+//			for (i = 0; i < nTotPcs; i++)
+//			{
+//				fWidth = (m_MasterInner[0].m_pPcsRgn->pPcs[i].right - m_MasterInner[0].m_pPcsRgn->pPcs[i].left);
+//				fHeight = (m_MasterInner[0].m_pPcsRgn->pPcs[i].bottom - m_MasterInner[0].m_pPcsRgn->pPcs[i].top);
+//				fData1 = m_MasterInner[0].m_pPcsRgn->pPcs[i].left;	// left
+//				fData2 = m_MasterInner[0].m_pPcsRgn->pPcs[i].top;	// top
+//				fData3 = fData1 + fWidth * RMAP_PCS_SCALE; // right
+//				fData4 = fData2 + fHeight * RMAP_PCS_SCALE; // bottom
+//
+//				m_pReelMapInner->pPcsRgn[k][i].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+//				m_pReelMapInner->pPcsRgn[k][i].top = fData2;
+//				m_pReelMapInner->pPcsRgn[k][i].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.right + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+//				m_pReelMapInner->pPcsRgn[k][i].bottom = fData4;
+//			}
+//			break;
+//			// 		case ROT_NONE:
+//			// 			m_pReelMap->pFrmRgn[k].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.left;
+//			// 			m_pReelMap->pFrmRgn[k].top = m_pPcsRgn->rtFrm.top;
+//			// 			m_pReelMap->pFrmRgn[k].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+m_pPcsRgn->rtFrm.right;
+//			// 			m_pReelMap->pFrmRgn[k].bottom = m_pPcsRgn->rtFrm.bottom;
+//			// 
+//			// 			for(i=0; i<nTotPcs; i++)
+//			// 			{
+//			// 				fData1 = m_pPcsRgn->pPcs[i].left; // left
+//			// 				fData2 = m_pPcsRgn->pPcs[i].top; // top
+//			// 				fData3 = m_pPcsRgn->pPcs[i].right; // right
+//			// 				fData4 = m_pPcsRgn->pPcs[i].bottom; // bottom
+//			// 
+//			// 				m_pReelMap->pPcsRgn[k][i].left = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData1;
+//			// 				m_pReelMap->pPcsRgn[k][i].top = fData2;
+//			// 				m_pReelMap->pPcsRgn[k][i].right = (m_pPcsRgn->rtFrm.right+MYGL_GAP_PNL*dScale)*(nTotPnl-1-k)+fData3;
+//			// 				m_pReelMap->pPcsRgn[k][i].bottom = fData4;
+//			// 			}
+//			// 			break;
+//		case ROT_CCW_90: // right->bottom, top->left, bottom->right, left->top ; Dir (x *= 1, y *= -1) 
+//			fDistX = 0;
+//			fDistY = m_MasterInner[0].m_pPcsRgn->rtFrm.left + m_MasterInner[0].m_pPcsRgn->rtFrm.right;
+//			m_pReelMapInner->pFrmRgn[k].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_MasterInner[0].m_pPcsRgn->rtFrm.top;
+//			m_pReelMapInner->pFrmRgn[k].top = fDistY - m_Master[0].m_pPcsRgn->rtFrm.right;
+//			m_pReelMapInner->pFrmRgn[k].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + m_MasterInner[0].m_pPcsRgn->rtFrm.bottom;
+//			m_pReelMapInner->pFrmRgn[k].bottom = fDistY - m_MasterInner[0].m_pPcsRgn->rtFrm.left;
+//
+//			for (i = 0; i < nTotPcs; i++)
+//			{
+//				fData1 = m_MasterInner[0].m_pPcsRgn->pPcs[i].top;	// left
+//				fData2 = fDistY - m_MasterInner[0].m_pPcsRgn->pPcs[i].right;	// top
+//				fData3 = m_MasterInner[0].m_pPcsRgn->pPcs[i].bottom;	// right
+//				fData4 = fDistY - m_MasterInner[0].m_pPcsRgn->pPcs[i].left; // bottom
+//
+//				m_pReelMapInner->pPcsRgn[k][i].left = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData1;
+//				m_pReelMapInner->pPcsRgn[k][i].top = fData2;
+//				m_pReelMapInner->pPcsRgn[k][i].right = (m_MasterInner[0].m_pPcsRgn->rtFrm.bottom + MYGL_GAP_PNL*dScale)*(nTotPnl - 1 - k) + fData3;
+//				m_pReelMapInner->pPcsRgn[k][i].bottom = fData4;
+//			}
+//			break;
+//		}
+//	}
+//}
+//
+//CString CGvisR2R_PunchDoc::GetItsTargetPath(int nSerial, int nLayer)	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
+//{
+//	CString sPath, str;
+//	CString sItsFolderPath = GetItsTargetFolderPath();
+//	CString sTime = pView->GetTimeIts();
+//
+//	switch (nLayer)
+//	{
+//	case RMAP_UP: // 외층 Top
+//		str.Format(_T("%s_L1_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+//		break;
+//	case RMAP_DN: // 외층 Bottom
+//		str.Format(_T("%s_L4_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+//		break;
+//	case RMAP_INNER_UP: // 내층 Top
+//		str.Format(_T("%s_L2_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+//		break;
+//	case RMAP_INNER_DN: // 내층 Bottom
+//		str.Format(_T("%s_L3_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\%s"), sItsFolderPath, str);
+//		break;
+//	}
+//
+//	return sPath;
+//}
+//
+//
+//CString CGvisR2R_PunchDoc::GetItsPath(int nSerial, int nLayer)	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
+//{
+//	CString sPath, str;
+//	CString sItsFolderPath = GetItsFolderPath();
+//	CString sTime = pView->GetTimeIts();
+//
+//	switch (nLayer)
+//	{
+//	case RMAP_UP: // 외층 Top
+//		str.Format(_T("%s_L1_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
+//		break;
+//	case RMAP_DN: // 외층 Bottom
+//		str.Format(_T("%s_L4_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\Outer\\%s"), sItsFolderPath, str);
+//		break;
+//	case RMAP_INNER_UP: // 내층 Top
+//		str.Format(_T("%s_L2_%04d_T_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\Inner\\%s"), sItsFolderPath, str);
+//		break;
+//	case RMAP_INNER_DN: // 내층 Bottom
+//		str.Format(_T("%s_L3_%04d_B_%s_%s_AVR01_%s.dat"), m_sItsCode, nSerial, WorkingInfo.LastJob.sSelUserName, WorkingInfo.System.sMcName, sTime);
+//		sPath.Format(_T("%s\\Inner\\%s"), sItsFolderPath, str);
+//		break;
+//	}
+//
+//	return sPath;
+//}
+//
+//int CGvisR2R_PunchDoc::GetItsDefCode(int nDefCode)
+//{
+//	CString sDefCode;
+//	sDefCode.Format(_T("%c"), pDoc->m_cBigDefCode[nDefCode]);
+//
+//	// [Sapp3Code]
+//	if (sDefCode == _T("N"))		//1 NICK = 137 -> m_nSapp3Code[SAPP3_NICK]
+//		return m_nSapp3Code[SAPP3_NICK];
+//	else if (sDefCode == _T("D"))	//2 SPACE_EXTRA_PROTRUSION = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] : PROTRUSION
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("A"))	//3 SPACE_EXTRA_PROTRUSION = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] : SPACE 
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("O"))	//4 OPEN = 102 -> m_nSapp3Code[SAPP3_OPEN]
+//		return m_nSapp3Code[SAPP3_OPEN];
+//	else if (sDefCode == _T("S"))	//5 SHORT = 129 -> m_nSapp3Code[SAPP3_SHORT]
+//		return m_nSapp3Code[SAPP3_SHORT];
+//	else if (sDefCode == _T("U"))	//6 USHORT = 129 -> m_nSapp3Code[SAPP3_USHORT]
+//		return m_nSapp3Code[SAPP3_USHORT];
+//	else if (sDefCode == _T("I"))	//7 PINHOLE = 134 -> m_nSapp3Code[SAPP3_PINHOLE]
+//		return m_nSapp3Code[SAPP3_PINHOLE];
+//	else if (sDefCode == _T("H"))	//8 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : No Hole
+//		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
+//	else if (sDefCode == _T("E"))	//9 SPACE_EXTRA_PROTRUSION = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION] : EXTRA
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("P"))	//10 PAD = 316 -> m_nSapp3Code[SAPP3_PAD]
+//		return m_nSapp3Code[SAPP3_PAD];
+//	else if (sDefCode == _T("L"))	//11 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : Hole Align
+//		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
+//	else if (sDefCode == _T("X"))	//12 : POI -> m_nSapp3Code[SAPP3_SHORT]
+//		return m_nSapp3Code[SAPP3_SHORT];
+//	else if (sDefCode == _T("T"))	//13 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : VH Align
+//		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
+//	else if (sDefCode == _T("M"))	//14 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : No VH
+//		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
+//	else if (sDefCode == _T("F"))	//15 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : Hole Defect
+//		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
+//	else if (sDefCode == _T("C"))	//16 HOPEN = 308 -> m_nSapp3Code[SAPP3_HOPEN]
+//		return m_nSapp3Code[SAPP3_HOPEN];
+//	else if (sDefCode == _T("G"))	//17 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : VH Open
+//		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
+//	else if (sDefCode == _T("V"))	//18 HMISS_HPOS_HBAD = 309 -> m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD] : VH Def
+//		return m_nSapp3Code[SAPP3_HMISS_HPOS_HBAD];
+//	else if (sDefCode == _T("K"))	//19 E.Nick = 137 -> m_nSapp3Code[SAPP3_NICK]
+//		return m_nSapp3Code[SAPP3_NICK];
+//	else if (sDefCode == _T("R"))	//20 E.Prot = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("B"))	//21 E.Space = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("J"))	//22 UDD1 = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("Q"))	//23 Narrow = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("W"))	//24 Wide = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//	else if (sDefCode == _T("?"))	//25 Light = 160 -> m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION]
+//		return m_nSapp3Code[SAPP3_SPACE_EXTRA_PROTRUSION];
+//
+//	return 0;
+//}
+//
+//BOOL CGvisR2R_PunchDoc::MakeItsDir(CString sModel, CString sLot, CString sLayer)
+//{
+//	CString sMsg = _T("");
+//	CFileFind finder;
+//	CString sPath;
+//
+//	sPath.Format(_T("%s"), pDoc->WorkingInfo.System.sPathItsFile);
+//	int pos = sPath.ReverseFind('\\');
+//	if (pos != -1)
+//		sPath.Delete(pos, sPath.GetLength() - pos);
+//
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	if (sModel.IsEmpty() || sLot.IsEmpty() || sLayer.IsEmpty())
+//	{
+//		sMsg.Format(_T("모델이나 로뜨 또는 레이어명이 없습니다."));
+//		pView->ClrDispMsg();
+//		AfxMessageBox(sMsg);
+//		return FALSE;
+//	}
+//
+//	sPath.Format(_T("%s%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel);
+//
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//	
+//	sPath.Format(_T("%s%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode);
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode, sLot);
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	sPath.Format(_T("%s%s\\%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathItsFile, sModel, WorkingInfo.LastJob.sEngItsCode, sLot, sLayer);
+//	if (!pDoc->DirectoryExists(sPath))
+//		CreateDirectory(sPath, NULL);
+//
+//	return TRUE;
+//}
 
 void CGvisR2R_PunchDoc::WriteChangedModel()
 {
@@ -13135,36 +12941,36 @@ void CGvisR2R_PunchDoc::WriteChangedModel()
 		pView->m_pDlgMenu01->DispChangedModel();
 }
 
-int CGvisR2R_PunchDoc::GetAoiUpCamMstInfo()
-{
-	TCHAR szData[200];
-	CString sPath;
-	sPath.Format(_T("%s%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
-		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerUp, pDoc->WorkingInfo.LastJob.sLotUp);
-	//sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpCamInfo,
-	//	pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp);
-		
-	if (0 < ::GetPrivateProfileString(_T("Region"), _T("Piece Region Type"), NULL, szData, sizeof(szData), sPath))
-		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = _ttoi(szData);
-	else
-		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = -1;
-
-	return pDoc->m_Master[0].MasterInfo.nOutFileOnAoi;
-}
-
-int CGvisR2R_PunchDoc::GetAoiDnCamMstInfo()
-{
-	TCHAR szData[200];
-	CString sPath;
-	sPath.Format(_T("%s%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
-		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerDn, pDoc->WorkingInfo.LastJob.sLotUp);
-	//sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnCamInfo,
-	//	pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn);
-
-	if (0 < ::GetPrivateProfileString(_T("Region"), _T("Piece Region Type"), NULL, szData, sizeof(szData), sPath))
-		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = _ttoi(szData);
-	else
-		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = -1;
-
-	return pDoc->m_Master[1].MasterInfo.nOutFileOnAoi;
-}
+//int CGvisR2R_PunchDoc::GetAoiUpCamMstInfo()
+//{
+//	TCHAR szData[200];
+//	CString sPath;
+//	sPath.Format(_T("%s%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpVrsData,
+//		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerUp, pDoc->WorkingInfo.LastJob.sLotUp);
+//	//sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiUpCamInfo,
+//	//	pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerUp);
+//		
+//	if (0 < ::GetPrivateProfileString(_T("Region"), _T("Piece Region Type"), NULL, szData, sizeof(szData), sPath))
+//		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = _ttoi(szData);
+//	else
+//		pDoc->m_Master[0].MasterInfo.nOutFileOnAoi = -1;
+//
+//	return pDoc->m_Master[0].MasterInfo.nOutFileOnAoi;
+//}
+//
+//int CGvisR2R_PunchDoc::GetAoiDnCamMstInfo()
+//{
+//	TCHAR szData[200];
+//	CString sPath;
+//	sPath.Format(_T("%s%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnVrsData,
+//		pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLayerDn, pDoc->WorkingInfo.LastJob.sLotUp);
+//	//sPath.Format(_T("%s\\%s\\%s\\%s\\DataOut.ini"), pDoc->WorkingInfo.System.sPathAoiDnCamInfo,
+//	//	pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sLotUp, pDoc->WorkingInfo.LastJob.sLayerDn);
+//
+//	if (0 < ::GetPrivateProfileString(_T("Region"), _T("Piece Region Type"), NULL, szData, sizeof(szData), sPath))
+//		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = _ttoi(szData);
+//	else
+//		pDoc->m_Master[1].MasterInfo.nOutFileOnAoi = -1;
+//
+//	return pDoc->m_Master[1].MasterInfo.nOutFileOnAoi;
+//}

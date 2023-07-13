@@ -3580,174 +3580,12 @@ void CDlgMenu03::SetAoiDnCleanner(BOOL bOn)
 void CDlgMenu03::SetAoiOnePnl(BOOL bOn)
 {
 #ifdef USE_MPE
-	//pView->IoWrite("MB440151", bOn?1:0);	// 한판넬 이송상태 ON (PC가 ON, OFF)
-	pView->m_pMpe->Write(_T("MB440151"), bOn?1:0);
+	pView->m_pMpe->Write(_T("MB440151"), bOn?1:0);	// 한판넬 이송상태 ON (PC가 ON, OFF)
 #endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bAoiOnePnl = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bAoiOnePnl?1:0);
 	::WritePrivateProfileString(_T("Last Job"), _T("AOI One Pannel Move On"), sData, sPath);
-}
-
-BOOL CDlgMenu03::DoReset()
-{
-	pView->DispThreadTick();
-
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	if(pDoc->Status.bManual)
-	{
-		BOOL bInit=TRUE;
-
-		if(m_bTIM_CHK_DONE_READY)
-		{
-			m_bTIM_CHK_DONE_READY = FALSE;
-			pView->m_bReadyDone = FALSE;
-#ifdef USE_MPE
-			if(pView->m_pMpe)
-				pView->m_pMpe->Write(_T("MB440100"), 0);	// PLC 운전준비 완료(PC가 확인하고 Reset시킴.)
-#endif
-		}
-		pView->ClrDispMsg();
-
-		if (pView->m_pEngrave)
-		{
-			pDoc->BtnStatus.EngAuto.Init = TRUE;
-			pDoc->BtnStatus.EngAuto.IsInit = FALSE;
-			pView->m_pEngrave->SwEngAutoInit(TRUE);
-		}
-		
-		if(IDNO == pView->MsgBox(_T("초기화를 하시겠습니까?"), 0, MB_YESNO, DEFAULT_TIME_OUT, FALSE))
-			bInit = FALSE;
-		else
-		{
-			pDoc->m_bDoneChgLot = FALSE;
-			pView->m_nNewLot = 0;
-
-			if (pView->m_pDlgMenu01)
-				pView->m_pDlgMenu01->ClrInfo();
-		}
-
-		if(!bInit)
-		{
-			if(IDNO == pView->MsgBox(_T("이어가기를 하시겠습니까?"), 0, MB_YESNO, DEFAULT_TIME_OUT, FALSE))
-			{
-				pView->m_bCont = FALSE;
-				return FALSE;
-			}
-			pView->m_bCont = TRUE;
-		}
-		pView->m_nDebugStep = 1; pView->DispThreadTick();
-		pView->InitAuto(bInit);
-
-		pView->m_nDebugStep = 2; pView->DispThreadTick();
-		pView->SetPathAtBuf();
-
-		pView->m_nDebugStep = 3; pView->DispThreadTick();
-		pView->SetAoiDummyShot(0, pView->GetAoiUpDummyShot());
-
-		pView->m_nDebugStep = 4; pView->DispThreadTick();
-		if(bDualTest)
-			pView->SetAoiDummyShot(1, pView->GetAoiDnDummyShot());
-
-		pView->m_nDebugStep = 5; pView->DispThreadTick();
-		pView->m_bAoiFdWrite[0] = FALSE;
-		pView->m_bAoiFdWrite[1] = FALSE;
-		pView->m_bAoiFdWriteF[0] = FALSE;
-		pView->m_bAoiFdWriteF[1] = FALSE;
-		pView->m_bCycleStop = FALSE;
-		pView->m_bContDiffLot = FALSE;
-
-		pView->m_bInit = bInit;
-
-		CFileFind cFile;
-		BOOL bExistSup, bExistBup, bExistSdn, bExistBdn;
-
-		pView->m_nDebugStep = 6; pView->DispThreadTick();
-		bExistSup = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsShareUp + _T("*.pcr"));
-		pView->m_nDebugStep = 7; pView->DispThreadTick();
-		bExistBup = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufUp + _T("*.pcr"));
-		if(bDualTest)
-		{
-			pView->m_nDebugStep = 8; pView->DispThreadTick();
-			bExistSdn = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsShareDn + _T("*.pcr"));
-			pView->m_nDebugStep = 9; pView->DispThreadTick();
-			bExistBdn = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufDn + _T("*.pcr"));
-			if(bExistSup || bExistSdn ||
-				bExistBup || bExistBdn)
-			{
-				pView->m_nDebugStep = 10; pView->DispThreadTick();
-				pDoc->DelPcrAll();
-			}
-			else
-			{
-				pView->m_bIsBuf[0] = FALSE;
-				pView->m_bIsBuf[1] = FALSE;
-			}
-		}
-		else
-		{
-			if(bExistSup || bExistBup)
-			{
-				pView->m_nDebugStep = 11; pView->DispThreadTick();
-				pDoc->DelPcrAll();
-			}
-			else
-			{
-				pView->m_bIsBuf[0] = FALSE;
-				pView->m_bIsBuf[1] = FALSE;
-			}
-		}
-
-		pView->m_nDebugStep = 12; pView->DispThreadTick();
-		pView->TowerLamp(RGB_RED, TRUE, FALSE);
-		pView->m_nDebugStep = 13; pView->DispThreadTick();
-		//pView->DispStsBar(_T("정지-2"), 0);
-		pView->m_nDebugStep = 14; pView->DispThreadTick();
-		pView->DispMain(_T("정 지"), RGB_RED);	
-		pView->m_nDebugStep = 15; pView->DispThreadTick();
-		SwAoiReset(TRUE);
-		pView->OpenReelmap();
-
-		pView->m_nDebugStep = 16; pView->DispThreadTick();
-		if(bInit)
-		{
-			// 초기화
-			pDoc->m_ListBuf[0].Clear();
-			pDoc->m_ListBuf[1].Clear();
-		}
-		else
-		{
-			// 이어가기
-			pView->SetListBuf();
-		}
-		pView->m_nDebugStep = 17; pView->DispThreadTick();
-		
-		return TRUE;
-	}
-
-	return FALSE;		
-}
-
-void CDlgMenu03::DoReady()
-{
-//	if(pDoc->Status.bAuto)
-//	{
-// 		// 한판넬 이송 On
-// 		SetMkOnePnl(TRUE);
-// 		SetAoiOnePnl(TRUE);
-
-		
-		//pView->IoWrite("MB440162", 0); // 마킹부 정지 스위치 램프 ON(PC가 On/Off시킴)  - 20141021	
-	//pView->m_pMpe->Write(_T("MB440162", 0);
-	if(m_bTIM_CHK_DONE_READY)
-	{
-		m_bTIM_CHK_DONE_READY = FALSE;
-		KillTimer(TIM_CHK_DONE_READY);
-	}
-	ChkReadyDone();
-	pDoc->DelPcrAll();
-//	}
 }
 
 void CDlgMenu03::ChkBufHomeDone()
@@ -3875,7 +3713,6 @@ void CDlgMenu03::SwReady(BOOL bOn)
 // 	if(bOn)
 // 	{
 // 		pDoc->m_pSliceIo[6] |= (0x01<<3);	// 마킹부 운전준비 스위치 램프
-// 		DoReady();
 // 	}
 // 	else
 // 		pDoc->m_pSliceIo[6] &= ~(0x01<<3);	// 마킹부 운전준비 스위치 램프
@@ -3884,10 +3721,17 @@ void CDlgMenu03::SwReady(BOOL bOn)
 
 void CDlgMenu03::SwReady()
 {
- 	if(!pView->m_bSwRun)
+ 	if(!pDoc->m_mgrProcedure.m_bSwReady)
 	{
-		pView->m_bSwReady = TRUE;
- 		DoReady();
+		pDoc->m_mgrProcedure.m_bSwReady = TRUE;
+ 		//pView->DoReady();
+		if (m_bTIM_CHK_DONE_READY)
+		{
+			m_bTIM_CHK_DONE_READY = FALSE;
+			KillTimer(TIM_CHK_DONE_READY);
+		}
+		ChkReadyDone();
+		pDoc->m_mgrReelmap.DelPcrAll();
 	}
 }
 
@@ -3905,7 +3749,7 @@ void CDlgMenu03::SwReset()
 // 		return;
 	pView->ClrDispMsg();
 
-	if(!DoReset())
+	if(!pView->DoReset())
 		return;
 
 // 	if(pDoc->m_pSliceIo[6] & (0x01<<1))	// 마킹부 운전 스위치 램프
@@ -3915,10 +3759,10 @@ void CDlgMenu03::SwReset()
 // 	pDoc->m_pSliceIo[6] |= (0x01<<4);	// 마킹부 리셋 스위치 램프	
 
 
-	pView->m_bSwRun = FALSE;
-	pView->m_bSwStop = FALSE;
-	pView->m_bSwReady = FALSE;
-	pView->m_bSwReset = TRUE;
+	//pView->m_bSwRun = FALSE;
+	//pView->m_bSwStop = FALSE;
+	//pView->m_bSwReady = FALSE;
+	//pView->m_bSwReset = TRUE;
 }
 
 // [Torque Motor]

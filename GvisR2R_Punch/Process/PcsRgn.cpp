@@ -86,20 +86,6 @@ void CPcsRgn::SetMkPnt(int nCam)
 {
 	CfPoint ptRef, ptTgt,  ptRefPin[2], ptAdjCM[2];
 	int nC, nR, idx=0;
-	//double dResCam[2];
-
-// 	dResCam[0] = atof(pDoc->WorkingInfo.Vision[0].sCamPxlRes) / 10000.0;
-// 	ptRefPin[0].x = (double)pDoc->m_pCellRgn->nCADPinPosPixX * dResCam[0];
-// 	ptRefPin[0].y = (double)pDoc->m_pCellRgn->nCADPinPosPixY * dResCam[0];
-// 	ptAdjCM[0].x = m_ptPinPos[0].x - ptRefPin[0].x;
-// 	ptAdjCM[0].y = m_ptPinPos[0].y - ptRefPin[0].y;
-// 
-// 	dResCam[1] = atof(pDoc->WorkingInfo.Vision[1].sCamPxlRes) / 10000.0;
-// 	ptRefPin[1].x = (double)pDoc->m_pCellRgn->nCADPinPosPixX * dResCam[1];
-// 	ptRefPin[1].y = (double)pDoc->m_pCellRgn->nCADPinPosPixY * dResCam[1];
-// 	ptAdjCM[1].x = m_ptPinPos[1].x - ptRefPin[1].x;
-// 	ptAdjCM[1].y = m_ptPinPos[1].y - ptRefPin[1].y;
-
 
 	if(nCam == CAM_BOTH)
 	{
@@ -107,13 +93,9 @@ void CPcsRgn::SetMkPnt(int nCam)
 		{
 			for(nR=0; nR<nRow; nR++)
 			{
-				ptRef.x = pDoc->m_Master[0].m_stPcsMk[idx].X;
-				ptRef.y = pDoc->m_Master[0].m_stPcsMk[idx].Y;
+				ptRef.x = pDoc->m_mgrReelmap.m_Master[0].m_stPcsMk[idx].X;
+				ptRef.y = pDoc->m_mgrReelmap.m_Master[0].m_stPcsMk[idx].Y;
 
-// 				pMkPnt[0][idx].x = ptRef.x + ptAdjCM[0].x;
-// 				pMkPnt[0][idx].y = ptRef.y + ptAdjCM[0].y;
-// 				pMkPnt[1][idx].x = ptRef.x + ptAdjCM[1].x;
-// 				pMkPnt[1][idx].y = ptRef.y + ptAdjCM[1].y;
 				pMkPnt[0][idx].x = ptRef.x + m_ptPinPos[0].x;
 				pMkPnt[0][idx].y = ptRef.y + m_ptPinPos[0].y;
 				pMkPnt[1][idx].x = ptRef.x + m_ptPinPos[1].x;
@@ -129,11 +111,9 @@ void CPcsRgn::SetMkPnt(int nCam)
 		{
 			for(nR=0; nR<nRow; nR++)
 			{
-				ptRef.x = pDoc->m_Master[0].m_stPcsMk[idx].X;
-				ptRef.y = pDoc->m_Master[0].m_stPcsMk[idx].Y;
+				ptRef.x = pDoc->m_mgrReelmap.m_Master[0].m_stPcsMk[idx].X;
+				ptRef.y = pDoc->m_mgrReelmap.m_Master[0].m_stPcsMk[idx].Y;
 
-// 				pMkPnt[nCam][idx].x = ptRef.x + ptAdjCM[nCam].x;
-// 				pMkPnt[nCam][idx].y = ptRef.y + ptAdjCM[nCam].y;
 				pMkPnt[nCam][idx].x = ptRef.x + m_ptPinPos[nCam].x;
 				pMkPnt[nCam][idx].y = ptRef.y + m_ptPinPos[nCam].y;
 
@@ -143,112 +123,6 @@ void CPcsRgn::SetMkPnt(int nCam)
 	}
 }
  
-// void CPcsRgn::SetMkPnt(int nCam)	// Pin위치에 의한 정렬.
-// {
-// // 	m_ptOffset.x = ptOffset.x;
-// // 	m_ptOffset.y = ptOffset.y;
-// 	CfPoint ptRefPin, ptAdjCM;
-// 	double dResCam = atof(pDoc->WorkingInfo.Vision[0].sCamPxlRes) / 10000.0;
-// 	if(nCam == CAM_BOTH)
-// 	{
-// 		for(int i=0; i<CAM_BOTH; i++)
-// 		{
-// 			nCam = i;
-// 			ptRefPin.x = (double)pDoc->m_pCellRgn->nCADPinPosPixX * dResCam;
-// 			ptRefPin.y = (double)pDoc->m_pCellRgn->nCADPinPosPixY * dResCam;
-// 			ptAdjCM.x = m_ptPinPos[nCam].x - ptRefPin.x;
-// 			ptAdjCM.y = m_ptPinPos[nCam].y - ptRefPin.y;	
-// 			
-// 			for(int i=0; i<nTotPcs; i++)
-// 			{
-// 				if(m_ptPinPos[nCam].x > 0.0 || m_ptPinPos[nCam].y > 0.0)
-// 				{
-// 					if(ptAdjCM.x < 0.0 || ptAdjCM.y < 0.0)
-// 					{
-// 						pMkPnt[nCam][i].x = pCenter[i].x;// + ptOffset.x;
-// 						pMkPnt[nCam][i].y = pCenter[i].y;// + ptOffset.y;
-// 					}
-// 					else
-// 					{
-// 						pMkPnt[nCam][i].x = pCenter[i].x + ptAdjCM.x; // + ptOffset.x
-// 						pMkPnt[nCam][i].y = pCenter[i].y + ptAdjCM.y; // + ptOffset.y
-// 					}
-// 				}
-// 				else
-// 				{
-// 					pMkPnt[nCam][i].x = pCenter[i].x; // + ptOffset.x;
-// 					pMkPnt[nCam][i].y = pCenter[i].y; // + ptOffset.y;
-// 				}
-// 			}
-// 		}
-// 	}
-// 	else
-// 	{
-// 		ptRefPin.x = (double)pDoc->m_pCellRgn->nCADPinPosPixX * dResCam;
-// 		ptRefPin.y = (double)pDoc->m_pCellRgn->nCADPinPosPixY * dResCam;
-// 		ptAdjCM.x = m_ptPinPos[nCam].x - ptRefPin.x;
-// 		ptAdjCM.y = m_ptPinPos[nCam].y - ptRefPin.y;	
-// 		
-// 		for(int i=0; i<nTotPcs; i++)
-// 		{
-// 			if(m_ptPinPos[nCam].x > 0.0 || m_ptPinPos[nCam].y > 0.0)
-// 			{
-// 				if(ptAdjCM.x < 0.0 || ptAdjCM.y < 0.0)
-// 				{
-// 					pMkPnt[nCam][i].x = pCenter[i].x;// + ptOffset.x;
-// 					pMkPnt[nCam][i].y = pCenter[i].y;// + ptOffset.y;
-// 				}
-// 				else
-// 				{
-// 					pMkPnt[nCam][i].x = pCenter[i].x + ptAdjCM.x; // + ptOffset.x
-// 					pMkPnt[nCam][i].y = pCenter[i].y + ptAdjCM.y; // + ptOffset.y
-// 				}
-// 			}
-// 			else
-// 			{
-// 				pMkPnt[nCam][i].x = pCenter[i].x; // + ptOffset.x;
-// 				pMkPnt[nCam][i].y = pCenter[i].y; // + ptOffset.y;
-// 			}
-// 		}
-// 	}
-// }
-
-// void CPcsRgn::SetMkPnt()	// One Point Align에 의한 정렬.
-// {
-// 	double dDataX, dDataY, dAdjX, dAdjY;
-// 	CfPoint ptRefPin, ptAdjCM;
-// 	double dResCam = atof(pDoc->WorkingInfo.Vision[0].sCamPxlRes) / 10000.0;
-// 	ptRefPin.x = (double)pDoc->m_pCellRgn->nCADPinPosPixX * dResCam;
-// 	ptRefPin.y = (double)pDoc->m_pCellRgn->nCADPinPosPixY * dResCam;
-// 	ptAdjCM.x = m_ptPinPos.x - ptRefPin.x;
-// 	ptAdjCM.y = m_ptPinPos.y - ptRefPin.y;	
-// 
-// 	for(int i=0; i<nTotPcs; i++)
-// 	{
-// 		if(m_ptPinPos.x > 0.0 || m_ptPinPos.y > 0.0)
-// 		{			
-// 			if(ptAdjCM.x < 0.0 || ptAdjCM.y < 0.0)
-// 			{
-// 				pMkPnt[i].x = pCenter[i].x + m_ptOffset.x;
-// 				pMkPnt[i].y = pCenter[i].y + m_ptOffset.y;
-// 			}
-// 			else
-// 			{
-// 				dDataX = pCenter[i].x + m_ptOffset.x;
-// 				dDataY = pCenter[i].y + m_ptOffset.y;
-// 				pView->m_Align.PointAlignment(dDataX, dDataY, dAdjX, dAdjY);
-// 				pMkPnt[i].x = dAdjX;
-// 				pMkPnt[i].y = dAdjY;
-// 			}
-// 		}
-// 		else
-// 		{
-// 			pMkPnt[i].x = pCenter[i].x + m_ptOffset.x;
-// 			pMkPnt[i].y = pCenter[i].y + m_ptOffset.y;
-// 		}
-// 	}
-// }
-
 CfPoint CPcsRgn::GetMkPnt(int nPcsId)
 {
 	CfPoint ptPnt;
@@ -321,18 +195,18 @@ BOOL CPcsRgn::GetMkMatrix(int nPcsId, int &nC, int &nR)
 
 	if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
 	{
-		switch (pDoc->m_Master[0].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
+		switch (pDoc->m_mgrReelmap.m_Master[0].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
 		{
 		case 0:
 			break;
 		case 1:
-			nPcsId = pDoc->MirrorLR(nPcsId);
+			nPcsId = pDoc->m_mgrReelmap.MirrorLR(nPcsId);
 			break;
 		case 2:
-			nPcsId = pDoc->MirrorUD(nPcsId);
+			nPcsId = pDoc->m_mgrReelmap.MirrorUD(nPcsId);
 			break;
 		case 3:
-			nPcsId = pDoc->Rotate180(nPcsId);
+			nPcsId = pDoc->m_mgrReelmap.Rotate180(nPcsId);
 			break;
 		default:
 			break;
@@ -366,18 +240,18 @@ BOOL CPcsRgn::GetMkMatrix(int nPcsId, int &nStrip, int &nC, int &nR) // nStrip:0
 
 	if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
 	{
-		switch (pDoc->m_Master[0].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
+		switch (pDoc->m_mgrReelmap.m_Master[0].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
 		{
 		case 0:
 			break;
 		case 1:
-			nPcsId = pDoc->MirrorLR(nPcsId);
+			nPcsId = pDoc->m_mgrReelmap.MirrorLR(nPcsId);
 			break;
 		case 2:
-			nPcsId = pDoc->MirrorUD(nPcsId);
+			nPcsId = pDoc->m_mgrReelmap.MirrorUD(nPcsId);
 			break;
 		case 3:
-			nPcsId = pDoc->Rotate180(nPcsId);
+			nPcsId = pDoc->m_mgrReelmap.Rotate180(nPcsId);
 			break;
 		default:
 			break;
@@ -404,19 +278,6 @@ BOOL CPcsRgn::GetMkMatrix(int nPcsId, int &nStrip, int &nC, int &nR) // nStrip:0
 
 	return TRUE;
 }
-
-// void CPcsRgn::GetMkPnt(int nC, int nR, int &nPcsId, CfPoint &ptPnt)
-// {
-// 	int nNodeY = nRow;
-// 
-// 	if(nC%2)	// 홀수.
-// 		nPcsId = nNodeY * (nC+1) - (nR+1);
-// 	else		// 짝수.
-// 		nPcsId = nNodeY * nC + nR;
-// 
-// 	ptPnt.x = pMkPnt[nPcsId].x;
-// 	ptPnt.y = pMkPnt[nPcsId].y;
-// }
 
 void CPcsRgn::SetPinPos(int nCam, CfPoint ptPnt)
 {

@@ -619,7 +619,7 @@ void CDlgFrameHigh::DispSigAoi()
 	// IDC_STC_SIG01
 	//bOn = (sName.MakeUpper() == _T("GVISDB")) ? TRUE : FALSE;
 	//bOn = (pView->GetAoiUpCamMstInfo() == 1) ? TRUE : FALSE; // AOI상 strpcs.bin 연결
-	bOn = (pDoc->m_nAoiCamInfoStrPcs[0] == 1) ? TRUE : FALSE; // AOI상 strpcs.bin 연결
+	bOn = (pDoc->m_mgrProcedure.m_nAoiCamInfoStrPcs[0] == 1) ? TRUE : FALSE; // AOI상 strpcs.bin 연결
 	if(bOn && myLabel[0].GetImageBk() != LBL_IMG_DN)
 		myLabel[0].SetImageBk(LBL_IMG_DN);
 	else if(!bOn && myLabel[0].GetImageBk() != LBL_IMG_UP)
@@ -649,7 +649,7 @@ void CDlgFrameHigh::DispSigAoi()
 
 	// IDC_STC_SIG03
 	//bOn = (pView->GetAoiDnCamMstInfo() == 1) ? TRUE : FALSE; // AOI하 strpcs.bin 연결
-	bOn = (pDoc->m_nAoiCamInfoStrPcs[1] == 1) ? TRUE : FALSE; // AOI하 strpcs.bin 연결
+	bOn = (pDoc->m_mgrProcedure.m_nAoiCamInfoStrPcs[1] == 1) ? TRUE : FALSE; // AOI하 strpcs.bin 연결
 	if(bOn && myLabel[3].GetImageBk() != LBL_IMG_DN)
 		myLabel[3].SetImageBk(LBL_IMG_DN);
 	else if(!bOn && myLabel[3].GetImageBk() != LBL_IMG_UP)			

@@ -1475,43 +1475,6 @@ void CDlgMenu04::OnBtnBuffInitMove2()
 #endif
 	if(pView->m_pDlgMenu03)
 		pView->m_pDlgMenu03->ChkBufInitDone();
-
-// 	if(!pView->m_pMotion)
-// 		return;
-// 
-// 	pView->SetMkFdSts();
-// 	Sleep(300);
-// 
-// 	double dDir;
-// 	double fLen, fVel, fAcc, fJerk;
-// 	double dStPos = pView->m_pMotion->m_dStBufPos;
-// 	double dCurPosMkFd = (double)pDoc->m_pMpeData[0][0];		// 마킹부 Feeding 엔코더 값(단위 mm )
-// 	double dCurPosBuf = (double)pDoc->m_pMpeData[0][1] / 1000.0;		// 마킹부 버퍼 엔코더 값(단위 mm * 1000)
-// 
-// 	fLen = dStPos - dCurPosBuf;
-// 
-// 	if(fLen > 0)
-// 	{
-// 		fLen = (dStPos-dCurPosBuf);
-// 		dDir = (double)M_CCW;
-// 	}
-// 	else
-// 	{
-// 		fLen = (dCurPosBuf-dStPos);
-// 		dDir = (double)M_CW;
-// 	}
-// 
-// 	if(fLen > 0.001)
-// 	{
-// // 		double dPos = dCurPosMkFd + dDir*fLen;
-// // 		pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_MKFD, fLen, fVel, fAcc, fJerk);
-// // 		pView->m_pMotion->Move(MS_MKFD, dPos, fVel/10.0, fAcc/10.0, fAcc/10.0);
-// 		fVel = pView->m_pMotion->m_pParamMotion[MS_MKFD].Home.f1stSpd;
-// 		fAcc = pView->m_pMotion->m_pParamMotion[MS_MKFD].Home.fAcc;
-// 		if(!pView->m_pMotion->Move(MS_MKFD, dDir*fLen, fVel, fAcc, fAcc, INC, WAIT))
-// 			if(!pView->m_pMotion->Move(MS_MKFD, dDir*fLen, fVel, fAcc, fAcc, INC, WAIT))
-// 				AfxMessageBox("Move XY Error...");
-// 	}	
 }
 
 void CDlgMenu04::OnBtnBuffInitSave2() 

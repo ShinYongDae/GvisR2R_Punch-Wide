@@ -396,6 +396,12 @@
     <ClInclude Include="Dialog\MySharedMem.h">
       <Filter>Dialog</Filter>
     </ClInclude>
+    <ClInclude Include="ManagerReelmap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagerProcedure.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GvisR2R_Punch.cpp">
@@ -694,6 +700,12 @@
     </ClCompile>
     <ClCompile Include="Dialog\MySharedMem.cpp">
       <Filter>Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerReelmap.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerProcedure.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

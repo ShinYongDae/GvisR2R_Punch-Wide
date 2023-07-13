@@ -12,6 +12,7 @@
 
 #include "ThreadTask.h"
 #include "../Global/GlobalDefine.h"
+#include "../ManagerReelmap.h"
 
 #define FIX_PCS_SHOT_MAX	500
 #define FIX_PCS_COL_MAX		100
@@ -70,6 +71,8 @@ struct stResult
 
 class CReelMap : public CWnd
 {
+	CManagerReelmap* m_pParent;
+
 	BOOL m_FixPcs[FIX_PCS_SHOT_MAX][FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]
 	int m_FixPcsPrev[FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]
 	int m_FixPcsPrevStSerial[FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]
@@ -110,9 +113,14 @@ class CReelMap : public CWnd
 
 	BOOL MakeDirYield(CString sPath);
 
+
+	BOOL SetItsSerialInfo(int nItsSerial);	// 내층에서의 ITS 시리얼의 정보
+	int GetPcrIdx(int nSerial, BOOL bNewLot = FALSE);
+	CString GetItsPath(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
+
 // Construction
 public:
-	CReelMap(int nLayer, int nPnl=0, int nPcs=0, int nDir=0);
+	CReelMap(int nLayer, int nPnl=0, int nPcs=0, int nDir=0, CWnd* pParent = NULL);
 
 // Attributes
 public:

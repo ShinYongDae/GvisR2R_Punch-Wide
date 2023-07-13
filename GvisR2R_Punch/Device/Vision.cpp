@@ -166,28 +166,24 @@ CVision::~CVision()
 	// Temperary Buf for Pin View
 	if(MilBufPinTemp != M_NULL)
 	{
-		pView->m_nDebugStep = 200; pView->DispThreadTick();
 		MbufFree(MilBufPinTemp);
 		MilBufPinTemp = M_NULL;
 	}
 
 	if(MilPinImgBuf != M_NULL)
 	{
-		pView->m_nDebugStep = 201; pView->DispThreadTick();
 		MbufFree(MilPinImgBuf);
 		MilPinImgBuf = M_NULL;
 	}
 
 	if(m_pMilBufPin)
 	{
-		pView->m_nDebugStep = 202; pView->DispThreadTick();
 		delete m_pMilBufPin;
 		m_pMilBufPin = NULL;
 	}
 
 	if(m_pMilDispPin)
 	{
-		pView->m_nDebugStep = 203; pView->DispThreadTick();
 		delete m_pMilDispPin;
 		m_pMilDispPin = NULL;
 	}
@@ -195,50 +191,42 @@ CVision::~CVision()
 	// Temperary Buf for Align View
 	if(MilBufAlignTemp[0] != M_NULL)
 	{
-		pView->m_nDebugStep = 204; pView->DispThreadTick();
 		MbufFree(MilBufAlignTemp[0]);
 		MilBufAlignTemp[0] = M_NULL;
 	}
 	if(MilBufAlignTemp[1] != M_NULL)
 	{
-		pView->m_nDebugStep = 205; pView->DispThreadTick();
 		MbufFree(MilBufAlignTemp[1]);
 		MilBufAlignTemp[1] = M_NULL;
 	}
 	if (MilBufAlignTemp[2] != M_NULL)
 	{
-		pView->m_nDebugStep = 206; pView->DispThreadTick();
 		MbufFree(MilBufAlignTemp[2]);
 		MilBufAlignTemp[2] = M_NULL;
 	}
 	if (MilBufAlignTemp[3] != M_NULL)
 	{
-		pView->m_nDebugStep = 207; pView->DispThreadTick();
 		MbufFree(MilBufAlignTemp[3]);
 		MilBufAlignTemp[3] = M_NULL;
 	}
 
 	if(MilAlignImgBuf[0] != M_NULL)
 	{
-		pView->m_nDebugStep = 208; pView->DispThreadTick();
 		MbufFree(MilAlignImgBuf[0]);
 		MilAlignImgBuf[0] = M_NULL;
 	}
 	if(MilAlignImgBuf[1] != M_NULL)
 	{
-		pView->m_nDebugStep = 209; pView->DispThreadTick();
 		MbufFree(MilAlignImgBuf[1]);
 		MilAlignImgBuf[1] = M_NULL;
 	}
 	if (MilAlignImgBuf[2] != M_NULL)
 	{
-		pView->m_nDebugStep = 210; pView->DispThreadTick();
 		MbufFree(MilAlignImgBuf[2]);
 		MilAlignImgBuf[2] = M_NULL;
 	}
 	if (MilAlignImgBuf[3] != M_NULL)
 	{
-		pView->m_nDebugStep = 211; pView->DispThreadTick();
 		MbufFree(MilAlignImgBuf[3]);
 		MilAlignImgBuf[3] = M_NULL;
 	}
@@ -277,14 +265,12 @@ CVision::~CVision()
 	// Temperary Buf for Def View
 	if(MilBufCADTemp != M_NULL)
 	{
-		pView->m_nDebugStep = 212; pView->DispThreadTick();
 		MbufFree(MilBufCADTemp);
 		MilBufCADTemp = M_NULL;
 	}
 
 	if(MilCADImgBuf != M_NULL)
 	{
-		pView->m_nDebugStep = 213; pView->DispThreadTick();
 		MbufFree(MilCADImgBuf);
 		MilCADImgBuf = M_NULL;
 	}
@@ -852,9 +838,9 @@ void CVision::InitCADBuf(int nLayer)
 {
 	REGION_STRIP *pCellRgn[2];
 	if(m_nIdx == 0 || m_nIdx == 1)
-		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn;
 	else
-		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn;
 
 	if(MilCADImgBuf)
 		MbufFree(MilCADImgBuf);
@@ -1061,23 +1047,23 @@ void CVision::CropCadImg(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef)
 
 	if (m_nIdx == 0 || m_nIdx == 1)
 	{
-		if (!pDoc->m_pPcr[nLayer])
+		if (!pDoc->m_mgrReelmap.m_pPcr[nLayer])
 			return;
 #ifndef USE_MIL
-		cell = pDoc->m_pPcr[nLayer][TEST_SHOT - 1]->m_pCell[0];			// for Test - BufIdx[0], DefIdx[0]
-		cx = pDoc->m_pPcr[nLayer][TEST_SHOT - 1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
-		cy = pDoc->m_pPcr[nLayer][TEST_SHOT - 1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
+		cell = pDoc->m_mgrReelmap.m_pPcr[nLayer][TEST_SHOT - 1]->m_pCell[0];			// for Test - BufIdx[0], DefIdx[0]
+		cx = pDoc->m_mgrReelmap.m_pPcr[nLayer][TEST_SHOT - 1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
+		cy = pDoc->m_mgrReelmap.m_pPcr[nLayer][TEST_SHOT - 1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
 #else
-		nIdx = pDoc->GetPcrIdx1(nSerial);
-		if (!pDoc->m_pPcr[nLayer][nIdx])
+		nIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
+		if (!pDoc->m_mgrReelmap.m_pPcr[nLayer][nIdx])
 			return;
-		if (!pDoc->m_pPcr[nLayer][nIdx]->m_pCell || !pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos ||
-			!pDoc->m_Master[nLayer].m_pCellRgn)
+		if (!pDoc->m_mgrReelmap.m_pPcr[nLayer][nIdx]->m_pCell || !pDoc->m_mgrReelmap.m_pPcr[nLayer][nIdx]->m_pDefPos ||
+			!pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn)
 			return;
 
-		cell = pDoc->m_pPcr[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
-		cx = pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_Master[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
-		cy = pDoc->m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_Master[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
+		cell = pDoc->m_mgrReelmap.m_pPcr[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
+		cx = pDoc->m_mgrReelmap.m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
+		cy = pDoc->m_mgrReelmap.m_pPcr[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
 #endif
 	}
 	else
@@ -1089,16 +1075,16 @@ void CVision::CropCadImg(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef)
 		cx = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
 		cy = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
 #else
-		nIdx = pDoc->GetPcrIdx1(nSerial);
+		nIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
 		if (!pDoc->m_pPcrInner[nLayer][nIdx])
 			return;
 		if (!pDoc->m_pPcrInner[nLayer][nIdx]->m_pCell || !pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos ||
-			!pDoc->m_MasterInner[nLayer].m_pCellRgn)
+			!pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn)
 			return;
 
 		cell = pDoc->m_pPcrInner[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
-		cx = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_MasterInner[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
-		cy = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_MasterInner[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
+		cx = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
+		cy = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
 #endif
 	}
 
@@ -1121,15 +1107,15 @@ void CVision::CropCadImg(short cell, short cx, short cy, int BufID, int nLayer)
 
 	if (m_nIdx == 0 || m_nIdx == 1)
 	{
-		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
-		CellX = cell / pDoc->m_Master[nLayer].m_pCellRgn->NodeNumY;
-		CellY = cell % pDoc->m_Master[nLayer].m_pCellRgn->NodeNumY;
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn;
+		CellX = cell / pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn->NodeNumY;
+		CellY = cell % pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn->NodeNumY;
 	}
 	else
 	{
-		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
-		CellX = cell / pDoc->m_MasterInner[nLayer].m_pCellRgn->NodeNumY;
-		CellY = cell % pDoc->m_MasterInner[nLayer].m_pCellRgn->NodeNumY;
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn;
+		CellX = cell / pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->NodeNumY;
+		CellY = cell % pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->NodeNumY;
 	}
 
 
@@ -1571,9 +1557,9 @@ BOOL CVision::SetCADCoord(int CellNum, int StX, int StY, int Coord, int nLayer)
 
 	REGION_STRIP *pCellRgn[2];
 	if (m_nIdx == 0 || m_nIdx == 1)
-		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn;
 	else
-		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn;
 
 	switch(Coord) 
 	{
@@ -2317,19 +2303,19 @@ void CVision::LoadCADBuf(int CurrCell, long OrgStX, long OrgStY, long DesStX, lo
 
 	if (m_nIdx == 0 || m_nIdx == 1)
 	{
-		pCellRgn[nLayer] = pDoc->m_Master[nLayer].m_pCellRgn;
-		pCADCellImg = pDoc->m_Master[nLayer].m_pCADCellImg[pDoc->m_Master[nLayer].CellInspID[CurrCell]];
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_Master[nLayer].m_pCellRgn;
+		pCADCellImg = pDoc->m_mgrReelmap.m_Master[nLayer].m_pCADCellImg[pDoc->m_mgrReelmap.m_Master[nLayer].CellInspID[CurrCell]];
 	}
 	else
 	{
-		pCellRgn[nLayer] = pDoc->m_MasterInner[nLayer].m_pCellRgn;
-		pCADCellImg = pDoc->m_MasterInner[nLayer].m_pCADCellImg[pDoc->m_MasterInner[nLayer].CellInspID[CurrCell]];
+		pCellRgn[nLayer] = pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn;
+		pCADCellImg = pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCADCellImg[pDoc->m_mgrReelmap.m_MasterInner[nLayer].CellInspID[CurrCell]];
 	}
 
 	if (!MilCADImgBuf)
 		return;
 
-	//if(VicFileLoadFromMem(MilCADImgBuf, pDoc->m_Master[nLayer].m_pCADCellImg[pDoc->m_Master[nLayer].CellInspID[CurrCell]], tdat))
+	//if(VicFileLoadFromMem(MilCADImgBuf, pDoc->m_mgrReelmap.m_Master[nLayer].m_pCADCellImg[pDoc->m_mgrReelmap.m_Master[nLayer].CellInspID[CurrCell]], tdat))
 	if(VicFileLoadFromMem(MilCADImgBuf, pCADCellImg, tdat))
 	{
 		if((OrgStX + SizeX) <= pCellRgn[nLayer]->ProcSizeX && (OrgStY + SizeY) <= pCellRgn[nLayer]->ProcSizeY)
@@ -2385,7 +2371,7 @@ void CVision::LoadCADBuf(int CurrCell, long OrgStX, long OrgStY, long DesStX, lo
 #else
 	if (!MilCADImgBuf)
 		return;
-	if(VicFileLoadFromMem(MilCADImgBuf, pDoc->m_Master[nLayer].m_pCADCellImg[pDoc->m_Master[nLayer].CellInspID[0]], tdat))
+	if(VicFileLoadFromMem(MilCADImgBuf, pDoc->m_mgrReelmap.m_Master[nLayer].m_pCADCellImg[pDoc->m_mgrReelmap.m_Master[nLayer].CellInspID[0]], tdat))
 	{
 		MbufChild2d(MilCADImgBuf, 0, 0, DEF_IMG_DISP_SIZEX, DEF_IMG_DISP_SIZEY, &MilBufCADCld);
 		MbufChild2d(MilBufCADTemp, 0, 0, DEF_IMG_DISP_SIZEX, DEF_IMG_DISP_SIZEY, &MilBufCADTempCld);
@@ -2636,11 +2622,11 @@ void CVision::LoadPinBuf(int nLayer)
 	TiffData tdat;
 	UCHAR *pPinImg;
 	if (m_nIdx == 0 || m_nIdx == 1)
-		pPinImg = pDoc->m_Master[nLayer].m_pPinImg;
+		pPinImg = pDoc->m_mgrReelmap.m_Master[nLayer].m_pPinImg;
 	else
-		pPinImg = pDoc->m_MasterInner[nLayer].m_pPinImg;
+		pPinImg = pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pPinImg;
 
-	//if(VicFileLoadFromMem(MilPinImgBuf, pDoc->m_Master[nLayer].m_pPinImg, tdat))
+	//if(VicFileLoadFromMem(MilPinImgBuf, pDoc->m_mgrReelmap.m_Master[nLayer].m_pPinImg, tdat))
 	if (VicFileLoadFromMem(MilPinImgBuf, pPinImg, tdat))
 	{
 		MIL_ID MilBufPinCld = M_NULL, MilBufPinTempCld = M_NULL;
@@ -2727,23 +2713,23 @@ void CVision::LoadAlignBuf()
 	UCHAR *pAlignImg[4];
 	if (m_nIdx == 0 || m_nIdx == 1)
 	{
-		pAlignImg[0] = pDoc->m_Master[0].m_pAlignImg[0];
-		pAlignImg[1] = pDoc->m_Master[0].m_pAlignImg[1];
-		pAlignImg[2] = pDoc->m_Master[0].m_pAlignImg[2];
-		pAlignImg[3] = pDoc->m_Master[0].m_pAlignImg[3];
+		pAlignImg[0] = pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[0];
+		pAlignImg[1] = pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[1];
+		pAlignImg[2] = pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[2];
+		pAlignImg[3] = pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[3];
 	}
 	else
 	{
-		pAlignImg[0] = pDoc->m_MasterInner[0].m_pAlignImg[0];
-		pAlignImg[1] = pDoc->m_MasterInner[0].m_pAlignImg[1];
-		pAlignImg[2] = pDoc->m_MasterInner[0].m_pAlignImg[2];
-		pAlignImg[3] = pDoc->m_MasterInner[0].m_pAlignImg[3];
+		pAlignImg[0] = pDoc->m_mgrReelmap.m_MasterInner[0].m_pAlignImg[0];
+		pAlignImg[1] = pDoc->m_mgrReelmap.m_MasterInner[0].m_pAlignImg[1];
+		pAlignImg[2] = pDoc->m_mgrReelmap.m_MasterInner[0].m_pAlignImg[2];
+		pAlignImg[3] = pDoc->m_mgrReelmap.m_MasterInner[0].m_pAlignImg[3];
 	}
 
-	//if (pDoc->m_Master[0].m_pAlignImg[0])
+	//if (pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[0])
 	if (pAlignImg[0])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[0], pDoc->m_Master[0].m_pAlignImg[0], tdat))
+		//if (VicFileLoadFromMem(MilAlignImgBuf[0], pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[0], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[0], pAlignImg[0], tdat))
 		{
 
@@ -2770,10 +2756,10 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[1])
 		return;
 
-	//if (pDoc->m_Master[0].m_pAlignImg[1])
+	//if (pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[1])
 	if (pAlignImg[1])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[1], pDoc->m_Master[0].m_pAlignImg[1], tdat))
+		//if (VicFileLoadFromMem(MilAlignImgBuf[1], pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[1], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[1], pAlignImg[1], tdat))
 		{
 
@@ -2800,10 +2786,10 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[2])
 		return;
 
-	//if (pDoc->m_Master[0].m_pAlignImg[2])
+	//if (pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[2])
 	if (pAlignImg[2])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[2], pDoc->m_Master[0].m_pAlignImg[2], tdat))
+		//if (VicFileLoadFromMem(MilAlignImgBuf[2], pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[2], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[2], pAlignImg[2], tdat))
 		{
 
@@ -2830,10 +2816,10 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[3])
 		return;
 
-	//if (pDoc->m_Master[0].m_pAlignImg[3])
+	//if (pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[3])
 	if (pAlignImg[3])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[3], pDoc->m_Master[0].m_pAlignImg[3], tdat))
+		//if (VicFileLoadFromMem(MilAlignImgBuf[3], pDoc->m_mgrReelmap.m_Master[0].m_pAlignImg[3], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[3], pAlignImg[3], tdat))
 		{
 
@@ -2863,7 +2849,7 @@ void CVision::LoadAlignBuf()
 // 	InitAlignBuf();
 // 
 // 	TiffData tdat;
-// 	if(VicFileLoadFromMem(MilAlignImgBuf, pDoc->m_Master[m_nIdx].m_pAlignImg[m_nIdx], tdat))
+// 	if(VicFileLoadFromMem(MilAlignImgBuf, pDoc->m_mgrReelmap.m_Master[m_nIdx].m_pAlignImg[m_nIdx], tdat))
 // 	{
 // 		MIL_ID MilBufAlignCld = M_NULL, MilBufAlignTempCld = M_NULL;
 // 
