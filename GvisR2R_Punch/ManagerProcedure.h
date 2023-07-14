@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Global/GlobalDefine.h"
 
 // CManagerProcedure
 
@@ -15,6 +16,8 @@ public:
 
 	int m_nAoiCamInfoStrPcs[2]; // [0] : Up, [1] : Dn
 	//BOOL m_bCamChged;
+	BOOL m_bTIM_CHK_DONE_READY;
+
 
 	BOOL m_bBufEmpty[2];	// [0]: Up, [1]: Dn
 	BOOL m_bBufEmptyF[2];	// [0]: Up, [1]: Dn
@@ -65,6 +68,9 @@ public:
 
 	BOOL m_bTHREAD_DISP_DEF_INNER;
 
+	BOOL m_bStopFromThread, m_bBuzzerFromThread;
+
+
 	int	m_nStepTHREAD_DISP_DEF_INNER;
 	int	m_nSnTHREAD_UPDATAE_YIELD;
 
@@ -101,11 +107,6 @@ public:
 	DWORD m_dwSetDlySt[10], m_dwSetDlyEd[10];
 	DWORD m_dwSetDlySt0[10], m_dwSetDlyEd0[10];
 	DWORD m_dwSetDlySt1[10], m_dwSetDlyEd1[10];
-
-	CString m_sShare[2], m_sBuf[2]; // [0]: AOI-Up , [1]: AOI-Dn
-	int		m_pBufSerial[2][100], m_nBufTot[2]; // [0]: AOI-Up , [1]: AOI-Dn
-	__int64 m_nBufSerialSorting[2][100]; // [0]: AOI-Up , [1]: AOI-Dn
-	int		m_nBufSerial[2][2]; // [0]: AOI-Up , [1]: AOI-Dn // [0]: Cam0, [1]:Cam1
 
 	CString m_sDispMsg[10];
 
@@ -163,7 +164,6 @@ public:
 
 	int m_nRstNum;
 
-	BOOL m_bChkBufIdx[2];
 	BOOL m_bBufHomeDone, m_bReadyDone;
 	BOOL m_bCollision[2], m_bPriority[4];
 	BOOL m_bEngBufHomeDone;
@@ -221,7 +221,6 @@ public:
 	int m_nSerialRmapUpdate;
 	int m_nSerialRmapInnerUpdate;
 
-	BOOL m_bIsBuf[2]; // [0]: AOI-Up , [1]: AOI-Dn
 	BOOL m_bShift2Mk;
 
 	BOOL m_bSerialDecrese;
@@ -229,6 +228,36 @@ public:
 	BOOL m_bUpdateYield, m_bUpdateYieldOnRmap;
 	BOOL m_bTHREAD_UPDATAE_YIELD[2];		// [0] : Cam0, [1] : Cam1
 	int	m_nSerialTHREAD_UPDATAE_YIELD[2];	// [0] : Cam0, [1] : Cam1
+
+	void SetPriority();
+	void ResetPriority();
+	void DelOverLotEndSerialUp(int nSerial);
+	void DelOverLotEndSerialDn(int nSerial);
+
+
+	BOOL ChkVsShare(int &nSerial);
+	BOOL ChkVsShareUp(int &nSerial);
+	BOOL ChkVsShareDn(int &nSerial);
+	void ChkShare();
+	void ChkShareUp();
+	void ChkShareDn();
+	BOOL ChkShare(int &nSerial);
+	BOOL ChkShareUp(int &nSerial);
+	BOOL ChkShareDn(int &nSerial);
+	BOOL ChkShareIdx(int *pBufSerial, int nBufTot, int nShareSerial);
+	void ChkBuf();
+	void ChkBufUp();
+	void ChkBufDn();
+	BOOL ChkBufUp(int* pSerial, int &nTot);
+	BOOL ChkBufDn(int* pSerial, int &nTot);
+	BOOL ChkBufIdx(int* pSerial, int nTot = 0);
+
+	BOOL SortingInUp(CString sPath, int nIndex);
+	BOOL SortingOutUp(int* pSerial, int nTot);
+	void SwapUp(__int64 *num1, __int64 *num2);
+	BOOL SortingInDn(CString sPath, int nIndex);
+	BOOL SortingOutDn(int* pSerial, int nTot);
+	void SwapDn(__int64 *num1, __int64 *num2);
 
 protected:
 	DECLARE_MESSAGE_MAP()

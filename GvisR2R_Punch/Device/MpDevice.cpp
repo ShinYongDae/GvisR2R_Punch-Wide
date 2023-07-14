@@ -1475,7 +1475,7 @@ void CMpDevice::GetMpeIO()
 		nSt += nGrpStep;
 	}
 
-	pView->m_bChkMpeIoOut = FALSE;
+	pDoc->m_mgrProcedure.m_bChkMpeIoOut = FALSE;
 
 	// Group Read...
 
@@ -1775,7 +1775,7 @@ void CMpDevice::GetMpeSignal()
 
 	nLoop++;
 
-	pView->m_bChkMpeIoOut = FALSE;
+	pDoc->m_mgrProcedure.m_bChkMpeIoOut = FALSE;
 
 	sAddr = pDoc->MkIo.MpeData.pAddrOut[0][0];
 	//strcpy(cAddr, sAddr);

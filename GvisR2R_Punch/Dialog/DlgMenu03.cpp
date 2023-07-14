@@ -40,7 +40,7 @@ CDlgMenu03::CDlgMenu03(CWnd* pParent /*=NULL*/)
 	m_bTIM_CHK_DONE_MKAOI = FALSE;
 	m_bTIM_CHK_DONE_BUF_HOME = FALSE;
 	m_bTIM_CHK_DONE_BUF_INIT = FALSE;
-	m_bTIM_CHK_DONE_READY = FALSE;
+	//m_bTIM_CHK_DONE_READY = FALSE;
 	m_bTIM_SET_RC_RELATION = FALSE;
 	m_bTIM_SW_RC_RELATION = FALSE;
 	m_bTIM_SW_UC_RELATION = FALSE;
@@ -72,7 +72,7 @@ CDlgMenu03::~CDlgMenu03()
 	m_bTIM_CHK_DONE_MKAOI = FALSE;
 	m_bTIM_CHK_DONE_BUF_HOME = FALSE;
 	m_bTIM_CHK_DONE_BUF_INIT = FALSE;
-	m_bTIM_CHK_DONE_READY = FALSE;
+	//m_bTIM_CHK_DONE_READY = FALSE;
 	m_bTIM_SET_RC_RELATION = FALSE;
 	m_bTIM_SW_RC_RELATION = FALSE;
 	m_bTIM_SW_UC_RELATION = FALSE;
@@ -1822,7 +1822,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 		else
 		{
 			m_bTIM_CHK_DONE_BUF_HOME = FALSE;
-			pView->m_bBufHomeDone = TRUE;
+			pDoc->m_mgrProcedure.m_bBufHomeDone = TRUE;
 			pView->ClrDispMsg();
 		}
 #endif
@@ -1858,9 +1858,9 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 #ifdef USE_MPE
 		if(pDoc->m_pMpeSignal[0] & (0x01<<0))	// PLC 운전준비 완료(PC가 확인하고 Reset시킴.)
 		{
-			m_bTIM_CHK_DONE_READY = FALSE;
+			pDoc->m_mgrProcedure.m_bTIM_CHK_DONE_READY = FALSE;
 			//pView->ClrDispMsg();
-			pView->m_bReadyDone = TRUE;
+			pDoc->m_mgrProcedure.m_bReadyDone = TRUE;
 			if(pView->m_pMpe)
 				pView->m_pMpe->Write(_T("MB440100"), 0);	// PLC 운전준비 완료(PC가 확인하고 Reset시킴.)
 		}
@@ -1869,13 +1869,13 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 			pView->GetDispMsg(strMsg, strTitle);
 			if(strMsg != _T("Searching Buffer Home Position...") || strTitle != _T("Homming"))
 			{
-				pView->m_bReadyDone = FALSE;
+				pDoc->m_mgrProcedure.m_bReadyDone = FALSE;
 				//pView->MsgBox("Searching Buffer Home Position...");
 				//pView->DispMsg(_T("Searching Buffer Home Position..."), _T("Homming"), RGB_GREEN, DELAY_TIME_MSG);
 			}
 		}
 #endif
-		if(m_bTIM_CHK_DONE_READY)
+		if(pDoc->m_mgrProcedure.m_bTIM_CHK_DONE_READY)
 			SetTimer(TIM_CHK_DONE_READY, 100, NULL);
 	}
 	
@@ -1948,7 +1948,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 		else
 		{
 			m_bTIM_CHK_DONE_ENG_BUF_HOME = FALSE;
-			pView->m_bEngBufHomeDone = TRUE;
+			pDoc->m_mgrProcedure.m_bEngBufHomeDone = TRUE;
 			pView->ClrDispMsg();
 
 #ifdef USE_ENGRAVE
@@ -2011,25 +2011,25 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 LRESULT CDlgMenu03::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 {
 
-	if(pView->m_bProbDn[0])
+	if(pDoc->m_mgrProcedure.m_bProbDn[0])
 	{
 		if(pView->m_pVoiceCoil[0])
 		{
 			pView->m_pVoiceCoil[0]->SearchHomeSmac(0);
 			pView->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
-			pView->m_bProbDn[0] = FALSE;
+			pDoc->m_mgrProcedure.m_bProbDn[0] = FALSE;
 			//if(pView->m_pDlgMenu02->m_pDlgUtil06)
 			//	pView->m_pDlgMenu02->m_pDlgUtil06->myBtn[2].SetCheck(FALSE);
 		}
 	}
 
-	if(pView->m_bProbDn[1])
+	if(pDoc->m_mgrProcedure.m_bProbDn[1])
 	{
 		if(pView->m_pVoiceCoil[1])
 		{
 			pView->m_pVoiceCoil[1]->SearchHomeSmac(1);
 			pView->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
-			pView->m_bProbDn[1] = FALSE;
+			pDoc->m_mgrProcedure.m_bProbDn[1] = FALSE;
 			//if(pView->m_pDlgMenu02->m_pDlgUtil06)
 			//	pView->m_pDlgMenu02->m_pDlgUtil06->myBtn[6].SetCheck(FALSE);
 		}
@@ -3434,7 +3434,7 @@ BOOL CDlgMenu03::GetRun()
 		return FALSE;
 
 	//if(pDoc->m_pMpeIo[28] & (0x01<<1))	// 마킹부 운전 스위치 램프
-	if(pView->m_bSwRun) // 초기운전시 램프 On/Off
+	if(pDoc->m_mgrProcedure.m_bSwRun) // 초기운전시 램프 On/Off
 		return TRUE;
 
 	return FALSE;
@@ -3447,9 +3447,9 @@ BOOL CDlgMenu03::GetReady()
 
 	//if(pDoc->m_pMpeIo[28] & (0x01<<3))	// 마킹부 운전준비 스위치 램프
 	//if(pDoc->m_pMpeSignal[0] & (0x01<<0))	// PLC 운전준비 완료(PC가 확인하고 Reset시킴.)
-	//if(pView->m_bReadyDone)
+	//if(pDoc->m_mgrProcedure.m_bReadyDone)
 	//{
-	//	pView->m_bReadyDone = TRUE;
+	//	pDoc->m_mgrProcedure.m_bReadyDone = TRUE;
 		return TRUE;
 	//}
 
@@ -3462,7 +3462,7 @@ BOOL CDlgMenu03::GetReset()
 		return FALSE;
 
  	//if(pDoc->m_pMpeIo[28] & (0x01<<4))	//  마킹부 리셋 스위치 램프
-	if(pView->m_bSwReset)
+	if(pDoc->m_mgrProcedure.m_bSwReset)
 		return TRUE;
 
 	return FALSE;
@@ -3612,9 +3612,9 @@ void CDlgMenu03::ChkBufInitDone()
 
 void CDlgMenu03::ChkReadyDone()
 {
-	if(!m_bTIM_CHK_DONE_READY)
+	if(!pDoc->m_mgrProcedure.m_bTIM_CHK_DONE_READY)
 	{
-		m_bTIM_CHK_DONE_READY = TRUE;
+		pDoc->m_mgrProcedure.m_bTIM_CHK_DONE_READY = TRUE;
 		SetTimer(TIM_CHK_DONE_READY, 100, NULL);
 	}
 }
@@ -3633,9 +3633,9 @@ void CDlgMenu03::SwRun()
 	if(pDoc->Status.bAuto)
 	{
 // 		if(!(pDoc->m_pMpeSignal[0] & (0x01<<0)))	// PLC 운전준비 완료
-		if(pView->m_nStepAuto < AT_LP)
+		if(pDoc->m_mgrProcedure.m_nStepAuto < AT_LP)
 		{
-			//if(!pView->m_bSwReady)	// PLC 운전준비 완료
+			//if(!pDoc->m_mgrProcedure.m_bSwReady)	// PLC 운전준비 완료
 			//{
 				//pView->DispMsg(_T("운전 준비를 눌러주세요."),_T("주의"),RGB_YELLOW,2000,TRUE);
 				//return;
@@ -3645,12 +3645,12 @@ void CDlgMenu03::SwRun()
 		//pView->IoWrite("MB440162", 0); // 마킹부 정지 스위치 램프 ON(PC가 On/Off시킴)  - 20141021	
 		//pView->m_pMpe->Write(_T("MB440162", 0);
 		
-		pView->m_bSwRun = TRUE;
-		pView->m_nStop = 0;
-		pView->m_bSwStop = FALSE;
-		pView->m_bSwReady = FALSE;
-		pView->m_bSwReset = FALSE;
-		pView->m_bCycleStop = FALSE;
+		pDoc->m_mgrProcedure.m_bSwRun = TRUE;
+		pDoc->m_mgrProcedure.m_nStop = 0;
+		pDoc->m_mgrProcedure.m_bSwStop = FALSE;
+		pDoc->m_mgrProcedure.m_bSwReady = FALSE;
+		pDoc->m_mgrProcedure.m_bSwReset = FALSE;
+		pDoc->m_mgrProcedure.m_bCycleStop = FALSE;
 
 		// 한판넬 이송 On
 		SetMkOnePnl(TRUE);
@@ -3669,7 +3669,7 @@ BOOL CDlgMenu03::IsStop()
 {
 // 	BOOL bOn = pDoc->m_pMpeIo[28] & (0x01<<2);	// 마킹부 정지 스위치 램프
 // 	return bOn;
-	return pView->m_bSwStop;
+	return pDoc->m_mgrProcedure.m_bSwStop;
 }
 
 void CDlgMenu03::SwStop(BOOL bOn) 
@@ -3692,10 +3692,10 @@ void CDlgMenu03::SwStop(BOOL bOn)
 
 void CDlgMenu03::SwStop() 
 {
-	pView->m_bSwRun = FALSE;
-	pView->m_bSwStop = TRUE;
-	pView->m_bSwReady = FALSE;
-	pView->m_bSwReset = FALSE;
+	pDoc->m_mgrProcedure.m_bSwRun = FALSE;
+	pDoc->m_mgrProcedure.m_bSwStop = TRUE;
+	pDoc->m_mgrProcedure.m_bSwReady = FALSE;
+	pDoc->m_mgrProcedure.m_bSwReset = FALSE;
 
 	//if(!pView->m_bAuto)
 		//pView->DispStsBar(_T("정지-3"), 0);
@@ -3725,9 +3725,9 @@ void CDlgMenu03::SwReady()
 	{
 		pDoc->m_mgrProcedure.m_bSwReady = TRUE;
  		//pView->DoReady();
-		if (m_bTIM_CHK_DONE_READY)
+		if (pDoc->m_mgrProcedure.m_bTIM_CHK_DONE_READY)
 		{
-			m_bTIM_CHK_DONE_READY = FALSE;
+			pDoc->m_mgrProcedure.m_bTIM_CHK_DONE_READY = FALSE;
 			KillTimer(TIM_CHK_DONE_READY);
 		}
 		ChkReadyDone();
@@ -3759,10 +3759,10 @@ void CDlgMenu03::SwReset()
 // 	pDoc->m_pSliceIo[6] |= (0x01<<4);	// 마킹부 리셋 스위치 램프	
 
 
-	//pView->m_bSwRun = FALSE;
-	//pView->m_bSwStop = FALSE;
-	//pView->m_bSwReady = FALSE;
-	//pView->m_bSwReset = TRUE;
+	//pDoc->m_mgrProcedure.m_bSwRun = FALSE;
+	//pDoc->m_mgrProcedure.m_bSwStop = FALSE;
+	//pDoc->m_mgrProcedure.m_bSwReady = FALSE;
+	//pDoc->m_mgrProcedure.m_bSwReset = TRUE;
 }
 
 // [Torque Motor]
@@ -4275,21 +4275,21 @@ BOOL CDlgMenu03::IsAoiLdRun()
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	if(bDualTest)
 	{
-		if((pView->m_AoiLdRun & 0x03) == 0x03)
+		if((pDoc->m_mgrProcedure.m_AoiLdRun & 0x03) == 0x03)
 		{
 			if(!bOn0 || !bOn1)
 				bRtn = FALSE;
 		}
 
 		if(bOn0)
-			pView->m_AoiLdRun |= (0x01<<0);
+			pDoc->m_mgrProcedure.m_AoiLdRun |= (0x01<<0);
 		else 
-			pView->m_AoiLdRun &= ~(0x01<<0);
+			pDoc->m_mgrProcedure.m_AoiLdRun &= ~(0x01<<0);
 
 		if(bOn1)
-			pView->m_AoiLdRun |= (0x01<<1);
+			pDoc->m_mgrProcedure.m_AoiLdRun |= (0x01<<1);
 		else 
-			pView->m_AoiLdRun &= ~(0x01<<1);
+			pDoc->m_mgrProcedure.m_AoiLdRun &= ~(0x01<<1);
 
 
 		if(bOn0 && bOn1)
@@ -4301,16 +4301,16 @@ BOOL CDlgMenu03::IsAoiLdRun()
 	}
 	else
 	{
-		if((pView->m_AoiLdRun & 0x03) == 0x03)
+		if((pDoc->m_mgrProcedure.m_AoiLdRun & 0x03) == 0x03)
 		{
 			if(!bOn0)
 				bRtn = FALSE;
 		}
 
 		if(bOn0)
-			pView->m_AoiLdRun |= (0x01<<0);
+			pDoc->m_mgrProcedure.m_AoiLdRun |= (0x01<<0);
 		else 
-			pView->m_AoiLdRun &= ~(0x01<<0);
+			pDoc->m_mgrProcedure.m_AoiLdRun &= ~(0x01<<0);
 
 
 		if(bOn0)

@@ -610,29 +610,29 @@ public:
 	BOOL SaveMk1Img(int nMkPcsIdx);
 
 	// 	void SetSynqIO();
-	BOOL ChkVsShare(int &nSerial);
-	BOOL ChkVsShareUp(int &nSerial);
-	BOOL ChkVsShareDn(int &nSerial);
-	void ChkShare();
-	void ChkShareUp();
-	void ChkShareDn();
-	BOOL ChkShare(int &nSerial);
-	BOOL ChkShareUp(int &nSerial);
-	BOOL ChkShareDn(int &nSerial);
-	BOOL ChkShareIdx(int *pBufSerial, int nBufTot, int nShareSerial);
-	void ChkBuf();
-	void ChkBufUp();
-	void ChkBufDn();
-	BOOL ChkBufUp(int* pSerial, int &nTot);
-	BOOL ChkBufDn(int* pSerial, int &nTot);
-	BOOL ChkBufIdx(int* pSerial, int nTot = 0);
+	//BOOL ChkVsShare(int &nSerial);
+	//BOOL ChkVsShareUp(int &nSerial);
+	//BOOL ChkVsShareDn(int &nSerial);
+	//void ChkShare();
+	//void ChkShareUp();
+	//void ChkShareDn();
+	//BOOL ChkShare(int &nSerial);
+	//BOOL ChkShareUp(int &nSerial);
+	//BOOL ChkShareDn(int &nSerial);
+	//BOOL ChkShareIdx(int *pBufSerial, int nBufTot, int nShareSerial);
+	//void ChkBuf();
+	//void ChkBufUp();
+	//void ChkBufDn();
+	//BOOL ChkBufUp(int* pSerial, int &nTot);
+	//BOOL ChkBufDn(int* pSerial, int &nTot);
+	//BOOL ChkBufIdx(int* pSerial, int nTot = 0);
 
-	BOOL SortingInUp(CString sPath, int nIndex);
-	BOOL SortingOutUp(int* pSerial, int nTot);
-	void SwapUp(__int64 *num1, __int64 *num2);
-	BOOL SortingInDn(CString sPath, int nIndex);
-	BOOL SortingOutDn(int* pSerial, int nTot);
-	void SwapDn(__int64 *num1, __int64 *num2);
+	//BOOL SortingInUp(CString sPath, int nIndex);
+	//BOOL SortingOutUp(int* pSerial, int nTot);
+	//void SwapUp(__int64 *num1, __int64 *num2);
+	//BOOL SortingInDn(CString sPath, int nIndex);
+	//BOOL SortingOutDn(int* pSerial, int nTot);
+	//void SwapDn(__int64 *num1, __int64 *num2);
 
 	void ChkEmg();
 	void ChkMRegOut();
@@ -791,8 +791,8 @@ public:
 	BOOL IsMoveDone0();
 	BOOL IsMoveDone1();
 	void Ink(BOOL bOn = TRUE);
-	BOOL UpdateReelmap(int nSerial);
-	BOOL UpdateReelmapInner(int nSerial);
+	//BOOL UpdateReelmap(int nSerial);
+	//BOOL UpdateReelmapInner(int nSerial);
 
 	// 	void LoadMstInfo();
 	void InitInfo();
@@ -919,8 +919,8 @@ public:
 	void DoAllMk(int nCam);
 	void StopAllMk();
 	void EStop();
-	void SetPriority();
-	void ResetPriority();
+	//void SetPriority();
+	//void ResetPriority();
 	void SetAlignPos();
 	void SetAlignPosUp();
 	void SetAlignPosDn();
@@ -987,10 +987,10 @@ public:
 	BOOL ChkContShotNum();
 	void SetFixPcs(int nSerial);
 
-	BOOL RemakeReelmap();
-	BOOL IsDoneRemakeReelmap();
-	BOOL RemakeReelmapInner();
-	BOOL IsDoneRemakeReelmapInner();
+	//BOOL RemakeReelmap();
+	//BOOL IsDoneRemakeReelmap();
+	//BOOL RemakeReelmapInner();
+	//BOOL IsDoneRemakeReelmapInner();
 	void MakeSapp3();
 	void GetResult();
 	void MakeResult();
@@ -1011,7 +1011,7 @@ public:
 
 	void AdjPinPos();
 
-	BOOL m_bStopFromThread, m_bBuzzerFromThread;
+	//BOOL m_bStopFromThread, m_bBuzzerFromThread;
 	void StopFromThread();
 	void BuzzerFromThread(BOOL bOn, int nCh = 0);
 
@@ -1156,8 +1156,8 @@ public:
 	void SetAoiDnAutoStep(int nStep);
 	CString GetAoiDnAlarmRestartMsg();
 
-	void DelOverLotEndSerialUp(int nSerial);
-	void DelOverLotEndSerialDn(int nSerial);
+	//void DelOverLotEndSerialUp(int nSerial);
+	//void DelOverLotEndSerialDn(int nSerial);
 	void ChkReTestAlarmOnAoiUp();
 	void ChkReTestAlarmOnAoiDn();
 	void ShowMsgBox();

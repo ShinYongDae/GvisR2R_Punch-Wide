@@ -4,6 +4,7 @@
 #include "Process/DataMarking.h"
 #include "Global/Yield.h"
 #include "Process/CamMaster.h"
+#include "Process/MyFile.h"
 
 // CManagerReelmap
 
@@ -20,6 +21,7 @@ class CManagerReelmap : public CWnd
 	//CCamMaster m_Master[2];
 	CYield m_Yield[3]; // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-All
 	CString *pMkInfo;
+	CMyFile *m_pFile;
 
 	// 내층 작업한 데이터구조  ====================================================================
 	CCamMaster m_MasterInner[2];
@@ -88,6 +90,8 @@ public:
 	void DuplicateRmap();
 	void DuplicateRmap(int nRmap);
 	void SetMkPnt(int nCam);	// Pin위치에 의한 정렬.
+	BOOL GetCurrentInfoEng();
+
 
 	// [Reelmap]
 	CCamMaster m_Master[2];
@@ -95,6 +99,14 @@ public:
 	BOOL InitReelmap();
 	BOOL InitReelmapUp();
 	BOOL InitReelmapDn();
+
+	BOOL UpdateReelmap(int nSerial);
+	BOOL UpdateReelmapInner(int nSerial);
+
+	BOOL RemakeReelmap();
+	BOOL IsDoneRemakeReelmap();
+	BOOL RemakeReelmapInner();
+	BOOL IsDoneRemakeReelmapInner();
 
 	void ClrFixPcs();
 
@@ -136,19 +148,22 @@ public:
 	int GetIdxPcrBufUp(int nSerial);
 	int GetIdxPcrBufDn(int nSerial);
 
-	BOOL IsFixPcs();
-	BOOL IsFixPcsUp();
-	BOOL IsFixPcsDn();
+	//BOOL IsFixPcs();
+	//BOOL IsFixPcsUp();
+	//BOOL IsFixPcsDn();
 	BOOL IsFixPcsUp(int nSerial);
 	BOOL IsFixPcsDn(int nSerial);
-	void ClrFixPcs();
-	void ClrFixPcs(int nCol, int nRow);
-	void SetFixPcs(int nSerial, int nCol, int nRow); // nShot : 0 ~ 
-	BOOL IsFixPcs(int nSerial, int &Col, int &Row);
-	BOOL IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot, BOOL &bCont);
-	int GetRptFixPcs(int nCol, int nRow);
+	//void ClrFixPcs();
+	//void ClrFixPcs(int nCol, int nRow);
+	void SetFixPcs(int nSerial);
+
+	//void SetFixPcs(int nSerial, int nCol, int nRow); // nShot : 0 ~ 
+	//BOOL IsFixPcs(int nSerial, int &Col, int &Row);
+	//BOOL IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot, BOOL &bCont);
+	//int GetRptFixPcs(int nCol, int nRow);
 
 	BOOL GetPcrInfo(CString sPath, stModelInfo &stInfo);
+
 	void ClrPcr();
 	int CopyPcrAll();
 	int CopyPcrUp();
@@ -159,12 +174,12 @@ public:
 	void DelSharePcr();
 	void DelSharePcrUp();
 	void DelSharePcrDn();
-	BOOL MakeMkDir(stModelInfo stInfo);
-	BOOL MakeMkDir(CString sModel, CString sLot, CString sLayer);
-	BOOL MakeMkDir();
-	BOOL MakeMkDirUp();
-	BOOL MakeMkDirDn();
-	BOOL Shift2Mk(int nSerial);
+	//BOOL MakeMkDir(stModelInfo stInfo);
+	//BOOL MakeMkDir(CString sModel, CString sLot, CString sLayer);
+	//BOOL MakeMkDir();
+	//BOOL MakeMkDirUp();
+	//BOOL MakeMkDirDn();
+	//BOOL Shift2Mk(int nSerial);
 
 	void UpdateYieldOnThread(int nSerial);
 	void UpdateYield(int nSerial);
@@ -234,19 +249,25 @@ public:
 	int GetErrCodeUp1Its(int nSerial); // 1(정상), -1(Align Error, 노광불량), -2(Lot End)
 	int GetErrCodeDn1Its(int nSerial); // 1(정상), -1(Align Error, 노광불량), -2(Lot End)
 
-	int GetTotDefPcs0Its(int nSerial);
-	int GetTotDefPcsUp0Its(int nSerial);
-	int GetTotDefPcsDn0Its(int nSerial);
+	int GetTotDefPcsIts(int nSerial);
+	int GetTotDefPcsUpIts(int nSerial);
+	int GetTotDefPcsDnIts(int nSerial);
 
-	int GetTotDefPcs1Its(int nSerial);
-	int GetTotDefPcsUp1Its(int nSerial);
-	int GetTotDefPcsDn1Its(int nSerial);
+	//int GetTotDefPcs0Its(int nSerial);
+	//int GetTotDefPcsUp0Its(int nSerial);
+	//int GetTotDefPcsDn0Its(int nSerial);
 
-	CfPoint GetMkPnt0Its(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
-	CfPoint GetMkPnt1Its(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
+	//int GetTotDefPcs1Its(int nSerial);
+	//int GetTotDefPcsUp1Its(int nSerial);
+	//int GetTotDefPcsDn1Its(int nSerial);
 
-	int GetMkStripIdx0Its(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
-	int GetMkStripIdx1Its(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
+	CfPoint GetMkPntIts(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
+	//CfPoint GetMkPnt0Its(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
+	//CfPoint GetMkPnt1Its(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
+
+	int GetMkStripIdxIts(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
+	//int GetMkStripIdx0Its(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
+	//int GetMkStripIdx1Its(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
 
 
 	BOOL InitReelmapInner();
@@ -308,7 +329,7 @@ public:
 	//BOOL m_bTHREAD_UPDATE_YIELD_INNER_DN, m_bTHREAD_UPDATE_YIELD_INNER_ALLDN;
 	//int	m_nSnTHREAD_UPDATAE_YIELD;
 
-	BOOL ChkYield(double &dTotLmt, double &dPrtLmt, double &dRatio);
+	BOOL ChkYield();// (double &dTotLmt, double &dPrtLmt, double &dRatio);
 	void UpdateReelmapYieldUp();
 	void UpdateReelmapYieldAllUp();
 	void UpdateReelmapYieldDn();
@@ -337,7 +358,7 @@ public:
 	//BOOL SortingOutDn(int* pSerial, int nTot);
 	//void SwapDn(__int64 *num1, __int64 *num2);
 
-	int GetTotDefPcsIts(int nSerial);
+	//int GetTotDefPcsIts(int nSerial);
 
 	// [CamMaster]
 	BOOL LoadMstInfo();

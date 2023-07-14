@@ -63,7 +63,7 @@ CDlgMenu01::CDlgMenu01(CWnd* pParent /*=NULL*/)
 	m_bEnableMkStrip = FALSE;
 
 	if(pView)
-		m_nSelRmapPrev = pView->m_nSelRmap;
+		m_nSelRmapPrev = pDoc->m_mgrProcedure.m_nSelRmap;
 	else
 		m_nSelRmapPrev = RMAP_ALLUP;
 
@@ -343,27 +343,27 @@ void CDlgMenu01::SelMap(int nSel)
 		myBtn[12].SetCheck(TRUE);
 		myBtn[13].SetCheck(FALSE);
 		myBtn[14].SetCheck(FALSE);
-		pView->m_nSelRmap = RMAP_UP;
+		pDoc->m_mgrProcedure.m_nSelRmap = RMAP_UP;
 		break;
 	case DN:
 		myBtn[12].SetCheck(FALSE);
 		myBtn[13].SetCheck(TRUE);
 		myBtn[14].SetCheck(FALSE);
-		pView->m_nSelRmap = RMAP_DN;
+		pDoc->m_mgrProcedure.m_nSelRmap = RMAP_DN;
 		break;
 	case ALL:
 		myBtn[12].SetCheck(FALSE);
 		myBtn[13].SetCheck(FALSE);
 		myBtn[14].SetCheck(TRUE);
 		if(pDoc->WorkingInfo.LastJob.nMergingLayer==0)
-			pView->m_nSelRmap = RMAP_ALLUP;
+			pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ALLUP;
 		else if(pDoc->WorkingInfo.LastJob.nMergingLayer==1)
-			pView->m_nSelRmap = RMAP_ALLDN;
+			pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ALLDN;
 		else
-			pView->m_nSelRmap = RMAP_ALLUP;
+			pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ALLUP;
 		break;
 	}
-	//OpenReelmap(pView->m_nSelRmap);
+	//OpenReelmap(pDoc->m_mgrProcedure.m_nSelRmap);
 	//DispReelmap(TEST_SHOT);	
 #else
 	CString str;// , sPath;
@@ -377,24 +377,24 @@ void CDlgMenu01::SelMap(int nSel)
 			myBtn[12].SetCheck(TRUE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(FALSE);
-			pView->m_nSelRmap = RMAP_UP;
+			pDoc->m_mgrProcedure.m_nSelRmap = RMAP_UP;
 			break;
 		case DN:
 			myBtn[12].SetCheck(FALSE);
 			myBtn[13].SetCheck(TRUE);
 			myBtn[14].SetCheck(FALSE);
-			pView->m_nSelRmap = RMAP_DN;
+			pDoc->m_mgrProcedure.m_nSelRmap = RMAP_DN;
 			break;
 		case ALL:
 			myBtn[12].SetCheck(FALSE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(TRUE);
 			if(pDoc->WorkingInfo.LastJob.nMergingLayer==0)
-				pView->m_nSelRmap = RMAP_ALLUP;
+				pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ALLUP;
 			else if(pDoc->WorkingInfo.LastJob.nMergingLayer==1)
-				pView->m_nSelRmap = RMAP_ALLDN;
+				pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ALLDN;
 			else
-				pView->m_nSelRmap = RMAP_ALLUP;
+				pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ALLUP;
 			break;
 		}
 	}
@@ -403,22 +403,22 @@ void CDlgMenu01::SelMap(int nSel)
 			myBtn[12].SetCheck(TRUE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(FALSE);
-			pView->m_nSelRmap = RMAP_UP;
+			pDoc->m_mgrProcedure.m_nSelRmap = RMAP_UP;
 	}
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
-		if (pView->m_nSelRmap != RMAP_ITS)
-			m_nSelRmapPrev = pView->m_nSelRmap;
+		if (pDoc->m_mgrProcedure.m_nSelRmap != RMAP_ITS)
+			m_nSelRmapPrev = pDoc->m_mgrProcedure.m_nSelRmap;
 
-		pView->m_nSelRmap = RMAP_ITS;
+		pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ITS;
 	}
 
-	SwitchReelmapDisp(pView->m_nSelRmap);
+	SwitchReelmapDisp(pDoc->m_mgrProcedure.m_nSelRmap);
 
-	//sPath = pView->GetRmapPath(pView->m_nSelRmap);
+	//sPath = pView->GetRmapPath(pDoc->m_mgrProcedure.m_nSelRmap);
 
-	//OpenReelmap(pView->m_nSelRmap);	// 20130315
+	//OpenReelmap(pDoc->m_mgrProcedure.m_nSelRmap);	// 20130315
 	//DispReelmap(m_nSerial);			// 20130315
 
 #endif
@@ -427,7 +427,7 @@ void CDlgMenu01::SelMap(int nSel)
 //BOOL CDlgMenu01::OpenReelmap(CString sPath)
 //{
 //#ifdef TEST_MODE
-//	pDoc->m_pReelMapUp->Open(sPath);
+//	pDoc->m_mgrReelmap.m_pReelMapUp->Open(sPath);
 //#else
 //	stModelInfo stInfo;
 //	if (!pDoc->GetPcrInfo(sPath, stInfo))
@@ -438,9 +438,9 @@ void CDlgMenu01::SelMap(int nSel)
 //		return FALSE;
 //	}
 //
-//	if (pDoc->m_pReelMapUp)
+//	if (pDoc->m_mgrReelmap.m_pReelMapUp)
 //	{
-//		pDoc->m_pReelMapUp->Open(pView->GetRmapPath(RMAP_UP, stInfo), stInfo.sModel, stInfo.sLayer, stInfo.sLot);
+//		pDoc->m_mgrReelmap.m_pReelMapUp->Open(pView->GetRmapPath(RMAP_UP, stInfo), stInfo.sModel, stInfo.sLayer, stInfo.sLot);
 //	}
 //#endif
 //	return TRUE;
@@ -449,25 +449,25 @@ void CDlgMenu01::SelMap(int nSel)
 void CDlgMenu01::OpenReelmap(int nSelRmap)
 {
 	CString sPath;
-	if(pDoc->m_pReelMap)
+	if(pDoc->m_mgrReelmap.m_pReelMap)
 	{
 		//if(nSelRmap < 0)
-		//	pDoc->m_pReelMap->m_nLayer = pView->m_nSelRmap;
+		//	pDoc->m_mgrReelmap.m_pReelMap->m_nLayer = pDoc->m_mgrProcedure.m_nSelRmap;
 		//else
-		//	pDoc->m_pReelMap->m_nLayer = nSelRmap;
+		//	pDoc->m_mgrReelmap.m_pReelMap->m_nLayer = nSelRmap;
 
 		if (pDoc->GetTestMode() == MODE_OUTER)
 		{
 			myBtn[12].SetCheck(FALSE);	// IDC_CHK_DEF_UP
 			myBtn[13].SetCheck(FALSE);	// IDC_CHK_DEF_DN
 			myBtn[14].SetCheck(TRUE);	// IDC_CHK_DEF_ALL
-			pDoc->m_pReelMap->Open();
-			pDoc->m_pReelMap->SetPathAtBuf();
+			pDoc->m_mgrReelmap.m_pReelMap->Open();
+			pDoc->m_mgrReelmap.m_pReelMap->SetPathAtBuf();
 		}
 		else
 		{
-			pDoc->m_pReelMap->Open();
-			pDoc->m_pReelMap->SetPathAtBuf();
+			pDoc->m_mgrReelmap.m_pReelMap->Open();
+			pDoc->m_mgrReelmap.m_pReelMap->SetPathAtBuf();
 		}
 	}
 }
@@ -486,23 +486,23 @@ BOOL CDlgMenu01::DispReelmap(int nSerial, BOOL bDumy)
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
-		if (pDoc->m_pReelMapIts)
+		if (pDoc->m_mgrReelmap.m_pReelMapIts)
 		{
-			if (!pDoc->m_pReelMapIts->Disp(nSerial, bDumy))
+			if (!pDoc->m_mgrReelmap.m_pReelMapIts->Disp(nSerial, bDumy))
 				return FALSE;
 		}
 	}
 	else
 	{
-		if (pDoc->m_pReelMap)
+		if (pDoc->m_mgrReelmap.m_pReelMap)
 		{
-			if (!pDoc->m_pReelMap->Disp(nSerial, bDumy))
+			if (!pDoc->m_mgrReelmap.m_pReelMap->Disp(nSerial, bDumy))
 				return FALSE;
 		}
 	}
 
-	if (pDoc->m_pReelMapDisp)
-		pDoc->m_pReelMapDisp->Disp(nSerial, bDumy);
+	if (pDoc->m_mgrReelmap.m_pReelMapDisp)
+		pDoc->m_mgrReelmap.m_pReelMapDisp->Disp(nSerial, bDumy);
 
  	SetPnlNum();
  	SetPnlDefNum();
@@ -510,7 +510,7 @@ BOOL CDlgMenu01::DispReelmap(int nSerial, BOOL bDumy)
 	this->MoveWindow(m_pRect, TRUE);
 
 	return TRUE;
-// 	if(nSerial == pView->m_nLotEndSerial)
+// 	if(nSerial == pDoc->m_mgrProcedure.m_nLotEndSerial)
 // 		int nBreak = 1;
 // 
 // 	m_nSerial = nSerial;
@@ -581,7 +581,7 @@ void CDlgMenu01::DispMkInfoUp()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	int nIdx = pDoc->GetPcrIdx0(m_nSerial);
+	int nIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
 	m_nDef[0] = 0;	
 
 	int nMaxMaxDispDefImg = _tstoi(pDoc->WorkingInfo.System.sMaxDispDefImg);
@@ -1490,7 +1490,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
  			int nIdxMkInfo = (m_nIdxMkInfo[0] < MENU01_STC_DEFINFO_HARF) ? m_nIdxMkInfo[0] : (MENU01_STC_DEFINFO_HARF-1);	
 			//int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
 
-			int nIdx = pDoc->GetPcrIdx0(nSerial);
+			int nIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
 			int nDefImg;
 			if(pDoc->m_mgrReelmap.m_pPcr[0])
 			{
@@ -1533,7 +1533,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
  			int nIdxMkInfo = (m_nIdxMkInfo[0] < MENU01_STC_DEFINFO_HARF*2) ? m_nIdxMkInfo[0] : (MENU01_STC_DEFINFO_HARF*2-1);	
 	//		int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
 
-			int nIdx = pDoc->GetPcrIdx0(nSerial);
+			int nIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
 			int nDefImg;
 			if(pDoc->m_mgrReelmap.m_pPcr[0])
 			{
@@ -1691,9 +1691,9 @@ void CDlgMenu01::ShiftDefInfoDn()
 
 void CDlgMenu01::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 {
-	if(!pView->m_bDrawGL)
+	if(!pDoc->m_mgrProcedure.m_bDrawGL)
 		return;
-	if(!pDoc->m_pReelMap)
+	if(!pDoc->m_mgrReelmap.m_pReelMap)
 	{
 		pView->MsgBox(_T("Not created Reelmap."));
 		//AfxMessageBox(_T("Not created Reelmap."));
@@ -1705,34 +1705,34 @@ void CDlgMenu01::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 	COLORREF rgbDef;
 
 #ifdef TEST_MODE 
-// 	nDefCode = pDoc->m_pReelMap->pPcsDef[2][28];
- 	int nPcrIdx = pDoc->GetPcrIdx0(m_nSerial);
+// 	nDefCode = pDoc->m_mgrReelmap.m_pReelMap->pPcsDef[2][28];
+ 	int nPcrIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
 	if(pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pMk[m_nIdxDef[0]] == -2) // -2 (NoMarking)
 		return;
 	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]]; //m_pImg[m_nIdxDef];
 	nDefCode = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[nDefCode];
 	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
 		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
-	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
-// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
-// 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
-// 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[28]);
+	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
+// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
+// 	str.Format(_T("%s"), pDoc->m_mgrReelmap.m_pReelMap->pMkInfo[nPcsIdx]);
+// 	str.Format(_T("%s"), pDoc->m_mgrReelmap.m_pReelMap->pMkInfo[28]);
 
 #else
- 	int nPcrIdx = pDoc->GetPcrIdx0(m_nSerial);
-// 	int nSelMkPnl = pDoc->m_pReelMap->m_nSelMarkingPnl;
+ 	int nPcrIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
+// 	int nSelMkPnl = pDoc->m_mgrReelmap.m_pReelMap->m_nSelMarkingPnl;
 	if(pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pMk[m_nIdxDef[0]] == -2) // -2 (NoMarking)
 		return;
 	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]]; //m_pImg[m_nIdxDef];
 	nDefCode = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
-// 	nDefCode = pDoc->m_pReelMap->pPcsDef[nSelMkPnl][nPcsIdx];
- 	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];	
-// 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
+// 	nDefCode = pDoc->m_mgrReelmap.m_pReelMap->pPcsDef[nSelMkPnl][nPcsIdx];
+ 	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[nDefCode];	
+// 	str.Format(_T("%s"), pDoc->m_mgrReelmap.m_pReelMap->pMkInfo[nPcsIdx]);
 	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
 		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
-	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
-// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
+	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
+// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
 #endif
 	myStcDefInfo[nIdx].SetText(str);
 	myStcDefInfo[nIdx].SetBkColor(rgbDef);
@@ -1744,9 +1744,9 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 	if(!bDualTest)
 		return;
 
-	if(!pView->m_bDrawGL)
+	if(!pDoc->m_mgrProcedure.m_bDrawGL)
 		return;
-	if(!pDoc->m_pReelMap)
+	if(!pDoc->m_mgrReelmap.m_pReelMap)
 	{
 		pView->MsgBox(_T("Not created Reelmap."));
 		//AfxMessageBox(_T("Not created Reelmap."));
@@ -1763,28 +1763,28 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 		return;
 	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]]; //m_pImg[m_nIdxDef];
 	nDefCode = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
-// 	nDefCode = pDoc->m_pReelMap->pPcsDef[2][28];
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];
+// 	nDefCode = pDoc->m_mgrReelmap.m_pReelMap->pPcsDef[2][28];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[nDefCode];
 	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
 		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
-	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
-// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
-// 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
-// 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[28]);
+	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
+// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
+// 	str.Format(_T("%s"), pDoc->m_mgrReelmap.m_pReelMap->pMkInfo[nPcsIdx]);
+// 	str.Format(_T("%s"), pDoc->m_mgrReelmap.m_pReelMap->pMkInfo[28]);
 #else
  	int nPcrIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
-// 	int nSelMkPnl = pDoc->m_pReelMap->m_nSelMarkingPnl;
+// 	int nSelMkPnl = pDoc->m_mgrReelmap.m_pReelMap->m_nSelMarkingPnl;
 	if(pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pMk[m_nIdxDef[1]] == -2) // -2 (NoMarking)
 		return;
 	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefPcs[m_nIdxDef[1]]; //m_pImg[m_nIdxDef];
 	nDefCode = pDoc->m_mgrReelmap.m_pPcr[1][nPcrIdx]->m_pDefType[m_nIdxDef[1]];
-// 	nDefCode = pDoc->m_pReelMap->pPcsDef[nSelMkPnl][nPcsIdx];
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[nDefCode];	
+// 	nDefCode = pDoc->m_mgrReelmap.m_pReelMap->pPcsDef[nSelMkPnl][nPcsIdx];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[nDefCode];	
 	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
 		pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);	
-	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
-// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
-// 	str.Format(_T("%s"), pDoc->m_pReelMap->pMkInfo[nPcsIdx]);
+	str.Format(_T("%s\r\n%c - %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+'A', nCol+1, nRow+1);
+// 	str.Format(_T("%s\r\n%d열 %d, %d"), pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip+1, nCol+1, nRow+1);
+// 	str.Format(_T("%s"), pDoc->m_mgrReelmap.m_pReelMap->pMkInfo[nPcsIdx]);
 #endif
 	myStcDefInfo[MENU01_STC_DEFINFO_HARF+nIdx].SetText(str);
 	myStcDefInfo[MENU01_STC_DEFINFO_HARF+nIdx].SetBkColor(rgbDef);
@@ -1792,7 +1792,7 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 
 void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 {
-	pDoc->MakeImageDirUp(nSerial);
+	pDoc->m_mgrReelmap.MakeImageDirUp(nSerial);
 
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
@@ -1808,7 +1808,7 @@ void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSer
 
 void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 {
-	pDoc->MakeImageDirDn(nSerial);
+	pDoc->m_mgrReelmap.MakeImageDirDn(nSerial);
 
 	CString sPath;
 	sPath.Format(_T("%s%s\\%s\\%s\\CadImage\\%d\\%05d.tif"), pDoc->WorkingInfo.System.sPathOldFile,
@@ -1825,7 +1825,7 @@ void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSer
 BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
 {
 	int nStrip=-1, nCol=-1, nRow=-1;
-	int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
+	int nPcrIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
 	int nPcsIdx = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefPcs[m_nIdxDef[0]];
 	int nDefCode = pDoc->m_mgrReelmap.m_pPcr[0][nPcrIdx]->m_pDefType[m_nIdxDef[0]];
 	if (pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
@@ -1845,7 +1845,7 @@ BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 		pDoc->WorkingInfo.LastJob.sLotUp,
 		pDoc->WorkingInfo.LastJob.sLayerUp,
 		nSerial,
-		nIdxImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+		nIdxImg, pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
 
 	CFileFind finder;
 	if (finder.FindFile(strDefImgPathS))
@@ -1889,7 +1889,7 @@ BOOL CDlgMenu01::SaveDefImgPosDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (n
 		pDoc->WorkingInfo.LastJob.sLotUp,
 		pDoc->WorkingInfo.LastJob.sLayerDn,
 		nSerial,
-		nIdxImg, pDoc->m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
+		nIdxImg, pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[nDefCode], nStrip + 'A', nCol + 1, nRow + 1);
 
 	CFileFind finder;
 	if (finder.FindFile(strDefImgPathS))
@@ -1973,7 +1973,7 @@ void CDlgMenu01::WriteDefInfoDn(int nSerial, int nIdxText, int nIdxDef, int nIdx
 		pDoc->WorkingInfo.LastJob.sLayerDn,
 		nSerial);
 
-	int nIdx = pDoc->GetPcrIdx0(m_nSerial);
+	int nIdx = pDoc->m_mgrReelmap.GetPcrIdx(m_nSerial);
 	CString sItem, sData;
 
 	sData.Format(_T("%d"), pDoc->m_mgrReelmap.m_pPcr[2][nIdx]->m_nTotDef);
@@ -2010,9 +2010,9 @@ void CDlgMenu01::InitGL()
 	{
 		m_pMyGL = new CMyGL(this);
 		//if(pDoc->GetTestMode() == MODE_OUTER)
-		//	m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMapIts);
+		//	m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_mgrReelmap.m_pReelMapIts);
 		//else
-			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_pReelMapDisp);
+			m_pMyGL->Init(IDC_STC_REELMAP_IMG, pDoc->m_mgrReelmap.m_pReelMapDisp);
 	}
 // 	m_pMyGL->ResetRgn();
 	m_pMyGL->SetRgn();
@@ -2500,118 +2500,118 @@ void CDlgMenu01::InitStcTitle()
 
 void CDlgMenu01::SetRgbStcDef()
 {
-	if(!pDoc->m_pReelMap)
+	if(!pDoc->m_mgrReelmap.m_pReelMap)
 		return;
 
 	COLORREF rgbDef;
 
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_OPEN];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_OPEN];
 	myStcTitle[23].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_SHORT];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_SHORT];
 	myStcTitle[24].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_USHORT];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_USHORT];
 	myStcTitle[25].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_SPACE];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_SPACE];
 	myStcTitle[26].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_EXTRA];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_EXTRA];
 	myStcTitle[27].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_PROTRUSION];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_PROTRUSION];
 	myStcTitle[28].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_PINHOLE];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_PINHOLE];
 	myStcTitle[29].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_PAD];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_PAD];
 	myStcTitle[30].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_HOLE_OPEN];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_HOLE_OPEN];
 	myStcTitle[31].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_HOLE_MISS];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_HOLE_MISS];
 	myStcTitle[32].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_HOLE_POSITION];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_HOLE_POSITION];
 	myStcTitle[33].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_HOLE_DEFECT];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_HOLE_DEFECT];
 	myStcTitle[34].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_NICK];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_NICK];
 	myStcTitle[35].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_POI];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_POI];
 	myStcTitle[36].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_VH_OPEN];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_VH_OPEN];
 	myStcTitle[37].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_VH_MISS];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_VH_MISS];
 	myStcTitle[38].SetBkColor(RGB_YELLOW);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_VH_POSITION];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_VH_POSITION];
 	myStcTitle[39].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_VH_DEF];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_VH_DEF];
 	myStcTitle[40].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_LIGHT];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_LIGHT];
 	myStcTitle[41].SetBkColor(rgbDef);
 	
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_EDGE_NICK];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_EDGE_NICK];
 	myStcTitle[42].SetBkColor(rgbDef);
 
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_EDGE_PROT];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_EDGE_PROT];
 	myStcTitle[43].SetBkColor(rgbDef);
 
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_EDGE_SPACE];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_EDGE_SPACE];
 	myStcTitle[44].SetBkColor(rgbDef);
 
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_USER_DEFINE_1];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_USER_DEFINE_1];
 	myStcTitle[45].SetBkColor(rgbDef);
 
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_NARROW];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_NARROW];
 	myStcTitle[46].SetBkColor(rgbDef);
 
-	rgbDef = pDoc->m_pReelMap->m_rgbDef[DEF_WIDE];
+	rgbDef = pDoc->m_mgrReelmap.m_pReelMap->m_rgbDef[DEF_WIDE];
 	myStcTitle[47].SetBkColor(rgbDef);
 }
 
 void CDlgMenu01::SetTitleStcDef()
 {
-	if(!pDoc->m_pReelMap)
+	if(!pDoc->m_mgrReelmap.m_pReelMap)
 		return;
 
-	myStcTitle[23].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_OPEN]);	
-	myStcTitle[24].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_SHORT]);	
-	myStcTitle[25].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_USHORT]);	
-	myStcTitle[26].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_SPACE]);	
-	myStcTitle[27].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_EXTRA]);	
-	myStcTitle[28].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_PROTRUSION]);	
-	myStcTitle[29].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_PINHOLE]);	
-	myStcTitle[30].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_PAD]);	
-	myStcTitle[31].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_HOLE_OPEN]);	
-	myStcTitle[32].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_HOLE_MISS]);	
-	myStcTitle[33].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_HOLE_POSITION]);	
-	myStcTitle[34].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_HOLE_DEFECT]);	
-	myStcTitle[35].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_NICK]);	
-	myStcTitle[36].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_POI]);	
-	myStcTitle[37].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_VH_OPEN]);	
-	myStcTitle[38].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_VH_MISS]);	
-	myStcTitle[39].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_VH_POSITION]);	
-	myStcTitle[40].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_VH_DEF]);	
-	myStcTitle[41].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_LIGHT]);	
+	myStcTitle[23].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_OPEN]);	
+	myStcTitle[24].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_SHORT]);	
+	myStcTitle[25].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_USHORT]);	
+	myStcTitle[26].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_SPACE]);	
+	myStcTitle[27].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_EXTRA]);	
+	myStcTitle[28].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_PROTRUSION]);	
+	myStcTitle[29].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_PINHOLE]);	
+	myStcTitle[30].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_PAD]);	
+	myStcTitle[31].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_HOLE_OPEN]);	
+	myStcTitle[32].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_HOLE_MISS]);	
+	myStcTitle[33].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_HOLE_POSITION]);	
+	myStcTitle[34].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_HOLE_DEFECT]);	
+	myStcTitle[35].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_NICK]);	
+	myStcTitle[36].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_POI]);	
+	myStcTitle[37].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_VH_OPEN]);	
+	myStcTitle[38].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_VH_MISS]);	
+	myStcTitle[39].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_VH_POSITION]);	
+	myStcTitle[40].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_VH_DEF]);	
+	myStcTitle[41].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_LIGHT]);	
 
-	myStcTitle[42].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_EDGE_NICK]);	
-	myStcTitle[43].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_EDGE_PROT]);	
-	myStcTitle[44].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_EDGE_SPACE]);	
-	myStcTitle[45].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_USER_DEFINE_1]);	
-	myStcTitle[46].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_NARROW]);	
-	myStcTitle[47].SetText(pDoc->m_pReelMap->m_sKorDef[DEF_WIDE]);	
+	myStcTitle[42].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_EDGE_NICK]);	
+	myStcTitle[43].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_EDGE_PROT]);	
+	myStcTitle[44].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_EDGE_SPACE]);	
+	myStcTitle[45].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_USER_DEFINE_1]);	
+	myStcTitle[46].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_NARROW]);	
+	myStcTitle[47].SetText(pDoc->m_mgrReelmap.m_pReelMap->m_sKorDef[DEF_WIDE]);	
 }
 
 void CDlgMenu01::OnChkUserInfo() 
@@ -2907,7 +2907,7 @@ void CDlgMenu01::DispRunTime()
 	}
 	else if(!nEdYear && !nEdMonth && !nEdDay && !nEdHour && !nEdMin && !nEdSec)
 	{
-		nDiff = (GetTickCount()-pView->m_dwLotSt)/1000;
+		nDiff = (GetTickCount()- pDoc->m_mgrProcedure.m_dwLotSt)/1000;
 		nHour = int(nDiff/3600);
 		nMin = int((nDiff-3600*nHour)/60);
 		nSec = nDiff % 60;
@@ -2915,9 +2915,9 @@ void CDlgMenu01::DispRunTime()
 	}
 	else
 	{
-		if(pView->m_dwLotEd > 0)
+		if(pDoc->m_mgrProcedure.m_dwLotEd > 0)
 		{
-			nDiff = (pView->m_dwLotEd-pView->m_dwLotSt)/1000;
+			nDiff = (pDoc->m_mgrProcedure.m_dwLotEd - pDoc->m_mgrProcedure.m_dwLotSt)/1000;
 			nHour = int(nDiff/3600);
 			nMin = int((nDiff-3600*nHour)/60);
 			nSec = nDiff % 60;
@@ -3032,29 +3032,29 @@ BOOL CDlgMenu01::SetSerial(int nSerial, BOOL bDumy)
 			m_nSerial = nSerial;
 			DispReelmap(nSerial, bDumy);
 
-			if(nSerial == pView->m_nLotEndSerial)
+			if(nSerial == pDoc->m_mgrProcedure.m_nLotEndSerial)
 				int nBreak = 1;
 
-			if (pView->m_bSerialDecrese)
+			if (pDoc->m_mgrProcedure.m_bSerialDecrese)
 			{
-				if (nSerial >= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+				if (nSerial >= pDoc->m_mgrProcedure.m_nLotEndSerial || !pDoc->m_mgrProcedure.m_nLotEndSerial)
 					DispMkInfo();
 			}
 			else
 			{
-				if (nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+				if (nSerial <= pDoc->m_mgrProcedure.m_nLotEndSerial || !pDoc->m_mgrProcedure.m_nLotEndSerial)
 					DispMkInfo();
 			}
 
 			//if(nSerial < pView->GetLotEndSerial() || !pView->GetLotEndSerial())
-			//if(pView->m_nLotEndSerial%2)
+			//if(pDoc->m_mgrProcedure.m_nLotEndSerial%2)
 			//{
-			//	if(nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+			//	if(nSerial <= pDoc->m_mgrProcedure.m_nLotEndSerial || !pDoc->m_mgrProcedure.m_nLotEndSerial)
 			//		DispMkInfo();
 			//}
 			//else
 			//{
-			//	if(nSerial < pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+			//	if(nSerial < pDoc->m_mgrProcedure.m_nLotEndSerial || !pDoc->m_mgrProcedure.m_nLotEndSerial)
 			//		DispMkInfo();
 			//}
 		}
@@ -3099,18 +3099,18 @@ BOOL CDlgMenu01::SetSerialMkInfo(int nSerial, BOOL bDumy)
 		{
 			m_nSerial = nSerial;
 
-			if(nSerial == pView->m_nLotEndSerial)
+			if(nSerial == pDoc->m_mgrProcedure.m_nLotEndSerial)
 				int nBreak = 1;
 
 			//if(nSerial < pView->GetLotEndSerial() || !pView->GetLotEndSerial())
-			if (pView->m_bSerialDecrese)
+			if (pDoc->m_mgrProcedure.m_bSerialDecrese)
 			{
-				if (nSerial >= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+				if (nSerial >= pDoc->m_mgrProcedure.m_nLotEndSerial || !pDoc->m_mgrProcedure.m_nLotEndSerial)
 					DispMkInfo();
 			}
 			else
 			{
-				if (nSerial <= pView->m_nLotEndSerial || !pView->m_nLotEndSerial)
+				if (nSerial <= pDoc->m_mgrProcedure.m_nLotEndSerial || !pDoc->m_mgrProcedure.m_nLotEndSerial)
 					DispMkInfo();
 			}
 		}
@@ -3153,7 +3153,7 @@ void CDlgMenu01::ResetSerial()
 
 	if(myBtn[4].GetCheck())
 	{
-		pView->m_bReMk = FALSE;
+		pDoc->m_mgrProcedure.m_bReMk = FALSE;
 		myBtn[4].SetCheck(FALSE);
 #ifdef USE_MPE
 		if(pView->m_pMpe)
@@ -3203,7 +3203,7 @@ void CDlgMenu01::UpdateData()
 // 	sVal.Format(_T("%d"), (int)(dFdTotLen / dLotLen * 100.0));
 	myStcData[6].SetText(sVal);			// 로트진행율
 
-	//if(pDoc->m_pReelMap && pDoc->m_pReelMap->m_bUseLotSep)
+	//if(pDoc->m_mgrReelmap.m_pReelMap && pDoc->m_mgrReelmap.m_pReelMap->m_bUseLotSep)
 	//{
 	//	sVal.Format(_T("%d"), (int)(dFdTotLen / dLotLen * 100.0));
 	//	myStcData[6].SetText(sVal);		// 로트진행율
@@ -3242,14 +3242,14 @@ void CDlgMenu01::UpdateData()
 	{
 		myBtn[0].SetCheck(TRUE);
 
-// 		sVal.Format(_T("%.1f"), pDoc->m_pReelMap->m_dTempPauseLen * 1000.0);
+// 		sVal.Format(_T("%.1f"), pDoc->m_mgrReelmap.m_pReelMap->m_dTempPauseLen * 1000.0);
 		myStcData[9].SetText(pDoc->WorkingInfo.LastJob.sTempPauseLen);	// 일시정지길이
 	}
 	else
 	{
 		myBtn[0].SetCheck(FALSE);
 
-// 		sVal.Format(_T("%.1f"), pDoc->m_pReelMap->m_dTempPauseLen * 1000.0);
+// 		sVal.Format(_T("%.1f"), pDoc->m_mgrReelmap.m_pReelMap->m_dTempPauseLen * 1000.0);
 		myStcData[9].SetText(pDoc->WorkingInfo.LastJob.sTempPauseLen);	// 일시정지길이
 	}
 
@@ -3263,7 +3263,7 @@ void CDlgMenu01::UpdateData()
 
 void CDlgMenu01::UpdateWorking()
 {
-	if(!pDoc->m_pReelMap)
+	if(!pDoc->m_mgrReelmap.m_pReelMap)
 		return;
 
 	CString sVal;
@@ -3276,7 +3276,7 @@ void CDlgMenu01::UpdateWorking()
 	myStcData[5].SetText(sVal);			// 전체진행율
 	pDoc->SetMkMenu01(_T("Info"), _T("Total Work Ratio"), sVal);
 
-	if(pDoc->m_pReelMap->m_bUseLotSep)
+	if(pDoc->m_mgrReelmap.m_pReelMap->m_bUseLotSep)
 	{
 		sVal.Format(_T("%d"), (int)(dFdTotLen / dLotLen * 100.0));
 		myStcData[6].SetText(sVal);		// 로트진행율
@@ -3353,24 +3353,24 @@ void CDlgMenu01::UpdateWorking()
 void CDlgMenu01::UpdateTotVel(CString sVel)
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if(pDoc->m_pReelMapUp)
-		pDoc->m_pReelMapUp->UpdateTotVel(sVel, 0); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+	if(pDoc->m_mgrReelmap.m_pReelMapUp)
+		pDoc->m_mgrReelmap.m_pReelMapUp->UpdateTotVel(sVel, 0); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	if(bDualTest)
 	{
-		if(pDoc->m_pReelMapDn)
-			pDoc->m_pReelMapDn->UpdateTotVel(sVel, 1); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-		if(pDoc->m_pReelMapAllUp)
-			pDoc->m_pReelMapAllUp->UpdateTotVel(sVel, 2); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-		if(pDoc->m_pReelMapAllDn)
-			pDoc->m_pReelMapAllDn->UpdateTotVel(sVel, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-		//if(pDoc->m_pReelMap) // 20130315
-		//	pDoc->m_pReelMap->UpdateTotVel(sVel, pView->m_nSelRmap); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		if(pDoc->m_mgrReelmap.m_pReelMapDn)
+			pDoc->m_mgrReelmap.m_pReelMapDn->UpdateTotVel(sVel, 1); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		if(pDoc->m_mgrReelmap.m_pReelMapAllUp)
+			pDoc->m_mgrReelmap.m_pReelMapAllUp->UpdateTotVel(sVel, 2); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		if(pDoc->m_mgrReelmap.m_pReelMapAllDn)
+			pDoc->m_mgrReelmap.m_pReelMapAllDn->UpdateTotVel(sVel, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		//if(pDoc->m_mgrReelmap.m_pReelMap) // 20130315
+		//	pDoc->m_mgrReelmap.m_pReelMap->UpdateTotVel(sVel, pDoc->m_mgrProcedure.m_nSelRmap); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
 void CDlgMenu01::UpdateRst() // Menu01 화면에서의 수율정보를 업데이트함.
 {
-	if(!pDoc->m_pReelMap)
+	if(!pDoc->m_mgrReelmap.m_pReelMap)
 		return;
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
@@ -3389,7 +3389,7 @@ void CDlgMenu01::UpdateRst() // Menu01 화면에서의 수율정보를 업데이트함.
 
 void CDlgMenu01::DispTotRatio()
 {
-	if (!pDoc->m_pReelMapUp || !pDoc->m_pReelMapDn)
+	if (!pDoc->m_mgrReelmap.m_pReelMapUp || !pDoc->m_mgrReelmap.m_pReelMapDn)
 		return;
 
 	CString str;
@@ -3400,7 +3400,7 @@ void CDlgMenu01::DispTotRatio()
 
 	// < 전체 수율 >
 	// 상면
-	pDoc->m_pReelMapUp->GetPcsNum(nGood, nBad);
+	pDoc->m_mgrReelmap.m_pReelMapUp->GetPcsNum(nGood, nBad);
 	nTot = nGood + nBad;
 
 	str.Format(_T("%d"), nBad);
@@ -3434,7 +3434,7 @@ void CDlgMenu01::DispTotRatio()
 	if(bDualTest)
 	{
 		// 하면
-		pDoc->m_pReelMapDn->GetPcsNum(nGood, nBad);
+		pDoc->m_mgrReelmap.m_pReelMapDn->GetPcsNum(nGood, nBad);
 
 		nTot = nGood + nBad;
 
@@ -3467,7 +3467,7 @@ void CDlgMenu01::DispTotRatio()
 		pDoc->SetMkMenu01(_T("Total Test"), _T("Dn"), str);
 
 		// 전체
-		pDoc->m_pReelMapAllDn->GetPcsNum(nGood, nBad);
+		pDoc->m_mgrReelmap.m_pReelMapAllDn->GetPcsNum(nGood, nBad);
 		nTot = nGood + nBad;
 
 		str.Format(_T("%d"), nBad);
@@ -3516,12 +3516,12 @@ void CDlgMenu01::DispStripRatio()
 	}
 
 	// < 스트립 별 수율 >
-	pDoc->m_pReelMapUp->GetPcsNum(nGood, nBad);
+	pDoc->m_mgrReelmap.m_pReelMapUp->GetPcsNum(nGood, nBad);
 	nTot = nGood + nBad;
 	nStTot = nTot / 4;
 
 	// 상면
-	nVal[0][0] = pDoc->m_pReelMapUp->GetDefStrip(0);
+	nVal[0][0] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(0);
 	nSum += nVal[0][0];
 	if(nTot > 0)
 		dRatio = ((double)(nStTot-nVal[0][0])/(double)nStTot) * 100.0;
@@ -3531,7 +3531,7 @@ void CDlgMenu01::DispStripRatio()
 	myStcData[59].SetText(str); // IDC_STC_GD_RA_1_UP
 	pDoc->SetMkMenu01(_T("Yield Strip0"), _T("Up"), str);
 
-	nVal[0][1] = pDoc->m_pReelMapUp->GetDefStrip(1);
+	nVal[0][1] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(1);
 	nSum += nVal[0][1];
 	if(nTot > 0)
 		dRatio = ((double)(nStTot-nVal[0][1])/(double)nStTot) * 100.0;
@@ -3541,7 +3541,7 @@ void CDlgMenu01::DispStripRatio()
 	myStcData[60].SetText(str); // IDC_STC_GD_RA_2_UP
 	pDoc->SetMkMenu01(_T("Yield Strip1"), _T("Up"), str);
 
-	nVal[0][2] = pDoc->m_pReelMapUp->GetDefStrip(2);
+	nVal[0][2] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(2);
 	nSum += nVal[0][2];
 	if(nTot > 0)
 		dRatio = ((double)(nStTot-nVal[0][2])/(double)nStTot) * 100.0;
@@ -3551,7 +3551,7 @@ void CDlgMenu01::DispStripRatio()
 	myStcData[61].SetText(str); // IDC_STC_GD_RA_3_UP
 	pDoc->SetMkMenu01(_T("Yield Strip2"), _T("Up"), str);
 
-	nVal[0][3] = pDoc->m_pReelMapUp->GetDefStrip(3);
+	nVal[0][3] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(3);
 	nSum += nVal[0][3];
 	if(nTot > 0)
 		dRatio = ((double)(nStTot-nVal[0][3])/(double)nStTot) * 100.0;
@@ -3574,7 +3574,7 @@ void CDlgMenu01::DispStripRatio()
 	if(bDualTest)
 	{
 		// 하면
-		nVal[1][0] = pDoc->m_pReelMapDn->GetDefStrip(0);
+		nVal[1][0] = pDoc->m_mgrReelmap.m_pReelMapDn->GetDefStrip(0);
 		nSum += nVal[1][0];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nVal[1][0])/(double)nStTot) * 100.0;
@@ -3584,7 +3584,7 @@ void CDlgMenu01::DispStripRatio()
 		myStcData[64].SetText(str); // IDC_STC_GD_RA_1_DN
 		pDoc->SetMkMenu01(_T("Yield Strip0"), _T("Dn"), str);
 
-		nVal[1][1] = pDoc->m_pReelMapDn->GetDefStrip(1);
+		nVal[1][1] = pDoc->m_mgrReelmap.m_pReelMapDn->GetDefStrip(1);
 		nSum += nVal[1][1];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nVal[1][1])/(double)nStTot) * 100.0;
@@ -3594,7 +3594,7 @@ void CDlgMenu01::DispStripRatio()
 		myStcData[65].SetText(str); // IDC_STC_GD_RA_2_DN
 		pDoc->SetMkMenu01(_T("Yield Strip1"), _T("Dn"), str);
 
-		nVal[1][2] = pDoc->m_pReelMapDn->GetDefStrip(2);
+		nVal[1][2] = pDoc->m_mgrReelmap.m_pReelMapDn->GetDefStrip(2);
 		nSum += nVal[1][2];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nVal[1][2])/(double)nStTot) * 100.0;
@@ -3604,7 +3604,7 @@ void CDlgMenu01::DispStripRatio()
 		myStcData[66].SetText(str); // IDC_STC_GD_RA_3_DN
 		pDoc->SetMkMenu01(_T("Yield Strip2"), _T("Dn"), str);
 
-		nVal[1][3] = pDoc->m_pReelMapDn->GetDefStrip(3);
+		nVal[1][3] = pDoc->m_mgrReelmap.m_pReelMapDn->GetDefStrip(3);
 		nSum += nVal[1][3];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nVal[1][3])/(double)nStTot) * 100.0;
@@ -3625,7 +3625,7 @@ void CDlgMenu01::DispStripRatio()
 		nSum = 0;
 
 		// 상면 + 하면
-		nMer[0] = pDoc->m_pReelMapAllUp->GetDefStrip(0);
+		nMer[0] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(0);
 		nSum += nMer[0];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nMer[0])/(double)nStTot) * 100.0;
@@ -3635,7 +3635,7 @@ void CDlgMenu01::DispStripRatio()
 		myStcData[69].SetText(str); // IDC_STC_GD_RA_1_ALL
 		pDoc->SetMkMenu01(_T("Yield Strip0"), _T("Total"), str);
 
-		nMer[1] = pDoc->m_pReelMapAllUp->GetDefStrip(1);
+		nMer[1] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(1);
 		nSum += nMer[1];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nMer[1])/(double)nStTot) * 100.0;
@@ -3645,7 +3645,7 @@ void CDlgMenu01::DispStripRatio()
 		myStcData[70].SetText(str); // IDC_STC_GD_RA_2_ALL
 		pDoc->SetMkMenu01(_T("Yield Strip1"), _T("Total"), str);
 
-		nMer[2] = pDoc->m_pReelMapAllUp->GetDefStrip(2);
+		nMer[2] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(2);
 		nSum += nMer[2];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nMer[2])/(double)nStTot) * 100.0;
@@ -3655,7 +3655,7 @@ void CDlgMenu01::DispStripRatio()
 		myStcData[71].SetText(str); // IDC_STC_GD_RA_3_ALL
 		pDoc->SetMkMenu01(_T("Yield Strip2"), _T("Total"), str);
 
-		nMer[3] = pDoc->m_pReelMapAllUp->GetDefStrip(3);
+		nMer[3] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(3);
 		nSum += nMer[3];
 		if(nTot > 0)
 			dRatio = ((double)(nStTot-nMer[3])/(double)nStTot) * 100.0;
@@ -3817,53 +3817,53 @@ void CDlgMenu01::DispDef()
 
 	//if(bDualTest)
 	//{
-	//	switch(pView->m_nSelRmap)
+	//	switch(pDoc->m_mgrProcedure.m_nSelRmap)
 	//	{
 	//	case RMAP_UP:
-	//		pReelMap = pDoc->m_pReelMapUp;
+	//		pReelMap = pDoc->m_mgrReelmap.m_pReelMapUp;
 	//		break;
 	//	case RMAP_DN:
-	//		pReelMap = pDoc->m_pReelMapDn;
+	//		pReelMap = pDoc->m_mgrReelmap.m_pReelMapDn;
 	//		break;
 	//	case RMAP_ALLUP:
-	//		pReelMap = pDoc->m_pReelMapAllUp;
+	//		pReelMap = pDoc->m_mgrReelmap.m_pReelMapAllUp;
 	//		break;
 	//	case RMAP_ALLDN:
-	//		pReelMap = pDoc->m_pReelMapAllDn;
+	//		pReelMap = pDoc->m_mgrReelmap.m_pReelMapAllDn;
 	//		break;
 	//	}
 	//}
 	//else
-	//	pReelMap = pDoc->m_pReelMapUp;
+	//	pReelMap = pDoc->m_mgrReelmap.m_pReelMapUp;
 
-	switch (pView->m_nSelRmap)
+	switch (pDoc->m_mgrProcedure.m_nSelRmap)
 	{
 	case RMAP_UP:
-		pReelMap = pDoc->m_pReelMapUp;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapUp;
 		break;
 	case RMAP_DN:
-		pReelMap = pDoc->m_pReelMapDn;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapDn;
 		break;
 	case RMAP_ALLUP:
-		pReelMap = pDoc->m_pReelMapAllUp;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapAllUp;
 		break;
 	case RMAP_ALLDN:
-		pReelMap = pDoc->m_pReelMapAllDn;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapAllDn;
 		break;
 	case RMAP_INNER_UP:
-		pReelMap = pDoc->m_pReelMapInnerUp;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapInnerUp;
 		break;
 	case RMAP_INNER_DN:
-		pReelMap = pDoc->m_pReelMapInnerDn;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapInnerDn;
 		break;
 	case RMAP_INNER_ALLUP:
-		pReelMap = pDoc->m_pReelMapInnerAllUp;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapInnerAllUp;
 		break;
 	case RMAP_INNER_ALLDN:
-		pReelMap = pDoc->m_pReelMapInnerAllDn;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapInnerAllDn;
 		break;
 	case RMAP_ITS:
-		pReelMap = pDoc->m_pReelMapIts;
+		pReelMap = pDoc->m_mgrReelmap.m_pReelMapIts;
 		break;
 	}
 
@@ -4106,7 +4106,7 @@ void CDlgMenu01::LotEnd()
 
 	if(myBtn[4].GetCheck())
 	{
-		pView->m_bReMk = FALSE;
+		pDoc->m_mgrProcedure.m_bReMk = FALSE;
 		myBtn[4].SetCheck(FALSE);
 #ifdef USE_MPE
 		if(pView->m_pMpe)
@@ -4382,9 +4382,9 @@ int CDlgMenu01::GetCurSerial()
 void CDlgMenu01::UpdateLotTime()
 {
 	CString sData;
- 	sData = pDoc->m_pReelMap->GetLotSt();
+ 	sData = pDoc->m_mgrReelmap.m_pReelMap->GetLotSt();
 	myStcData[21].SetText(sData);
- 	sData = pDoc->m_pReelMap->GetLotEd();
+ 	sData = pDoc->m_mgrReelmap.m_pReelMap->GetLotEd();
 	myStcData[23].SetText(sData);
 }
 
@@ -4425,7 +4425,7 @@ void CDlgMenu01::OnChkDefUp()
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_UP))->GetCheck();
 	if (nOn)
 	{
-		SelMap(UP); // pView->m_nSelRmap
+		SelMap(UP); // pDoc->m_mgrProcedure.m_nSelRmap
 		DispReelmapDisp();
 	}
 	else
@@ -4445,7 +4445,7 @@ void CDlgMenu01::OnChkDefDn()
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_DN))->GetCheck();
 	if (nOn)
 	{
-		SelMap(DN); // pView->m_nSelRmap
+		SelMap(DN); // pDoc->m_mgrProcedure.m_nSelRmap
 		DispReelmapDisp();
 	}
 	else
@@ -4461,7 +4461,7 @@ void CDlgMenu01::OnChkDefAll()
 // 	int nOn = ((CButton*)GetDlgItem(IDC_CHK_DEF_ALL))->GetCheck();
 	if (nOn)
 	{
-		SelMap(ALL); // pView->m_nSelRmap
+		SelMap(ALL); // pDoc->m_mgrProcedure.m_nSelRmap
 		DispReelmapDisp();
 	}
 	else
@@ -4575,7 +4575,7 @@ void CDlgMenu01::SetTempStop(BOOL bOn)
 #ifdef USE_MPE
 		pView->m_pMpe->Write(_T("MB440183"), 1);
 #endif
-// 		sVal.Format(_T("%.1f"), pDoc->m_pReelMap->m_dTempPauseLen * 1000.0);
+// 		sVal.Format(_T("%.1f"), pDoc->m_mgrReelmap.m_pReelMap->m_dTempPauseLen * 1000.0);
 //		myStcData[9].SetText(pDoc->WorkingInfo.LastJob.sTempPauseLen);	// 일시정지길이
 	}
 	else
@@ -4584,7 +4584,7 @@ void CDlgMenu01::SetTempStop(BOOL bOn)
 #ifdef USE_MPE
 		pView->m_pMpe->Write(_T("MB440183"), 0);
 #endif
-// 		sVal.Format(_T("%.1f"), pDoc->m_pReelMap->m_dTempPauseLen * 1000.0);
+// 		sVal.Format(_T("%.1f"), pDoc->m_mgrReelmap.m_pReelMap->m_dTempPauseLen * 1000.0);
 //		myStcData[9].SetText(pDoc->WorkingInfo.LastJob.sTempPauseLen);	// 일시정지길이
 	}
 }
@@ -4729,7 +4729,7 @@ void CDlgMenu01::OnChkRemarking()
 		else
 		{
 			myBtn[4].SetCheck(FALSE);
-			pView->m_bMkStSw = TRUE;
+			pDoc->m_mgrProcedure.m_bMkStSw = TRUE;
 		}
 	}
 	else
@@ -4767,7 +4767,7 @@ void CDlgMenu01::ChkPartialSpd()
 	{
 		if(pView->IsRun())
 		{
-			if(pView->m_nStepAuto >= AT_LP)
+			if(pDoc->m_mgrProcedure.m_nStepAuto >= AT_LP)
 			{
 				double dVel = pView->GetPartVel();
 				if(dVel < _tstof(pDoc->WorkingInfo.LastJob.sPartialSpd) && !m_bLowPartialSpd)
@@ -5604,8 +5604,8 @@ myBtn[0].SetCheck(FALSE);
 }
 
 pDoc->WorkingInfo.LastJob.bTempPause = bUse;
-if(pDoc->m_pReelMap)
-pDoc->m_pReelMap->m_bUseTempPause = bUse;
+if(pDoc->m_mgrReelmap.m_pReelMap)
+pDoc->m_mgrReelmap.m_pReelMap->m_bUseTempPause = bUse;
 
 CString sData = bUse ? _T("1") : _T("0");
 ::WritePrivateProfileString(_T("Last Job"), _T("Use Temporary Pause"), sData, PATH_WORKING_INFO);
@@ -5644,8 +5644,8 @@ void CDlgMenu01::OnBnClickedChkTpStop()
 	}
 
 	pDoc->WorkingInfo.LastJob.bTempPause = bUse;
-	if (pDoc->m_pReelMap)
-		pDoc->m_pReelMap->m_bUseTempPause = bUse;
+	if (pDoc->m_mgrReelmap.m_pReelMap)
+		pDoc->m_mgrReelmap.m_pReelMap->m_bUseTempPause = bUse;
 
 	CString sData = bUse ? _T("1") : _T("0");
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Temporary Pause"), sData, PATH_WORKING_INFO);
@@ -5686,8 +5686,8 @@ void CDlgMenu01::ChkTpStop()
 	}
 
 	pDoc->WorkingInfo.LastJob.bTempPause = bUse;
-	if (pDoc->m_pReelMap)
-		pDoc->m_pReelMap->m_bUseTempPause = bUse;
+	if (pDoc->m_mgrReelmap.m_pReelMap)
+		pDoc->m_mgrReelmap.m_pReelMap->m_bUseTempPause = bUse;
 
 #ifdef USE_ENGRAVE
 	if (pView && pView->m_pEngrave)
@@ -5725,10 +5725,10 @@ void CDlgMenu01::EnableItsMode(BOOL bEnable)
 {
 	if (bEnable)
 	{
-		if(pView->m_nSelRmap != RMAP_ITS)
-			m_nSelRmapPrev = pView->m_nSelRmap;
+		if(pDoc->m_mgrProcedure.m_nSelRmap != RMAP_ITS)
+			m_nSelRmapPrev = pDoc->m_mgrProcedure.m_nSelRmap;
 
-		pView->m_nSelRmap = RMAP_ITS;
+		pDoc->m_mgrProcedure.m_nSelRmap = RMAP_ITS;
 
 		myBtn[12].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_UP
 		myBtn[13].ShowWindow(SW_HIDE);	// IDC_CHK_DEF_DN
@@ -5741,7 +5741,7 @@ void CDlgMenu01::EnableItsMode(BOOL bEnable)
 	}
 	else
 	{
-		pView->m_nSelRmap = m_nSelRmapPrev;
+		pDoc->m_mgrProcedure.m_nSelRmap = m_nSelRmapPrev;
 
 		myBtn[12].ShowWindow(SW_SHOW);	// IDC_CHK_DEF_UP
 		myBtn[13].ShowWindow(SW_SHOW);	// IDC_CHK_DEF_DN
@@ -5765,11 +5765,11 @@ void CDlgMenu01::DispTotRatioIts()
 	// < 전체 수율 >
 	// 외층
 	if(bDualTest)
-		if(pDoc->m_pReelMapAllUp)
-			pDoc->m_pReelMapAllUp->GetPcsNum(nGood, nBad);
+		if(pDoc->m_mgrReelmap.m_pReelMapAllUp)
+			pDoc->m_mgrReelmap.m_pReelMapAllUp->GetPcsNum(nGood, nBad);
 	else
-		if (pDoc->m_pReelMapUp)
-			pDoc->m_pReelMapUp->GetPcsNum(nGood, nBad);
+		if (pDoc->m_mgrReelmap.m_pReelMapUp)
+			pDoc->m_mgrReelmap.m_pReelMapUp->GetPcsNum(nGood, nBad);
 
 	nTot = nGood + nBad;
 
@@ -5804,15 +5804,15 @@ void CDlgMenu01::DispTotRatioIts()
 	// 내층
 	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
 	{
-		if (pDoc->m_pReelMapInnerAllUp)
-			pDoc->m_pReelMapInnerAllUp->GetPcsNum(nGood, nBad);
+		if (pDoc->m_mgrReelmap.m_pReelMapInnerAllUp)
+			pDoc->m_mgrReelmap.m_pReelMapInnerAllUp->GetPcsNum(nGood, nBad);
 		else
 			return;
 	}
 	else
 	{
-		if (pDoc->m_pReelMapInnerUp)
-			pDoc->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
+		if (pDoc->m_mgrReelmap.m_pReelMapInnerUp)
+			pDoc->m_mgrReelmap.m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
 		else
 			return;
 	}
@@ -5848,8 +5848,8 @@ void CDlgMenu01::DispTotRatioIts()
 	pDoc->SetMkMenu01(_T("Total Test"), _T("Dn"), str);
 
 	// 전체
-	if (pDoc->m_pReelMapIts)
-		pDoc->m_pReelMapIts->GetPcsNum(nGood, nBad);
+	if (pDoc->m_mgrReelmap.m_pReelMapIts)
+		pDoc->m_mgrReelmap.m_pReelMapIts->GetPcsNum(nGood, nBad);
 	else
 		return; 
 
@@ -5895,12 +5895,12 @@ void CDlgMenu01::DispStripRatioIts()
 
 	if (bDualTest)
 	{
-		if (!pDoc->m_pReelMapAllUp)
+		if (!pDoc->m_mgrReelmap.m_pReelMapAllUp)
 			return;
 	}
 	else
 	{
-		if (!pDoc->m_pReelMapUp)
+		if (!pDoc->m_mgrReelmap.m_pReelMapUp)
 			return;
 	}
 
@@ -5914,19 +5914,19 @@ void CDlgMenu01::DispStripRatioIts()
 	// 외층
 	if (bDualTest)
 	{
-		pDoc->m_pReelMapAllUp->GetPcsNum(nGood, nBad);
-		nVal[0][0] = pDoc->m_pReelMapAllUp->GetDefStrip(0);
-		nVal[0][1] = pDoc->m_pReelMapAllUp->GetDefStrip(1);
-		nVal[0][2] = pDoc->m_pReelMapAllUp->GetDefStrip(2);
-		nVal[0][3] = pDoc->m_pReelMapAllUp->GetDefStrip(3);
+		pDoc->m_mgrReelmap.m_pReelMapAllUp->GetPcsNum(nGood, nBad);
+		nVal[0][0] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(0);
+		nVal[0][1] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(1);
+		nVal[0][2] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(2);
+		nVal[0][3] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(3);
 	}
 	else
 	{
-		pDoc->m_pReelMapUp->GetPcsNum(nGood, nBad);
-		nVal[0][0] = pDoc->m_pReelMapUp->GetDefStrip(0);
-		nVal[0][1] = pDoc->m_pReelMapUp->GetDefStrip(1);
-		nVal[0][2] = pDoc->m_pReelMapUp->GetDefStrip(2);
-		nVal[0][3] = pDoc->m_pReelMapUp->GetDefStrip(3);
+		pDoc->m_mgrReelmap.m_pReelMapUp->GetPcsNum(nGood, nBad);
+		nVal[0][0] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(0);
+		nVal[0][1] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(1);
+		nVal[0][2] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(2);
+		nVal[0][3] = pDoc->m_mgrReelmap.m_pReelMapUp->GetDefStrip(3);
 	}
 
 	nTot = nGood + nBad;
@@ -5981,23 +5981,23 @@ void CDlgMenu01::DispStripRatioIts()
 	// 내층
 	if (pDoc->WorkingInfo.LastJob.bDualTestInner)
 	{
-		if (!pDoc->m_pReelMapInnerAllUp)
+		if (!pDoc->m_mgrReelmap.m_pReelMapInnerAllUp)
 			return;
 
-		nVal[1][0] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(0);
-		nVal[1][1] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(1);
-		nVal[1][2] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(2);
-		nVal[1][3] = pDoc->m_pReelMapInnerAllUp->GetDefStrip(3);
+		nVal[1][0] = pDoc->m_mgrReelmap.m_pReelMapInnerAllUp->GetDefStrip(0);
+		nVal[1][1] = pDoc->m_mgrReelmap.m_pReelMapInnerAllUp->GetDefStrip(1);
+		nVal[1][2] = pDoc->m_mgrReelmap.m_pReelMapInnerAllUp->GetDefStrip(2);
+		nVal[1][3] = pDoc->m_mgrReelmap.m_pReelMapInnerAllUp->GetDefStrip(3);
 	}
 	else
 	{
-		if (!pDoc->m_pReelMapInnerUp)
+		if (!pDoc->m_mgrReelmap.m_pReelMapInnerUp)
 			return;
 
-		nVal[1][0] = pDoc->m_pReelMapInnerUp->GetDefStrip(0);
-		nVal[1][1] = pDoc->m_pReelMapInnerUp->GetDefStrip(1);
-		nVal[1][2] = pDoc->m_pReelMapInnerUp->GetDefStrip(2);
-		nVal[1][3] = pDoc->m_pReelMapInnerUp->GetDefStrip(3);
+		nVal[1][0] = pDoc->m_mgrReelmap.m_pReelMapInnerUp->GetDefStrip(0);
+		nVal[1][1] = pDoc->m_mgrReelmap.m_pReelMapInnerUp->GetDefStrip(1);
+		nVal[1][2] = pDoc->m_mgrReelmap.m_pReelMapInnerUp->GetDefStrip(2);
+		nVal[1][3] = pDoc->m_mgrReelmap.m_pReelMapInnerUp->GetDefStrip(3);
 	}
 	
 	nSum += nVal[1][0];
@@ -6047,13 +6047,13 @@ void CDlgMenu01::DispStripRatioIts()
 	nSum = 0;
 
 	// 외층 + 내층
-	if (!pDoc->m_pReelMapIts || !pDoc->m_pReelMapAllUp)
+	if (!pDoc->m_mgrReelmap.m_pReelMapIts || !pDoc->m_mgrReelmap.m_pReelMapAllUp)
 		return;
 
-	nMer[0] = pDoc->m_pReelMapIts->GetDefStrip(0);
-	nMer[1] = pDoc->m_pReelMapAllUp->GetDefStrip(1);
-	nMer[2] = pDoc->m_pReelMapAllUp->GetDefStrip(2);
-	nMer[3] = pDoc->m_pReelMapAllUp->GetDefStrip(3);
+	nMer[0] = pDoc->m_mgrReelmap.m_pReelMapIts->GetDefStrip(0);
+	nMer[1] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(1);
+	nMer[2] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(2);
+	nMer[3] = pDoc->m_mgrReelmap.m_pReelMapAllUp->GetDefStrip(3);
 
 	nSum += nMer[0];
 	if (nTot > 0)
@@ -6156,23 +6156,23 @@ void CDlgMenu01::SwitchReelmapDisp(int nSelRmap)
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	if (bDualTest)
 	{
-		switch (nSelRmap) // pView->m_nSelRmap
+		switch (nSelRmap) // pDoc->m_mgrProcedure.m_nSelRmap
 		{
 		case RMAP_UP:
-			pDoc->m_pReelMapDisp = pDoc->m_pReelMapUp;
+			pDoc->m_mgrReelmap.m_pReelMapDisp = pDoc->m_mgrReelmap.m_pReelMapUp;
 			myBtn[12].SetCheck(TRUE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(FALSE);
 			break;
 		case RMAP_DN:
-			pDoc->m_pReelMapDisp = pDoc->m_pReelMapDn;
+			pDoc->m_mgrReelmap.m_pReelMapDisp = pDoc->m_mgrReelmap.m_pReelMapDn;
 			myBtn[12].SetCheck(FALSE);
 			myBtn[13].SetCheck(TRUE);
 			myBtn[14].SetCheck(FALSE);
 			break;
 		case RMAP_ALLUP:
 		case RMAP_ALLDN:
-			pDoc->m_pReelMapDisp = pDoc->m_pReelMapAllUp;
+			pDoc->m_mgrReelmap.m_pReelMapDisp = pDoc->m_mgrReelmap.m_pReelMapAllUp;
 			myBtn[12].SetCheck(FALSE);
 			myBtn[13].SetCheck(FALSE);
 			myBtn[14].SetCheck(TRUE);
@@ -6181,19 +6181,19 @@ void CDlgMenu01::SwitchReelmapDisp(int nSelRmap)
 	}
 	else
 	{
-		pDoc->m_pReelMapDisp = pDoc->m_pReelMapUp;
+		pDoc->m_mgrReelmap.m_pReelMapDisp = pDoc->m_mgrReelmap.m_pReelMapUp;
 	}
 
-	pDoc->SetReelmap(ROT_NONE);
+	pDoc->m_mgrReelmap.SetReelmap(ROT_NONE);
 }
 
 void CDlgMenu01::DispReelmapDisp()
 {
-	if (pDoc->m_pReelMapDisp)
+	if (pDoc->m_mgrReelmap.m_pReelMapDisp)
 	{
-		pDoc->m_pReelMapDisp->Disp(m_nSerial);
+		pDoc->m_mgrReelmap.m_pReelMapDisp->Disp(m_nSerial);
 
-		pView->m_bDrawGL = TRUE;
+		pDoc->m_mgrProcedure.m_bDrawGL = TRUE;
 		InitGL();
 
 		SetPnlNum();

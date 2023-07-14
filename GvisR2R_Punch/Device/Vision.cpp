@@ -1068,23 +1068,23 @@ void CVision::CropCadImg(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef)
 	}
 	else
 	{
-		if (!pDoc->m_pPcrInner[nLayer])
+		if (!pDoc->m_mgrReelmap.m_pPcrInner[nLayer])
 			return;
 #ifndef USE_MIL
-		cell = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pCell[0];			// for Test - BufIdx[0], DefIdx[0]
-		cx = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
-		cy = pDoc->m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
+		cell = pDoc->m_mgrReelmap.m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pCell[0];			// for Test - BufIdx[0], DefIdx[0]
+		cx = pDoc->m_mgrReelmap.m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].x;		// for Test - BufIdx[0], DefIdx[0]
+		cy = pDoc->m_mgrReelmap.m_pPcrInner[nLayer][TEST_SHOT - 1]->m_pDefPos[0].y;		// for Test - BufIdx[0], DefIdx[0]
 #else
 		nIdx = pDoc->m_mgrReelmap.GetPcrIdx(nSerial);
-		if (!pDoc->m_pPcrInner[nLayer][nIdx])
+		if (!pDoc->m_mgrReelmap.m_pPcrInner[nLayer][nIdx])
 			return;
-		if (!pDoc->m_pPcrInner[nLayer][nIdx]->m_pCell || !pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos ||
+		if (!pDoc->m_mgrReelmap.m_pPcrInner[nLayer][nIdx]->m_pCell || !pDoc->m_mgrReelmap.m_pPcrInner[nLayer][nIdx]->m_pDefPos ||
 			!pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn)
 			return;
 
-		cell = pDoc->m_pPcrInner[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
-		cx = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
-		cy = pDoc->m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
+		cell = pDoc->m_mgrReelmap.m_pPcrInner[nLayer][nIdx]->m_pCell[nIdxDef];										// BufIdx[], DefIdx[]
+		cx = pDoc->m_mgrReelmap.m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].x - pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->StPosX[cell];		// BufIdx[], DefIdx[]
+		cy = pDoc->m_mgrReelmap.m_pPcrInner[nLayer][nIdx]->m_pDefPos[nIdxDef].y - pDoc->m_mgrReelmap.m_MasterInner[nLayer].m_pCellRgn->StPosY[cell];		// BufIdx[], DefIdx[]
 #endif
 	}
 
@@ -2489,7 +2489,7 @@ void CVision::ShowDispDef(int nIdxMkInfo, int nSerial, int nLayer, int nDefPcs) 
 		else
 		{
 			CString sMsg, sUpPath, sDnPath;
-			if (!pDoc->GetInnerFolderPath(nSerial, sUpPath, sDnPath))
+			if (!pDoc->m_mgrReelmap.GetInnerFolderPath(nSerial, sUpPath, sDnPath))
 			{
 				sMsg.Format(_T("GetInnerFolderPath가 설정되지 않았습니다."));
 				pView->MsgBox(sMsg);
@@ -3035,18 +3035,18 @@ void CVision::DispAxisPos(BOOL bForceWrite)
 
 	if(m_nIdx==0)
 	{
-		if(fabs(m_dEnc[AXIS_X0]-pView->m_dEnc[AXIS_X0])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_X0]-pDoc->m_mgrProcedure.m_dEnc[AXIS_X0])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_X0] = pView->m_dEnc[AXIS_X0];
+			m_dEnc[AXIS_X0] = pDoc->m_mgrProcedure.m_dEnc[AXIS_X0];
 			//sprintf(szText, "X0:%3.3f", m_dEnc[AXIS_X0]);
 			_stprintf(szText, TEXT("X0:%3.3f"), m_dEnc[AXIS_X0]);
 	 		//m_pMilDrawOverlay->DrawClear();
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, szText);
 			m_pMil->DrawText(szText, m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, M_COLOR_GREEN);
 		}
-		if(fabs(m_dEnc[AXIS_Y0]-pView->m_dEnc[AXIS_Y0])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_Y0]-pDoc->m_mgrProcedure.m_dEnc[AXIS_Y0])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_Y0] = pView->m_dEnc[AXIS_Y0];
+			m_dEnc[AXIS_Y0] = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y0];
 			//sprintf(szText, "Y0:%3.3f", m_dEnc[AXIS_Y0]);
 			_stprintf(szText, TEXT("Y0:%3.3f"), m_dEnc[AXIS_Y0]);
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*1, szText);
@@ -3075,18 +3075,18 @@ void CVision::DispAxisPos(BOOL bForceWrite)
 	}
 	else if(m_nIdx==1)
 	{
-		if(fabs(m_dEnc[AXIS_X1]-pView->m_dEnc[AXIS_X1])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_X1]-pDoc->m_mgrProcedure.m_dEnc[AXIS_X1])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_X1] = pView->m_dEnc[AXIS_X1];
+			m_dEnc[AXIS_X1] = pDoc->m_mgrProcedure.m_dEnc[AXIS_X1];
 			//sprintf(szText, "X1:%3.3f", m_dEnc[AXIS_X1]);
 			_stprintf(szText, TEXT("X1:%3.3f"), m_dEnc[AXIS_X1]);
  			//m_pMilDrawOverlay->DrawClear();
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, szText);
 			m_pMil->DrawText(szText, m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, M_COLOR_GREEN);
 		}
-		if(fabs(m_dEnc[AXIS_Y1]-pView->m_dEnc[AXIS_Y1])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_Y1]-pDoc->m_mgrProcedure.m_dEnc[AXIS_Y1])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_Y1] = pView->m_dEnc[AXIS_Y1];
+			m_dEnc[AXIS_Y1] = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y1];
 			//sprintf(szText, "Y1:%3.3f", m_dEnc[AXIS_Y1]);
 			_stprintf(szText, TEXT("Y1:%3.3f"), m_dEnc[AXIS_Y1]);
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*1, szText);
@@ -3164,8 +3164,8 @@ double CVision::CalcCameraPixelSize()
 
 	if(m_nIdx==0)
 	{
-		dCurrX = pView->m_dEnc[AXIS_X0];
-		dCurrY = pView->m_dEnc[AXIS_Y0];
+		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X0];
+		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y0];
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
@@ -3193,8 +3193,8 @@ double CVision::CalcCameraPixelSize()
 	}
 	else if(m_nIdx==1)
 	{
-		dCurrX = pView->m_dEnc[AXIS_X1];
-		dCurrY = pView->m_dEnc[AXIS_Y1];
+		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X1];
+		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y1];
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
@@ -3398,8 +3398,8 @@ double CVision::CalcCameraPixelSize()
 	{
 		pTgtPos[1] = pView->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
 		pTgtPos[0] = pView->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-		dCurrX = pView->m_dEnc[AXIS_X0];	// pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y0];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X0];	// pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y0];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
@@ -3429,8 +3429,8 @@ double CVision::CalcCameraPixelSize()
 	{
 		pTgtPos[1] = pView->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
 		pTgtPos[0] = pView->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-		dCurrX = pView->m_dEnc[AXIS_X1];	// pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y1];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X1];	// pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y1];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))

@@ -12,7 +12,6 @@
 
 #include "ThreadTask.h"
 #include "../Global/GlobalDefine.h"
-#include "../ManagerReelmap.h"
 
 #define FIX_PCS_SHOT_MAX	500
 #define FIX_PCS_COL_MAX		100
@@ -71,7 +70,7 @@ struct stResult
 
 class CReelMap : public CWnd
 {
-	CManagerReelmap* m_pParent;
+	CWnd* m_pParent; //CManagerReelmap
 
 	BOOL m_FixPcs[FIX_PCS_SHOT_MAX][FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]
 	int m_FixPcsPrev[FIX_PCS_COL_MAX][FIX_PCS_ROW_MAX]; // [Col][Row]

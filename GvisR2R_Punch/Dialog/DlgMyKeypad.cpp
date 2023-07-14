@@ -36,7 +36,7 @@ CDlgMyKeypad::CDlgMyKeypad(CString *strFileName, CRect* rect, CPoint ptSt, int n
 
 	m_bLoadImg = FALSE;
 	m_nSel = 0;
-	pView->m_bShowModalMyPassword = TRUE;
+	pDoc->m_mgrProcedure.m_bShowModalMyPassword = TRUE;
 	m_nRtnVal = 0;
 	m_strMsg = _T("");
 	m_nCtrlId = 0;

@@ -300,12 +300,12 @@ public:
 	//void DelSharePcr();
 	//void DelSharePcrUp();
 	//void DelSharePcrDn();
-	//BOOL MakeMkDir(stModelInfo stInfo);
-	//BOOL MakeMkDir(CString sModel, CString sLot, CString sLayer);
-	//BOOL MakeMkDir();
-	//BOOL MakeMkDirUp();
-	//BOOL MakeMkDirDn();
-	//BOOL Shift2Mk(int nSerial);
+	BOOL MakeMkDir(stModelInfo stInfo);
+	BOOL MakeMkDir(CString sModel, CString sLot, CString sLayer);
+	BOOL MakeMkDir();
+	BOOL MakeMkDirUp();
+	BOOL MakeMkDirDn();
+	BOOL Shift2Mk(int nSerial);
 	void SetLastSerial(int nSerial);								// 릴맵 텍스트 파일의 수율정보를 업데이트함.
 	void SetCompletedSerial(int nSerial);
 	BOOL ChkLotEnd(CString sPath);

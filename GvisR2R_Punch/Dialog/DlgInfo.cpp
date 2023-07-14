@@ -803,8 +803,8 @@ void CDlgInfo::OnStc0016()
 	CString sVal;
 	GetDlgItem(IDC_STC_0016)->GetWindowText(sVal);
 // 	pDoc->WorkingInfo.LastJob.sLotSepLen = sVal;
-// 	if(pDoc->m_pReelMap)
-// 		pDoc->m_pReelMap->m_dLotLen = _tstof(sVal);
+// 	if(pDoc->m_mgrReelmap.m_pReelMap)
+// 		pDoc->m_mgrReelmap.m_pReelMap->m_dLotLen = _tstof(sVal);
 // 	::WritePrivateProfileString(_T("Last Job"), _T("Lot Seperate Length", sVal, PATH_WORKING_INFO);
 
 	pDoc->SetSeparateDist(_tstof(sVal));
@@ -857,8 +857,8 @@ void CDlgInfo::OnStc0024()
  	pDoc->SetStopDist(_tstof(sVal));	
 // 
 // 	pDoc->WorkingInfo.LastJob.sTempPauseLen = sVal;
-// 	if(pDoc->m_pReelMap)
-// 		pDoc->m_pReelMap->m_dTempPauseLen = _tstof(sVal);
+// 	if(pDoc->m_mgrReelmap.m_pReelMap)
+// 		pDoc->m_mgrReelmap.m_pReelMap->m_dTempPauseLen = _tstof(sVal);
 // 	::WritePrivateProfileString(_T("Last Job"), _T("Temporary Pause Length", sVal, PATH_WORKING_INFO);	
 // 
 // 	//pView->IoWrite(_T("ML45006", long(_tstof(sVal)*1000.0));	// 일시정지 길이 (단위 M * 1000)
@@ -992,8 +992,8 @@ void CDlgInfo::OnChk000()
 	myStcData[0].SetText(pDoc->WorkingInfo.LastJob.sSelUserName);
 	myBtn[0].SetCheck(FALSE);
 
-	if(pDoc && pDoc->m_pReelMap)
-		pDoc->m_pReelMap->m_sUser = pDoc->WorkingInfo.LastJob.sSelUserName;
+	if(pDoc && pDoc->m_mgrReelmap.m_pReelMap)
+		pDoc->m_mgrReelmap.m_pReelMap->m_sUser = pDoc->WorkingInfo.LastJob.sSelUserName;
 	if(pDoc)
 		::WritePrivateProfileString(_T("Last Job"), _T("Operator Name"), pDoc->WorkingInfo.LastJob.sSelUserName, PATH_WORKING_INFO);
 
@@ -1026,8 +1026,8 @@ void CDlgInfo::OnChk001()
 	}
 
 	pDoc->WorkingInfo.LastJob.bLotSep = bUse;
-	if(pDoc->m_pReelMap)
-		pDoc->m_pReelMap->m_bUseLotSep = bUse;
+	if(pDoc->m_mgrReelmap.m_pReelMap)
+		pDoc->m_mgrReelmap.m_pReelMap->m_bUseLotSep = bUse;
 
 	CString sData = bUse ? _T("1") : _T("0");
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Lot seperate"), sData, PATH_WORKING_INFO);
@@ -1072,8 +1072,8 @@ void CDlgInfo::OnChk002()
 	}
 
 	pDoc->WorkingInfo.LastJob.bTempPause = bUse;
-	if(pDoc->m_pReelMap)
-		pDoc->m_pReelMap->m_bUseTempPause = bUse;
+	if(pDoc->m_mgrReelmap.m_pReelMap)
+		pDoc->m_mgrReelmap.m_pReelMap->m_bUseTempPause = bUse;
 
 	CString sData = bUse ? _T("1") : _T("0");
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Temporary Pause"), sData, PATH_WORKING_INFO);

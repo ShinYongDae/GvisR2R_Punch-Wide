@@ -1327,25 +1327,25 @@ LRESULT CDlgMenu04::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 void CDlgMenu04::SwMyBtnDown(int nCtrlID)
 {
 
-	if(pView->m_bProbDn[0])
+	if(pDoc->m_mgrProcedure.m_bProbDn[0])
 	{
 		if(pView->m_pVoiceCoil[0])
 		{
 			pView->m_pVoiceCoil[0]->SearchHomeSmac(0);
 			pView->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
-			pView->m_bProbDn[0] = FALSE;
+			pDoc->m_mgrProcedure.m_bProbDn[0] = FALSE;
 			//if(pView->m_pDlgMenu02->m_pDlgUtil06)
 			//	pView->m_pDlgMenu02->m_pDlgUtil06->myBtn[2].SetCheck(FALSE);
 		}
 	}
 
-	if(pView->m_bProbDn[1])
+	if(pDoc->m_mgrProcedure.m_bProbDn[1])
 	{
 		if(pView->m_pVoiceCoil[1])
 		{
 			pView->m_pVoiceCoil[1]->SearchHomeSmac(1);
 			pView->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
-			pView->m_bProbDn[1] = FALSE;
+			pDoc->m_mgrProcedure.m_bProbDn[1] = FALSE;
 			//if(pView->m_pDlgMenu02->m_pDlgUtil06)
 			//	pView->m_pDlgMenu02->m_pDlgUtil06->myBtn[6].SetCheck(FALSE);
 		}
