@@ -1245,9 +1245,9 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 			}
 		}
 
-		if (pDoc->m_mgrProcedure.m_bSerialDecrese)
+		if (pView->m_mgrProcedure->m_bSerialDecrese)
 		{
-			if (nLoadPnl < (pDoc->m_mgrProcedure.m_nLotEndSerial - pDoc->AoiDummyShot[0]) && pDoc->m_mgrProcedure.m_nLotEndSerial > 0)
+			if (nLoadPnl < (pView->m_mgrProcedure->m_nLotEndSerial - pDoc->AoiDummyShot[0]) && pView->m_mgrProcedure->m_nLotEndSerial > 0)
 			{
 				for (int bb = k; bb >= 0; bb--)
 				{
@@ -1256,7 +1256,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				}
 				break;
 			}
-			else if (pView->ChkLastProc() && (nLoadPnl < pDoc->m_mgrProcedure.m_nLotEndSerial && pDoc->m_mgrProcedure.m_nLotEndSerial > 0))
+			else if (pView->ChkLastProc() && (nLoadPnl < pView->m_mgrProcedure->m_nLotEndSerial && pView->m_mgrProcedure->m_nLotEndSerial > 0))
 			{
 				for (int bb = k; bb >= 0; bb--)
 				{
@@ -1265,7 +1265,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				}
 				break;
 			}
-			else if (nLoadPnl < pDoc->m_mgrProcedure.m_nLotEndSerial && pDoc->m_mgrProcedure.m_nLotEndSerial > 0)
+			else if (nLoadPnl < pView->m_mgrProcedure->m_nLotEndSerial && pView->m_mgrProcedure->m_nLotEndSerial > 0)
 			{
 				for (int cc = k; cc >= 0; cc--)
 				{
@@ -1275,7 +1275,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 		}
 		else
 		{
-			if (nLoadPnl > (pDoc->m_mgrProcedure.m_nLotEndSerial + pDoc->AoiDummyShot[0]) && pDoc->m_mgrProcedure.m_nLotEndSerial > 0)
+			if (nLoadPnl > (pView->m_mgrProcedure->m_nLotEndSerial + pDoc->AoiDummyShot[0]) && pView->m_mgrProcedure->m_nLotEndSerial > 0)
 			{
 				for (int bb = k; bb >= 0; bb--)
 				{
@@ -1284,7 +1284,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				}
 				break;
 			}
-			else if (pView->ChkLastProc() && (nLoadPnl > pDoc->m_mgrProcedure.m_nLotEndSerial && pDoc->m_mgrProcedure.m_nLotEndSerial > 0))
+			else if (pView->ChkLastProc() && (nLoadPnl > pView->m_mgrProcedure->m_nLotEndSerial && pView->m_mgrProcedure->m_nLotEndSerial > 0))
 			{
 				for (int bb = k; bb >= 0; bb--)
 				{
@@ -1293,7 +1293,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				}
 				break;
 			}
-			else if (nLoadPnl > pDoc->m_mgrProcedure.m_nLotEndSerial && pDoc->m_mgrProcedure.m_nLotEndSerial > 0)
+			else if (nLoadPnl > pView->m_mgrProcedure->m_nLotEndSerial && pView->m_mgrProcedure->m_nLotEndSerial > 0)
 			{
 				for (int cc = k; cc >= 0; cc--)
 				{
@@ -1312,7 +1312,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 		}
 		else
 		{
-			if (pDoc->m_mgrProcedure.m_bSerialDecrese)
+			if (pView->m_mgrProcedure->m_bSerialDecrese)
 			{
 				if (pDoc->WorkingInfo.LastJob.bLotSep && nLoadPnl < pDoc->m_nLotLastShot && !pDoc->m_bDoneChgLot)
 				{
@@ -1328,7 +1328,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				}
 
 				m_pPnlNum[k] = nLoadPnl; // 3 ~ 10
-				if (nLoadPnl >= pDoc->m_mgrProcedure.m_nLotEndSerial || pDoc->m_mgrProcedure.m_nLotEndSerial == 0)
+				if (nLoadPnl >= pView->m_mgrProcedure->m_nLotEndSerial || pView->m_mgrProcedure->m_nLotEndSerial == 0)
 				{
 					if (m_nLayer == RMAP_UP || m_nLayer == RMAP_DN || m_nLayer == RMAP_ALLUP || m_nLayer == RMAP_ALLDN)
 					{
@@ -1362,7 +1362,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 				}
 
 				m_pPnlNum[k] = nLoadPnl; // 3 ~ 10
-				if (nLoadPnl <= pDoc->m_mgrProcedure.m_nLotEndSerial || pDoc->m_mgrProcedure.m_nLotEndSerial == 0)
+				if (nLoadPnl <= pView->m_mgrProcedure->m_nLotEndSerial || pView->m_mgrProcedure->m_nLotEndSerial == 0)
 				{
 					if (m_nLayer == RMAP_UP || m_nLayer == RMAP_DN || m_nLayer == RMAP_ALLUP || m_nLayer == RMAP_ALLDN)
 					{
@@ -1471,7 +1471,7 @@ BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 					{
 						if (!bDumy)
 						{
-							if (!pDoc->m_mgrProcedure.m_bLastProc && !pDoc->WorkingInfo.LastJob.bSampleTest)
+							if (!pView->m_mgrProcedure->m_bLastProc && !pDoc->WorkingInfo.LastJob.bSampleTest)
 							{
 								{
 									m_pPnlNum[k] = -1;
@@ -1631,9 +1631,9 @@ void CReelMap::SetLotEd()
 		sData.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
 	::WritePrivateProfileString(_T("Info"), _T("Lot End"), sData, m_sPathBuf);
 
-	if((pDoc->m_mgrProcedure.m_dwLotEd-pDoc->m_mgrProcedure.m_dwLotSt) > 0)
+	if((pView->m_mgrProcedure->m_dwLotEd-pView->m_mgrProcedure->m_dwLotSt) > 0)
 	{
-		int nDiff = (pDoc->m_mgrProcedure.m_dwLotEd-pDoc->m_mgrProcedure.m_dwLotSt)/1000;
+		int nDiff = (pView->m_mgrProcedure->m_dwLotEd-pView->m_mgrProcedure->m_dwLotSt)/1000;
 		nHour = int(nDiff/3600);
 		nMin = int((nDiff-3600*nHour)/60);
 		nSec = nDiff % 60;

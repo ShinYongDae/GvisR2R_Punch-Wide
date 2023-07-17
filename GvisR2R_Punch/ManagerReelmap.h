@@ -13,6 +13,7 @@
 class CManagerReelmap : public CWnd
 {
 	DECLARE_DYNAMIC(CManagerReelmap)
+	CWnd*			m_pParent;
 
 	CReelMap* m_pReelMapDisp;
 	CReelMap* m_pReelMap;
@@ -51,7 +52,7 @@ class CManagerReelmap : public CWnd
 	void InitMstData();
 
 public:
-	CManagerReelmap();
+	CManagerReelmap(CWnd* pParent = NULL);
 	virtual ~CManagerReelmap();
 
 	//BOOL m_bBufEmpty[2];	// [0]: Up, [1]: Dn

@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_TEST_IO, &CMainFrame::OnTestIo)
 	ON_COMMAND(ID_DATABASE_CONNECTION, &CMainFrame::OnDatabaseConnection)
 	ON_COMMAND(ID_APP_MINIMIZE, &CMainFrame::OnAppMinimize)
+	ON_COMMAND(ID_APP_EXIT, &CMainFrame::OnAppExit)
 	ON_WM_SIZE()
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
@@ -279,6 +280,31 @@ void CMainFrame::OnAppMinimize()
 	SetWindowPlacement(&wndPlace);
 }
 
+void CMainFrame::OnAppExit()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	//CGvisR2R_PunchDoc* pDoc = (CGvisR2R_PunchDoc*)pFrame->GetActiveDocument();
+	//CGvisR2R_PunchView* pView = (CGvisR2R_PunchView*)pFrame->GetActiveView();
+	pView->DestroyView();
+	//pView->PostMessage(WM_CLOSE);
+	//pDoc->DestroyDoc();
+	pFrame->PostMessage(WM_CLOSE);
+
+	//AfxGetMainWnd()->PostMessage(WM_CLOSE);
+	//AfxGetApp()->m_pMainWnd->PostMessage(WM_CLOSE);
+	//PostQuitMessage(0);
+	//AfxGetMainWnd()->PostMessage(WM_QUIT);
+
+	//long lParam = 0;
+	//long lData = 1;
+	//lParam = lParam | lData;
+	//lData = 0x00 << 16;
+	//lParam = lParam | lData;
+	//lData = 1 << 29;
+	//lParam = lParam | lData;
+	//AfxGetMainWnd()->PostMessage(WM_COMMAND, ID_APP_EXIT, 0);
+}
 void CMainFrame::CreateProgressBar()
 {
 	if (m_bProgressCreated == FALSE)

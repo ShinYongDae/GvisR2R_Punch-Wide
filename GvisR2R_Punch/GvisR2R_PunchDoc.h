@@ -8,8 +8,8 @@
 #include "Global/GlobalDefine.h"
 //#include "Process/ReelMap.h"
 //#include "Process/DataMarking.h"
-#include "ManagerReelmap.h"
-#include "ManagerProcedure.h"
+//#include "ManagerReelmap.h"
+//#include "ManagerProcedure.h"
 
 #include "Global/MySpec.h"
 #include "Process/MyFile.h"
@@ -31,8 +31,8 @@ protected: // serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
-	CManagerReelmap m_mgrReelmap;
-	CManagerProcedure m_mgrProcedure;
+	//CManagerReelmap m_mgrReelmap;
+	//CManagerProcedure m_mgrProcedure;
 
 	BOOL m_bUpdateForNewJob[2]; // [0]: Up, [1]: Dn
 	int m_nDelayShow;

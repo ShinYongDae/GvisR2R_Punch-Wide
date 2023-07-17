@@ -18,9 +18,19 @@ extern CGvisR2R_PunchView* pView;
 
 IMPLEMENT_DYNAMIC(CManagerProcedure, CWnd)
 
-CManagerProcedure::CManagerProcedure()
+CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 {
+	m_pParent = pParent;
 	m_bShift2Mk = FALSE;
+
+	m_bContEngraveF = FALSE;
+
+	m_nSaveMk0Img = 0;
+	m_nSaveMk1Img = 0;
+
+	m_bStopF_Verify = FALSE;
+	m_bInitAuto = TRUE;
+	m_bInitAutoLoadMstInfo = FALSE;
 
 	m_bBufEmpty[0] = FALSE;
 	m_bBufEmpty[1] = FALSE;
@@ -331,6 +341,19 @@ CManagerProcedure::CManagerProcedure()
 	m_bChkLightErr = FALSE;
 
 	InitVal();
+
+	TCHAR szData[200];
+	CString sVal, sPath = PATH_WORKING_INFO;
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("MkSt"), NULL, szData, sizeof(szData), sPath))
+		m_bMkSt = _ttoi(szData) > 0 ? TRUE : FALSE;
+	else
+		m_bMkSt = FALSE;
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("MkStAuto"), NULL, szData, sizeof(szData), sPath))
+		m_nMkStAuto = _ttoi(szData);
+	else
+		m_nMkStAuto = 0;
 }
 
 CManagerProcedure::~CManagerProcedure()
@@ -369,7 +392,17 @@ void CManagerProcedure::InitVal()
 	m_bTHREAD_REELMAP_YIELD_ALLDN = FALSE;
 	m_bTHREAD_REELMAP_YIELD_ITS = FALSE;
 
-	m_nSnTHREAD_UPDATAE_YIELD = 0;
+	m_nSnTHREAD_UPDATAE_YIELD = -1;
+	m_bTHREAD_UPDATE_YIELD_UP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_DN = FALSE;
+	m_bTHREAD_UPDATE_YIELD_ALLUP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_ALLDN = FALSE;
+
+	m_bTHREAD_UPDATE_YIELD_ITS = FALSE;
+	m_bTHREAD_UPDATE_YIELD_INNER_UP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_INNER_DN = FALSE;
+	m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = FALSE;
+	m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = FALSE;
 }
 
 
@@ -390,8 +423,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 0);
 //			pDoc->Status.bDoorAoiF[DOOR_FM_AOI_UP] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 상 전면 중앙 도어 Open"));
@@ -410,8 +443,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 1);
 //			pDoc->Status.bDoorAoiF[DOOR_FL_AOI_UP] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 상 전면 좌측 도어 Open"));
@@ -430,8 +463,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 2);
 //			pDoc->Status.bDoorAoiF[DOOR_FR_AOI_UP] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 상 전면 우측 도어 Open"));
@@ -450,8 +483,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 3);
 //			pDoc->Status.bDoorAoiF[DOOR_BM_AOI_UP] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 상 후면 중앙 도어 Open"));
@@ -470,8 +503,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 4);
 //			pDoc->Status.bDoorAoiF[DOOR_BL_AOI_UP] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 상 후면 좌측 도어 Open"));
@@ -490,8 +523,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 5);
 //			pDoc->Status.bDoorAoiF[DOOR_BR_AOI_UP] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 상 후면 우측 도어 Open"));
@@ -513,8 +546,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 0);
 //			pDoc->Status.bDoorAoiF[DOOR_FM_AOI_DN] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 하 전면 중앙 도어 Open"));
@@ -533,8 +566,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 1);
 //			pDoc->Status.bDoorAoiF[DOOR_FL_AOI_DN] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 하 전면 좌측 도어 Open"));
@@ -553,8 +586,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 2);
 //			pDoc->Status.bDoorAoiF[DOOR_FR_AOI_DN] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 하 전면 우측 도어 Open"));
@@ -573,8 +606,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 3);
 //			pDoc->Status.bDoorAoiF[DOOR_BM_AOI_DN] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 하 후면 중앙 도어 Open"));
@@ -593,8 +626,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 4);
 //			pDoc->Status.bDoorAoiF[DOOR_BL_AOI_DN] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 하 후면 좌측 도어 Open"));
@@ -613,8 +646,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 5);
 //			pDoc->Status.bDoorAoiF[DOOR_BR_AOI_DN] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 검사부 하 후면 우측 도어 Open"));
@@ -636,8 +669,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 6);
 //			pDoc->Status.bDoorMkF[DOOR_FL_MK] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 마킹부 전면 좌측 도어 Open"));
@@ -656,8 +689,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 7);
 //			pDoc->Status.bDoorMkF[DOOR_FR_MK] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 마킹부 전면 우측 도어 Open"));
@@ -676,8 +709,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 8);
 //			pDoc->Status.bDoorMkF[DOOR_BL_MK] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 마킹부 후면 좌측 도어 Open"));
@@ -696,8 +729,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 9);
 //			pDoc->Status.bDoorMkF[DOOR_BR_MK] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 마킹부 후면 우측 도어 Open"));
@@ -719,8 +752,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 6);
 //			pDoc->Status.bDoorEngvF[DOOR_FL_ENGV] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 각인부 전면 좌측 도어 Open"));
@@ -739,8 +772,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 7);
 //			pDoc->Status.bDoorEngvF[DOOR_FR_ENGV] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 각인부 전면 우측 도어 Open"));
@@ -759,8 +792,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 8);
 //			pDoc->Status.bDoorEngvF[DOOR_BL_ENGV] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 각인부 후면 좌측 도어 Open"));
@@ -779,8 +812,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 9);
 //			pDoc->Status.bDoorEngvF[DOOR_BR_ENGV] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 각인부 후면 우측 도어 Open"));
@@ -802,8 +835,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 10);
 //			pDoc->Status.bDoorUcF[DOOR_FL_UC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 언코일러부 전면 좌측 도어 Open"));
@@ -822,8 +855,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 11);
 //			pDoc->Status.bDoorUcF[DOOR_FR_UC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 언코일러부 측면 도어 Open"));
@@ -842,8 +875,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 12);
 //			pDoc->Status.bDoorUcF[DOOR_BL_UC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 언코일러부 후면 좌측 도어 Open"));
@@ -862,8 +895,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 13);
 //			pDoc->Status.bDoorUcF[DOOR_BR_UC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 언코일러부 후면 우측 도어 Open"));
@@ -885,8 +918,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 15);
 //			pDoc->Status.bDoorReF[DOOR_FR_RC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			pView->DispStsBar(_T("정지-19"), 0);
 //			DispMain(_T("정 지"), RGB_RED);
@@ -906,8 +939,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 16);
 //			pDoc->Status.bDoorReF[DOOR_S_RC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 리코일러부 측면 도어 Open"));
@@ -926,8 +959,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 17);
 //			pDoc->Status.bDoorReF[DOOR_BL_RC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 리코일러부 후면 좌측 도어 Open"));
@@ -946,8 +979,8 @@ void CManagerProcedure::InitVal()
 //		{
 //			ulOpenDoor &= ~(0x01 << 18);
 //			pDoc->Status.bDoorReF[DOOR_BR_RC] = FALSE;
-//			pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//			pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//			pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//			pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //			Stop();
 //			DispMain(_T("정 지"), RGB_RED);
 //			MsgBox(_T("일시정지 - 리코일러부 후면 우측 도어 Open"));
@@ -964,8 +997,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgAoi[EMG_F_AOI_UP] && !pDoc->Status.bEmgAoiF[EMG_F_AOI_UP])
 //	{
 //		pDoc->Status.bEmgAoiF[EMG_F_AOI_UP] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 검사부 상 전면 스위치"));
@@ -983,8 +1016,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgAoi[EMG_B_AOI_UP] && !pDoc->Status.bEmgAoiF[EMG_B_AOI_UP])
 //	{
 //		pDoc->Status.bEmgAoiF[EMG_B_AOI_UP] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 검사부 상 후면 스위치"));
@@ -1002,8 +1035,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgAoi[EMG_F_AOI_DN] && !pDoc->Status.bEmgAoiF[EMG_F_AOI_DN])
 //	{
 //		pDoc->Status.bEmgAoiF[EMG_F_AOI_DN] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 검사부 하 전면 스위치"));
@@ -1021,8 +1054,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgAoi[EMG_B_AOI_DN] && !pDoc->Status.bEmgAoiF[EMG_B_AOI_DN])
 //	{
 //		pDoc->Status.bEmgAoiF[EMG_B_AOI_DN] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 검사부 하 후면 스위치"));
@@ -1040,8 +1073,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgMk[EMG_M_MK] && !pDoc->Status.bEmgMkF[EMG_M_MK])
 //	{
 //		pDoc->Status.bEmgMkF[EMG_M_MK] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 마킹부 메인 스위치"));
@@ -1059,8 +1092,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgMk[EMG_B_MK] && !pDoc->Status.bEmgMkF[EMG_B_MK])
 //	{
 //		pDoc->Status.bEmgMkF[EMG_B_MK] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 마킹부 스위치"));
@@ -1078,8 +1111,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgUc && !pDoc->Status.bEmgUcF)
 //	{
 //		pDoc->Status.bEmgUcF = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 언코일러부 스위치"));
@@ -1097,8 +1130,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgRc && !pDoc->Status.bEmgRcF)
 //	{
 //		pDoc->Status.bEmgRcF = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 리코일러부 스위치"));
@@ -1116,8 +1149,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgEngv[0] && !pDoc->Status.bEmgEngvF[0])
 //	{
 //		pDoc->Status.bEmgEngvF[0] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 각인부 모니터"));
@@ -1135,8 +1168,8 @@ void CManagerProcedure::InitVal()
 //	if (pDoc->Status.bEmgEngv[1] && !pDoc->Status.bEmgEngvF[1])
 //	{
 //		pDoc->Status.bEmgEngvF[1] = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwStopNow = TRUE;
-//		pDoc->m_mgrProcedure.m_bSwRunF = FALSE;
+//		pView->m_mgrProcedure->m_bSwStopNow = TRUE;
+//		pView->m_mgrProcedure->m_bSwRunF = FALSE;
 //		Stop();
 //		DispMain(_T("정 지"), RGB_RED);
 //		MsgBox(_T("비상정지 - 각인부 스위치"));
@@ -1186,14 +1219,14 @@ void CManagerProcedure::ChkBufUp()
 	CString str, sTemp;
 
 	str = _T("UB: ");
-	if (ChkBufUp(pDoc->m_mgrProcedure.m_pBufSerial[0], pDoc->m_mgrProcedure.m_nBufTot[0]))
+	if (ChkBufUp(pView->m_mgrProcedure->m_pBufSerial[0], pView->m_mgrProcedure->m_nBufTot[0]))
 	{
-		for (int i = 0; i < pDoc->m_mgrProcedure.m_nBufTot[0]; i++)
+		for (int i = 0; i < pView->m_mgrProcedure->m_nBufTot[0]; i++)
 		{
 			if (m_bShift2Mk)
 				return;
 
-			DelOverLotEndSerialUp(pDoc->m_mgrProcedure.m_pBufSerial[0][i]);
+			DelOverLotEndSerialUp(pView->m_mgrProcedure->m_pBufSerial[0][i]);
 
 			if (i == m_nBufTot[0] - 1)
 				sTemp.Format(_T("%d"), m_pBufSerial[0][i]);
@@ -1204,19 +1237,19 @@ void CManagerProcedure::ChkBufUp()
 	}
 	else
 	{
-		pDoc->m_mgrProcedure.m_nBufTot[0] = 0;
+		pView->m_mgrProcedure->m_nBufTot[0] = 0;
 	}
 
 	if (pFrm)
 	{
-		if (pDoc->m_mgrProcedure.m_sBuf[0] != str)
+		if (pView->m_mgrProcedure->m_sBuf[0] != str)
 		{
 			m_sBuf[0] = str;
 			pFrm->DispStatusBar(str, 3);
 
-			pDoc->SetCurrentInfoBufUpTot(pDoc->m_mgrProcedure.m_nBufTot[0]);
+			pDoc->SetCurrentInfoBufUpTot(pView->m_mgrProcedure->m_nBufTot[0]);
 			for (int k = 0; k < m_nBufTot[0]; k++)
-				pDoc->SetCurrentInfoBufUp(k, pDoc->m_mgrProcedure.m_pBufSerial[0][k]);
+				pDoc->SetCurrentInfoBufUp(k, pView->m_mgrProcedure->m_pBufSerial[0][k]);
 		}
 	}
 }
@@ -1226,14 +1259,14 @@ void CManagerProcedure::ChkBufDn()
 	CString str, sTemp;
 
 	str = _T("DB: ");
-	if (ChkBufDn(pDoc->m_mgrProcedure.m_pBufSerial[1], pDoc->m_mgrProcedure.m_nBufTot[1]))
+	if (ChkBufDn(pView->m_mgrProcedure->m_pBufSerial[1], pView->m_mgrProcedure->m_nBufTot[1]))
 	{
-		for (int i = 0; i < pDoc->m_mgrProcedure.m_nBufTot[1]; i++)
+		for (int i = 0; i < pView->m_mgrProcedure->m_nBufTot[1]; i++)
 		{
 			if (m_bShift2Mk)
 				return;
 
-			DelOverLotEndSerialDn(pDoc->m_mgrProcedure.m_pBufSerial[1][i]);
+			DelOverLotEndSerialDn(pView->m_mgrProcedure->m_pBufSerial[1][i]);
 
 			if (i == m_nBufTot[1] - 1)
 				sTemp.Format(_T("%d"), m_pBufSerial[1][i]);
@@ -1244,19 +1277,19 @@ void CManagerProcedure::ChkBufDn()
 	}
 	else
 	{
-		pDoc->m_mgrProcedure.m_nBufTot[1] = 0;
+		pView->m_mgrProcedure->m_nBufTot[1] = 0;
 	}
 
 	if (pFrm)
 	{
-		if (pDoc->m_mgrProcedure.m_sBuf[1] != str)
+		if (pView->m_mgrProcedure->m_sBuf[1] != str)
 		{
 			m_sBuf[1] = str;
 			pFrm->DispStatusBar(str, 1);
 
-			pDoc->SetCurrentInfoBufDnTot(pDoc->m_mgrProcedure.m_nBufTot[1]);
+			pDoc->SetCurrentInfoBufDnTot(pView->m_mgrProcedure->m_nBufTot[1]);
 			for (int k = 0; k < m_nBufTot[1]; k++)
-				pDoc->SetCurrentInfoBufDn(k, pDoc->m_mgrProcedure.m_pBufSerial[1][k]);
+				pDoc->SetCurrentInfoBufDn(k, pView->m_mgrProcedure->m_pBufSerial[1][k]);
 		}
 	}
 }
@@ -1335,7 +1368,7 @@ void CManagerProcedure::ChkBufDn()
 //	MonDispMain();
 //	MonPlcSignal();
 //
-//	if (pDoc->m_mgrProcedure.m_bCycleStop)
+//	if (pView->m_mgrProcedure->m_bCycleStop)
 //	{
 //		m_bCycleStop = FALSE;
 //		TowerLamp(RGB_YELLOW, TRUE);
@@ -1400,7 +1433,7 @@ void CManagerProcedure::ChkBufDn()
 //
 //void CManagerProcedure::ChkMRegOut()
 //{
-//	pDoc->m_mgrProcedure.m_bChkMpeIoOut = TRUE;
+//	pView->m_mgrProcedure->m_bChkMpeIoOut = TRUE;
 //}
 
 void CManagerProcedure::ChkShare()
@@ -1432,9 +1465,9 @@ void CManagerProcedure::ChkShareUp()
 	}
 	if (pFrm)
 	{
-		if (pDoc->m_mgrProcedure.m_sShare[0] != str)
+		if (pView->m_mgrProcedure->m_sShare[0] != str)
 		{
-			pDoc->m_mgrProcedure.m_sShare[0] = str;
+			pView->m_mgrProcedure->m_sShare[0] = str;
 			pFrm->DispStatusBar(str, 4);
 		}
 	}
@@ -1463,9 +1496,9 @@ void CManagerProcedure::ChkShareDn()
 	}
 	if (pFrm)
 	{
-		if (pDoc->m_mgrProcedure.m_sShare[1] != str)
+		if (pView->m_mgrProcedure->m_sShare[1] != str)
 		{
-			pDoc->m_mgrProcedure.m_sShare[1] = str;
+			pView->m_mgrProcedure->m_sShare[1] = str;
 			pFrm->DispStatusBar(str, 2);
 		}
 	}
@@ -1543,7 +1576,7 @@ BOOL CManagerProcedure::SortingInUp(CString sPath, int nIndex)
 		__int64 nMin = _tstoi(sMin);
 		__int64 nSec = _tstoi(sSec);
 
-		pDoc->m_mgrProcedure.m_nBufSerialSorting[0][nIndex] = nYear * 100000000000000 + nMonth * 1000000000000 + nDay * 10000000000 +
+		pView->m_mgrProcedure->m_nBufSerialSorting[0][nIndex] = nYear * 100000000000000 + nMonth * 1000000000000 + nDay * 10000000000 +
 			nHour * 100000000 + nMin * 1000000 + nSec * 10000 + nSerial;
 	}
 
@@ -1559,16 +1592,16 @@ BOOL CManagerProcedure::SortingOutUp(int* pSerial, int nTot)
 		for (i = 0; i < (nTot - 1) - k; i++)
 		{
 
-			if (pDoc->m_mgrProcedure.m_nBufSerialSorting[0][i] > pDoc->m_mgrProcedure.m_nBufSerialSorting[0][i + 1])
+			if (pView->m_mgrProcedure->m_nBufSerialSorting[0][i] > pView->m_mgrProcedure->m_nBufSerialSorting[0][i + 1])
 			{
-				SwapUp(&pDoc->m_mgrProcedure.m_nBufSerialSorting[0][i + 1], &pDoc->m_mgrProcedure.m_nBufSerialSorting[0][i]);
+				SwapUp(&pView->m_mgrProcedure->m_nBufSerialSorting[0][i + 1], &pView->m_mgrProcedure->m_nBufSerialSorting[0][i]);
 			}
 		}
 	}									// 버블 정렬 소스 끝
 
 	for (i = 0; i < nTot; i++)
 	{
-		pSerial[i] = (int)(pDoc->m_mgrProcedure.m_nBufSerialSorting[0][i] % 10000);
+		pSerial[i] = (int)(pView->m_mgrProcedure->m_nBufSerialSorting[0][i] % 10000);
 	}
 	return TRUE;
 }
@@ -1579,9 +1612,9 @@ BOOL CManagerProcedure::ChkBufUp(int* pSerial, int &nTot)
 	BOOL bExist = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufUp + _T("*.pcr"));
 	if (!bExist)
 	{
-		pDoc->m_mgrProcedure.m_bBufEmpty[0] = TRUE;
-		if (!pDoc->m_mgrProcedure.m_bBufEmptyF[0])
-			pDoc->m_mgrProcedure.m_bBufEmptyF[0] = TRUE;		// 최초 한번 버퍼가 비어있으면(초기화를 하고 난 이후) TRUE.
+		pView->m_mgrProcedure->m_bBufEmpty[0] = TRUE;
+		if (!pView->m_mgrProcedure->m_bBufEmptyF[0])
+			pView->m_mgrProcedure->m_bBufEmptyF[0] = TRUE;		// 최초 한번 버퍼가 비어있으면(초기화를 하고 난 이후) TRUE.
 
 		return FALSE; // pcr파일이 존재하지 않음.
 	}
@@ -1610,11 +1643,11 @@ BOOL CManagerProcedure::ChkBufUp(int* pSerial, int &nTot)
 	BOOL bRtn = SortingOutUp(pSerial, nTot);
 
 	if (nTot == 0)
-		pDoc->m_mgrProcedure.m_bBufEmpty[0] = TRUE;
+		pView->m_mgrProcedure->m_bBufEmpty[0] = TRUE;
 	else
 	{
-		pDoc->m_mgrProcedure.m_bBufEmpty[0] = FALSE;
-		pDoc->m_mgrProcedure.m_bIsBuf[0] = TRUE;
+		pView->m_mgrProcedure->m_bBufEmpty[0] = FALSE;
+		pView->m_mgrProcedure->m_bIsBuf[0] = TRUE;
 	}
 
 	return (bRtn);
@@ -1626,9 +1659,9 @@ BOOL CManagerProcedure::ChkBufDn(int* pSerial, int &nTot)
 	BOOL bExist = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufDn + _T("*.pcr"));
 	if (!bExist)
 	{
-		pDoc->m_mgrProcedure.m_bBufEmpty[1] = TRUE;
-		if (!pDoc->m_mgrProcedure.m_bBufEmptyF[1])
-			pDoc->m_mgrProcedure.m_bBufEmptyF[1] = TRUE;
+		pView->m_mgrProcedure->m_bBufEmpty[1] = TRUE;
+		if (!pView->m_mgrProcedure->m_bBufEmptyF[1])
+			pView->m_mgrProcedure->m_bBufEmptyF[1] = TRUE;
 		return FALSE; // pcr파일이 존재하지 않음.
 	}
 
@@ -1665,11 +1698,11 @@ BOOL CManagerProcedure::ChkBufDn(int* pSerial, int &nTot)
 	BOOL bRtn = SortingOutDn(pSerial, nTot);
 
 	if (nTot == 0)
-		pDoc->m_mgrProcedure.m_bBufEmpty[1] = TRUE;
+		pView->m_mgrProcedure->m_bBufEmpty[1] = TRUE;
 	else
 	{
-		pDoc->m_mgrProcedure.m_bBufEmpty[1] = FALSE;
-		pDoc->m_mgrProcedure.m_bIsBuf[1] = TRUE;
+		pView->m_mgrProcedure->m_bBufEmpty[1] = FALSE;
+		pView->m_mgrProcedure->m_bIsBuf[1] = TRUE;
 	}
 
 	return (bRtn);
@@ -1736,7 +1769,7 @@ BOOL CManagerProcedure::SortingInDn(CString sPath, int nIndex)
 		__int64 nMin = _tstoi(sMin);
 		__int64 nSec = _tstoi(sSec);
 
-		pDoc->m_mgrProcedure.m_nBufSerialSorting[1][nIndex] = nYear * 100000000000000 + nMonth * 1000000000000 + nDay * 10000000000 +
+		pView->m_mgrProcedure->m_nBufSerialSorting[1][nIndex] = nYear * 100000000000000 + nMonth * 1000000000000 + nDay * 10000000000 +
 			nHour * 100000000 + nMin * 1000000 + nSec * 10000 + nSerial;
 	}
 
@@ -1752,7 +1785,7 @@ BOOL CManagerProcedure::SortingOutDn(int* pSerial, int nTot)
 		for (i = 0; i < (nTot - 1) - k; i++)
 		{
 
-			if (pDoc->m_mgrProcedure.m_nBufSerialSorting[1][i] > pDoc->m_mgrProcedure.m_nBufSerialSorting[1][i + 1])
+			if (pView->m_mgrProcedure->m_nBufSerialSorting[1][i] > pView->m_mgrProcedure->m_nBufSerialSorting[1][i + 1])
 			{
 				SwapUp(&m_nBufSerialSorting[1][i + 1], &m_nBufSerialSorting[1][i]);
 			}
@@ -1761,7 +1794,7 @@ BOOL CManagerProcedure::SortingOutDn(int* pSerial, int nTot)
 
 	for (i = 0; i < nTot; i++)
 	{
-		pSerial[i] = (int)(pDoc->m_mgrProcedure.m_nBufSerialSorting[1][i] % 10000);
+		pSerial[i] = (int)(pView->m_mgrProcedure->m_nBufSerialSorting[1][i] % 10000);
 	}
 	return TRUE;
 }
@@ -2015,7 +2048,7 @@ void CManagerProcedure::DelOverLotEndSerialUp(int nSerial)
 	{
 		sSrc.Format(_T("%s%04d.pcr"), pDoc->WorkingInfo.System.sPathVrsBufUp, nSerial);
 
-		if (pDoc->m_mgrProcedure.m_bSerialDecrese)
+		if (pView->m_mgrProcedure->m_bSerialDecrese)
 		{
 			if (m_nLotEndSerial > 0 && nSerial < m_nLotEndSerial)
 			{
@@ -2043,7 +2076,7 @@ void CManagerProcedure::DelOverLotEndSerialDn(int nSerial)
 	{
 		sSrc.Format(_T("%s%04d.pcr"), pDoc->WorkingInfo.System.sPathVrsBufDn, nSerial);
 
-		if (pDoc->m_mgrProcedure.m_bSerialDecrese)
+		if (pView->m_mgrProcedure->m_bSerialDecrese)
 		{
 			if (m_nLotEndSerial > 0 && nSerial < m_nLotEndSerial)
 			{

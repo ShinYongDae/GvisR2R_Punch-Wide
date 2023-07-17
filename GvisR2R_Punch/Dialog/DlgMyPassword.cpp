@@ -31,7 +31,7 @@ CDlgMyPassword::CDlgMyPassword(CWnd* pParent /*=NULL*/)
 	m_pRect = NULL;
 	m_bLoadImg = FALSE;
 	m_nSel = 0;
-	pDoc->m_mgrProcedure.m_bShowModalMyPassword = TRUE;
+	pView->m_mgrProcedure->m_bShowModalMyPassword = TRUE;
 	m_nRtnVal = 0;
 	m_strMsg = _T("");
 	m_nCtrlId = 0;
@@ -56,7 +56,7 @@ CDlgMyPassword::~CDlgMyPassword()
 			m_bFont = FALSE;
 	}
 
-	pDoc->m_mgrProcedure.m_bShowModalMyPassword = FALSE;
+	pView->m_mgrProcedure->m_bShowModalMyPassword = FALSE;
 }
 
 
@@ -1336,7 +1336,7 @@ void CDlgMyPassword::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 // 	{
 // 		KillTimer(TIM_WATCHDOG_MYPASSWORD);
 // 
-// 		if(pDoc->m_mgrProcedure.m_bShowModalMyPassword)
+// 		if(pView->m_mgrProcedure->m_bShowModalMyPassword)
 // 		{
 // 			if(!this->IsWindowVisible())
 // 				this->ShowWindow(SW_SHOW);

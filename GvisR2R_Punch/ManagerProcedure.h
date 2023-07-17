@@ -7,9 +7,10 @@
 class CManagerProcedure : public CWnd
 {
 	DECLARE_DYNAMIC(CManagerProcedure)
+	CWnd*			m_pParent;
 
 public:
-	CManagerProcedure();
+	CManagerProcedure(CWnd* pParent = NULL);
 	virtual ~CManagerProcedure();
 
 	void InitVal();

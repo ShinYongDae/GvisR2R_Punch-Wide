@@ -34,6 +34,9 @@
 #include "Device/Fluck.h"
 #endif
 
+#include "ManagerReelmap.h"
+#include "ManagerProcedure.h"
+
 #include "GvisR2R_PunchDoc.h"
 
 
@@ -237,7 +240,8 @@ class CGvisR2R_PunchView : public CFormView
 	//double m_dElecChkVal;
 	//BOOL m_bContEngraveF;
 
-
+	void InitMgrProcedure();
+	void InitMgrReelmap();
 	void InitMyMsg();
 	void CloseMyMsg();
 
@@ -373,6 +377,8 @@ public:
 
 	//int m_nDebugStep; 	
 	//CString m_sFixMsg[2]; //[0]:up , [1]:dn
+	CManagerReelmap *m_mgrReelmap;
+	CManagerProcedure *m_mgrProcedure;
 
 	CMpDevice* m_pMpe;
 	CPtAlign m_Align[2];	// [0] : LeftCam , [1] : RightCam
@@ -579,6 +585,7 @@ public:
 	//	CString GetDispMain();
 	void GetDispMsg(CString &strMsg, CString &strTitle);
 	void DispMsg(CString strMsg, CString strTitle = _T(""), COLORREF color = RGB(255, 0, 0), DWORD dwDispTime = 0, BOOL bOverWrite = TRUE);
+	void DoDispMsg(CString strMsg, CString strTitle = _T(""), COLORREF color = RGB(255, 0, 0), DWORD dwDispTime = 0, BOOL bOverWrite = TRUE);
 	void ClrDispMsg();
 	BOOL WaitClrDispMsg();
 	LONG OnQuitDispMsg(UINT wParam, LONG lParam);

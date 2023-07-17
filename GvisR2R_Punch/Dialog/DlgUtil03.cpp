@@ -202,8 +202,8 @@ void CDlgUtil03::OnShowWindow(BOOL bShow, UINT nStatus)
 
 void CDlgUtil03::AtDlgShow()
 {
-	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-		SetScrlBarMax(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->nCol, pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->nRow); // ROT_NONE
+	if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+		SetScrlBarMax(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nCol, pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nRow); // ROT_NONE
 // 	SetScrlBarMax(pDoc->m_pPcsRgn->nRow, pDoc->m_pPcsRgn->nCol); // ROT_CCW_90
 	SetScrlBar(0,0);
 	
@@ -252,8 +252,8 @@ BOOL CDlgUtil03::OnInitDialog()
 	InitStc();
 	InitBtn();
 
-	if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-		SetScrlBarMax(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->nCol, pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->nRow); // ROT_NONE
+	if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+		SetScrlBarMax(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nCol, pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nRow); // ROT_NONE
 // 	SetScrlBarMax(pDoc->m_pPcsRgn->nRow, pDoc->m_pPcsRgn->nCol); // ROT_CCW_90
 	SetScrlBar(0,0);
 
@@ -399,7 +399,7 @@ void CDlgUtil03::InitStc()
 
 void CDlgUtil03::Disp(int nDir)
 {
-	if(!pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
+	if(!pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 		return;
 
 	int nScrlH = m_scrollH.GetScrollPos();
@@ -422,8 +422,8 @@ void CDlgUtil03::Disp(int nDir)
 			{
 				if(!bChk)
 				{
-					if (pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-						pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkPnt(nC + nScrlH, nR + nScrlV, nP, ptMk);
+					if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+						pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt(nC + nScrlH, nR + nScrlV, nP, ptMk);
 					str = _T("");
 					if (nP >= 0)
 					{
@@ -434,13 +434,13 @@ void CDlgUtil03::Disp(int nDir)
 				{
 					if (!bChk2) // 상면 PCS
 					{
-						if (pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-							pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetPcsRgn(nC + nScrlH, nR + nScrlV, nP, ptRect);
+						if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+							pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetPcsRgn(nC + nScrlH, nR + nScrlV, nP, ptRect);
 					}
 					else		// 하면 PCS
 					{
-						if (pDoc->m_mgrReelmap.m_Master[1].m_pPcsRgn)
-							pDoc->m_mgrReelmap.m_Master[1].m_pPcsRgn->GetPcsRgn(nC + nScrlH, nR + nScrlV, nP, ptRect);
+						if (pView->m_mgrReelmap->m_Master[1].m_pPcsRgn)
+							pView->m_mgrReelmap->m_Master[1].m_pPcsRgn->GetPcsRgn(nC + nScrlH, nR + nScrlV, nP, ptRect);
 					}
 					str = _T("");
 					if (nP >= 0)
@@ -514,11 +514,11 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		str = myStcData[nStcId].GetText();
 		nPos = str.Find('(', 0);
 		nPcsId = _tstoi(str.Left(nPos));
-		if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-			ptPnt = pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
+		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
 
-		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -536,11 +536,11 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		str = myStcData[nStcId].GetText();
 		nPos = str.Find('(', 0);
 		nPcsId = _tstoi(str.Left(nPos));
-		if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-			ptPnt = pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
+		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
 
-		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -558,11 +558,11 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		str = myStcData[nStcId].GetText();
 		nPos = str.Find('(', 0);
 		nPcsId = _tstoi(str.Left(nPos));
-		if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-			ptPnt = pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
+		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
 
-		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -577,11 +577,11 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 
 		nPos = str.Find('(', 0);
 		nPcsId = _tstoi(str.Left(nPos));
-		if(pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn)
-			ptPnt = pDoc->m_mgrReelmap.m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
+		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
 
-		dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -818,8 +818,8 @@ void CDlgUtil03::OnBtnAllMkTest()
 // 	double pTgtPos[2];
 // 	pTgtPos[AXIS_Y] = _tstof(pDoc->WorkingInfo.Motion.sStPosY);
 // 	pTgtPos[AXIS_X] = _tstof(pDoc->WorkingInfo.Motion.sStPosX);
-// 	double dCurrX = pDoc->m_mgrProcedure.m_dEnc[AXIS_X];
-// 	double dCurrY = pDoc->m_mgrProcedure.m_dEnc[AXIS_Y];
+// 	double dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X];
+// 	double dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y];
 // 
 // 	double fLen, fVel, fAcc, fJerk;
 // 	fLen = sqrt( ((pTgtPos[AXIS_X] - dCurrX) * (pTgtPos[AXIS_X] - dCurrX)) + ((pTgtPos[AXIS_Y] - dCurrY) * (pTgtPos[AXIS_Y] - dCurrY)) );
