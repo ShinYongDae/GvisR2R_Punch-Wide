@@ -4765,7 +4765,7 @@ void CDlgMenu01::ChkPartialSpd()
 {
 	if(pDoc->Status.bAuto)
 	{
-		if(pView->IsRun())
+		if(pView->m_mgrProcedure->IsRun())
 		{
 			if(pView->m_mgrProcedure->m_nStepAuto >= AT_LP)
 			{

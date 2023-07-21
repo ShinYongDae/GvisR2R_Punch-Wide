@@ -92,7 +92,7 @@ public:
 	void DuplicateRmap(int nRmap);
 	void SetMkPnt(int nCam);	// Pin위치에 의한 정렬.
 	BOOL GetCurrentInfoEng();
-
+	void UpdateData();
 
 	// [Reelmap]
 	CCamMaster m_Master[2];

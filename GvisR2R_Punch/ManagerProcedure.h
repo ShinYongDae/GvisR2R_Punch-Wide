@@ -1,19 +1,54 @@
 #pragma once
 
 #include "Global/GlobalDefine.h"
+#include "Process/ThreadTask.h"
+
+#define MAX_THREAD_MGR_PROC			6
 
 // CManagerProcedure
 
 class CManagerProcedure : public CWnd
 {
 	DECLARE_DYNAMIC(CManagerProcedure)
-	CWnd*			m_pParent;
+
+	CWnd* m_pParent;
+
+	void InitThread();
+	void KillThread();
 
 public:
 	CManagerProcedure(CWnd* pParent = NULL);
 	virtual ~CManagerProcedure();
 
+	DWORD m_dwThreadTick[MAX_THREAD_MGR_PROC];
+	BOOL m_bThread[MAX_THREAD_MGR_PROC];
+	CThreadTask m_Thread[MAX_THREAD_MGR_PROC];
+
 	void InitVal();
+	void DispDefImg();
+	void DispDefImgInner();
+	BOOL CopyDefImg(int nSerial);
+	BOOL CopyDefImg(int nSerial, CString sNewLot);
+	BOOL IsDoneDispMkInfo();
+	BOOL SetSerialReelmap(int nSerial, BOOL bDumy = FALSE);
+	BOOL SetSerialMkInfo(int nSerial, BOOL bDumy = FALSE);
+	void SetFixPcs(int nSerial);
+	void SwMenu01DispDefImg(BOOL bOn);
+	BOOL ChkCollision();
+	BOOL ChkCollision(int nAxisId, double dTgtPosX);
+	BOOL ChkCollision(int nAxisId, double dTgtPosX, double dTgtNextPos);
+	void DoMark0Its();
+	void DoMark1Its();
+	void DoMark0();
+	void DoMark1();
+	void DoMark0All();
+	void DoMark1All();
+	void DoReject0();
+	void DoReject1();
+	void GetEnc();
+	BOOL IsRunAxisX();
+	void EStop();
+
 
 	int m_nAoiCamInfoStrPcs[2]; // [0] : Up, [1] : Dn
 	//BOOL m_bCamChged;
@@ -68,12 +103,18 @@ public:
 	BOOL m_bTHREAD_SHIFT2MK;// [2];		// [0] : Cam0, [1] : Cam1
 
 	BOOL m_bTHREAD_DISP_DEF_INNER;
-
 	BOOL m_bStopFromThread, m_bBuzzerFromThread;
-
 
 	int	m_nStepTHREAD_DISP_DEF_INNER;
 	int	m_nSnTHREAD_UPDATAE_YIELD;
+
+	static UINT ThreadProc0(LPVOID lpContext); // DoMark0(), DoMark1()
+	static UINT ThreadProc1(LPVOID lpContext); // ChkCollision()
+	static UINT ThreadProc2(LPVOID lpContext); // DispDefImg()
+	static UINT ThreadProc3(LPVOID lpContext); // GetCurrentInfoSignal()
+	static UINT ThreadProc4(LPVOID lpContext); // DispDefImgInner()
+	static UINT ThreadProc5(LPVOID lpContext); // RunShift2Mk()
+	
 
 	BOOL m_bAnswer[10];
 	int m_nDummy[2], m_nAoiLastSerial[2]; //[0]: Up, [1]: Dn
@@ -259,6 +300,14 @@ public:
 	BOOL SortingInDn(CString sPath, int nIndex);
 	BOOL SortingOutDn(int* pSerial, int nTot);
 	void SwapDn(__int64 *num1, __int64 *num2);
+
+	BOOL IsRun();
+	BOOL IsDoneDispMkInfoInner();
+	BOOL SetSerialReelmapInner(int nSerial, BOOL bDumy = FALSE);
+	BOOL ChkLastProc();
+	BOOL SetSerialMkInfoInner(int nSerial, BOOL bDumy = FALSE);
+	void RunShift2Mk();
+	BOOL GetCurrentInfoSignal();
 
 protected:
 	DECLARE_MESSAGE_MAP()

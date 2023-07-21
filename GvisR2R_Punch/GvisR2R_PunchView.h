@@ -83,7 +83,7 @@
 #define TIM_CAMMASTER_UPDATE	22
 #define TIM_START_UPDATE		100
 
-#define MAX_THREAD				6
+//#define MAX_THREAD				6
 
 namespace Read2dIdx
 {
@@ -257,8 +257,8 @@ class CGvisR2R_PunchView : public CFormView
 	void DtsInit();
 	void InitPLC();
 	void HwKill();
-	void ThreadInit();
-	void ThreadKill();
+	//void ThreadInit();
+	//void ThreadKill();
 	//void GetSliceIO();
 	void GetMpeIO();
 	void GetMpeSignal();
@@ -411,9 +411,9 @@ public:
 	//BOOL m_bTIM_INIT_VIEW;
 	//BOOL m_bCam, m_bReview;
 
-	DWORD m_dwThreadTick[MAX_THREAD];
-	BOOL m_bThread[MAX_THREAD];
-	CThreadTask m_Thread[MAX_THREAD];
+	//DWORD m_dwThreadTick[MAX_THREAD];
+	//BOOL m_bThread[MAX_THREAD];
+	//CThreadTask m_Thread[MAX_THREAD];
 
 	//double m_dEnc[MAX_AXIS], m_dTarget[MAX_AXIS];
 	//double m_dNextTarget[MAX_AXIS];
@@ -565,6 +565,8 @@ public:
 	//BOOL m_bShift2Mk;
 	//BOOL m_bUpdateYield, m_bUpdateYieldOnRmap;
 
+	void SwMenu01DispDefImg(BOOL bOn);
+
 	void SetLastSerialEng(int nSerial);
 	int MsgBox(CString sMsg, int nThreadIdx = 0, int nType = MB_OK, int nTimOut = DEFAULT_TIME_OUT, BOOL bEngave = TRUE);		// SyncMsgBox
 	int AsyncMsgBox(CString sMsg, int nThreadIdx = 1, int nType = MB_OK, int nTimOut = DEFAULT_TIME_OUT);						// AsyncMsgBox
@@ -607,7 +609,7 @@ public:
 	void SetMkFdPitch(double dPitch);
 
 	void DoIO();
-	void DispDefImg();
+	//void DispDefImg();
 	void DoMark0();
 	void DoMark1();
 	void DoMark0All();
@@ -716,7 +718,7 @@ public:
 	BOOL IsTestDoneUp();
 	BOOL IsTestDoneDn();
 	BOOL IsStop();
-	BOOL IsRun();
+	//BOOL IsRun();
 	int GetSerial();
 	void SetMkFdLen();
 	double GetMkFdLen();
@@ -868,8 +870,8 @@ public:
 	void StopTimWinker(int nId);
 	BOOL IsShowLive();
 	BOOL IsChkTmpStop();
-	// 	void ResetReelmap();
 	BOOL ChkLastProc();
+	// 	void ResetReelmap();
 	//	double GetAoiFdLen();
 	double GetAoiUpFdLen();
 	double GetAoiDnFdLen();
@@ -920,9 +922,10 @@ public:
 	//void OpenReelmapUp();
 	//void OpenReelmapDn();
 	BOOL IsRunAxisX();
-	BOOL ChkCollision();
-	BOOL ChkCollision(int nAxisId, double dTgtPosX);
-	BOOL ChkCollision(int nAxisId, double dTgtPosX, double dTgtNextPos);
+	//BOOL ChkCollision();
+	//BOOL ChkCollision(int nAxisId, double dTgtPosX);
+	//BOOL ChkCollision(int nAxisId, double dTgtPosX, double dTgtNextPos);
+	BOOL IsMotionDone(int nAxisId);
 	void DoAllMk(int nCam);
 	void StopAllMk();
 	void EStop();
@@ -1145,7 +1148,7 @@ public:
 	//void OpenReelmapInner();
 	//void OpenReelmapInnerUp();
 	//void OpenReelmapInnerDn();
-	void DispDefImgInner();
+	//void DispDefImgInner();
 	BOOL IsDoneDispMkInfoInner();
 	BOOL SetSerialReelmapInner(int nSerial, BOOL bDumy = FALSE);
 	BOOL SetSerialMkInfoInner(int nSerial, BOOL bDumy = FALSE);

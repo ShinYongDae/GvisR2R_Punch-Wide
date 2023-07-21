@@ -1285,7 +1285,7 @@ void CDlgMenu02::SetJogSpd(int nSpd)
 	if(pView->m_pMotion)
 	{
 		pView->m_pMotion->SetVMove(MS_Y0, dSpdY, dAccY);
-//		if(!pView->ChkCollision())
+//		if(!pView->m_mgrProcedure->ChkCollision())
 			pView->m_pMotion->SetVMove(MS_X0, dSpdX, dAccX);
 		m_nJogSpd = nSpd;
 	}
@@ -1360,7 +1360,7 @@ void CDlgMenu02::SetJogSpd2(int nSpd)
 	if(pView->m_pMotion)
 	{
 		pView->m_pMotion->SetVMove(MS_Y1, dSpdY, dAccY);
-//		if(!pView->ChkCollision())
+//		if(!pView->m_mgrProcedure->ChkCollision())
 			pView->m_pMotion->SetVMove(MS_X1, dSpdX, dAccX);
 		m_nJogSpd = nSpd;
 	}
@@ -1882,7 +1882,7 @@ BOOL CDlgMenu02::MovePos(int nPos)
 	if(!pView->m_pMotion)
 		return FALSE;
 
-	if(pView->ChkCollision(AXIS_X0, _tstof(pDoc->WorkingInfo.Marking[0].sMeasurePosX[nPos])))
+	if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, _tstof(pDoc->WorkingInfo.Marking[0].sMeasurePosX[nPos])))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -1925,7 +1925,7 @@ BOOL CDlgMenu02::MovePos2(int nPos)
 	if(!pView->m_pMotion)
 		return FALSE;
 
-	if(pView->ChkCollision(AXIS_X1, _tstof(pDoc->WorkingInfo.Marking[1].sMeasurePosX[nPos])))
+	if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, _tstof(pDoc->WorkingInfo.Marking[1].sMeasurePosX[nPos])))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = 0.0;
@@ -1980,7 +1980,7 @@ BOOL CDlgMenu02::MovePinPos()
 		pPos[0] = pView->m_pMotion->m_dPinPosX[0];
 		pPos[1] = pView->m_pMotion->m_dPinPosY[0];
 
-		if(pView->ChkCollision(AXIS_X0, pPos[0]))
+		if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x =  _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -2025,7 +2025,7 @@ BOOL CDlgMenu02::MovePinPos2()
 		pPos[0] = pView->m_pMotion->m_dPinPosX[1];
 		pPos[1] = pView->m_pMotion->m_dPinPosY[1];
 
-		if(pView->ChkCollision(AXIS_X1, pPos[0]))
+		if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x =  0.0;
@@ -2086,7 +2086,7 @@ BOOL CDlgMenu02::Move2PntAlign0(int nPos)
 			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[0];
 		}
 
-		if (pView->ChkCollision(AXIS_X0, pPos[0]))
+		if (pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -2144,7 +2144,7 @@ BOOL CDlgMenu02::Move4PntAlign0(int nPos)
 			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[0];
 		}
 
-		if (pView->ChkCollision(AXIS_X0, pPos[0]))
+		if (pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -2205,7 +2205,7 @@ BOOL CDlgMenu02::Move2PntAlign1(int nPos)
 			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[1];
 		}
 
-		if (pView->ChkCollision(AXIS_X1, pPos[0]))
+		if (pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = 0.0;
@@ -2264,7 +2264,7 @@ BOOL CDlgMenu02::Move4PntAlign1(int nPos)
 			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[1];
 		}
 
-		if (pView->ChkCollision(AXIS_X1, pPos[0]))
+		if (pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = 0.0;
@@ -2435,7 +2435,7 @@ void CDlgMenu02::OnBtnHomeMove()
 	double dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
 	double dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 
-	if(pView->ChkCollision(AXIS_X0, pTgtPos[0]))
+	if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pTgtPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -2473,7 +2473,7 @@ void CDlgMenu02::OnBtnHomeMove2()
 	double dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
 	double dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 
-	if(pView->ChkCollision(AXIS_X1, pTgtPos[0]))
+	if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pTgtPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = 0.0;
@@ -3153,7 +3153,7 @@ void CDlgMenu02::SwMarking()
 	pPos[0] = m_dCurPosX[0] + dMkOffsetX;
 	pPos[1] = m_dCurPosY[0] + dMkOffsetY;
 
-	if(pView->ChkCollision(AXIS_X0, pPos[0]))
+	if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -3213,7 +3213,7 @@ void CDlgMenu02::SwMarking2()
 	pPos[0] = m_dCurPosX[1] + dMkOffsetX;
 	pPos[1] = m_dCurPosY[1] + dMkOffsetY;
 
-	if(pView->ChkCollision(AXIS_X1, pPos[0]))
+	if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = 0.0;
@@ -3295,7 +3295,7 @@ void CDlgMenu02::MarkingOff()
 		pPos[0] = m_dCurPosX[0];
 		pPos[1] = m_dCurPosY[0];
 
-		if(pView->ChkCollision(AXIS_X0, pPos[0]))
+		if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -3343,7 +3343,7 @@ void CDlgMenu02::MarkingOff2()
 		pPos[0] = m_dCurPosX[1];
 		pPos[1] = m_dCurPosY[1];
 
-		if(pView->ChkCollision(AXIS_X1, pPos[0]))
+		if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = 0.0;

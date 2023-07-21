@@ -661,6 +661,8 @@ BOOL CManagerReelmap::LoadMstInfo()
 
 	// Reelmap Á¤º¸ Loading.....
 	InitReelmap(); // Delete & New
+	SetReelmap(ROT_NONE);
+	UpdateData();
 
 	if (bGetCurrentInfoEng)
 	{
@@ -10769,4 +10771,26 @@ void CManagerReelmap::UpdateYieldOnRmap()
 		pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN = TRUE;	// UpdateReelmapYieldDn(); // Yield Reelmap
 	}
 	Sleep(100);
+}
+
+void CManagerReelmap::UpdateData()
+{
+	if (!m_pReelMap)
+		return;
+
+	m_pReelMap->m_sMc = pDoc->WorkingInfo.System.sMcName;
+	m_pReelMap->m_sUser = pDoc->WorkingInfo.LastJob.sSelUserName;
+
+	m_pReelMap->m_bUseLotSep = pDoc->WorkingInfo.LastJob.bLotSep;
+	m_pReelMap->m_bUseTempPause = pDoc->WorkingInfo.LastJob.bTempPause;
+
+	m_pReelMap->m_dTotLen = _tstof(pDoc->WorkingInfo.LastJob.sReelTotLen)*1000.0;
+	m_pReelMap->m_dPnlLen = _tstof(pDoc->WorkingInfo.LastJob.sOnePnlLen);
+	m_pReelMap->m_dLotCutPosLen = _tstof(pDoc->WorkingInfo.LastJob.sLotCutPosLen);
+	if (m_pReelMap->m_bUseLotSep)
+		m_pReelMap->m_dLotLen = _tstof(pDoc->WorkingInfo.LastJob.sLotSepLen);
+	else
+		m_pReelMap->m_dLotLen = m_pReelMap->m_dTotLen;
+	m_pReelMap->m_dTempPauseLen = _tstof(pDoc->WorkingInfo.LastJob.sTempPauseLen);
+
 }
