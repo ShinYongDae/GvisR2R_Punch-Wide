@@ -568,8 +568,8 @@ void CDlgFrameHigh::DispFdOffset()
 
 	if(pView->m_pDlgMenu02)
 	{
-		dOfsX = 1.0*pView->m_pDlgMenu02->m_dMkFdOffsetX[0][0];
-		dOfsY = pView->m_pDlgMenu02->m_dMkFdOffsetY[0][0];
+		dOfsX = 1.0*pView->m_dMkFdOffsetX[0][0];
+		dOfsY = pView->m_dMkFdOffsetY[0][0];
 		str.Format(_T("%.1f\r%.1f"), dOfsY, dOfsX);
 		if(str != m_sStc[0])
 		{
@@ -577,8 +577,8 @@ void CDlgFrameHigh::DispFdOffset()
 			myStc[2].SetText(str);
 		}
 
-		dOfsX = 1.0*pView->m_pDlgMenu02->m_dAoiDnFdOffsetX;
-		dOfsY = pView->m_pDlgMenu02->m_dAoiDnFdOffsetY;
+		dOfsX = 1.0*pView->m_dAoiDnFdOffsetX;
+		dOfsY = pView->m_dAoiDnFdOffsetY;
 		str.Format(_T("%.1f\r%.1f"), dOfsY, dOfsX);
 		if(str != m_sStc[1])
 		{
@@ -586,8 +586,8 @@ void CDlgFrameHigh::DispFdOffset()
 			myStc[4].SetText(str);
 		}
 
-		dOfsX = 1.0*pView->m_pDlgMenu02->m_dAoiUpFdOffsetX;
-		dOfsY = pView->m_pDlgMenu02->m_dAoiUpFdOffsetY;
+		dOfsX = 1.0*pView->m_dAoiUpFdOffsetX;
+		dOfsY = pView->m_dAoiUpFdOffsetY;
 		str.Format(_T("%.1f\r%.1f"), dOfsY, dOfsX);
 		if(str != m_sStc[2])
 		{
@@ -595,8 +595,8 @@ void CDlgFrameHigh::DispFdOffset()
 			myStc[8].SetText(str);
 		}
 
-		dOfsX = 1.0*pView->m_pDlgMenu02->m_dEngFdOffsetX;
-		dOfsY = pView->m_pDlgMenu02->m_dEngFdOffsetY;
+		dOfsX = 1.0*pView->m_dEngFdOffsetX;
+		dOfsY = pView->m_dEngFdOffsetY;
 		str.Format(_T("%.1f\r%.1f"), dOfsY, dOfsX);
 		if (str != m_sStc[3])
 		{

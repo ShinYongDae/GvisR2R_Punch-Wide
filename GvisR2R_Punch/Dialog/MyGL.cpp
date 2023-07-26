@@ -419,7 +419,7 @@ void CMyGL::Draw()
 	if(m_nCtrlId < 0)
 		return;
 
-	if(!pView->m_mgrProcedure->m_bDrawGL)
+	if(!pView->m_bDrawGL)
 		return;
 	
 	GVGLMakehDC(m_hDC,m_hRC);

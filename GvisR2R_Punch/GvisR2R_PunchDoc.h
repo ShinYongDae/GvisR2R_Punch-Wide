@@ -341,8 +341,8 @@ public:
 	CString GetMax(int nDlgId, int nCtrlId);
 
 	int GetLastShotMk();	// m_pDlgFrameHigh에서 얻거나 없으면, sPathOldFile폴더의 ReelMapDataDn.txt에서 _T("Info"), _T("Marked Shot") 찾음.
-	int GetLastShotUp();	// pView->m_pDlgFrameHigh->m_nAoiLastShot[0]
-	int GetLastShotDn();	// pView->m_pDlgFrameHigh->m_nAoiLastShot[1]
+	//int GetLastShotUp();	// pView->m_pDlgFrameHigh->m_nAoiLastShot[0]
+	//int GetLastShotDn();	// pView->m_pDlgFrameHigh->m_nAoiLastShot[1]
 
 	//BOOL GetPcrInfo(CString sPath, stModelInfo &stInfo);
 

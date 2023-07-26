@@ -3035,18 +3035,18 @@ void CVision::DispAxisPos(BOOL bForceWrite)
 
 	if(m_nIdx==0)
 	{
-		if(fabs(m_dEnc[AXIS_X0]-pView->m_mgrProcedure->m_dEnc[AXIS_X0])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_X0]-pView->m_dEnc[AXIS_X0])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_X0] = pView->m_mgrProcedure->m_dEnc[AXIS_X0];
+			m_dEnc[AXIS_X0] = pView->m_dEnc[AXIS_X0];
 			//sprintf(szText, "X0:%3.3f", m_dEnc[AXIS_X0]);
 			_stprintf(szText, TEXT("X0:%3.3f"), m_dEnc[AXIS_X0]);
 	 		//m_pMilDrawOverlay->DrawClear();
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, szText);
 			m_pMil->DrawText(szText, m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, M_COLOR_GREEN);
 		}
-		if(fabs(m_dEnc[AXIS_Y0]-pView->m_mgrProcedure->m_dEnc[AXIS_Y0])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_Y0]-pView->m_dEnc[AXIS_Y0])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_Y0] = pView->m_mgrProcedure->m_dEnc[AXIS_Y0];
+			m_dEnc[AXIS_Y0] = pView->m_dEnc[AXIS_Y0];
 			//sprintf(szText, "Y0:%3.3f", m_dEnc[AXIS_Y0]);
 			_stprintf(szText, TEXT("Y0:%3.3f"), m_dEnc[AXIS_Y0]);
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*1, szText);
@@ -3075,18 +3075,18 @@ void CVision::DispAxisPos(BOOL bForceWrite)
 	}
 	else if(m_nIdx==1)
 	{
-		if(fabs(m_dEnc[AXIS_X1]-pView->m_mgrProcedure->m_dEnc[AXIS_X1])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_X1]-pView->m_dEnc[AXIS_X1])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_X1] = pView->m_mgrProcedure->m_dEnc[AXIS_X1];
+			m_dEnc[AXIS_X1] = pView->m_dEnc[AXIS_X1];
 			//sprintf(szText, "X1:%3.3f", m_dEnc[AXIS_X1]);
 			_stprintf(szText, TEXT("X1:%3.3f"), m_dEnc[AXIS_X1]);
  			//m_pMilDrawOverlay->DrawClear();
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, szText);
 			m_pMil->DrawText(szText, m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*0, M_COLOR_GREEN);
 		}
-		if(fabs(m_dEnc[AXIS_Y1]-pView->m_mgrProcedure->m_dEnc[AXIS_Y1])>0.005 || bForceWrite)
+		if(fabs(m_dEnc[AXIS_Y1]-pView->m_dEnc[AXIS_Y1])>0.005 || bForceWrite)
 		{
-			m_dEnc[AXIS_Y1] = pView->m_mgrProcedure->m_dEnc[AXIS_Y1];
+			m_dEnc[AXIS_Y1] = pView->m_dEnc[AXIS_Y1];
 			//sprintf(szText, "Y1:%3.3f", m_dEnc[AXIS_Y1]);
 			_stprintf(szText, TEXT("Y1:%3.3f"), m_dEnc[AXIS_Y1]);
 			//m_pMilDrawOverlay->DrawText(m_ptDisplayAxisPosOffset.x, m_ptDisplayAxisPosOffset.y+m_nDisplayAxisPosLineHeight*1, szText);
@@ -3164,8 +3164,8 @@ double CVision::CalcCameraPixelSize()
 
 	if(m_nIdx==0)
 	{
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X0];
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y0];
+		dCurrX = pView->m_dEnc[AXIS_X0];
+		dCurrY = pView->m_dEnc[AXIS_Y0];
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
@@ -3193,8 +3193,8 @@ double CVision::CalcCameraPixelSize()
 	}
 	else if(m_nIdx==1)
 	{
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X1];
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y1];
+		dCurrX = pView->m_dEnc[AXIS_X1];
+		dCurrY = pView->m_dEnc[AXIS_Y1];
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
@@ -3398,8 +3398,8 @@ double CVision::CalcCameraPixelSize()
 	{
 		pTgtPos[1] = pView->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
 		pTgtPos[0] = pView->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X0];	// pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y0];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X0];	// pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y0];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
@@ -3429,8 +3429,8 @@ double CVision::CalcCameraPixelSize()
 	{
 		pTgtPos[1] = pView->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
 		pTgtPos[0] = pView->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X1];	// pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y1];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X1];	// pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y1];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
 			//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))

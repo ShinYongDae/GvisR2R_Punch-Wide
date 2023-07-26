@@ -20,7 +20,7 @@
 #define TIM_CHK_DONE_MK				301
 #define TIM_CHK_DONE_AOI			302
 #define TIM_CHK_DONE_MKAOI			303
-#define TIM_CHK_MREG				304
+//#define TIM_CHK_MREG				304
 #define TIM_SET_RC_RELATION			306
 #define TIM_SW_RC_RELATION			307
 #define TIM_SW_UC_RELATION			308

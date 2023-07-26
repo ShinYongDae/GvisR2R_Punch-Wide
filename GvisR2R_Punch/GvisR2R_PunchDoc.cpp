@@ -7044,8 +7044,9 @@ int CGvisR2R_PunchDoc::GetLastSerial()
 int CGvisR2R_PunchDoc::GetLastShotMk()	// m_pDlgFrameHigh에서 얻거나 없으면, sPathOldFile폴더의 ReelMapDataDn.txt에서 _T("Info"), _T("Marked Shot") 찾음.
 {
 	int nLastShot = 0;
-	if (pView->m_pDlgFrameHigh)
-		nLastShot = pView->m_pDlgFrameHigh->m_nMkLastShot;
+	nLastShot = pView->GetLastShotMk();
+	//if (pView->m_pDlgFrameHigh)
+	//	nLastShot = pView->m_pDlgFrameHigh->m_nMkLastShot;
 
 	BOOL bDualTest = WorkingInfo.LastJob.bDualTest;
 	if (bDualTest)
@@ -7121,27 +7122,27 @@ int CGvisR2R_PunchDoc::GetLastShotMk()	// m_pDlgFrameHigh에서 얻거나 없으면, sPa
 }
 
 
-int CGvisR2R_PunchDoc::GetLastShotUp()
-{
-	int nLastShot = 0;
-	if (pView->m_pDlgFrameHigh)
-		nLastShot = pView->m_pDlgFrameHigh->m_nAoiLastShot[0];
-
-	return (nLastShot);
-}
-
-int CGvisR2R_PunchDoc::GetLastShotDn()
-{
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-	if (!bDualTest)
-		return 0;
-
-	int nLastShot = 0;
-	if (pView->m_pDlgFrameHigh)
-		nLastShot = pView->m_pDlgFrameHigh->m_nAoiLastShot[1];
-
-	return (nLastShot);
-}
+//int CGvisR2R_PunchDoc::GetLastShotUp()
+//{
+//	int nLastShot = 0;
+//	if (pView->m_pDlgFrameHigh)
+//		nLastShot = pView->m_pDlgFrameHigh->m_nAoiLastShot[0];
+//
+//	return (nLastShot);
+//}
+//
+//int CGvisR2R_PunchDoc::GetLastShotDn()
+//{
+//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+//	if (!bDualTest)
+//		return 0;
+//
+//	int nLastShot = 0;
+//	if (pView->m_pDlgFrameHigh)
+//		nLastShot = pView->m_pDlgFrameHigh->m_nAoiLastShot[1];
+//
+//	return (nLastShot);
+//}
 
 int CGvisR2R_PunchDoc::GetLotSerial()
 {
@@ -9873,6 +9874,7 @@ void CGvisR2R_PunchDoc::SetCurrentInfoSignal(int nIdxSig, BOOL bOn)
 
 BOOL CGvisR2R_PunchDoc::GetCurrentInfoSignal(int nIdxSig)
 {
+#ifndef TEST_MODE
 	TCHAR szData[200];
 	CString sData, sIdx, sPath = WorkingInfo.System.sPathEngSignalInfo;
 
@@ -9882,7 +9884,7 @@ BOOL CGvisR2R_PunchDoc::GetCurrentInfoSignal(int nIdxSig)
 	sIdx.Format(_T("%d"), nIdxSig);
 	if (0 < ::GetPrivateProfileString(_T("Signal"), sIdx, NULL, szData, sizeof(szData), sPath))
 		return (_ttoi(szData) > 0 ? TRUE : FALSE);
-
+#endif
 	return FALSE;
 }
 

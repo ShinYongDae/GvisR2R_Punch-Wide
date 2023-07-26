@@ -7062,7 +7062,7 @@ BOOL CManagerReelmap::ChkYield() //(double &dTotLmt, double &dPrtLmt, double &dR
 			pView->Stop();
 			sMsg.Format(_T("일시정지 - Failed ChkYield()."));
 			pView->MsgBox(sMsg);
-			pView->TowerLamp(RGB_RED, TRUE);
+			//pView->TowerLamp(RGB_RED, TRUE);
 			pView->Buzzer(TRUE, 0);
 			return FALSE;
 		}
@@ -7076,7 +7076,7 @@ BOOL CManagerReelmap::ChkYield() //(double &dTotLmt, double &dPrtLmt, double &dR
 			pView->Stop();
 			sMsg.Format(_T("일시정지 - Failed ChkYield()."));
 			pView->MsgBox(sMsg);
-			pView->TowerLamp(RGB_RED, TRUE);
+			//pView->TowerLamp(RGB_RED, TRUE);
 			pView->Buzzer(TRUE, 0);
 			return FALSE;
 		}
@@ -7096,7 +7096,7 @@ BOOL CManagerReelmap::ChkYield() //(double &dTotLmt, double &dPrtLmt, double &dR
 			pView->Stop();
 			sMsg.Format(_T("일시정지 - 전체 수율 제한범위 : %.1f 미달 ( %.1f )"), dTotLmt, dRatio);
 			pView->MsgBox(sMsg);
-			pView->TowerLamp(RGB_RED, TRUE);
+			//pView->TowerLamp(RGB_RED, TRUE);
 			pView->Buzzer(TRUE, 0);
 			return FALSE;
 		}
@@ -7118,7 +7118,7 @@ BOOL CManagerReelmap::ChkYield() //(double &dTotLmt, double &dPrtLmt, double &dR
 					pView->Stop();
 					sMsg.Format(_T("일시정지 - 구간 수율 제한범위 : %.1f 미달 ( %.1f )"), dPrtLmt, dRatio);
 					pView->MsgBox(sMsg);
-					pView->TowerLamp(RGB_RED, TRUE);
+					//pView->TowerLamp(RGB_RED, TRUE);
 					pView->Buzzer(TRUE, 0);
 					return FALSE;
 				}
@@ -7135,7 +7135,7 @@ BOOL CManagerReelmap::ChkYield() //(double &dTotLmt, double &dPrtLmt, double &dR
 					pView->Stop();
 					sMsg.Format(_T("일시정지 - 구간 수율 제한범위 : %.1f 미달 ( %.1f )"), dPrtLmt, dRatio);
 					pView->MsgBox(sMsg);
-					pView->TowerLamp(RGB_RED, TRUE);
+					//pView->TowerLamp(RGB_RED, TRUE);
 					pView->Buzzer(TRUE, 0);
 					return FALSE;
 				}

@@ -1877,7 +1877,7 @@ void CDlgMenu06::ShiftDefInfoDn()
 
 void CDlgMenu06::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 {
-	if(!pView->m_mgrProcedure->m_bDrawGL)
+	if(!pView->m_bDrawGL)
 		return;
 	if(!pView->m_mgrReelmap->m_pReelMapInner)
 	{
@@ -1930,7 +1930,7 @@ void CDlgMenu06::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 	if(!bDualTest)
 		return;
 
-	if(!pView->m_mgrProcedure->m_bDrawGL)
+	if(!pView->m_bDrawGL)
 		return;
 	if(!pView->m_mgrReelmap->m_pReelMapInner)
 	{

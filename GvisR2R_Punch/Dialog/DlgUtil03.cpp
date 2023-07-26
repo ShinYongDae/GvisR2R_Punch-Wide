@@ -517,8 +517,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
 
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -539,8 +539,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
 
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -561,8 +561,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
 
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -580,8 +580,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
 
-		dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -818,8 +818,8 @@ void CDlgUtil03::OnBtnAllMkTest()
 // 	double pTgtPos[2];
 // 	pTgtPos[AXIS_Y] = _tstof(pDoc->WorkingInfo.Motion.sStPosY);
 // 	pTgtPos[AXIS_X] = _tstof(pDoc->WorkingInfo.Motion.sStPosX);
-// 	double dCurrX = pView->m_mgrProcedure->m_dEnc[AXIS_X];
-// 	double dCurrY = pView->m_mgrProcedure->m_dEnc[AXIS_Y];
+// 	double dCurrX = pView->m_dEnc[AXIS_X];
+// 	double dCurrY = pView->m_dEnc[AXIS_Y];
 // 
 // 	double fLen, fVel, fAcc, fJerk;
 // 	fLen = sqrt( ((pTgtPos[AXIS_X] - dCurrX) * (pTgtPos[AXIS_X] - dCurrX)) + ((pTgtPos[AXIS_Y] - dCurrY) * (pTgtPos[AXIS_Y] - dCurrY)) );

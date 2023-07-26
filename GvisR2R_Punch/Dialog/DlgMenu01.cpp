@@ -1691,7 +1691,7 @@ void CDlgMenu01::ShiftDefInfoDn()
 
 void CDlgMenu01::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 {
-	if(!pView->m_mgrProcedure->m_bDrawGL)
+	if(!pView->m_bDrawGL)
 		return;
 	if(!pView->m_mgrReelmap->m_pReelMap)
 	{
@@ -1744,7 +1744,7 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 	if(!bDualTest)
 		return;
 
-	if(!pView->m_mgrProcedure->m_bDrawGL)
+	if(!pView->m_bDrawGL)
 		return;
 	if(!pView->m_mgrReelmap->m_pReelMap)
 	{
@@ -4133,6 +4133,7 @@ BOOL CDlgMenu01::IsLastProc()
 	return m_bLastProc;
 }
 
+
 void CDlgMenu01::OnChkEjectBuffer() 
 {
 	// TODO: Add your control notification handler code here
@@ -6193,7 +6194,7 @@ void CDlgMenu01::DispReelmapDisp()
 	{
 		pView->m_mgrReelmap->m_pReelMapDisp->Disp(m_nSerial);
 
-		pView->m_mgrProcedure->m_bDrawGL = TRUE;
+		pView->m_bDrawGL = TRUE;
 		InitGL();
 
 		SetPnlNum();
