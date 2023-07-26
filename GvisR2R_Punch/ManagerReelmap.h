@@ -19,21 +19,17 @@ class CManagerReelmap : public CWnd
 	CReelMap* m_pReelMap;
 	CReelMap *m_pReelMapUp, *m_pReelMapDn, *m_pReelMapAllUp, *m_pReelMapAllDn;
 	CDataMarking* m_pPcr[MAX_PCR][MAX_PCR_PNL];	//릴맵화면표시를 위한 데이터	// [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-	//CCamMaster m_Master[2];
 	CYield m_Yield[3]; // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-All
 	CString *pMkInfo;
 	CMyFile *m_pFile;
 
 	// 내층 작업한 데이터구조  ====================================================================
 	CCamMaster m_MasterInner[2];
-
 	CReelMap* m_pReelMapInner;
 	CReelMap *m_pReelMapInnerUp, *m_pReelMapInnerDn, *m_pReelMapInnerAllUp, *m_pReelMapInnerAllDn;
 	CDataMarking* m_pPcrInner[MAX_PCR][MAX_PCR_PNL];	//릴맵화면표시를 위한 데이터	// [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-
 	CReelMap* m_pReelMapIts;
 	CDataMarking* m_pPcrIts[MAX_PCR_PNL];				//릴맵화면표시를 위한 데이터	// 내외층 merging
-
 	//=============================================================================================
 
 	// For ITS
@@ -44,9 +40,6 @@ class CManagerReelmap : public CWnd
 	CString m_sEngLayerDn;
 	int m_nWritedItsSerial;
 
-	//int m_nAoiCamInfoStrPcs[2]; // [0] : Up, [1] : Dn
-	//BOOL m_bCamChged;
-
 	void Init();
 	void InitVal();
 	void InitMstData();
@@ -54,33 +47,6 @@ class CManagerReelmap : public CWnd
 public:
 	CManagerReelmap(CWnd* pParent = NULL);
 	virtual ~CManagerReelmap();
-
-	//BOOL m_bBufEmpty[2];	// [0]: Up, [1]: Dn
-	//BOOL m_bBufEmptyF[2];	// [0]: Up, [1]: Dn
-	//BOOL m_bChkBufIdx[2];	// [0]: Up, [1]: Dn
-	//int m_nChkBufIdx[2];	// [0]: Up, [1]: Dn
-
-	//int m_nShareUpS, m_nShareUpSprev;
-	//int m_nShareUpSerial[2]; // [nCam]
-	//int m_nShareDnS, m_nShareDnSprev;
-	//int m_nShareDnSerial[2]; // [nCam]
-	//int m_nShareUpCnt;
-	//int m_nShareDnCnt;
-
-	//int m_nBufUpSerial[2];	// [nCam]
-	//int m_nBufDnSerial[2];	// [nCam]
-	//int m_nBufUpCnt;
-	//int m_nBufDnCnt;
-	//BOOL m_bIsBuf[2];		// [0]: AOI-Up , [1]: AOI-Dn
-
-	//CString m_sShare[2], m_sBuf[2]; // [0]: AOI-Up , [1]: AOI-Dn
-	//int		m_pBufSerial[2][100], m_nBufTot[2]; // [0]: AOI-Up , [1]: AOI-Dn
-	//__int64 m_nBufSerialSorting[2][100]; // [0]: AOI-Up , [1]: AOI-Dn
-	//int		m_nBufSerial[2][2]; // [0]: AOI-Up , [1]: AOI-Dn // [0]: Cam0, [1]:Cam1
-
-	//BOOL m_bUpdateYield, m_bUpdateYieldOnRmap;
-	//BOOL m_bTHREAD_UPDATAE_YIELD[2];		// [0] : Cam0, [1] : Cam1
-	//int	m_nSerialTHREAD_UPDATAE_YIELD[2];	// [0] : Cam0, [1] : Cam1
 
 	CString GetMkInfo(int nSerial, int nMkPcs); // return Cam0 : "Serial_Strip_Col_Row"
 	CfPoint GetMkPnt(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
@@ -149,19 +115,9 @@ public:
 	int GetIdxPcrBufUp(int nSerial);
 	int GetIdxPcrBufDn(int nSerial);
 
-	//BOOL IsFixPcs();
-	//BOOL IsFixPcsUp();
-	//BOOL IsFixPcsDn();
 	BOOL IsFixPcsUp(int nSerial);
 	BOOL IsFixPcsDn(int nSerial);
-	//void ClrFixPcs();
-	//void ClrFixPcs(int nCol, int nRow);
 	void SetFixPcs(int nSerial);
-
-	//void SetFixPcs(int nSerial, int nCol, int nRow); // nShot : 0 ~ 
-	//BOOL IsFixPcs(int nSerial, int &Col, int &Row);
-	//BOOL IsFixPcs(int nSerial, int* pCol, int* pRow, int &nTot, BOOL &bCont);
-	//int GetRptFixPcs(int nCol, int nRow);
 
 	BOOL GetPcrInfo(CString sPath, stModelInfo &stInfo);
 
@@ -175,12 +131,6 @@ public:
 	void DelSharePcr();
 	void DelSharePcrUp();
 	void DelSharePcrDn();
-	//BOOL MakeMkDir(stModelInfo stInfo);
-	//BOOL MakeMkDir(CString sModel, CString sLot, CString sLayer);
-	//BOOL MakeMkDir();
-	//BOOL MakeMkDirUp();
-	//BOOL MakeMkDirDn();
-	//BOOL Shift2Mk(int nSerial);
 
 	void UpdateYieldOnThread(int nSerial);
 	void UpdateYield(int nSerial);
@@ -209,7 +159,6 @@ public:
 
 	int SearchFirstShotOnIts();
 	BOOL GetItsSerialInfo(int nItsSerial, BOOL &bDualTest, CString &sLot, CString &sLayerUp, CString &sLayerDn, int nOption = 0);		// 내층에서의 ITS 시리얼의 정보
-	//BOOL SetItsSerialInfo(int nItsSerial);																							// 내층에서의 ITS 시리얼의 정보
 	int GetLastItsSerial();																											// 내외층 머징된 릴맵 데이타의 Last 시리얼
 	CString GetItsFolderPath();
 	CString GetItsTargetFolderPath();
@@ -227,12 +176,7 @@ public:
 
 	
 	// ITS
-	//BOOL m_bTHREAD_UPDATE_REELMAP_INNER_UP, m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP;
-	//BOOL m_bTHREAD_UPDATE_REELMAP_INNER_DN, m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN;
-	//BOOL m_bTHREAD_UPDATE_REELMAP_ITS;
-
 	BOOL WriteReelmapIts();
-	void SetInnerPathAtBuf();
 	void SetInnerPathAtBufUp();
 	void SetInnerPathAtBufDn();
 
@@ -254,32 +198,18 @@ public:
 	int GetTotDefPcsUpIts(int nSerial);
 	int GetTotDefPcsDnIts(int nSerial);
 
-	//int GetTotDefPcs0Its(int nSerial);
-	//int GetTotDefPcsUp0Its(int nSerial);
-	//int GetTotDefPcsDn0Its(int nSerial);
-
-	//int GetTotDefPcs1Its(int nSerial);
-	//int GetTotDefPcsUp1Its(int nSerial);
-	//int GetTotDefPcsDn1Its(int nSerial);
-
 	CfPoint GetMkPntIts(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
-	//CfPoint GetMkPnt0Its(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
-	//CfPoint GetMkPnt1Its(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
 
 	int GetMkStripIdxIts(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
-	//int GetMkStripIdx0Its(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
-	//int GetMkStripIdx1Its(int nSerial, int nMkPcs); // 0 : Fail , 1~4 : Strip Idx
 
 
 	BOOL InitReelmapInner();
 	BOOL InitReelmapInnerUp();
 	BOOL InitReelmapInnerDn();
 	void SetReelmapInner(int nDir = ROT_NONE);
-	//CString GetItsPath(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 	CString GetItsTargetPath(int nSerial, int nLayer);	// RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 	int GetItsDefCode(int nDefCode);				// return to [Sapp3Code]
 	BOOL MakeItsDir(CString sModel, CString sLot, CString sLayer);
-	//void WriteChangedModel();
 
 	int GetAoiUpCamMstInfo();
 	int GetAoiDnCamMstInfo();
@@ -287,12 +217,10 @@ public:
 	BOOL ReloadReelmapInner();
 	BOOL ReloadReelmapInner(int nSerial);
 	BOOL IsDoneReloadReelmapInner(int& nProc);
-	//void UpdateRstInner();
 	void OpenReelmapInner();
 	void OpenReelmapInnerUp();
 	void OpenReelmapInnerDn();
 
-	//int m_nReloadReelmapSerial;
 	void ReloadReelmapUp();
 	void ReloadReelmapAllUp();
 	void ReloadReelmapDn();
@@ -313,23 +241,6 @@ public:
 	int GetTotDefPcsUp(int nSerial);
 	int GetTotDefPcsDn(int nSerial);
 
-	//BOOL m_bTHREAD_UPDATE_REELMAP_UP, m_bTHREAD_UPDATE_REELMAP_ALLUP;
-	//BOOL m_bTHREAD_UPDATE_REELMAP_DN, m_bTHREAD_UPDATE_REELMAP_ALLDN;
-	//BOOL m_bTHREAD_REELMAP_YIELD_UP, m_bTHREAD_REELMAP_YIELD_ALLUP;
-	//BOOL m_bTHREAD_REELMAP_YIELD_DN, m_bTHREAD_REELMAP_YIELD_ALLDN;
-	//BOOL m_bTHREAD_RELOAD_RST_UP, m_bTHREAD_RELOAD_RST_ALLUP;
-	//BOOL m_bTHREAD_RELOAD_RST_DN, m_bTHREAD_RELOAD_RST_ALLDN;
-	//BOOL m_bTHREAD_RELOAD_RST_UP_INNER, m_bTHREAD_RELOAD_RST_ALLUP_INNER;
-	//BOOL m_bTHREAD_RELOAD_RST_DN_INNER, m_bTHREAD_RELOAD_RST_ALLDN_INNER;
-	//BOOL m_bTHREAD_RELOAD_RST_ITS, m_bTHREAD_REELMAP_YIELD_ITS;
-
-	//BOOL m_bTHREAD_UPDATE_YIELD_UP, m_bTHREAD_UPDATE_YIELD_ALLUP;
-	//BOOL m_bTHREAD_UPDATE_YIELD_DN, m_bTHREAD_UPDATE_YIELD_ALLDN;
-	//BOOL m_bTHREAD_UPDATE_YIELD_ITS;
-	//BOOL m_bTHREAD_UPDATE_YIELD_INNER_UP, m_bTHREAD_UPDATE_YIELD_INNER_ALLUP;
-	//BOOL m_bTHREAD_UPDATE_YIELD_INNER_DN, m_bTHREAD_UPDATE_YIELD_INNER_ALLDN;
-	//int	m_nSnTHREAD_UPDATAE_YIELD;
-
 	BOOL ChkYield();// (double &dTotLmt, double &dPrtLmt, double &dRatio);
 	void UpdateReelmapYieldUp();
 	void UpdateReelmapYieldAllUp();
@@ -337,37 +248,12 @@ public:
 	void UpdateReelmapYieldAllDn();
 	void UpdateReelmapYieldIts();
 
-	//BOOL ChkVsShare(int &nSerial);
-	//BOOL ChkVsShareUp(int &nSerial);
-	//BOOL ChkVsShareDn(int &nSerial);
-	//void ChkShare();
-	//void ChkShareUp();
-	//void ChkShareDn();
-	//BOOL ChkShare(int &nSerial);
-	//BOOL ChkShareUp(int &nSerial);
-	//BOOL ChkShareDn(int &nSerial);
-	//BOOL ChkShareIdx(int *pBufSerial, int nBufTot, int nShareSerial);
-
-	//BOOL ChkBufUp(int* pSerial, int &nTot);
-	//BOOL ChkBufDn(int* pSerial, int &nTot);
-	//BOOL ChkBufIdx(int* pSerial, int nTot = 0);
-
-	//BOOL SortingInUp(CString sPath, int nIndex);
-	//BOOL SortingOutUp(int* pSerial, int nTot);
-	//void SwapUp(__int64 *num1, __int64 *num2);
-	//BOOL SortingInDn(CString sPath, int nIndex);
-	//BOOL SortingOutDn(int* pSerial, int nTot);
-	//void SwapDn(__int64 *num1, __int64 *num2);
-
-	//int GetTotDefPcsIts(int nSerial);
-
 	// [CamMaster]
 	BOOL LoadMstInfo();
 	void GetAlignPos(CfPoint &Pos1, CfPoint &Pos2);
 
 	// [Punching]
 	void ResetMkInfo(int nAoi); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-
 
 	// [Thread]
 	DWORD m_dwThreadTick[MAX_THREAD_MGR_RMAP];

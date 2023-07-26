@@ -37,22 +37,15 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bBufEmpty[1] = FALSE;
 
 	m_nDebugStep = 0;
-	//m_nWatiDispMain = 0;
 	m_nNewLot = 0;
-
-	//m_bStopFromThread = FALSE;
-	//m_bBuzzerFromThread = FALSE;
 
 	m_nRtnMyMsgBoxIdx = -1;
 	m_bDispMyMsgBox = FALSE;
-	//m_bDispMain = FALSE;
 	m_bProbDn[0] = m_bProbDn[1] = FALSE;
 
 	m_nSelRmap = RMAP_UP;
 	m_nSelRmapInner = RMAP_INNER_UP;
 
-	//m_bTIM_INIT_VIEW = FALSE;
-	//m_nStepInitView = 0;
 	m_nLotEndSerial = 0;
 
 	m_nDummy[0] = 0;
@@ -65,33 +58,10 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_dElecChkVal = 0.0;
 
 	m_bInit = FALSE;
-	//m_bDispMsg = FALSE;
-	//for (int kk = 0; kk < 10; kk++)
-	//{
-	//	pView->m_bDispMsgDoAuto[kk] = FALSE;
-	//	pView->m_nStepDispMsg[kk] = 0;
-	//}
 	m_sFixMsg[0] = _T("");
 	m_sFixMsg[1] = _T("");
 
-	//m_bWaitClrDispMsg = FALSE;
 	m_bStopFeeding = FALSE;
-	//m_nCntTowerWinker = 0;
-	//m_bTimTowerWinker = FALSE;
-	//m_bTimBtnWinker = FALSE;
-	//m_bTimBuzzerWarn = FALSE;
-	//m_bTowerWinker[0] = FALSE; // R
-	//m_bTowerWinker[1] = FALSE; // G
-	//m_bTowerWinker[2] = FALSE; // Y
-	//m_bBtnWinker[0] = FALSE; // Ready
-	//m_bBtnWinker[1] = FALSE; // Reset
-	//m_bBtnWinker[2] = FALSE; // Run
-	//m_bBtnWinker[3] = FALSE; // Stop
-	//for (int nI = 0; nI < 4; nI++)
-	//{
-	//	m_nCntBtnWinker[nI] = 0;
-	//	m_nDlyWinker[nI] = 5;
-	//}
 
 	m_bAoiFdWriteF[0] = FALSE;
 	m_bAoiFdWriteF[1] = FALSE;
@@ -103,11 +73,7 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bEngTest = FALSE;
 	m_bEngTestF = FALSE;
 
-	//m_bTIM_MPE_IO = FALSE;
-	//m_bTIM_DISP_STATUS = FALSE;
-	//m_bTIM_INIT_VIEW = FALSE;
 	m_bTIM_CHK_DONE_READY = FALSE;
-
 	
 	m_nStepAuto = 0;
 	m_nPrevStepAuto = 0;
@@ -116,8 +82,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_nStepMk[1] = 0;
 	m_sTick = _T("");
 	m_sDispTime = _T("");
-
-	//m_bChkMpeIoOut = FALSE;
 
 	m_bMkTmpStop = FALSE;
 	m_bAoiLdRun = TRUE;
@@ -156,8 +120,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bThread[5] = FALSE;
 	m_dwThreadTick[5] = 0;
 
-
-	//m_bDestroyedView = FALSE;
 	m_bContEngraveF = FALSE;
 
 	m_nSaveMk0Img = 0;
@@ -167,19 +129,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bInitAuto = TRUE;
 	m_bInitAutoLoadMstInfo = FALSE;
 
-	//m_bLoadMstInfo = FALSE;
-	//m_bLoadMstInfoF = FALSE;
-
-	//m_sGet2dCodeLot = _T("");
-	//m_nGet2dCodeSerial = 0;
-
-	//m_bSetSig = FALSE;
-	//m_bSetSigF = FALSE;
-	//m_bSetData = FALSE;
-	//m_bSetDataF = FALSE;
-
-	//m_bTIM_START_UPDATE = FALSE;
-	//m_bEscape = FALSE;
 	m_bSerialDecrese = FALSE;
 
 	m_bTHREAD_MK[0] = FALSE;
@@ -197,29 +146,18 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bManual = FALSE;
 	m_bOneCycle = FALSE;
 
-	//m_bSwRun = FALSE; m_bSwRunF = FALSE;
-	//m_bSwStop = FALSE; m_bSwStopF = FALSE;
-	//m_bSwReset = FALSE; m_bSwResetF = FALSE;
-	//m_bSwReady = FALSE; m_bSwReadyF = FALSE;
-
-	//m_bSwStopNow = FALSE;
-
 	for (int nAxis = 0; nAxis < MAX_AXIS; nAxis++)
 		m_dEnc[nAxis] = 0.0;
 
 	m_bNewModel = FALSE;
 	m_dTotVel = 0.0; m_dPartVel = 0.0;
-	//m_bTIM_CHK_TEMP_STOP = FALSE;
-	//m_bTIM_SAFTY_STOP = FALSE;
 	m_bTIM_CAMMASTER_UPDATE = FALSE;
 	m_sMyMsg = _T("");
 	m_nTypeMyMsg = IDOK;
 
 	m_dwLotSt = 0; m_dwLotEd = 0;
-
 	m_lFuncId = 0;
 
-	//m_bDrawGL = TRUE;
 	m_bCont = FALSE;
 	m_bCam = FALSE;
 	m_bReview = FALSE;
@@ -333,8 +271,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bAoiFdWriteF[0] = FALSE;
 	m_bAoiFdWriteF[1] = FALSE;
 
-	//m_bCycleStop = FALSE;
-
 	for (int a = 0; a < 2; a++)
 	{
 		for (int b = 0; b < 4; b++)
@@ -344,25 +280,18 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 		}
 	}
 
-	//pView->m_sDispMain = _T("");
-
 	m_bReMk = FALSE;
-
 	m_bWaitPcr[0] = FALSE;
 	m_bWaitPcr[1] = FALSE;
 
 	m_bShowMyMsg = FALSE;
 	m_bContDiffLot = FALSE;
-
 	m_nStepElecChk = 0;
-	// 	m_nMsgShiftX = 0;
-	// 	m_nMsgShiftY = 0;
 
 	for (int nAns = 0; nAns < 10; nAns++)
 		m_bAnswer[nAns] = FALSE;
 
 	m_bChkLightErr = FALSE;
-
 
 	TCHAR szData[200];
 	CString sVal, sPath = PATH_WORKING_INFO;
@@ -383,9 +312,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 
 CManagerProcedure::~CManagerProcedure()
 {
-	//m_bTIM_MPE_IO = FALSE;
-	//m_bTIM_DISP_STATUS = FALSE;
-	//m_bTIM_INIT_VIEW = FALSE;
 	m_bTIM_CHK_DONE_READY = FALSE;
 	Sleep(100);
 
@@ -398,9 +324,7 @@ BEGIN_MESSAGE_MAP(CManagerProcedure, CWnd)
 END_MESSAGE_MAP()
 
 
-
 // CManagerProcedure 메시지 처리기입니다.
-
 
 void CManagerProcedure::OnTimer(UINT_PTR nIDEvent)
 {
@@ -1089,7 +1013,6 @@ BOOL CManagerProcedure::ChkShareDn(int &nSerial)
 
 	return FALSE;
 }
-
 
 void CManagerProcedure::ResetPriority()
 {
@@ -2343,11 +2266,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	int nCam, nPoint, kk, a, b;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	//for (kk = 0; kk < 10; kk++)
-	//{
-	//	pView->m_bDispMsgDoAuto[kk] = FALSE;
-	//	pView->m_nStepDispMsg[kk] = 0;
-	//}
 	m_sFixMsg[0] = _T("");
 	m_sFixMsg[1] = _T("");
 
@@ -2364,8 +2282,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	m_bAoiLdRunF = FALSE;
 	m_bNewModel = FALSE;
 	m_nLotEndSerial = 0;
-	//if (m_pDlgMenu01)
-	//	m_pDlgMenu01->DispLotEndSerial(0);
 	m_bCam = FALSE;
 	m_bReview = FALSE;
 
@@ -2411,21 +2327,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	m_nBufDnSerial[1] = 0;
 	m_nBufDnCnt = 0;
 
-	//for (nCam = 0; nCam < 2; nCam++)
-	//{
-	//	for (nPoint = 0; nPoint < 4; nPoint++)
-	//	{
-	//		pView->m_dMkFdOffsetX[nCam][nPoint] = 0.0;
-	//		pView->m_dMkFdOffsetY[nCam][nPoint] = 0.0;
-	//	}
-	//}
-
-
-	//pView->m_dAoiUpFdOffsetX = 0.0;
-	//pView->m_dAoiUpFdOffsetY = 0.0;
-	//pView->m_dAoiDnFdOffsetX = 0.0;
-	//pView->m_dAoiDnFdOffsetY = 0.0;
-
 	m_bReAlign[0][0] = FALSE;	// [nCam][nPos]
 	m_bReAlign[0][1] = FALSE;	// [nCam][nPos]
 	m_bReAlign[0][2] = FALSE;	// [nCam][nPos]
@@ -2469,7 +2370,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	m_nPrevTotMk[1] = 0;
 	m_nPrevCurMk[1] = 0;
 
-
 	m_bMkSt = FALSE;
 	::WritePrivateProfileString(_T("Last Job"), _T("MkSt"), _T("0"), PATH_WORKING_INFO);
 	m_bMkStSw = FALSE;
@@ -2494,10 +2394,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 
 	m_nLastProcAuto = 0;
 
-	//pDoc->m_sAlmMsg = _T("");
-	//pDoc->m_sIsAlmMsg = _T("");
-	//pDoc->m_sPrevAlmMsg = _T("");
-
 	m_dwCycSt = 0;
 	m_sNewLotUp = _T("");
 	m_sNewLotDn = _T("");
@@ -2509,8 +2405,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	m_nStepTHREAD_DISP_DEF_INNER = 0;
 	m_bTHREAD_DISP_DEF_INNER = FALSE;		// DispDefImg Stop
 
-	//pDoc->SetMkMenu01(_T("Signal"), _T("DispDefImg"), _T("0"));
-
 	for (a = 0; a < 2; a++)
 	{
 		for (b = 0; b < 4; b++)
@@ -2520,49 +2414,15 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 		}
 	}
 
-	//pView->MpeWrite(_T("MB440100"), 0); // PLC 운전준비 완료(PC가 확인하고 Reset시킴.)
-	//pView->MpeWrite(_T("MB440110"), 0); // 마킹시작(PC가 확인하고 Reset시킴.)-20141029
-	//pView->MpeWrite(_T("MB440150"), 0); // 마킹부 마킹중 ON (PC가 ON, OFF)
-	//pView->MpeWrite(_T("MB440170"), 0); // 마킹완료(PLC가 확인하고 Reset시킴.)-20141029
-
-	//InitAutoEngSignal();
-
-	//MoveInitPos1();
-	//Sleep(30);
-	//MoveInitPos0();
-
-	//InitIoWrite();
-	//SetTest(FALSE);	// 검사부 상/하 검사 시작 (Off)
-	//if (m_pDlgMenu01)
-	//{
-	//	m_pDlgMenu01->m_bLastProc = FALSE;
-
-	//	if (MODE_INNER != pDoc->GetTestMode())
-	//		m_pDlgMenu01->m_bLastProcFromUp = TRUE;
-	//	else
-	//		m_pDlgMenu01->m_bLastProcFromEng = TRUE;
-
-	//	m_pDlgMenu01->ResetSerial();
-	//	m_pDlgMenu01->ResetLastProc();
-	//}
-
-
-
 	InitVal();
 
-	//pDoc->m_nEjectBufferLastShot = -1;
 	m_bSerialDecrese = FALSE;
 	m_bStopF_Verify = TRUE;
 	m_bInitAuto = TRUE;
 	m_bInitAutoLoadMstInfo = TRUE;
 
-	//pDoc->m_bUpdateForNewJob[0] = FALSE;
-	//pDoc->m_bUpdateForNewJob[1] = FALSE;
-
 	if (bInit) // 이어가기가 아닌경우.
 	{
-		//pView->MpeWrite(_T("MB440187"), 0); // 이어가기(PC가 On시키고, PLC가 확인하고 Off시킴)-20141121
-
 		m_nRstNum = 0;
 		m_bCont = FALSE;
 		m_dTotVel = 0.0;
@@ -2576,36 +2436,8 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 		pDoc->m_bNewLotBuf[0] = FALSE;
 		pDoc->m_bNewLotBuf[1] = FALSE;
 		pDoc->m_bDoneChgLot = FALSE;
-
-		//m_pDlgFrameHigh->m_nMkLastShot = 0;
-		//m_pDlgFrameHigh->m_nAoiLastShot[0] = 0;
-		//m_pDlgFrameHigh->m_nAoiLastShot[1] = 0;
-
-		//if (m_pDlgMenu01)
-		//	m_pDlgMenu01->ResetLotTime();
-
-		//ClrMkInfo(); // 20220420 - Happen Release Trouble
-
-		//if (m_pDlgFrameHigh)
-		//{
-		//	m_pDlgFrameHigh->SetMkLastShot(0);
-		//	m_pDlgFrameHigh->SetAoiLastShot(0, 0);
-		//	m_pDlgFrameHigh->SetAoiLastShot(1, 0);
-		//	m_pDlgFrameHigh->SetEngraveLastShot(0);
-		//}
 	}
-//	else
-//	{
-//		pView->MpeWrite(_T("MB440187"), 1); // 이어가기(PC가 On시키고, PLC가 확인하고 Off시킴)-20141121
-//		m_mgrReelmap->ClrFixPcs();
-//
-//#ifndef TEST_MODE
-//		m_mgrReelmap->ReloadReelmap();
-//		UpdateRst();
-//#endif
-//		DispLotStTime();
-//		m_mgrReelmap->RestoreReelmap();
-//	}
+
 }
 
 void CManagerProcedure::Stop()
@@ -3062,7 +2894,6 @@ void CManagerProcedure::SetAoiDummyShot(int nAoi, int nDummy)
 int CManagerProcedure::GetAoiUpDummyShot()
 {
 	int nDummy = 0;
-	//char szData[200];
 	TCHAR szData[200];
 	CString sPath = pDoc->WorkingInfo.System.sPathAoiUpCurrInfo;
 	if (0 < ::GetPrivateProfileString(_T("Dummy"), _T("Shot"), NULL, szData, sizeof(szData), sPath))
@@ -3076,7 +2907,6 @@ int CManagerProcedure::GetAoiUpDummyShot()
 int CManagerProcedure::GetAoiDnDummyShot()
 {
 	int nDummy = 0;
-	//char szData[200];
 	TCHAR szData[200];
 	CString sPath = pDoc->WorkingInfo.System.sPathAoiDnCurrInfo;
 	if (0 < ::GetPrivateProfileString(_T("Dummy"), _T("Shot"), NULL, szData, sizeof(szData), sPath))
@@ -3090,7 +2920,6 @@ int CManagerProcedure::GetAoiDnDummyShot()
 int CManagerProcedure::GetAoiUpSerial()
 {
 	int nSerial = 0;
-	//char szData[200];
 	TCHAR szData[200];
 	CString sPath = pDoc->WorkingInfo.System.sPathAoiUpCurrInfo;
 	if (0 < ::GetPrivateProfileString(_T("Infomation"), _T("Current Serial"), NULL, szData, sizeof(szData), sPath))
@@ -3106,7 +2935,6 @@ int CManagerProcedure::GetAoiUpSerial()
 BOOL CManagerProcedure::GetAoiUpVsStatus()
 {
 	BOOL bVsStatus = FALSE;
-	//char szData[200];
 	TCHAR szData[200];
 	CString sPath = pDoc->WorkingInfo.System.sPathAoiUpCurrInfo;
 	if (0 < ::GetPrivateProfileString(_T("Infomation"), _T("Current VS Status"), NULL, szData, sizeof(szData), sPath))
@@ -3118,7 +2946,6 @@ BOOL CManagerProcedure::GetAoiUpVsStatus()
 int CManagerProcedure::GetAoiDnSerial()
 {
 	int nSerial = 0;
-	//char szData[200];
 	TCHAR szData[200];
 	CString sPath = pDoc->WorkingInfo.System.sPathAoiDnCurrInfo;
 	if (0 < ::GetPrivateProfileString(_T("Infomation"), _T("Current Serial"), NULL, szData, sizeof(szData), sPath))
@@ -3134,7 +2961,6 @@ int CManagerProcedure::GetAoiDnSerial()
 BOOL CManagerProcedure::GetAoiDnVsStatus()
 {
 	BOOL bVsStatus = FALSE;
-	//char szData[200];
 	TCHAR szData[200];
 	CString sPath = pDoc->WorkingInfo.System.sPathAoiDnCurrInfo;
 	if (0 < ::GetPrivateProfileString(_T("Infomation"), _T("Current VS Status"), NULL, szData, sizeof(szData), sPath))
@@ -4020,11 +3846,6 @@ BOOL CManagerProcedure::ChkLotEndDn(int nSerial)
 	return pDoc->ChkLotEnd(sPath);
 }
 
-//BOOL CManagerProcedure::IsMkTmpStop()
-//{
-//	return m_bMkTmpStop;
-//}
-
 BOOL CManagerProcedure::MoveAlign0(int nPos)
 {
 	return pView->MoveAlign0(nPos);
@@ -4073,10 +3894,10 @@ void CManagerProcedure::DoAuto()
 
 	// Marking Start
 	DoAutoMarking();
-/*
+
 	// Engrave Marking Start
 	DoAutoMarkingEngrave();
-*/
+
 }
 
 void CManagerProcedure::DoAtuoGetMkStSignal()
@@ -5325,6 +5146,75 @@ void CManagerProcedure::DoAutoChkShareFolder()
 	}
 	
 }
+
+void CManagerProcedure::DoAutoMarkingEngrave()
+{
+	// 각인부 마킹중 ON (PC가 ON, OFF)
+	if (pDoc->BtnStatus.EngAuto.IsOnMking && !(pDoc->m_pMpeSignal[6] & (0x01 << 3))) // 각인부 마킹중 ON (PC가 ON, OFF)
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnMkIng, TRUE);
+#ifdef USE_MPE
+		pView->MpeWrite(_T("MB440173"), 1); // 2D(GUI) 각인 동작Running신호(PC On->PC Off)
+#endif
+	}
+	else if (!pDoc->BtnStatus.EngAuto.IsOnMking && (pDoc->m_pMpeSignal[6] & (0x01 << 3)))
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnMkIng, FALSE);
+#ifdef USE_MPE
+		pView->MpeWrite(_T("MB440173"), 0); // 2D(GUI) 각인 동작Running신호(PC On->PC Off)
+#endif
+	}
+
+	// 각인부 마킹완료 ON (PC가 ON, OFF)
+	if (pDoc->BtnStatus.EngAuto.IsMkDone && !(pDoc->m_pMpeSignal[6] & (0x01 << 4))) // 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqMkDone, TRUE);
+#ifdef USE_MPE
+		pView->MpeWrite(_T("MB440174"), 1); // 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
+#endif
+	}
+	else if (!pDoc->BtnStatus.EngAuto.IsMkDone && (pDoc->m_pMpeSignal[6] & (0x01 << 4))) // 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqMkDone, FALSE);
+		//#ifdef USE_MPE
+		//		pView->MpeWrite(_T("MB440174"), 0); // 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
+		//#endif
+	}
+
+	// 각인부 2D 리더 작업중 신호
+	if (pDoc->BtnStatus.EngAuto.IsOnRead2d && !(pDoc->m_pMpeSignal[6] & (0x01 << 8))) // 각인부 2D 리더 작업중 신호(PC On->PC Off)
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnReading2d, TRUE);
+#ifdef USE_MPE
+		pView->MpeWrite(_T("MB440178"), 1); // 각인부 2D 리더 작업중 신호(PC On->PC Off)
+#endif
+	}
+	else if (!pDoc->BtnStatus.EngAuto.IsOnRead2d && (pDoc->m_pMpeSignal[6] & (0x01 << 8)))
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnReading2d, FALSE);
+#ifdef USE_MPE
+		pView->MpeWrite(_T("MB440178"), 0); // 각인부 2D 리더 작업중 신호(PC On->PC Off)
+#endif
+	}
+
+	// 각인부 2D 리더 작업완료 신호
+	if (pDoc->BtnStatus.EngAuto.IsRead2dDone && !(pDoc->m_pMpeSignal[6] & (0x01 << 9))) // 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeq2dReadDone, TRUE);
+#ifdef USE_MPE
+		pView->MpeWrite(_T("MB440179"), 1); // 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
+#endif
+	}
+	else if (!pDoc->BtnStatus.EngAuto.IsRead2dDone && (pDoc->m_pMpeSignal[6] & (0x01 << 9)))
+	{
+		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeq2dReadDone, FALSE);
+		//#ifdef USE_MPE
+		//		pView->MpeWrite(_T("MB440179"), 0); // 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
+		//#endif
+	}
+
+}
+
 
 void CManagerProcedure::DoAutoMarking()
 {

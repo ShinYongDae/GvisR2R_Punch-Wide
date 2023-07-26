@@ -26,8 +26,8 @@ class CManagerProcedure : public CWnd
 	void DoAutoChkCycleStop();
 	void DoAutoDispMsg();
 	void DoAutoChkShareFolder();
-
 	void DoAutoMarking();	// MarkingWith2PointAlign() or MarkingWith4PointAlign()
+	void DoAutoMarkingEngrave();
 
 	void MarkingWith2PointAlign();
 	void Mk2PtReady();
@@ -217,7 +217,6 @@ public:
 	void InitAuto(BOOL bInit = TRUE);
 
 	int m_nAoiCamInfoStrPcs[2]; // [0] : Up, [1] : Dn
-	//BOOL m_bCamChged;
 	BOOL m_bTIM_CHK_DONE_READY;
 
 
@@ -269,7 +268,6 @@ public:
 	BOOL m_bTHREAD_SHIFT2MK;// [2];		// [0] : Cam0, [1] : Cam1
 
 	BOOL m_bTHREAD_DISP_DEF_INNER;
-	//BOOL m_bStopFromThread, m_bBuzzerFromThread;
 
 	int	m_nStepTHREAD_DISP_DEF_INNER;
 	int	m_nSnTHREAD_UPDATAE_YIELD;
@@ -297,18 +295,8 @@ public:
 	int m_nStepMk[4], m_nMkPcs[4]; 	// [0] Auto-Left, [1] Auto-Right, [2] Manual-Left, [3] Manual-Right  ; m_nStepMk(마킹Sequence), nMkOrderIdx(마킹한 count)
 	int m_nMkStrip[2][4]; // [nCam][nStrip] - [좌/우][] : 스트립에 펀칭한 피스 수 count
 	int m_nErrCnt;
-	//int m_nStepInitView;
-
-	//BOOL m_bDispMsg, m_bWaitClrDispMsg;
-	//BOOL m_bDispMsgDoAuto[10];
-	//int m_nStepDispMsg[10];
 	int m_nDebugStep;
 	CString m_sFixMsg[2]; //[0]:up , [1]:dn
-
-	//int m_nCntTowerWinker, m_nCntBtnWinker[4], m_nDlyWinker[4], m_nCntBz;
-	//BOOL m_bTimTowerWinker, m_bTimBtnWinker, m_bTimBuzzerWarn;
-	//BOOL m_bTowerWinker[3], m_bBtnWinker[4]; // [R/G/Y] , [Ready/Reset/Run/Stop]
-	//BOOL m_bTIM_DISP_STATUS, m_bTIM_MPE_IO;
 
 	CString m_sPrevMyMsg;
 	CString m_sTick, m_sDispTime;
@@ -317,8 +305,6 @@ public:
 	DWORD m_dwSetDlySt1[10], m_dwSetDlyEd1[10];
 
 	double m_dTotVel, m_dPartVel;
-	//BOOL m_bTIM_CHK_TEMP_STOP;
-	//BOOL m_bTIM_SAFTY_STOP;
 	BOOL m_bTIM_CAMMASTER_UPDATE;
 	CString m_sMyMsg; int m_nTypeMyMsg;
 	int m_nVsBufLastSerial[2];
@@ -335,7 +321,6 @@ public:
 
 	int m_nLotEndSerial;
 
-	//BOOL m_bTIM_INIT_VIEW;
 	BOOL m_bCam, m_bReview;
 	double m_dEnc[MAX_AXIS], m_dTarget[MAX_AXIS];
 	double m_dNextTarget[MAX_AXIS];
@@ -344,8 +329,6 @@ public:
 
 	int m_nStop;
 	BOOL m_bReMk;
-	//BOOL m_bChkMpeIoOut;
-
 	BOOL m_bProbDn[2]; // 좌/우 .
 
 	// Auto Sequence
@@ -353,19 +336,12 @@ public:
 	BOOL m_bMkTmpStop, m_bAoiLdRun, m_bAoiLdRunF;
 	int	m_nStepTHREAD_DISP_DEF;
 
-	//BOOL m_bSwRun, m_bSwRunF;
-	//BOOL m_bSwStop, m_bSwStopF;
-	//BOOL m_bSwReset, m_bSwResetF;
-	//BOOL m_bSwReady, m_bSwReadyF;
-
 	BOOL m_bNewModel;
 	DWORD m_dwLotSt, m_dwLotEd;
 	long m_lFuncId;
-	//BOOL m_bDrawGL;
 	BOOL m_bCont;	// 이어가기
 	DWORD m_dwStMkDn[2];
 	BOOL m_bInit;
-	//BOOL m_bSwStopNow;
 	BOOL m_bShowModalMyPassword;
 
 	int m_nRstNum;
@@ -402,9 +378,7 @@ public:
 	BOOL m_bEngFdWrite, m_bEngFdWriteF;
 	BOOL m_bEngTest, m_bEngTestF;
 
-	//BOOL m_bCycleStop;
 	BOOL m_bContDiffLot;
-	//CString m_sDispMain;
 	BOOL m_bStopF_Verify;
 	BOOL m_bInitAuto, m_bInitAutoLoadMstInfo;
 
@@ -415,12 +389,6 @@ public:
 	CString m_sDispSts[2];
 
 	BOOL m_bDispMyMsgBox;
-	//CArMyMsgBox  m_ArrayMyMsgBox;
-	//BOOL m_bDispMain;
-	//CArDispMain  m_ArrayDispMain;
-
-	//int m_nWatiDispMain;
-
 	int m_nNewLot;
 	int m_nSaveMk0Img, m_nSaveMk1Img;
 
@@ -428,7 +396,6 @@ public:
 	int m_nSerialRmapInnerUpdate;
 
 	BOOL m_bShift2Mk;
-
 	BOOL m_bSerialDecrese;
 	
 	BOOL m_bUpdateYield, m_bUpdateYieldOnRmap;
@@ -439,7 +406,6 @@ public:
 	void ResetPriority();
 	void DelOverLotEndSerialUp(int nSerial);
 	void DelOverLotEndSerialDn(int nSerial);
-
 
 	BOOL ChkVsShare(int &nSerial);
 	BOOL ChkVsShareUp(int &nSerial);
