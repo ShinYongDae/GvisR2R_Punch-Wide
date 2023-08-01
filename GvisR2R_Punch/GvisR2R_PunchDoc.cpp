@@ -1311,15 +1311,6 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		m_nDelayShow = 500;
 
 	// [Last Job]
-	//if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("MkSt"), NULL, szData, sizeof(szData), sPath))
-	//	pView->m_mgrProcedure->m_bMkSt = _ttoi(szData) > 0 ? TRUE : FALSE;
-	//else
-	//	pView->m_mgrProcedure->m_bMkSt = FALSE;
-
-	//if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("MkStAuto"), NULL, szData, sizeof(szData), sPath))
-	//	pView->m_mgrProcedure->m_nMkStAuto = _ttoi(szData);
-	//else
-	//	pView->m_mgrProcedure->m_nMkStAuto = 0;
 
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Process Code"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.sProcessNum = CString(szData);
@@ -4046,7 +4037,7 @@ void CGvisR2R_PunchDoc::SetOnePnlLen(double dLen)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_DIST"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dLen * 1000.0);
-	pView->m_pMpe->Write(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4070,7 +4061,7 @@ void CGvisR2R_PunchDoc::SetOnePnlVel(double dVel)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_VEL"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dVel * 1000.0);
-	pView->m_pMpe->Write(_T("ML45034"), lData);	// 한 판넬 Feeding 속도 (단위 mm/sec * 1000)
+	pView->MpeWrite(_T("ML45034"), lData);	// 한 판넬 Feeding 속도 (단위 mm/sec * 1000)
 #endif
 }
 
@@ -4084,7 +4075,7 @@ void CGvisR2R_PunchDoc::SetFdJogVel(double dVel)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_JOG_VEL"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dVel * 1000.0);
-	pView->m_pMpe->Write(_T("ML45038"), lData);	// 연속공급 속도 (단위 mm/sec * 1000)
+	pView->MpeWrite(_T("ML45038"), lData);	// 연속공급 속도 (단위 mm/sec * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4103,7 +4094,7 @@ void CGvisR2R_PunchDoc::SetFdJogAcc(double dVel)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_JOG_ACC"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dVel * 1000.0);
-	pView->m_pMpe->Write(_T("ML45040"), lData);	// 연속공급 가속도 (단위 mm/s^2 * 1000)
+	pView->MpeWrite(_T("ML45040"), lData);	// 연속공급 가속도 (단위 mm/s^2 * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4137,7 +4128,7 @@ void CGvisR2R_PunchDoc::SetOnePnlAcc(double dAcc)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_ACC"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dAcc * 1000.0);
-	pView->m_pMpe->Write(_T("ML45036"), lData);	// 한 판넬 Feeding 가속도 (단위 mm/s^2 * 1000)
+	pView->MpeWrite(_T("ML45036"), lData);	// 한 판넬 Feeding 가속도 (단위 mm/s^2 * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4160,8 +4151,8 @@ void CGvisR2R_PunchDoc::SetAoiFdPitch(double dPitch)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_DRUM_LEAD_PITCH"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dPitch * 1000.0);
-	pView->m_pMpe->Write(_T("ML45012"), lData);	// 검사부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
-	pView->m_pMpe->Write(_T("ML45020"), lData);	// 검사부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45012"), lData);	// 검사부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45020"), lData);	// 검사부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
 #endif
 }
 
@@ -4179,7 +4170,7 @@ void CGvisR2R_PunchDoc::SetMkFdPitch(double dPitch)
 	::WritePrivateProfileString(_T("Motion"), _T("MARKING_FEEDING_DRUM_LEAD_PITCH"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dPitch * 1000.0);
-	pView->m_pMpe->Write(_T("ML45014"), lData);	// 마킹부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45014"), lData);	// 마킹부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
 #endif
 }
 
@@ -4253,7 +4244,7 @@ void CGvisR2R_PunchDoc::SetBufInitPos(double dPos)
 	::WritePrivateProfileString(_T("Motion"), _T("START_BUFFER_POSITION"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dPos * 1000.0);
-	pView->m_pMpe->Write(_T("ML45016"), lData);	// 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
+	pView->MpeWrite(_T("ML45016"), lData);	// 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4270,7 +4261,7 @@ void CGvisR2R_PunchDoc::SetEngBufInitPos(double dPos)
 	::WritePrivateProfileString(_T("Motion"), _T("START_ENG_BUFFER_POSITION"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dPos * 1000.0);
-	pView->m_pMpe->Write(_T("ML45028"), lData);	// 각인부 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
+	pView->MpeWrite(_T("ML45028"), lData);	// 각인부 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
 #endif
 }
 
@@ -4299,7 +4290,7 @@ void CGvisR2R_PunchDoc::SetAoiMkDist(double dLen)
 	::WritePrivateProfileString(_T("Motion"), _T("FEEDING_PUNCH_AOI_INIT_DIST"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dLen * 1000.0);
-	pView->m_pMpe->Write(_T("ML45008"), lData);	// AOI(하)에서 마킹까지 거리 (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45008"), lData);	// AOI(하)에서 마킹까지 거리 (단위 mm * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4316,7 +4307,7 @@ void CGvisR2R_PunchDoc::SetAoiAoiDist(int nShot)
 	::WritePrivateProfileString(_T("Motion"), _T("FEEDING_AOI_AOI_SHOT_NUM"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(nShot * 1000);
-	pView->m_pMpe->Write(_T("ML45010"), lData);	// AOI(상)에서 AOI(하) Shot수 (단위 Shot수 * 1000)
+	pView->MpeWrite(_T("ML45010"), lData);	// AOI(상)에서 AOI(하) Shot수 (단위 Shot수 * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4873,7 +4864,7 @@ void CGvisR2R_PunchDoc::SetTotalReelDist(double dDist)
 #ifdef USE_MPE
 	long lData = (long)(dDist * 1000.0);
 	if(pView && pView->m_pMpe)
-		pView->m_pMpe->Write(_T("ML45000"), lData);	// 전체 Reel 길이 (단위 M * 1000)
+		pView->MpeWrite(_T("ML45000"), lData);	// 전체 Reel 길이 (단위 M * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4901,7 +4892,7 @@ void CGvisR2R_PunchDoc::SetSeparateDist(double dDist)
 
 #ifdef USE_MPE
 	long lData = (long)(dDist * 1000.0);
-	pView->m_pMpe->Write(_T("ML45002"), lData);	// Lot 분리 길이 (단위 M * 1000)
+	pView->MpeWrite(_T("ML45002"), lData);	// Lot 분리 길이 (단위 M * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4929,10 +4920,10 @@ void CGvisR2R_PunchDoc::SetCuttingDist(double dDist)
 
 #ifdef USE_MPE
 	//pView->IoWrite("ML45004", long(_tstof(sVal)*1000.0));	// Lot 분리 후 절단위치 (단위 M * 1000)
-	// 	pView->m_pMpe->Write(_T("ML45004", long(_tstof(sVal)*1000.0));
+	// 	pView->MpeWrite(_T("ML45004", long(_tstof(sVal)*1000.0));
 
 	long lData = (long)(dDist * 1000.0);
-	pView->m_pMpe->Write(_T("ML45004"), lData);	// Lot 분리 후 절단위치 (단위 M * 1000)
+	pView->MpeWrite(_T("ML45004"), lData);	// Lot 분리 후 절단위치 (단위 M * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4961,10 +4952,10 @@ void CGvisR2R_PunchDoc::SetStopDist(double dDist)
 
 #ifdef USE_MPE
 	//pView->IoWrite("ML45006", long(_tstof(sVal)*1000.0));	// 일시정지 길이 (단위 M * 1000)
-	// 	pView->m_pMpe->Write(_T("ML45006"), long(_tstof(sVal)*1000.0));
+	// 	pView->MpeWrite(_T("ML45006"), long(_tstof(sVal)*1000.0));
 
 	long lData = (long)(dDist * 1000.0);
-	pView->m_pMpe->Write(_T("ML45006"), lData);	// 일시정지 길이 (단위 M * 1000)
+	pView->MpeWrite(_T("ML45006"), lData);	// 일시정지 길이 (단위 M * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -4986,7 +4977,7 @@ void CGvisR2R_PunchDoc::SetAOIToq(double dToq)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_TENSION_SERVO_TORQUE"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dToq * 1000.0);
-	pView->m_pMpe->Write(_T("ML45042"), lData);	// 검사부 Tension 모터 토크값 (단위 Kgf * 1000)
+	pView->MpeWrite(_T("ML45042"), lData);	// 검사부 Tension 모터 토크값 (단위 Kgf * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -5008,7 +4999,7 @@ void CGvisR2R_PunchDoc::SetMarkingToq(double dToq)
 	::WritePrivateProfileString(_T("Motion"), _T("MARKING_TENSION_SERVO_TORQUE"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dToq * 1000.0);
-	pView->m_pMpe->Write(_T("ML45044"), lData);	// 마킹부 Tension 모터 토크값 (단위 Kgf * 1000)
+	pView->MpeWrite(_T("ML45044"), lData);	// 마킹부 Tension 모터 토크값 (단위 Kgf * 1000)
 #endif
 
 //#ifdef USE_ENGRAVE
@@ -5030,7 +5021,7 @@ void CGvisR2R_PunchDoc::SetEngraveToq(double dToq)
 	::WritePrivateProfileString(_T("Motion"), _T("ENGRAVE_TENSION_SERVO_TORQUE"), sData, sPath);
 //#ifdef USE_MPE
 //	long lData = (long)(dToq * 1000.0);
-//	pView->m_pMpe->Write(_T("ML45050"), lData);	// 각인부 Tension 모터 토크값 (단위 Kgf * 1000)
+//	pView->MpeWrite(_T("ML45050"), lData);	// 각인부 Tension 모터 토크값 (단위 Kgf * 1000)
 //#endif
 }
 
@@ -5993,7 +5984,7 @@ void CGvisR2R_PunchDoc::SetEngraveAoiDist(double dLen)
 	::WritePrivateProfileString(_T("Motion"), _T("FEEDING_ENGRAVE_AOI_INIT_DIST"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dLen * 1000.0);
-	pView->m_pMpe->Write(_T("ML45024"), lData);	// 각인부에서 AOI(상)까지 거리 (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45024"), lData);	// 각인부에서 AOI(상)까지 거리 (단위 mm * 1000)
 #endif
 }
 
@@ -6005,7 +5996,7 @@ void CGvisR2R_PunchDoc::SetEngraveReaderDist(double dLen)
 	::WritePrivateProfileString(_T("Motion"), _T("ENGRAVE_BARCODE_OFFSET"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dLen * 1000.0);
-	pView->m_pMpe->Write(_T("ML45090"), lData);	// 각인위치에서 2D 바코드 리더기까지의 Offset (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45090"), lData);	// 각인위치에서 2D 바코드 리더기까지의 Offset (단위 mm * 1000)
 #endif
 }
 
@@ -6022,7 +6013,7 @@ void CGvisR2R_PunchDoc::SetAoiReaderDist(double dLen)
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_BARCODE_OFFSET"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dLen * 1000.0);
-	pView->m_pMpe->Write(_T("ML45092"), lData);	// AOI 검사위치에서 2D 바코드 리더기까지의 Offset (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45092"), lData);	// AOI 검사위치에서 2D 바코드 리더기까지의 Offset (단위 mm * 1000)
 #endif
 }
 
@@ -6039,7 +6030,7 @@ void CGvisR2R_PunchDoc::SetMkReaderDist(double dLen)
 	::WritePrivateProfileString(_T("Motion"), _T("PUNCHING_BARCODE_OFFSET"), sData, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dLen * 1000.0);
-	pView->m_pMpe->Write(_T("ML45094"), lData);	// Punching 시작위치에서 2D 바코드 리더기까지의 Offset (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45094"), lData);	// Punching 시작위치에서 2D 바코드 리더기까지의 Offset (단위 mm * 1000)
 #endif
 }
 
@@ -6057,7 +6048,7 @@ void CGvisR2R_PunchDoc::Set2DReaderPosMoveVel(double dVel)
 	::WritePrivateProfileString(_T("Motion"), _T("MARKING_FEEDING_SERVO_VEL"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dVel * 1000.0);
-	pView->m_pMpe->Write(_T("ML45060"), lData);	// 2D 바코드 리더기위치까지 Feeding 속도 (단위 mm/sec * 1000)
+	pView->MpeWrite(_T("ML45060"), lData);	// 2D 바코드 리더기위치까지 Feeding 속도 (단위 mm/sec * 1000)
 #endif
 }
 
@@ -6070,7 +6061,7 @@ void CGvisR2R_PunchDoc::Set2DReaderPosMoveAcc(double dAcc)
 	::WritePrivateProfileString(_T("Motion"), _T("MARKING_FEEDING_SERVO_ACC"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dAcc * 1000.0);
-	pView->m_pMpe->Write(_T("ML45062"), lData);	// 2D 바코드 리더기위치까지 Feeding 가속도 (단위 mm/sec * 1000)
+	pView->MpeWrite(_T("ML45062"), lData);	// 2D 바코드 리더기위치까지 Feeding 가속도 (단위 mm/sec * 1000)
 #endif
 }
 
@@ -6093,7 +6084,7 @@ void CGvisR2R_PunchDoc::SetEngraveFdPitch(double dPitch)
 	::WritePrivateProfileString(_T("Motion"), _T("ENGRAVE_FEEDING_DRUM_LEAD_PITCH"), sVal, sPath);
 #ifdef USE_MPE
 	long lData = (long)(dPitch * 1000.0);
-	pView->m_pMpe->Write(_T("ML45026"), lData);	// 각인부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
+	pView->MpeWrite(_T("ML45026"), lData);	// 각인부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
 #endif
 }
 

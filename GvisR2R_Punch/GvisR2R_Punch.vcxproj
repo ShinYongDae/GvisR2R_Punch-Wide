@@ -304,6 +304,7 @@
     <ClInclude Include="MailSlot\SyncMailslotWriter.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="ManagerProcedure.h" />
+    <ClInclude Include="ManagerPunch.h" />
     <ClInclude Include="ManagerReelmap.h" />
     <ClInclude Include="Process\CamMaster.h" />
     <ClInclude Include="Process\CamMasterDefine.h" />
@@ -413,6 +414,7 @@
     <ClCompile Include="MailSlot\SyncMailslotWriter.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="ManagerProcedure.cpp" />
+    <ClCompile Include="ManagerPunch.cpp" />
     <ClCompile Include="ManagerReelmap.cpp" />
     <ClCompile Include="Process\CamMaster.cpp" />
     <ClCompile Include="Process\DataFile.cpp" />

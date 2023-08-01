@@ -530,35 +530,35 @@ void CEngrave::GetSignalMain(SOCKET_DATA SockData)
 		{
 		case _SigInx::_Ready:
 			pDoc->BtnStatus.Main.Ready = (SockData.nData1 > 0) ? TRUE : FALSE;
-			//pView->m_pMpe->Write(_T("MB005503"), (long)SockData.nData1);
-			pView->m_pMpe->Write(_T("MB440162"), 0);
+			//pView->MpeWrite(_T("MB005503"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440162"), 0);
 			break;
 		case _SigInx::_Run:
 			pDoc->BtnStatus.Main.Run = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Stop = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Stop;
-			//pView->m_pMpe->Write(_T("MB005501"), (long)SockData.nData1);
-			pView->m_pMpe->Write(_T("MB440162"), 0);
+			//pView->MpeWrite(_T("MB005501"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440162"), 0);
 			break;
 		case _SigInx::_Reset:
 			pDoc->BtnStatus.Main.Reset = (SockData.nData1 > 0) ? TRUE : FALSE;
-			//pView->m_pMpe->Write(_T("MB005504"), (long)SockData.nData1);
-			pView->m_pMpe->Write(_T("MB440162"), 0);
+			//pView->MpeWrite(_T("MB005504"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440162"), 0);
 			break;
 		case _SigInx::_Stop:
 			pDoc->BtnStatus.Main.Stop = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Run = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Run;
-			//pView->m_pMpe->Write(_T("MB005502"), (long)SockData.nData1);
-			pView->m_pMpe->Write(_T("MB440162"), (long)SockData.nData1);
+			//pView->MpeWrite(_T("MB005502"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440162"), (long)SockData.nData1);
 			break;
 		case _SigInx::_Auto:
 			pDoc->BtnStatus.Main.Auto = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Manual = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Manual;
-			//pView->m_pMpe->Write(_T("MB005505"), (long)SockData.nData1);
+			//pView->MpeWrite(_T("MB005505"), (long)SockData.nData1);
 			break;
 		case _SigInx::_Manual:
 			pDoc->BtnStatus.Main.Manual = (SockData.nData1 > 0) ? TRUE : FALSE;
 			pDoc->BtnStatus.Main.Auto = (SockData.nData1 > 0) ? FALSE : pDoc->BtnStatus.Main.Auto;
-			//pView->m_pMpe->Write(_T("MB005505"), (long)SockData.nData1);
+			//pView->MpeWrite(_T("MB005505"), (long)SockData.nData1);
 			break;
 			// Is
 		case _SigInx::_IsReady:
@@ -595,15 +595,15 @@ void CEngrave::GetSignalTorqueMotor(SOCKET_DATA SockData)
 		{
 		case _SigInx::_MkTq:
 			pDoc->BtnStatus.Tq.Mk = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB440155"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440155"), (long)SockData.nData1);
 			break;
 		case _SigInx::_AoiTq:
 			pDoc->BtnStatus.Tq.Aoi = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB440156"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440156"), (long)SockData.nData1);
 			break;
 		case _SigInx::_EngTq:
 			pDoc->BtnStatus.Tq.Eng = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB440154"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440154"), (long)SockData.nData1);
 			break;
 			// Is
 		case _SigInx::_IsMkTq:
@@ -631,11 +631,11 @@ void CEngrave::GetSignalInductionMotor(SOCKET_DATA SockData)
 		{
 		case _SigInx::_CcwModRe:
 			pDoc->BtnStatus.Induct.Rc = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB44017D"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB44017D"), (long)SockData.nData1);
 			break;
 		case _SigInx::_CcwModUn:
 			pDoc->BtnStatus.Induct.Uc = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB44017C"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB44017C"), (long)SockData.nData1);
 			break;
 			// Is
 		case _SigInx::_IsCcwModRe:
@@ -660,11 +660,11 @@ void CEngrave::GetSignalCore150mm(SOCKET_DATA SockData)
 		{
 		case _SigInx::_Core150Re:
 			pDoc->BtnStatus.Core150.Rc = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB44017E"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB44017E"), (long)SockData.nData1);
 			break;
 		case _SigInx::_Core150Un:
 			pDoc->BtnStatus.Core150.Uc = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB44017F"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB44017F"), (long)SockData.nData1);
 			break;
 			// Is
 		case _SigInx::_IsCore150Re:
@@ -689,7 +689,7 @@ void CEngrave::GetSignalEtc(SOCKET_DATA SockData)
 		{
 		case _SigInx::_EmgAoi:
 			pDoc->BtnStatus.Etc.EmgAoi = (SockData.nData1 > 0) ? TRUE : FALSE;
-			//pView->m_pMpe->Write(_T(""), (long)SockData.nData1);
+			//pView->MpeWrite(_T(""), (long)SockData.nData1);
 			break;
 			// Is
 		case _SigInx::_IsEmgAoi:
@@ -883,7 +883,7 @@ void CEngrave::GetSignalPunch(SOCKET_DATA SockData)
 			break;
 		case _SigInx::_OnePnlMk:
 			pDoc->BtnStatus.Mk.MvOne = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB440151"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440151"), (long)SockData.nData1);
 			break;
 		case _SigInx::_DancerUpMk:
 			pDoc->BtnStatus.Mk.DcRSol = (SockData.nData1 > 0) ? TRUE : FALSE;
@@ -988,7 +988,7 @@ void CEngrave::GetSignalAOIDn(SOCKET_DATA SockData)
 			break;
 		case _SigInx::_OnePnlAoiDn:
 			pDoc->BtnStatus.AoiDn.MvOne = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB440151"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440151"), (long)SockData.nData1);
 			break;
 		case _SigInx::_ClrRollAoiDn:
 			pDoc->BtnStatus.AoiDn.ClrRoll = (SockData.nData1 > 0) ? TRUE : FALSE;
@@ -1101,7 +1101,7 @@ void CEngrave::GetSignalAOIUp(SOCKET_DATA SockData)
 			break;
 		case _SigInx::_OnePnlAoiUp:
 			pDoc->BtnStatus.AoiUp.MvOne = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB440151"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440151"), (long)SockData.nData1);
 			break;
 		case _SigInx::_ClrRollAoiUp:
 			pDoc->BtnStatus.AoiUp.ClrRoll = (SockData.nData1 > 0) ? TRUE : FALSE;
@@ -1206,7 +1206,7 @@ void CEngrave::GetSignalEngrave(SOCKET_DATA SockData)
 			break;
 		case _SigInx::_OnePnlEng:
 			pDoc->BtnStatus.Eng.MvOne = (SockData.nData1 > 0) ? TRUE : FALSE;
-			pView->m_pMpe->Write(_T("MB440151"), (long)SockData.nData1);
+			pView->MpeWrite(_T("MB440151"), (long)SockData.nData1);
 			break;
 		case _SigInx::_DancerUpEng:
 			pDoc->BtnStatus.Eng.DcRSol = (SockData.nData1 > 0) ? TRUE : FALSE;
@@ -1371,45 +1371,45 @@ void CEngrave::GetSignalEngraveAutoSequence(SOCKET_DATA SockData)
 		case _SigInx::_EngAutoSeqMkSt:
 			pDoc->BtnStatus.EngAuto.MkSt = (SockData.nData1 > 0) ? TRUE : FALSE;
 //#ifdef USE_MPE	
-//			if (pView && pView->m_pMpe)
-//				pView->m_pMpe->Write(_T("MB440103"), SockData.nData1);// 2D(GUI) 각인 동작 Start신호(PLC On->PC Off)
+//			if (pView)
+//				pView->MpeWrite(_T("MB440103"), SockData.nData1);// 2D(GUI) 각인 동작 Start신호(PLC On->PC Off)
 //#endif
 			break;
 		case _SigInx::_EngAutoSeqOnMkIng:
 			pDoc->BtnStatus.EngAuto.OnMking = (SockData.nData1 > 0) ? TRUE : FALSE;
 //#ifdef USE_MPE	
-//			if(pView && pView->m_pMpe)
-//				pView->m_pMpe->Write(_T("MB440173"), SockData.nData1);// 2D(GUI) 각인 동작Running신호(PC On->PC Off)
+//			if(pView)
+//				pView->MpeWrite(_T("MB440173"), SockData.nData1);// 2D(GUI) 각인 동작Running신호(PC On->PC Off)
 //#endif
 			break;
 		case _SigInx::_EngAutoSeqMkDone:
 			pDoc->BtnStatus.EngAuto.MkDone = (SockData.nData1 > 0) ? TRUE : FALSE;
 //#ifdef USE_MPE	
-//			if (pView && pView->m_pMpe)
-//				pView->m_pMpe->Write(_T("MB440174"), 1);// 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
-//				//pView->m_pMpe->Write(_T("MB440174"), SockData.nData1);// 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
+//			if (pView)
+//				pView->MpeWrite(_T("MB440174"), 1);// 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
+//				//pView->MpeWrite(_T("MB440174"), SockData.nData1);// 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
 //#endif
 			break;
 		case _SigInx::_EngAutoSeq2dReadSt:
 			pDoc->BtnStatus.EngAuto.Read2dSt = (SockData.nData1 > 0) ? TRUE : FALSE;
 //#ifdef USE_MPE	
-//			if (pView && pView->m_pMpe)
-//				pView->m_pMpe->Write(_T("MB440105"), SockData.nData1);// 각인부 2D 리더 시작신호(PLC On->PC Off)
+//			if (pView)
+//				pView->MpeWrite(_T("MB440105"), SockData.nData1);// 각인부 2D 리더 시작신호(PLC On->PC Off)
 //#endif
 			break;
 		case _SigInx::_EngAutoSeqOnReading2d:
 			pDoc->BtnStatus.EngAuto.OnRead2d = (SockData.nData1 > 0) ? TRUE : FALSE;
 //#ifdef USE_MPE	
-//			if (pView && pView->m_pMpe)
-//				pView->m_pMpe->Write(_T("MB440178"), SockData.nData1);// 각인부 2D 리더 작업중 신호(PC On->PC Off)
+//			if (pView)
+//				pView->MpeWrite(_T("MB440178"), SockData.nData1);// 각인부 2D 리더 작업중 신호(PC On->PC Off)
 //#endif
 			break;
 		case _SigInx::_EngAutoSeq2dReadDone:
 			pDoc->BtnStatus.EngAuto.Read2dDone = (SockData.nData1 > 0) ? TRUE : FALSE;
 //#ifdef USE_MPE	
-//			if (pView && pView->m_pMpe)
-//				pView->m_pMpe->Write(_T("MB440179"), 1);// 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
-//				//pView->m_pMpe->Write(_T("MB440179"), SockData.nData1);// 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
+//			if (pView)
+//				pView->MpeWrite(_T("MB440179"), 1);// 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
+//				//pView->MpeWrite(_T("MB440179"), SockData.nData1);// 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
 //#endif
 			break;
 			// Is
@@ -1521,7 +1521,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bSampleTest = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				pView->m_pMpe->Write(_T("MB44017B"), (pDoc->WorkingInfo.LastJob.bSampleTest) ? 1 : 0);		// Sample 검사 On
+				pView->MpeWrite(_T("MB44017B"), (pDoc->WorkingInfo.LastJob.bSampleTest) ? 1 : 0);		// Sample 검사 On
 #endif
 			}
 			break;
@@ -1532,22 +1532,22 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				pDoc->SetTestMode((int)SockData.nData1); // MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2
 				//pDoc->WorkingInfo.LastJob.nTestMode = (int)SockData.nData1; // MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2
 #ifdef USE_MPE	
-				if (pView && pView->m_pMpe)
+				if (pView)
 				{
 					if (pDoc->GetTestMode() == MODE_INNER)
 					{
-						pView->m_pMpe->Write(_T("MB440172"), 1);// 내층 검사 사용/미사용
-						pView->m_pMpe->Write(_T("MB440176"), 0);// 외층 검사 사용/미사용
+						pView->MpeWrite(_T("MB440172"), 1);// 내층 검사 사용/미사용
+						pView->MpeWrite(_T("MB440176"), 0);// 외층 검사 사용/미사용
 					}
 					else if (pDoc->GetTestMode() == MODE_OUTER)
 					{
-						pView->m_pMpe->Write(_T("MB440172"), 0);// 내층 검사 사용/미사용
-						pView->m_pMpe->Write(_T("MB440176"), 1);// 외층 검사 사용/미사용
+						pView->MpeWrite(_T("MB440172"), 0);// 내층 검사 사용/미사용
+						pView->MpeWrite(_T("MB440176"), 1);// 외층 검사 사용/미사용
 					}
 					else
 					{
-						pView->m_pMpe->Write(_T("MB440172"), 0);// 내층 검사 사용/미사용
-						pView->m_pMpe->Write(_T("MB440176"), 0);// 외층 검사 사용/미사용
+						pView->MpeWrite(_T("MB440172"), 0);// 내층 검사 사용/미사용
+						pView->MpeWrite(_T("MB440176"), 0);// 외층 검사 사용/미사용
 					}
 				}
 #endif
@@ -1559,7 +1559,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->BtnStatus.Induct.Rc = pDoc->WorkingInfo.LastJob.bOneMetal = (SockData.nData1 > 0) ? TRUE : FALSE;	// OneMetal : TRUE -> SetTwoMetal(FALSE);
 #ifdef USE_MPE
-				pView->m_pMpe->Write(_T("MB44017D"), 1);
+				pView->MpeWrite(_T("MB44017D"), 1);
 #endif
 			}
 			break;
@@ -1569,7 +1569,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->BtnStatus.Induct.Uc = pDoc->WorkingInfo.LastJob.bTwoMetal = (SockData.nData1 > 0) ? TRUE : FALSE;	// TwoMetal : TRUE -> SetTwoMetal(TRUE);
 #ifdef USE_MPE
-				pView->m_pMpe->Write(_T("MB44017C"), 1);
+				pView->MpeWrite(_T("MB44017C"), 1);
 #endif
 			}
 			break;
@@ -1586,8 +1586,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bRclDrSen = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB440163"), pDoc->WorkingInfo.LastJob.bRclDrSen ? 1 : 0);	// 리코일러Door센서 사용
+				if (pView)
+					pView->MpeWrite(_T("MB440163"), pDoc->WorkingInfo.LastJob.bRclDrSen ? 1 : 0);	// 리코일러Door센서 사용
 #endif
 			}
 			break;
@@ -1597,8 +1597,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bAoiUpDrSen = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB440166"), pDoc->WorkingInfo.LastJob.bAoiUpDrSen ? 1 : 0);	// AOI(상) Door센서 사용
+				if (pView)
+					pView->MpeWrite(_T("MB440166"), pDoc->WorkingInfo.LastJob.bAoiUpDrSen ? 1 : 0);	// AOI(상) Door센서 사용
 #endif
 			}
 			break;
@@ -1608,8 +1608,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bAoiDnDrSen = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB440167"), pDoc->WorkingInfo.LastJob.bAoiDnDrSen ? 1 : 0);	// AOI(하) Door센서 사용
+				if (pView)
+					pView->MpeWrite(_T("MB440167"), pDoc->WorkingInfo.LastJob.bAoiDnDrSen ? 1 : 0);	// AOI(하) Door센서 사용
 #endif
 			}
 			break;
@@ -1619,8 +1619,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bMkDrSen = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB440164"), pDoc->WorkingInfo.LastJob.bMkDrSen ? 1 : 0);	// 마킹Door센서 사용
+				if (pView)
+					pView->MpeWrite(_T("MB440164"), pDoc->WorkingInfo.LastJob.bMkDrSen ? 1 : 0);	// 마킹Door센서 사용
 #endif
 			}
 			break;
@@ -1630,8 +1630,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bEngvDrSen = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB44019B"), pDoc->WorkingInfo.LastJob.bEngvDrSen ? 1 : 0);	// 각인부 Door센서 사용
+				if (pView)
+					pView->MpeWrite(_T("MB44019B"), pDoc->WorkingInfo.LastJob.bEngvDrSen ? 1 : 0);	// 각인부 Door센서 사용
 #endif
 			}
 			break;
@@ -1641,8 +1641,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bUclDrSen = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB440168"), pDoc->WorkingInfo.LastJob.bUclDrSen ? 1 : 0);	// 언코일러Door센서 사용
+				if (pView)
+					pView->MpeWrite(_T("MB440168"), pDoc->WorkingInfo.LastJob.bUclDrSen ? 1 : 0);	// 언코일러Door센서 사용
 #endif
 			}
 			break;
@@ -1659,8 +1659,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB44010E"), pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler ? 1 : 0);
+				if (pView)
+					pView->MpeWrite(_T("MB44010E"), pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler ? 1 : 0);
 #endif
 			}
 			break;
@@ -1670,8 +1670,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB44010F"), pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler ? 1 : 0);
+				if (pView)
+					pView->MpeWrite(_T("MB44010F"), pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler ? 1 : 0);
 #endif
 			}
 			break;
@@ -1681,8 +1681,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bUseAoiDnUltrasonic = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB44016F"), pDoc->WorkingInfo.LastJob.bUseAoiDnUltrasonic ? 1 : 0);
+				if (pView)
+					pView->MpeWrite(_T("MB44016F"), pDoc->WorkingInfo.LastJob.bUseAoiDnUltrasonic ? 1 : 0);
 #endif
 			}
 			break;
@@ -1692,8 +1692,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bUseEngraveUltrasonic = (SockData.nData1 > 0) ? TRUE : FALSE;
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB44016E"), pDoc->WorkingInfo.LastJob.bUseEngraveUltrasonic ? 1 : 0);
+				if (pView)
+					pView->MpeWrite(_T("MB44016E"), pDoc->WorkingInfo.LastJob.bUseEngraveUltrasonic ? 1 : 0);
 #endif
 			}
 			break;
@@ -1702,7 +1702,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 			{
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.bTempPause = (SockData.nData1 > 0) ? TRUE : FALSE;
-				pView->m_pMpe->Write(_T("MB440183"), pDoc->WorkingInfo.LastJob.bTempPause ? 1 : 0);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)
+				pView->MpeWrite(_T("MB440183"), pDoc->WorkingInfo.LastJob.bTempPause ? 1 : 0);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)
 			}
 			break;
 		case _SigInx::_LotCut:
@@ -1752,8 +1752,8 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 
 #ifdef USE_MPE
 				lData = (long)(_tstof(pDoc->WorkingInfo.LastJob.sReelTotLen) * 1000.0);
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("ML45000"), lData);	// 전체 Reel 길이 (단위 M * 1000)
+				if (pView)
+					pView->MpeWrite(_T("ML45000"), lData);	// 전체 Reel 길이 (단위 M * 1000)
 #endif
 			}
 			break;
@@ -1772,7 +1772,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				if (pView->m_mgrReelmap->m_pReelMap)
 				{
 					lData = (long)(pView->m_mgrReelmap->m_pReelMap->m_dPnlLen * 1000.0);
-					pView->m_pMpe->Write(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
+					pView->MpeWrite(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
 				}
 #endif
 			}
@@ -1790,7 +1790,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 
 #ifdef USE_MPE
 				lData = (long)(_tstof(pDoc->WorkingInfo.LastJob.sTempPauseLen) * 1000.0);
-				pView->m_pMpe->Write(_T("ML45006"), lData);	// 일시정지 길이 (단위 M * 1000)
+				pView->MpeWrite(_T("ML45006"), lData);	// 일시정지 길이 (단위 M * 1000)
 #endif
 			}
 			break;
@@ -1816,7 +1816,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 
 #ifdef USE_MPE
 				lData = (long)(_tstof(pDoc->WorkingInfo.LastJob.sLotCutPosLen) * 1000.0);
-				pView->m_pMpe->Write(_T("ML45004"), lData);	// Lot 분리 후 절단위치 (단위 M * 1000)
+				pView->MpeWrite(_T("ML45004"), lData);	// Lot 분리 후 절단위치 (단위 M * 1000)
 #endif
 			}
 			break;
@@ -1883,10 +1883,10 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				::WritePrivateProfileString(_T("Last Job"), _T("Ultra Sonic Cleanner Start Time"), pDoc->WorkingInfo.LastJob.sUltraSonicCleannerStTim, PATH_WORKING_INFO);
 				lData = (long)(_tstof(pDoc->WorkingInfo.LastJob.sUltraSonicCleannerStTim) * 100.0);
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
+				if (pView)
 				{
-					pView->m_pMpe->Write(_T("MW05940"), (long)lData);	// AOI_Dn (단위 [초] * 100) : 1 is 10 mSec.
-					pView->m_pMpe->Write(_T("MW05942"), (long)lData);	// AOI_Up (단위 [초] * 100) : 1 is 10 mSec.
+					pView->MpeWrite(_T("MW05940"), (long)lData);	// AOI_Dn (단위 [초] * 100) : 1 is 10 mSec.
+					pView->MpeWrite(_T("MW05942"), (long)lData);	// AOI_Up (단위 [초] * 100) : 1 is 10 mSec.
 				}
 #endif
 			}
@@ -1923,8 +1923,8 @@ void CEngrave::GetInfo(SOCKET_DATA SockData)
 
 				::WritePrivateProfileString(_T("Last Job"), _T("Use Temporary Pause"), pDoc->WorkingInfo.LastJob.bTempPause ? _T("1") : _T("0"), PATH_WORKING_INFO);
 #ifdef USE_MPE
-				if (pView && pView->m_pMpe)
-					pView->m_pMpe->Write(_T("MB440183"), pDoc->WorkingInfo.LastJob.bTempPause ? 1 : 0);
+				if (pView)
+					pView->MpeWrite(_T("MB440183"), pDoc->WorkingInfo.LastJob.bTempPause ? 1 : 0);
 #endif
 			}
 			break;
@@ -2418,8 +2418,8 @@ void CEngrave::GetFdInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_JOG_VEL"), pDoc->WorkingInfo.Motion.sAoiJogVel, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkJogVel) * 1000.0);
-			if(pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45038"), lData);	// 연속공급 속도 (단위 mm/sec * 1000)
+			if(pView)
+				pView->MpeWrite(_T("ML45038"), lData);	// 연속공급 속도 (단위 mm/sec * 1000)
 #endif
 			break;
 		case _ItemInx::_FdAcc:
@@ -2429,8 +2429,8 @@ void CEngrave::GetFdInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_JOG_ACC"), pDoc->WorkingInfo.Motion.sAoiJogAcc, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkJogAcc) * 1000.0);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45040"), lData);	// 연속공급 가속도 (단위 mm/s^2 * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45040"), lData);	// 연속공급 가속도 (단위 mm/s^2 * 1000)
 #endif
 			break;
 		case _ItemInx::_OnePnlLen:
@@ -2443,8 +2443,8 @@ void CEngrave::GetFdInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_VEL"), pDoc->WorkingInfo.Motion.sMkFdVel, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkFdVel) * 1000.0);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45034"), lData);	// 한 판넬 Feeding 속도 (단위 mm/sec * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45034"), lData);	// 한 판넬 Feeding 속도 (단위 mm/sec * 1000)
 #endif
 			break;
 		case _ItemInx::_OnePnlAcc:
@@ -2454,8 +2454,8 @@ void CEngrave::GetFdInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_ACC"), pDoc->WorkingInfo.Motion.sMkFdAcc, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkFdAcc) * 1000.0);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45036"), lData);	// 한 판넬 Feeding 가속도 (단위 mm/s^2 * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45036"), lData);	// 한 판넬 Feeding 가속도 (단위 mm/s^2 * 1000)
 #endif
 			break;
 		case _ItemInx::_FdDiffMax:
@@ -2506,8 +2506,8 @@ void CEngrave::GetAoiInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("AOI_TENSION_SERVO_TORQUE"), pDoc->WorkingInfo.Motion.sAoiTq, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sAoiTq) * 1000.0);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45042"), lData);	// 검사부 Tension 모터 토크값 (단위 Kgf * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45042"), lData);	// 검사부 Tension 모터 토크값 (단위 Kgf * 1000)
 #endif
 			break;
 		case _ItemInx::_AoiBuffShotNum:
@@ -2516,8 +2516,8 @@ void CEngrave::GetAoiInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("FEEDING_AOI_AOI_SHOT_NUM"), pDoc->WorkingInfo.Motion.sFdAoiAoiDistShot, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstoi(pDoc->WorkingInfo.Motion.sFdAoiAoiDistShot) * 1000);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45010"), lData);	// AOI(상)에서 AOI(하) Shot수 (단위 Shot수 * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45010"), lData);	// AOI(상)에서 AOI(하) Shot수 (단위 Shot수 * 1000)
 #endif
 			break;
 		case _ItemInx::_AoiMkLen:
@@ -2526,8 +2526,8 @@ void CEngrave::GetAoiInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("FEEDING_PUNCH_AOI_INIT_DIST"), pDoc->WorkingInfo.Motion.sFdMkAoiInitDist, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sFdMkAoiInitDist) * 1000.0);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45008"), lData);	// AOI(하)에서 마킹까지 거리 (단위 mm * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45008"), lData);	// AOI(하)에서 마킹까지 거리 (단위 mm * 1000)
 #endif
 			break;
 		default:
@@ -2564,8 +2564,8 @@ void CEngrave::GetMkInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("MARKING_TENSION_SERVO_TORQUE"), pDoc->WorkingInfo.Motion.sMkTq, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkTq) * 1000.0);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45044"), lData);	// 마킹부 Tension 모터 토크값 (단위 Kgf * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45044"), lData);	// 마킹부 Tension 모터 토크값 (단위 Kgf * 1000)
 #endif
 			break;
 		case _ItemInx::_MkBuffInitPos:
@@ -2574,8 +2574,8 @@ void CEngrave::GetMkInfo(SOCKET_DATA SockData)
 			::WritePrivateProfileString(_T("Motion"), _T("START_BUFFER_POSITION"), pDoc->WorkingInfo.Motion.sStBufPos, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sStBufPos) * 1000.0);
-			if (pView && pView->m_pMpe)
-				pView->m_pMpe->Write(_T("ML45016"), lData);	// 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
+			if (pView)
+				pView->MpeWrite(_T("ML45016"), lData);	// 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
 #endif
 			break;
 		case _ItemInx::_MkBuffCurrPos:
@@ -2624,43 +2624,43 @@ void CEngrave::GetMkInfoLf(SOCKET_DATA SockData)
 			pDoc->WorkingInfo.Marking[0].sWaitPos = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_WAIT_POS"), pDoc->WorkingInfo.Marking[0].sWaitPos, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[0]->SetMarkShiftData(0);
+			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkShiftData(0);
 			break;
 		case _ItemInx::_MkInitVelLf:
 			pDoc->WorkingInfo.Marking[0].sWaitVel = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_WAIT_VEL"), pDoc->WorkingInfo.Marking[0].sWaitVel, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[0]->SetMarkShiftData(0);
+			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkShiftData(0);
 			break;
 		case _ItemInx::_MkInitAccLf:
 			pDoc->WorkingInfo.Marking[0].sWaitAcc = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_WAIT_ACC"), pDoc->WorkingInfo.Marking[0].sWaitAcc, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[0]->SetMarkShiftData(0);
+			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkShiftData(0);
 			break;
 		case _ItemInx::_MkFnlPosLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingPos = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_POS"), pDoc->WorkingInfo.Marking[0].sMarkingPos, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[0]->SetMarkFinalData(0);
+			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkFnlVelLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingVel = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_VEL"), pDoc->WorkingInfo.Marking[0].sMarkingVel, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[0]->SetMarkFinalData(0);
+			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkFnlAccLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingAcc = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_ACC"), pDoc->WorkingInfo.Marking[0].sMarkingAcc, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[0]->SetMarkFinalData(0);
+			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkFnlTqLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingToq = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_TOQ"), pDoc->WorkingInfo.Marking[0].sMarkingToq, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[0]->SetMarkFinalData(0);
+			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkHgtPosX1Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosX[0] = CharToString(SockData.strData);
@@ -2726,43 +2726,43 @@ void CEngrave::GetMkInfoRt(SOCKET_DATA SockData)
 			pDoc->WorkingInfo.Marking[1].sWaitPos = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_WAIT_POS"), pDoc->WorkingInfo.Marking[1].sWaitPos, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[1]->SetMarkShiftData(1);
+			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkShiftData(1);
 			break;
 		case _ItemInx::_MkInitVelRt:
 			pDoc->WorkingInfo.Marking[1].sWaitVel = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_WAIT_VEL"), pDoc->WorkingInfo.Marking[1].sWaitVel, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[1]->SetMarkShiftData(1);
+			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkShiftData(1);
 			break;
 		case _ItemInx::_MkInitAccRt:
 			pDoc->WorkingInfo.Marking[1].sWaitAcc = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_WAIT_ACC"), pDoc->WorkingInfo.Marking[1].sWaitAcc, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[1]->SetMarkShiftData(1);
+			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkShiftData(1);
 			break;
 		case _ItemInx::_MkFnlPosRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingPos = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_POS"), pDoc->WorkingInfo.Marking[1].sMarkingPos, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkFnlVelRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingVel = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_VEL"), pDoc->WorkingInfo.Marking[1].sMarkingVel, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkFnlAccRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingAcc = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_ACC"), pDoc->WorkingInfo.Marking[1].sMarkingAcc, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkFnlTqRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingToq = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_TOQ"), pDoc->WorkingInfo.Marking[1].sMarkingToq, PATH_WORKING_INFO);
-			pView->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkHgtPosX1Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosX[0] = CharToString(SockData.strData);

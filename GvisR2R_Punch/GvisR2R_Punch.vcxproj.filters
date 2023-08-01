@@ -402,6 +402,9 @@
     <ClInclude Include="ManagerProcedure.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ManagerPunch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GvisR2R_Punch.cpp">
@@ -705,6 +708,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ManagerProcedure.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerPunch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

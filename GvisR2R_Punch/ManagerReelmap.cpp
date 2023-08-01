@@ -190,6 +190,7 @@ END_MESSAGE_MAP()
 void CManagerReelmap::Init()
 {
 	m_pFile = new CMyFile();
+
 	InitPcr();
 	LoadMstInfo();
 	InitReelmap();

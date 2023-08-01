@@ -4,7 +4,7 @@
 #include "Process/ThreadTask.h"
 #include "Global/MyData.h"
 
-#define MAX_THREAD_MGR_PROC			6
+#define MAX_THREAD_MGR_PROC			4
 
 // CManagerProcedure
 
@@ -76,9 +76,9 @@ public:
 	BOOL SetSerialMkInfo(int nSerial, BOOL bDumy = FALSE);
 	void SetFixPcs(int nSerial);
 	void SwMenu01DispDefImg(BOOL bOn);
-	BOOL ChkCollision();
-	BOOL ChkCollision(int nAxisId, double dTgtPosX);
-	BOOL ChkCollision(int nAxisId, double dTgtPosX, double dTgtNextPos);
+	//BOOL ChkCollision();
+	//BOOL ChkCollision(int nAxisId, double dTgtPosX);
+	//BOOL ChkCollision(int nAxisId, double dTgtPosX, double dTgtNextPos);
 	void DoMark0Its();
 	void DoMark1Its();
 	void DoMark0();
@@ -100,16 +100,16 @@ public:
 	BOOL IsAoiLdRun();
 	void ResetWinker(); // 0:Ready, 1:Reset, 2:Run, 3:Stop
 	BOOL IsVerify();
-	BOOL IsReview();
-	BOOL IsReview0();
-	BOOL IsReview1();
+	//BOOL IsReview();
+	//BOOL IsReview0();
+	//BOOL IsReview1();
 	int GetVsBufLastSerial();
 	int GetVsUpBufLastSerial();
 	int GetVsDnBufLastSerial();
 	double GetMkFdLen();
-	BOOL IsVs();
-	BOOL IsVsUp();
-	BOOL IsVsDn();
+	//BOOL IsVs();
+	//BOOL IsVsUp();
+	//BOOL IsVsDn();
 	void SetDummyUp();
 	void SetDummyDn();
 	BOOL MakeDummyUp(int nErr);
@@ -122,12 +122,12 @@ public:
 	int GetAoiUpDummyShot();
 	int GetAoiDnDummyShot();
 	void SetAoiDummyShot(int nAoi, int nDummy);
-	BOOL IsNoMk();
-	BOOL IsNoMk0();
-	BOOL IsNoMk1();
+	//BOOL IsNoMk();
+	//BOOL IsNoMk0();
+	//BOOL IsNoMk1();
 	void SetListBuf();	// pDoc->m_ListBuf에 버퍼 폴더의 시리얼번호를 가지고 재갱신함.
-	BOOL SetMkIts(BOOL bRun = TRUE);	// Marking Start
-	BOOL SetMk(BOOL bRun = TRUE);
+	//BOOL SetMkIts(BOOL bRun = TRUE);	// Marking Start
+	//BOOL SetMk(BOOL bRun = TRUE);
 	int GetTotDefPcs(int nSerial);
 	void UpdateYield();
 	BOOL ChkLotCutPos();
@@ -206,8 +206,8 @@ public:
 	BOOL ChkLotEndDn(int nSerial);
 	BOOL MoveAlign0(int nPos);
 	BOOL MoveAlign1(int nPos);
-	BOOL FourPointAlign0(int nPos);
-	BOOL FourPointAlign1(int nPos);
+	BOOL FourPointAlign0(int nPos, BOOL bDraw = FALSE);
+	BOOL FourPointAlign1(int nPos, BOOL bDraw = FALSE);
 	void MoveInitPos0(BOOL bWait = TRUE);
 	void MoveInitPos1(BOOL bWait = TRUE);
 	void MoveMkEdPos1();
@@ -263,7 +263,7 @@ public:
 	BOOL m_bTHREAD_UPDATE_YIELD_INNER_UP, m_bTHREAD_UPDATE_YIELD_INNER_ALLUP;
 	BOOL m_bTHREAD_UPDATE_YIELD_INNER_DN, m_bTHREAD_UPDATE_YIELD_INNER_ALLDN;
 
-	BOOL m_bTHREAD_MK[4];	// [0] Auto-Left, [1] Auto-Right, [2] Manual-Left, [3] Manual-Right
+	//BOOL m_bTHREAD_MK[4];	// [0] Auto-Left, [1] Auto-Right, [2] Manual-Left, [3] Manual-Right
 	BOOL m_bTHREAD_DISP_DEF;
 	BOOL m_bTHREAD_SHIFT2MK;// [2];		// [0] : Cam0, [1] : Cam1
 
@@ -272,8 +272,8 @@ public:
 	int	m_nStepTHREAD_DISP_DEF_INNER;
 	int	m_nSnTHREAD_UPDATAE_YIELD;
 
-	static UINT ThreadProc0(LPVOID lpContext); // DoMark0(), DoMark1()
-	static UINT ThreadProc1(LPVOID lpContext); // ChkCollision()
+	//static UINT ThreadProc0(LPVOID lpContext); // DoMark0(), DoMark1()
+	//static UINT ThreadProc1(LPVOID lpContext); // ChkCollision()
 	static UINT ThreadProc2(LPVOID lpContext); // DispDefImg()
 	static UINT ThreadProc3(LPVOID lpContext); // GetCurrentInfoSignal()
 	static UINT ThreadProc4(LPVOID lpContext); // DispDefImgInner()
@@ -292,47 +292,47 @@ public:
 	int m_nRtnMyMsgBoxIdx;
 
 	int m_nPrevStepAuto, m_nPrevMkStAuto;
-	int m_nStepMk[4], m_nMkPcs[4]; 	// [0] Auto-Left, [1] Auto-Right, [2] Manual-Left, [3] Manual-Right  ; m_nStepMk(마킹Sequence), nMkOrderIdx(마킹한 count)
-	int m_nMkStrip[2][4]; // [nCam][nStrip] - [좌/우][] : 스트립에 펀칭한 피스 수 count
+	//int m_nStepMk[4], m_nMkPcs[4]; 	// [0] Auto-Left, [1] Auto-Right, [2] Manual-Left, [3] Manual-Right  ; m_nStepMk(마킹Sequence), nMkOrderIdx(마킹한 count)
+	//int m_nMkStrip[2][4]; // [nCam][nStrip] - [좌/우][] : 스트립에 펀칭한 피스 수 count
 	int m_nErrCnt;
 	int m_nDebugStep;
 	CString m_sFixMsg[2]; //[0]:up , [1]:dn
 
 	CString m_sPrevMyMsg;
 	CString m_sTick, m_sDispTime;
-	DWORD m_dwSetDlySt[10], m_dwSetDlyEd[10];
-	DWORD m_dwSetDlySt0[10], m_dwSetDlyEd0[10];
-	DWORD m_dwSetDlySt1[10], m_dwSetDlyEd1[10];
+	//DWORD m_dwSetDlySt[10], m_dwSetDlyEd[10];
+	//DWORD m_dwSetDlySt0[10], m_dwSetDlyEd0[10];
+	//DWORD m_dwSetDlySt1[10], m_dwSetDlyEd1[10];
 
 	double m_dTotVel, m_dPartVel;
 	BOOL m_bTIM_CAMMASTER_UPDATE;
 	CString m_sMyMsg; int m_nTypeMyMsg;
 	int m_nVsBufLastSerial[2];
 
-	int m_nStepElecChk;
+	//int m_nStepElecChk;
 	BOOL m_bStopFeeding;
 	BOOL m_bChkLightErr;
 
-	int m_nTotMk[2], m_nCurMk[2]; // [0]: 좌 MK, [1]: 우 MK
-	int m_nPrevTotMk[2], m_nPrevCurMk[2]; // [0]: 좌 MK, [1]: 우 MK
+	//int m_nTotMk[2], m_nCurMk[2]; // [0]: 좌 MK, [1]: 우 MK
+	//int m_nPrevTotMk[2], m_nPrevCurMk[2]; // [0]: 좌 MK, [1]: 우 MK
 
 	double m_dElecChkVal;
 	BOOL m_bContEngraveF;
 
 	int m_nLotEndSerial;
 
-	BOOL m_bCam, m_bReview;
-	double m_dEnc[MAX_AXIS], m_dTarget[MAX_AXIS];
-	double m_dNextTarget[MAX_AXIS];
+	//BOOL m_bCam, m_bReview;
+	//double m_dEnc[MAX_AXIS], m_dTarget[MAX_AXIS];
+	//double m_dNextTarget[MAX_AXIS];
 	int m_nSelRmap, m_nSelRmapInner;
 	int m_nStepAuto;
 
 	int m_nStop;
 	BOOL m_bReMk;
-	BOOL m_bProbDn[2]; // 좌/우 .
+	//BOOL m_bProbDn[2]; // 좌/우 .
 
 	// Auto Sequence
-	BOOL m_bAuto, m_bManual, m_bOneCycle;
+	//BOOL m_bAuto, m_bManual, m_bOneCycle;
 	BOOL m_bMkTmpStop, m_bAoiLdRun, m_bAoiLdRunF;
 	int	m_nStepTHREAD_DISP_DEF;
 
@@ -347,7 +347,7 @@ public:
 	int m_nRstNum;
 
 	BOOL m_bBufHomeDone, m_bReadyDone;
-	BOOL m_bCollision[2], m_bPriority[4];
+	//BOOL m_bCollision[2], m_bPriority[4];
 	BOOL m_bEngBufHomeDone;
 
 	unsigned long m_Flag;
@@ -358,9 +358,9 @@ public:
 	BOOL m_bReAlign[2][4]; // [nCam][nPos] 
 	BOOL m_bSkipAlign[2][4]; // [nCam][nPos] 
 
-	BOOL m_bDoMk[2];			// [nCam] : TRUE(Punching), FALSE(Stop Punching)
-	BOOL m_bDoneMk[2];			// [nCam] : TRUE(Punching 완료), FALSE(Punching 미완료)
-	BOOL m_bReMark[2];			// [nCam] : TRUE(Punching 다시시작), FALSE(pass)
+	//BOOL m_bDoMk[2];			// [nCam] : TRUE(Punching), FALSE(Stop Punching)
+	//BOOL m_bDoneMk[2];			// [nCam] : TRUE(Punching 완료), FALSE(Punching 미완료)
+	//BOOL m_bReMark[2];			// [nCam] : TRUE(Punching 다시시작), FALSE(pass)
 
 	int m_nMonAlmF, m_nClrAlmF;
 	BOOL m_bLotEnd, m_bLastProc, m_bLastProcFromUp, m_bLastProcFromEng;
@@ -384,7 +384,7 @@ public:
 
 	BOOL m_bShowMyMsg;
 
-	BOOL m_bRejectDone[2][MAX_STRIP_NUM]; // Shot[2], Strip[4] - [좌/우][] : 스트립에 펀칭한 피스 수 count가 스트립 폐기 설정수 완료 여부 
+	//BOOL m_bRejectDone[2][MAX_STRIP_NUM]; // Shot[2], Strip[4] - [좌/우][] : 스트립에 펀칭한 피스 수 count가 스트립 폐기 설정수 완료 여부 
 
 	CString m_sDispSts[2];
 
@@ -402,8 +402,8 @@ public:
 	BOOL m_bTHREAD_UPDATAE_YIELD[2];		// [0] : Cam0, [1] : Cam1
 	int	m_nSerialTHREAD_UPDATAE_YIELD[2];	// [0] : Cam0, [1] : Cam1
 
-	void SetPriority();
-	void ResetPriority();
+	//void SetPriority();
+	//void ResetPriority();
 	void DelOverLotEndSerialUp(int nSerial);
 	void DelOverLotEndSerialDn(int nSerial);
 

@@ -667,7 +667,7 @@ void CDlgMenu01::InitMkInfo()
 void CDlgMenu01::SelDisp()
 {
 #ifdef USE_VISION
-	if(!pView->m_pVision[0] || !pView->m_pVision[1])
+	if(!pView->m_mgrPunch->m_pVision[0] || !pView->m_mgrPunch->m_pVision[1])
 		return;
 #endif
 
@@ -712,12 +712,12 @@ void CDlgMenu01::SelDisp()
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
 #endif
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
 #endif
 
 			switch(nIdxMkInfo)
@@ -750,23 +750,23 @@ void CDlgMenu01::SelDisp()
 
 // 			hW = NULL;
 // 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-// 			pView->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
+// 			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
 // 
 // 			hW = NULL;
 // 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-// 			pView->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
+// 			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
 
 
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_pVision[1]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[1]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
 #endif
 
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_pVision[1]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[1]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
 #endif
 		}
 	}
@@ -830,22 +830,22 @@ void CDlgMenu01::SelDisp()
 // 			{
 // 				hW = NULL;
 // 				GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-// 				pView->m_pVision[1]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
+// 				pView->m_mgrPunch->m_pVision[1]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
 // 
 // 				hW = NULL;
 // 				GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-// 				pView->m_pVision[1]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
+// 				pView->m_mgrPunch->m_pVision[1]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
 // 			}
 
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
 #endif
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
 #endif
 		}
 
@@ -856,7 +856,7 @@ void CDlgMenu01::SelDisp()
 void CDlgMenu01::InitMkInfoUp()
 {
 #ifdef USE_VISION
-	if(!pView->m_pVision[0])
+	if(!pView->m_mgrPunch->m_pVision[0])
 		return;
 #else
 	return;
@@ -903,12 +903,12 @@ void CDlgMenu01::InitMkInfoUp()
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_pVision[0]->SelDispCad(hW, rt, nIdxMkInfo);
-			pView->m_pVision[0]->SetOvrCadFontSz(nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->SelDispCad(hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->SetOvrCadFontSz(nIdxMkInfo);
 
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-			pView->m_pVision[0]->SelDispDef(hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->SelDispDef(hW, rt, nIdxMkInfo);
 #endif
 		}
 	}
@@ -972,12 +972,12 @@ void CDlgMenu01::InitMkInfoUp()
 #ifdef USE_VISION
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-			pView->m_pVision[0]->SelDispCad(hW, rt, nIdxMkInfo);
-			pView->m_pVision[0]->SetOvrCadFontSz(nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->SelDispCad(hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->SetOvrCadFontSz(nIdxMkInfo);
 
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-			pView->m_pVision[0]->SelDispDef(hW, rt, nIdxMkInfo);
+			pView->m_mgrPunch->m_pVision[0]->SelDispDef(hW, rt, nIdxMkInfo);
 #endif
  		}
 	}
@@ -991,7 +991,7 @@ void CDlgMenu01::InitMkInfoDn()
 		return;
 
 #ifdef USE_VISION
-	if(!pView->m_pVision[1])
+	if(!pView->m_mgrPunch->m_pVision[1])
 		return;
 #else
 	return;
@@ -1035,12 +1035,12 @@ void CDlgMenu01::InitMkInfoDn()
 		hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-		pView->m_pVision[1]->SelDispCad(hW, rt, nIdxMkInfo);
-		pView->m_pVision[1]->SetOvrCadFontSz(nIdxMkInfo);
+		pView->m_mgrPunch->m_pVision[1]->SelDispCad(hW, rt, nIdxMkInfo);
+		pView->m_mgrPunch->m_pVision[1]->SetOvrCadFontSz(nIdxMkInfo);
 
 		hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-		pView->m_pVision[1]->SelDispDef(hW, rt, nIdxMkInfo);
+		pView->m_mgrPunch->m_pVision[1]->SelDispDef(hW, rt, nIdxMkInfo);
 #endif
 	}
 
@@ -1049,7 +1049,7 @@ void CDlgMenu01::InitMkInfoDn()
 void CDlgMenu01::FreeMkInfoUp()
 {
 #ifdef USE_VISION
-	if (!pView->m_pVision[0])
+	if (!pView->m_mgrPunch->m_pVision[0])
 		return;
 #else
 	return;
@@ -1092,11 +1092,11 @@ void CDlgMenu01::FreeMkInfoUp()
 #ifdef USE_VISION
 		hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-		pView->m_pVision[0]->FreeDispCad(hW, rt, nIdxMkInfo);
+		pView->m_mgrPunch->m_pVision[0]->FreeDispCad(hW, rt, nIdxMkInfo);
 
 		hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-		pView->m_pVision[0]->FreeDispDef(hW, rt, nIdxMkInfo);
+		pView->m_mgrPunch->m_pVision[0]->FreeDispDef(hW, rt, nIdxMkInfo);
 #endif
 	}
 
@@ -1105,7 +1105,7 @@ void CDlgMenu01::FreeMkInfoUp()
 void CDlgMenu01::FreeMkInfoDn()
 {
 #ifdef USE_VISION
-	if (!pView->m_pVision[1])
+	if (!pView->m_mgrPunch->m_pVision[1])
 		return;
 #else
 	return;
@@ -1148,11 +1148,11 @@ void CDlgMenu01::FreeMkInfoDn()
 #ifdef USE_VISION
 		hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-		pView->m_pVision[1]->FreeDispCad(hW, rt, nIdxMkInfo);
+		pView->m_mgrPunch->m_pVision[1]->FreeDispCad(hW, rt, nIdxMkInfo);
 
 		hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-		pView->m_pVision[1]->FreeDispDef(hW, rt, nIdxMkInfo);
+		pView->m_mgrPunch->m_pVision[1]->FreeDispDef(hW, rt, nIdxMkInfo);
 #endif
 	}
 
@@ -1255,18 +1255,18 @@ void CDlgMenu01::InitCadImg()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
-		//pView->m_pVision[0]->InitDispCad();
-		pView->m_pVision[0]->InitCADBuf(0); // Top Side
+		//pView->m_mgrPunch->m_pVision[0]->InitDispCad();
+		pView->m_mgrPunch->m_pVision[0]->InitCADBuf(0); // Top Side
 	}
 
 	if(bDualTest)
 	{
-		if(pView->m_pVision[1])
+		if(pView->m_mgrPunch->m_pVision[1])
 		{
-			//pView->m_pVision[1]->InitDispCad();
-			pView->m_pVision[1]->InitCADBuf(1); // Bottom Side
+			//pView->m_mgrPunch->m_pVision[1]->InitDispCad();
+			pView->m_mgrPunch->m_pVision[1]->InitCADBuf(1); // Bottom Side
 		}
 	}
 #endif
@@ -1275,10 +1275,10 @@ void CDlgMenu01::InitCadImg()
 void CDlgMenu01::InitCadImgUp()
 {
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
-		//pView->m_pVision[0]->InitDispCad();
-		pView->m_pVision[0]->InitCADBuf(0);
+		//pView->m_mgrPunch->m_pVision[0]->InitDispCad();
+		pView->m_mgrPunch->m_pVision[0]->InitCADBuf(0);
 	}
 #endif
 }
@@ -1290,10 +1290,10 @@ void CDlgMenu01::InitCadImgDn()
 		return;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
-		//pView->m_pVision[1]->InitDispCad();
-		pView->m_pVision[1]->InitCADBuf(1);
+		//pView->m_mgrPunch->m_pVision[1]->InitDispCad();
+		pView->m_mgrPunch->m_pVision[1]->InitCADBuf(1);
 	}
 #endif
 }
@@ -1303,13 +1303,13 @@ void CDlgMenu01::InitDefImg()
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
-		pView->m_pVision[0]->InitDispDef();
+	if(pView->m_mgrPunch->m_pVision[0])
+		pView->m_mgrPunch->m_pVision[0]->InitDispDef();
 
 	if(bDualTest)
 	{
-		if(pView->m_pVision[1])
-			pView->m_pVision[1]->InitDispDef();
+		if(pView->m_mgrPunch->m_pVision[1])
+			pView->m_mgrPunch->m_pVision[1]->InitDispDef();
 	}
 #endif
 }
@@ -1317,8 +1317,8 @@ void CDlgMenu01::InitDefImg()
 void CDlgMenu01::InitDefImgUp()
 {
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
-		pView->m_pVision[0]->InitDispDef();
+	if(pView->m_mgrPunch->m_pVision[0])
+		pView->m_mgrPunch->m_pVision[0]->InitDispDef();
 #endif
 }
 
@@ -1329,8 +1329,8 @@ void CDlgMenu01::InitDefImgDn()
 		return;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[1])
-		pView->m_pVision[1]->InitDispDef();
+	if(pView->m_mgrPunch->m_pVision[1])
+		pView->m_mgrPunch->m_pVision[1]->InitDispDef();
 #endif
 }
 
@@ -1383,13 +1383,13 @@ void CDlgMenu01::ClrCadImg()
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
-		pView->m_pVision[0]->ClrDispCad();
+	if(pView->m_mgrPunch->m_pVision[0])
+		pView->m_mgrPunch->m_pVision[0]->ClrDispCad();
 
 	if(bDualTest)
 	{
-		if(pView->m_pVision[1])
-			pView->m_pVision[1]->ClrDispCad();
+		if(pView->m_mgrPunch->m_pVision[1])
+			pView->m_mgrPunch->m_pVision[1]->ClrDispCad();
 	}
 #endif
 }
@@ -1397,8 +1397,8 @@ void CDlgMenu01::ClrCadImg()
 void CDlgMenu01::ClrCadImgUp()
 {
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
-		pView->m_pVision[0]->ClrDispCad();
+	if(pView->m_mgrPunch->m_pVision[0])
+		pView->m_mgrPunch->m_pVision[0]->ClrDispCad();
 #endif
 }
 
@@ -1409,8 +1409,8 @@ void CDlgMenu01::ClrCadImgDn()
 		return;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[1])
-		pView->m_pVision[1]->ClrDispCad();
+	if(pView->m_mgrPunch->m_pVision[1])
+		pView->m_mgrPunch->m_pVision[1]->ClrDispCad();
 #endif
 }
 
@@ -1419,13 +1419,13 @@ void CDlgMenu01::ClrDefImg()
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
-		pView->m_pVision[0]->ClrDispDef();
+	if(pView->m_mgrPunch->m_pVision[0])
+		pView->m_mgrPunch->m_pVision[0]->ClrDispDef();
 
 	if(bDualTest)
 	{
-		if(pView->m_pVision[1])
-			pView->m_pVision[1]->ClrDispDef();
+		if(pView->m_mgrPunch->m_pVision[1])
+			pView->m_mgrPunch->m_pVision[1]->ClrDispDef();
 	}
 #endif
 }
@@ -1433,8 +1433,8 @@ void CDlgMenu01::ClrDefImg()
 void CDlgMenu01::ClrDefImgUp()
 {
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
-		pView->m_pVision[0]->ClrDispDef();
+	if(pView->m_mgrPunch->m_pVision[0])
+		pView->m_mgrPunch->m_pVision[0]->ClrDispDef();
 #endif
 }
 
@@ -1445,8 +1445,8 @@ void CDlgMenu01::ClrDefImgDn()
 		return;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[1])
-		pView->m_pVision[1]->ClrDispDef();
+	if(pView->m_mgrPunch->m_pVision[1])
+		pView->m_mgrPunch->m_pVision[1]->ClrDispDef();
 #endif
 }
 
@@ -1485,7 +1485,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 #ifdef USE_VISION
 	if(bDualTest)
 	{
-		if(pView->m_pVision[0])
+		if(pView->m_mgrPunch->m_pVision[0])
 		{
  			int nIdxMkInfo = (m_nIdxMkInfo[0] < MENU01_STC_DEFINFO_HARF) ? m_nIdxMkInfo[0] : (MENU01_STC_DEFINFO_HARF-1);	
 			//int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
@@ -1504,10 +1504,10 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 							{
 								if(m_nIdxMkInfo[0] >= MENU01_STC_DEFINFO_HARF)
 									ShiftDefInfoUp();
- 								pView->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
-								pView->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
+ 								pView->m_mgrPunch->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
+								pView->m_mgrPunch->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
 								nDefImg = pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]]; // 화면에 표시할 불량이미지 인덱스
-								pView->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
+								pView->m_mgrPunch->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
 								ShowDefInfoUp(nIdxMkInfo); // 화면의 IDC 인덱스
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
@@ -1528,7 +1528,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 	}
 	else
 	{
-		if(pView->m_pVision[0])
+		if(pView->m_mgrPunch->m_pVision[0])
 		{
  			int nIdxMkInfo = (m_nIdxMkInfo[0] < MENU01_STC_DEFINFO_HARF*2) ? m_nIdxMkInfo[0] : (MENU01_STC_DEFINFO_HARF*2-1);	
 	//		int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
@@ -1547,10 +1547,10 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 							{
 								if(m_nIdxMkInfo[0] >= MENU01_STC_DEFINFO_HARF*2)
 									ShiftDefInfoUp();
- 								pView->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
-								pView->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
+ 								pView->m_mgrPunch->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
+								pView->m_mgrPunch->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
 								nDefImg = pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]];
-								pView->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
+								pView->m_mgrPunch->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
 								ShowDefInfoUp(nIdxMkInfo);
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg);
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
@@ -1586,7 +1586,7 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 	}
 
 #ifdef USE_VISION
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
  		int nIdxMkInfo = (m_nIdxMkInfo[1] < MENU01_STC_DEFINFO_HARF) ? m_nIdxMkInfo[1] : (MENU01_STC_DEFINFO_HARF-1);	
 //		int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
@@ -1605,10 +1605,10 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 						{
  							if(m_nIdxMkInfo[1] >= MENU01_STC_DEFINFO_HARF)
 								ShiftDefInfoDn();
- 							pView->m_pVision[1]->ShowDispCad(nIdxMkInfo, nSerial, 1, m_nIdxDef[1]);
-							pView->m_pVision[1]->ShowOvrCad(nIdxMkInfo, nSerial);
+ 							pView->m_mgrPunch->m_pVision[1]->ShowDispCad(nIdxMkInfo, nSerial, 1, m_nIdxDef[1]);
+							pView->m_mgrPunch->m_pVision[1]->ShowOvrCad(nIdxMkInfo, nSerial);
 							nDefImg = pView->m_mgrReelmap->m_pPcr[1][nIdx]->m_pImg[m_nIdxDef[1]];
-							pView->m_pVision[1]->ShowDispDef(nIdxMkInfo, nSerial, 1, nDefImg);
+							pView->m_mgrPunch->m_pVision[1]->ShowDispDef(nIdxMkInfo, nSerial, 1, nDefImg);
 							ShowDefInfoDn(nIdxMkInfo);
 							WriteDefInfoDn(nSerial, nIdxMkInfo, m_nIdxDef[1], nDefImg);
 							SaveCadImgDn(nSerial, nIdxMkInfo, nDefImg);
@@ -1632,10 +1632,10 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 void CDlgMenu01::ShiftDefInfoUp()
 {
 #ifdef USE_VISION
-	if(!pView->m_pVision[0])
+	if(!pView->m_mgrPunch->m_pVision[0])
 		return;
 
-	pView->m_pVision[0]->ShiftDisp();
+	pView->m_mgrPunch->m_pVision[0]->ShiftDisp();
 
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
@@ -1672,10 +1672,10 @@ void CDlgMenu01::ShiftDefInfoDn()
 		return;
 
 #ifdef USE_VISION
-	if(!pView->m_pVision[1])
+	if(!pView->m_mgrPunch->m_pVision[1])
 		return;
 
-	pView->m_pVision[1]->ShiftDisp();
+	pView->m_mgrPunch->m_pVision[1]->ShiftDisp();
 
 	CString str;
 	COLORREF rgbDef;
@@ -1802,8 +1802,8 @@ void CDlgMenu01::SaveCadImgUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSer
 		nSerial,
 		nIdxImg);
 
-	if(pView->m_pVision[0])
-		pView->m_pVision[0]->SaveCadImg(nIdxMkInfo, sPath);
+	if(pView->m_mgrPunch->m_pVision[0])
+		pView->m_mgrPunch->m_pVision[0]->SaveCadImg(nIdxMkInfo, sPath);
 }
 
 void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
@@ -1818,8 +1818,8 @@ void CDlgMenu01::SaveCadImgDn(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSer
 		nSerial,
 		nIdxImg);
 
-	if (pView->m_pVision[1])
-		pView->m_pVision[1]->SaveCadImg(nIdxMkInfo, sPath);
+	if (pView->m_mgrPunch->m_pVision[1])
+		pView->m_mgrPunch->m_pVision[1]->SaveCadImg(nIdxMkInfo, sPath);
 }
 
 BOOL CDlgMenu01::SaveDefImgPosUp(int nSerial, int nIdxMkInfo, int nIdxImg) // (nSerial, 화면의 IDC 인덱스, 불량이미지 인덱스)
@@ -2853,9 +2853,9 @@ void CDlgMenu01::DispStTime()
 #ifdef USE_ENGRAVE
 	if (pView)
 	{
-		if (pView->m_pEngrave)
+		if (pView->m_mgrPunch->m_pEngrave)
 		{
-			pView->m_pEngrave->SetStTime();
+			pView->m_mgrPunch->m_pEngrave->SetStTime();
 		}
 	}
 #endif
@@ -2955,9 +2955,9 @@ void CDlgMenu01::DispRunTime()
 #ifdef USE_ENGRAVE
 			if (pView)
 			{
-				if (pView->m_pEngrave)
+				if (pView->m_mgrPunch->m_pEngrave)
 				{
-					pView->m_pEngrave->SetRunTime();
+					pView->m_mgrPunch->m_pEngrave->SetRunTime();
 				}
 			}
 #endif
@@ -3000,9 +3000,9 @@ void CDlgMenu01::DispEdTime()
 #ifdef USE_ENGRAVE
 	if (pView)
 	{
-		if (pView->m_pEngrave)
+		if (pView->m_mgrPunch->m_pEngrave)
 		{
-			pView->m_pEngrave->SetEdTime();
+			pView->m_mgrPunch->m_pEngrave->SetEdTime();
 		}
 	}
 #endif
@@ -3146,8 +3146,8 @@ void CDlgMenu01::ResetSerial()
 		myBtn[6].SetCheck(FALSE);
 		m_bLotEnd = FALSE;
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB440180"), 0);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+		if(pView)
+			pView->MpeWrite(_T("MB440180"), 0);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 	}
 
@@ -3156,8 +3156,8 @@ void CDlgMenu01::ResetSerial()
 		pView->m_mgrProcedure->m_bReMk = FALSE;
 		myBtn[4].SetCheck(FALSE);
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB440182"), 0);			// 재마킹(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+		if(pView)
+			pView->MpeWrite(_T("MB440182"), 0);			// 재마킹(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 	}
 }
@@ -3328,22 +3328,22 @@ void CDlgMenu01::UpdateWorking()
 	pDoc->SetMkMenu01(_T("Info"), _T("DoneLengthEngrave"), sVal);
 
 #ifdef USE_MPE
-	if(pView->m_pMpe)
+	if(pView)
 	{
-		pView->m_pMpe->Write(_T("ML45072"), (long)dFdTotLen);	// 마킹부 진행량(mm단위로 피딩 후에 PC가 기록함) - 20141104
+		pView->MpeWrite(_T("ML45072"), (long)dFdTotLen);	// 마킹부 진행량(mm단위로 피딩 후에 PC가 기록함) - 20141104
 		if(bDualTest)
-			pView->m_pMpe->Write(_T("ML45074"), (long)(pView->GetAoiDnFdLen()));	// AOI(하) 진행량(mm단위로 피딩 후에 PC가 기록함) - 20141104
-		pView->m_pMpe->Write(_T("ML45076"), (long)(pView->GetAoiUpFdLen()));	// AOI(상) 진행량(mm단위로 피딩 후에 PC가 기록함) - 20141104
-		pView->m_pMpe->Write(_T("ML45080"), (long)(pView->GetEngraveFdLen()));	// 각인부 진행량(mm단위로 피딩 후에 PC가 기록함)
+			pView->MpeWrite(_T("ML45074"), (long)(pView->GetAoiDnFdLen()));	// AOI(하) 진행량(mm단위로 피딩 후에 PC가 기록함) - 20141104
+		pView->MpeWrite(_T("ML45076"), (long)(pView->GetAoiUpFdLen()));	// AOI(상) 진행량(mm단위로 피딩 후에 PC가 기록함) - 20141104
+		pView->MpeWrite(_T("ML45080"), (long)(pView->GetEngraveFdLen()));	// 각인부 진행량(mm단위로 피딩 후에 PC가 기록함)
 	}
 #endif
 
 //#ifdef USE_ENGRAVE
 //	if (pView)
 //	{
-//		if (pView->m_pEngrave)
+//		if (pView->m_mgrPunch->m_pEngrave)
 //		{
-//			pView->m_pEngrave->UpdateWorking();
+//			pView->m_mgrPunch->m_pEngrave->UpdateWorking();
 //		}
 //	}
 //#endif
@@ -4099,8 +4099,8 @@ void CDlgMenu01::LotEnd()
 		m_bLotEnd = FALSE;
 		myBtn[6].SetCheck(FALSE);
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB440180"), 0);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+		if(pView)
+			pView->MpeWrite(_T("MB440180"), 0);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 	}
 
@@ -4109,8 +4109,8 @@ void CDlgMenu01::LotEnd()
 		pView->m_mgrProcedure->m_bReMk = FALSE;
 		myBtn[4].SetCheck(FALSE);
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB440182"), 0);			// 재마킹(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+		if(pView)
+			pView->MpeWrite(_T("MB440182"), 0);			// 재마킹(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 	}
 }
@@ -4146,9 +4146,9 @@ void CDlgMenu01::OnChkEjectBuffer()
 			myBtn[3].SetCheck(FALSE);
 		else
 		{
-			pView->m_pMpe->Write(_T("MB44019D"), 0);			// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
-			pView->m_pMpe->Write(_T("MB440185"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-			pView->m_pMpe->Write(_T("MB440186"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+			pView->MpeWrite(_T("MB44019D"), 0);			// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
+			pView->MpeWrite(_T("MB440185"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+			pView->MpeWrite(_T("MB440186"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 
 			if(MODE_INNER != pDoc->GetTestMode())
 			{ 
@@ -4164,8 +4164,8 @@ void CDlgMenu01::OnChkEjectBuffer()
 						m_bLastProcFromUp = FALSE;
 						m_bLastProc = TRUE;
 #ifdef USE_MPE 
-						pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-						//pView->m_pMpe->Write(_T("MB440181"), 1);					// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+						//pView->MpeWrite(_T("MB440181"), 1);					// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 						sLastShot = ShowKeypad1();
 					}
@@ -4175,14 +4175,14 @@ void CDlgMenu01::OnChkEjectBuffer()
 					m_bLastProcFromUp = TRUE;
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
-					pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-					//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-					//pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
+					pView->MpeWrite(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					//pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+					//pView->MpeWrite(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 					sLastShot = ShowKeypad1();
 #ifdef USE_MPE
-					pView->m_pMpe->Write(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
-					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
+					pView->MpeWrite(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
+					pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
 
 #endif
 				}
@@ -4203,8 +4203,8 @@ void CDlgMenu01::OnChkEjectBuffer()
 							m_bLastProcFromUp = FALSE;
 							m_bLastProc = TRUE;
 #ifdef USE_MPE 
-							pView->m_pMpe->Write(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-							//pView->m_pMpe->Write(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+							pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+							//pView->MpeWrite(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 							sLastShot = ShowKeypad1();
 						}
@@ -4214,9 +4214,9 @@ void CDlgMenu01::OnChkEjectBuffer()
 						m_bLastProcFromUp = TRUE;
 						m_bLastProc = TRUE;
 #ifdef USE_MPE
-						pView->m_pMpe->Write(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-						//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-						//pView->m_pMpe->Write(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
+						pView->MpeWrite(_T("MB440185"), 1);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+						//pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						//pView->MpeWrite(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 						sLastShot = ShowKeypad1();
 					}
@@ -4226,16 +4226,16 @@ void CDlgMenu01::OnChkEjectBuffer()
 					m_bLastProcFromEng = TRUE;
 					m_bLastProc = TRUE;
 #ifdef USE_MPE
-					pView->m_pMpe->Write(_T("MB44019D"), 1);				// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
-					//pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
-					pView->m_pMpe->Write(_T("MB440185"), 0);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-					pView->m_pMpe->Write(_T("MB440186"), 0);				// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					pView->MpeWrite(_T("MB44019D"), 1);				// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
+					//pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
+					pView->MpeWrite(_T("MB440185"), 0);				// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					pView->MpeWrite(_T("MB440186"), 0);				// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 #endif
 
 					sLastShot = ShowKeypad1(_T("각인부 Last Shot 번호 입력"));
 #ifdef USE_MPE
-					pView->m_pMpe->Write(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
-					pView->m_pMpe->Write(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
+					pView->MpeWrite(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
+					pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
 
 #endif
 				}
@@ -4274,12 +4274,12 @@ void CDlgMenu01::ResetLastProc()
 	m_bLastProcFromUp = FALSE;
 	m_bLastProcFromEng = FALSE;
 #ifdef USE_MPE
-	if(pView->m_pMpe)
+	if(pView)
 	{
-		pView->m_pMpe->Write(_T("MB44019D"), 0);			// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
-		pView->m_pMpe->Write(_T("MB440185"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-		pView->m_pMpe->Write(_T("MB440186"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
-		pView->m_pMpe->Write(_T("MB440181"), 0);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+		pView->MpeWrite(_T("MB44019D"), 0);			// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)
+		pView->MpeWrite(_T("MB440185"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+		pView->MpeWrite(_T("MB440186"), 0);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+		pView->MpeWrite(_T("MB440181"), 0);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 	}
 #endif
 }
@@ -4403,8 +4403,8 @@ void CDlgMenu01::OnChkLotEnd()
 		{
 			m_bLotEnd = TRUE;
 #ifdef USE_MPE
-			if(pView->m_pMpe)
-				pView->m_pMpe->Write(_T("MB440180"), 1);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+			if(pView)
+				pView->MpeWrite(_T("MB440180"), 1);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 #endif
 		}
 	}
@@ -4574,7 +4574,7 @@ void CDlgMenu01::SetTempStop(BOOL bOn)
 	{
 		myBtn[0].SetCheck(TRUE);
 #ifdef USE_MPE
-		pView->m_pMpe->Write(_T("MB440183"), 1);
+		pView->MpeWrite(_T("MB440183"), 1);
 #endif
 // 		sVal.Format(_T("%.1f"), pView->m_mgrReelmap->m_pReelMap->m_dTempPauseLen * 1000.0);
 //		myStcData[9].SetText(pDoc->WorkingInfo.LastJob.sTempPauseLen);	// 일시정지길이
@@ -4583,7 +4583,7 @@ void CDlgMenu01::SetTempStop(BOOL bOn)
 	{
 		myBtn[0].SetCheck(FALSE);
 #ifdef USE_MPE
-		pView->m_pMpe->Write(_T("MB440183"), 0);
+		pView->MpeWrite(_T("MB440183"), 0);
 #endif
 // 		sVal.Format(_T("%.1f"), pView->m_mgrReelmap->m_pReelMap->m_dTempPauseLen * 1000.0);
 //		myStcData[9].SetText(pDoc->WorkingInfo.LastJob.sTempPauseLen);	// 일시정지길이
@@ -4747,8 +4747,8 @@ void CDlgMenu01::OnChkRemarking()
 		else
 		{
 			pView->m_bReMk = TRUE;
-			if(pView->m_pMpe)
-				pView->m_pMpe->Write(_T("MB440182"), 1);			// 재마킹(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+			if(pView)
+				pView->MpeWrite(_T("MB440182"), 1);			// 재마킹(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 		}
 	}
 	else
@@ -4766,7 +4766,7 @@ void CDlgMenu01::ChkPartialSpd()
 {
 	if(pDoc->Status.bAuto)
 	{
-		if(pView->m_mgrProcedure->IsRun())
+		if(pView->IsRun())
 		{
 			if(pView->m_mgrProcedure->m_nStepAuto >= AT_LP)
 			{
@@ -5566,14 +5566,14 @@ void CDlgMenu01::OnChkTpStop()
 //{
 //	bUse = TRUE;
 //	//pView->IoWrite("MB440183", 1);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-//	pView->m_pMpe->Write(_T("MB440183"), 1);
+//	pView->MpeWrite(_T("MB440183"), 1);
 //	pView->ChkTempStop(TRUE);
 //}
 //else
 //{
 //	bUse = FALSE;
 //	//pView->IoWrite("MB440183", 0);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
-//	pView->m_pMpe->Write(_T("MB440183"), 0);
+//	pView->MpeWrite(_T("MB440183"), 0);
 //	pView->ChkTempStop(FALSE);
 //}
 
@@ -5582,7 +5582,7 @@ Sleep(100);
 
 if (bUse)
 {
-pView->m_pMpe->Write(_T("MB440183"), 1);
+pView->MpeWrite(_T("MB440183"), 1);
 pView->ChkTempStop(TRUE);
 if (!myBtn[0].GetCheck())
 {
@@ -5593,7 +5593,7 @@ myBtn[0].SetCheck(TRUE);
 }
 else
 {
-pView->m_pMpe->Write(_T("MB440183"), 0);
+pView->MpeWrite(_T("MB440183"), 0);
 pView->ChkTempStop(FALSE);
 
 if (myBtn[0].GetCheck())
@@ -5622,7 +5622,7 @@ void CDlgMenu01::OnBnClickedChkTpStop()
 
 	if (bUse)
 	{
-		pView->m_pMpe->Write(_T("MB440183"), 1);
+		pView->MpeWrite(_T("MB440183"), 1);
 		pView->ChkTempStop(TRUE);
 		if (!myBtn[0].GetCheck())
 		{
@@ -5633,7 +5633,7 @@ void CDlgMenu01::OnBnClickedChkTpStop()
 	}
 	else
 	{
-		pView->m_pMpe->Write(_T("MB440183"), 0);
+		pView->MpeWrite(_T("MB440183"), 0);
 		pView->ChkTempStop(FALSE);
 
 		if (myBtn[0].GetCheck())
@@ -5661,7 +5661,7 @@ void CDlgMenu01::ChkTpStop()
 	if (bUse)
 	{
 #ifdef USE_MPE
-		pView->m_pMpe->Write(_T("MB440183"), 1);
+		pView->MpeWrite(_T("MB440183"), 1);
 #endif
 		pView->ChkTempStop(TRUE);
 		if (!myBtn[0].GetCheck())
@@ -5674,7 +5674,7 @@ void CDlgMenu01::ChkTpStop()
 	else
 	{
 #ifdef USE_MPE
-		pView->m_pMpe->Write(_T("MB440183"), 0);
+		pView->MpeWrite(_T("MB440183"), 0);
 #endif
 		pView->ChkTempStop(FALSE);
 
@@ -5691,8 +5691,8 @@ void CDlgMenu01::ChkTpStop()
 		pView->m_mgrReelmap->m_pReelMap->m_bUseTempPause = bUse;
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_pEngrave)
-		pView->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
+	if (pView && pView->m_mgrPunch->m_pEngrave)
+		pView->m_mgrPunch->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
 #endif
 
 	CString sData = bUse ? _T("1") : _T("0");

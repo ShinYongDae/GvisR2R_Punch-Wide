@@ -3135,7 +3135,7 @@ double CVision::CalcCameraPixelSize()
 
 	// 1. Move
 #ifdef USE_IDS
-	if(!pView->m_pMotion || !m_pIds)
+	if(!pView->m_mgrPunch->m_pMotion || !m_pIds)
 	{
 		dVal = 0.0;
 		return dVal;
@@ -3143,7 +3143,7 @@ double CVision::CalcCameraPixelSize()
 #endif
 
 #ifdef USE_CREVIS
-	if(!pView->m_pMotion || !m_pCrevis)
+	if(!pView->m_mgrPunch->m_pMotion || !m_pCrevis)
 	{
 		dVal = 0.0;
 		return dVal;
@@ -3151,7 +3151,7 @@ double CVision::CalcCameraPixelSize()
 #endif
 
 #ifdef USE_IRAYPLE
-	if (!pView->m_pMotion || !m_pIRayple)
+	if (!pView->m_mgrPunch->m_pMotion || !m_pIRayple)
 	{
 		dVal = 0.0;
 		return dVal;
@@ -3159,8 +3159,8 @@ double CVision::CalcCameraPixelSize()
 #endif
 
 	double pTgtPos[2], dCurrX, dCurrY;
-	pTgtPos[1] = pView->m_pMotion->m_dPinPosY[m_nIdx];
-	pTgtPos[0] = pView->m_pMotion->m_dPinPosX[m_nIdx];
+	pTgtPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[m_nIdx];
+	pTgtPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[m_nIdx];
 
 	if(m_nIdx==0)
 	{
@@ -3168,8 +3168,8 @@ double CVision::CalcCameraPixelSize()
 		dCurrY = pView->m_dEnc[AXIS_Y0];
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
-			//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
-			if (!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
+			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3181,9 +3181,9 @@ double CVision::CalcCameraPixelSize()
 			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
 			if(fLen > 0.001)
 			{
-				pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-				//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
-				if (!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
+				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -3197,8 +3197,8 @@ double CVision::CalcCameraPixelSize()
 		dCurrY = pView->m_dEnc[AXIS_Y1];
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
-			//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
-			if (!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
+			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3210,9 +3210,9 @@ double CVision::CalcCameraPixelSize()
 			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
 			if(fLen > 0.001)
 			{
-				pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-				//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
-				if (!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
+				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -3396,14 +3396,14 @@ double CVision::CalcCameraPixelSize()
 	// 3. Move X,Y 1mm
 	if(m_nIdx==0)
 	{
-		pTgtPos[1] = pView->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
-		pTgtPos[0] = pView->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-		dCurrX = pView->m_dEnc[AXIS_X0];	// pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y0];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
+		pTgtPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
+		pTgtPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
+		dCurrX = pView->m_dEnc[AXIS_X0];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y0];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
-			//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
-			if (!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
+			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3415,9 +3415,9 @@ double CVision::CalcCameraPixelSize()
 			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
 			if(fLen > 0.001)
 			{
-				pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-				//if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel/10.0, fAcc/10.0, fAcc/10.0))
-				if (!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel / 10.0, fAcc / 10.0, fAcc / 10.0))
+				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel/10.0, fAcc/10.0, fAcc/10.0))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel / 10.0, fAcc / 10.0, fAcc / 10.0))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -3427,14 +3427,14 @@ double CVision::CalcCameraPixelSize()
 	}
 	else if(m_nIdx==1)
 	{
-		pTgtPos[1] = pView->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
-		pTgtPos[0] = pView->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-		dCurrX = pView->m_dEnc[AXIS_X1];	// pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y1];	// pView->m_pMotion->GetActualPosition(AXIS_Y);
+		pTgtPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
+		pTgtPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
+		dCurrX = pView->m_dEnc[AXIS_X1];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y1];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 		if(dCurrX < -1000.0 || dCurrY < -1000.0)
 		{
-			//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
-			if (!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
+			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3446,9 +3446,9 @@ double CVision::CalcCameraPixelSize()
 			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
 			if(fLen > 0.001)
 			{
-				pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-				//if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel/10.0, fAcc/10.0, fAcc/10.0))
-				if (!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel / 10.0, fAcc / 10.0, fAcc / 10.0))
+				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel/10.0, fAcc/10.0, fAcc/10.0))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel / 10.0, fAcc / 10.0, fAcc / 10.0))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));

@@ -255,9 +255,9 @@ void CReelMap::LoadConfig()
 		m_nBkColor[2] = _tstoi(sVal);
 	}
 
-	//if (pView && pView->m_pDts)
+	//if (pView && pView->m_mgrPunch->m_pDts)
 	//{
-	//	if (pView->m_pDts->IsUseDts())
+	//	if (pView->m_mgrPunch->m_pDts->IsUseDts())
 	//	{
 	//		LoadDefectTableDB();
 	//		return;
@@ -275,13 +275,13 @@ void CReelMap::LoadConfig()
 
 BOOL CReelMap::LoadDefectTableDB()
 {
-	if (pView && pView->m_pDts)
+	if (pView && pView->m_mgrPunch->m_pDts)
 	{
 		COLORREF rgbDef[MAX_PATH];
 		int nDefCode[MAX_PATH], nMaxR, nMaxC;
 		CString sEngN[MAX_PATH], sKorN[MAX_PATH];
 
-		return pView->m_pDts->LoadDefectTable(nDefCode, rgbDef, sKorN, sEngN, &nMaxR, &nMaxC);
+		return pView->m_mgrPunch->m_pDts->LoadDefectTable(nDefCode, rgbDef, sKorN, sEngN, &nMaxR, &nMaxC);
 	}
 
 	return FALSE;

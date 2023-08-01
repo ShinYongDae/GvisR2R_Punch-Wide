@@ -440,61 +440,61 @@ BOOL CDlgMenu02::OnInitDialog()
 	CRect rt[2];
 	void *pMilSys=NULL;
 
-// 	if(pView->m_pVision[0])
+// 	if(pView->m_mgrPunch->m_pVision[0])
 // 	{
 // 		hW[0] = GetDlgItem(IDC_STC_VISION)->GetSafeHwnd();
 // 		GetDlgItem(IDC_STC_VISION)->GetWindowRect(&rt[0]);
-// 		pMilSys = pView->m_pVision[0]->SelLive(hW[0], rt[0], pMilSys);
+// 		pMilSys = pView->m_mgrPunch->m_pVision[0]->SelLive(hW[0], rt[0], pMilSys);
 // 	}
 // 
-// 	if(pView->m_pVision[1])
+// 	if(pView->m_mgrPunch->m_pVision[1])
 // 	{
 // 		hW[1] = GetDlgItem(IDC_STC_VISION_2)->GetSafeHwnd();
 // 		GetDlgItem(IDC_STC_VISION_2)->GetWindowRect(&rt[1]);
-// 		pMilSys = pView->m_pVision[1]->SelLive(hW[1], rt[1], pMilSys);
+// 		pMilSys = pView->m_mgrPunch->m_pVision[1]->SelLive(hW[1], rt[1], pMilSys);
 // 	}
 
-// 	if(pView->m_pVision[0])
-// 		pMilSys = pView->m_pVision[0]->SelLive2(hW[0], rt[0], pMilSys);
-// 	if(pView->m_pVision[1])
-// 		pMilSys = pView->m_pVision[1]->SelLive2(hW[1], rt[1], pMilSys);
+// 	if(pView->m_mgrPunch->m_pVision[0])
+// 		pMilSys = pView->m_mgrPunch->m_pVision[0]->SelLive2(hW[0], rt[0], pMilSys);
+// 	if(pView->m_mgrPunch->m_pVision[1])
+// 		pMilSys = pView->m_mgrPunch->m_pVision[1]->SelLive2(hW[1], rt[1], pMilSys);
 
 #ifdef USE_VISION
 
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
-		delete pView->m_pVision[1];
-		pView->m_pVision[1] = NULL;
+		delete pView->m_mgrPunch->m_pVision[1];
+		pView->m_mgrPunch->m_pVision[1] = NULL;
 	}
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
-		delete pView->m_pVision[0];
-		pView->m_pVision[0] = NULL;
+		delete pView->m_mgrPunch->m_pVision[0];
+		pView->m_mgrPunch->m_pVision[0] = NULL;
 	}
 
 	HWND hCtrlV0[4] = {0};
 	hCtrlV0[0] = GetDlgItem(IDC_STC_VISION)->GetSafeHwnd();
 	//MIL_ID MilSys = M_NULL;
-	pView->m_pVision[0] = new CVision(0, m_MilSys, hCtrlV0, this);
-	m_MilSys = pView->m_pVision[0]->GetSystemID();
+	pView->m_mgrPunch->m_pVision[0] = new CVision(0, m_MilSys, hCtrlV0, this);
+	m_MilSys = pView->m_mgrPunch->m_pVision[0]->GetSystemID();
 
 //#ifndef TEST_MODE
 	HWND hCtrlV1[4] = { 0 };
 	hCtrlV1[0] = GetDlgItem(IDC_STC_VISION_2)->GetSafeHwnd();
-	pView->m_pVision[1] = new CVision(1, m_MilSys, hCtrlV1, this);
+	pView->m_mgrPunch->m_pVision[1] = new CVision(1, m_MilSys, hCtrlV1, this);
 //#endif
 
 
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
-		pView->m_pVision[0]->ClearOverlay();
-		pView->m_pVision[0]->DrawCenterMark();
+		pView->m_mgrPunch->m_pVision[0]->ClearOverlay();
+		pView->m_mgrPunch->m_pVision[0]->DrawCenterMark();
 	}
 
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
-		pView->m_pVision[1]->ClearOverlay();
-		pView->m_pVision[1]->DrawCenterMark();
+		pView->m_mgrPunch->m_pVision[1]->ClearOverlay();
+		pView->m_mgrPunch->m_pVision[1]->DrawCenterMark();
 	}
 #endif
 
@@ -554,46 +554,46 @@ void CDlgMenu02::InitCadImg()
 	CRect rect;
 
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
 // 		hW = GetDlgItem(IDC_STC_PCS_IMG)->GetSafeHwnd();
 // 		GetDlgItem(IDC_STC_PCS_IMG)->GetWindowRect(&rt);
-// 		pView->m_pVision[0]->SelDispPcs(hW, rt, 0);
-// 		pView->m_pVision[0]->ShowDispPcs(0);
+// 		pView->m_mgrPunch->m_pVision[0]->SelDispPcs(hW, rt, 0);
+// 		pView->m_mgrPunch->m_pVision[0]->ShowDispPcs(0);
 
 		hWin = GetDlgItem(IDC_STC_PIN_IMG)->GetSafeHwnd();
 		GetDlgItem(IDC_STC_PIN_IMG)->GetWindowRect(&rect);
-		pView->m_pVision[0]->SelDispPin(hWin, rect, 0);
-		pView->m_pVision[0]->ShowDispPin(0);
-//		pView->m_pVision[0]->DrawCrossOnPin(PIN_IMG_DISP_SIZEX/2, PIN_IMG_DISP_SIZEY/2, 10);
+		pView->m_mgrPunch->m_pVision[0]->SelDispPin(hWin, rect, 0);
+		pView->m_mgrPunch->m_pVision[0]->ShowDispPin(0);
+//		pView->m_mgrPunch->m_pVision[0]->DrawCrossOnPin(PIN_IMG_DISP_SIZEX/2, PIN_IMG_DISP_SIZEY/2, 10);
 
 // 		hWin = GetDlgItem(IDC_STC_PIN_IMG)->GetSafeHwnd();
 // 		GetDlgItem(IDC_STC_PIN_IMG)->GetWindowRect(&rect);
- 		pView->m_pVision[0]->SelDispAlign(hWin, rect, 0);
-		pView->m_pVision[0]->ShowDispAlign();
+ 		pView->m_mgrPunch->m_pVision[0]->SelDispAlign(hWin, rect, 0);
+		pView->m_mgrPunch->m_pVision[0]->ShowDispAlign();
 
-		pView->m_pVision[0]->SetDispAxisPos();
+		pView->m_mgrPunch->m_pVision[0]->SetDispAxisPos();
 	}
 
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
 // 		hW = GetDlgItem(IDC_STC_PCS_IMG)->GetSafeHwnd();
 // 		GetDlgItem(IDC_STC_PCS_IMG)->GetWindowRect(&rt);
-// 		pView->m_pVision[0]->SelDispPcs(hW, rt, 0);
-// 		pView->m_pVision[0]->ShowDispPcs(1);
+// 		pView->m_mgrPunch->m_pVision[0]->SelDispPcs(hW, rt, 0);
+// 		pView->m_mgrPunch->m_pVision[0]->ShowDispPcs(1);
 
 		hWin = GetDlgItem(IDC_STC_PIN_IMG_2)->GetSafeHwnd();
 		GetDlgItem(IDC_STC_PIN_IMG_2)->GetWindowRect(&rect);
-		pView->m_pVision[1]->SelDispPin(hWin, rect, 1);
-		pView->m_pVision[1]->ShowDispPin(0);
-//		pView->m_pVision[1]->DrawCrossOnPin(PIN_IMG_DISP_SIZEX/2, PIN_IMG_DISP_SIZEY/2, 10);
+		pView->m_mgrPunch->m_pVision[1]->SelDispPin(hWin, rect, 1);
+		pView->m_mgrPunch->m_pVision[1]->ShowDispPin(0);
+//		pView->m_mgrPunch->m_pVision[1]->DrawCrossOnPin(PIN_IMG_DISP_SIZEX/2, PIN_IMG_DISP_SIZEY/2, 10);
 
 // 		hWin = GetDlgItem(IDC_STC_PIN_IMG_2)->GetSafeHwnd();
 // 		GetDlgItem(IDC_STC_PIN_IMG_2)->GetWindowRect(&rect);
- 		pView->m_pVision[1]->SelDispAlign(hWin, rect, 1);
-		pView->m_pVision[1]->ShowDispAlign();
+ 		pView->m_mgrPunch->m_pVision[1]->SelDispAlign(hWin, rect, 1);
+		pView->m_mgrPunch->m_pVision[1]->ShowDispAlign();
 
-		pView->m_pVision[1]->SetDispAxisPos();
+		pView->m_mgrPunch->m_pVision[1]->SetDispAxisPos();
 	}
 #endif
 }
@@ -1071,9 +1071,9 @@ LRESULT CDlgMenu02::OnMyStaticRedraw(WPARAM wPara, LPARAM lPara)
 
 void CDlgMenu02::SetLight(int nVal)
 {
-	if(pView->m_pLight)
-	{
-		pView->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[0]), nVal);
+	//if(pView->m_mgrPunch->m_pLight)
+	//{
+	//	pView->m_mgrPunch->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[0]), nVal);
 
 		if(nVal)
 		{
@@ -1086,70 +1086,91 @@ void CDlgMenu02::SetLight(int nVal)
 				myBtn[0].SetCheck(FALSE);
 		}
 
-		nVal = pView->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
+	//	nVal = pView->m_mgrPunch->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
 
 		int nPos;
-		nPos = int(100.0*(1.0 - (nVal-0.5)/255.0));
+		nPos = int(100.0*(1.0 - (nVal - 0.5) / 255.0));
 		m_LightSlider.SetPos(nPos);
 		CString str;
 		str.Format(_T("%d"), nVal);
 		myStcData[2].SetText(str);
 
 		pDoc->WorkingInfo.Light.sVal[0] = str;
-		::WritePrivateProfileString(_T("Light0"), _T("LIGHT_VALUE"), str, PATH_WORKING_INFO);		
-	}
+		::WritePrivateProfileString(_T("Light0"), _T("LIGHT_VALUE"), str, PATH_WORKING_INFO);
+	//}
 }
 
 void CDlgMenu02::SetLight2(int nVal)
 {
-	if(pView->m_pLight)
+	if (nVal)
 	{
-		pView->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[1]), nVal);
-
-		if(nVal)
-		{
-			if(!myBtn2[0].GetCheck())
-				myBtn2[0].SetCheck(TRUE);
-		}
-		else
-		{
-			if(myBtn2[0].GetCheck())
-				myBtn2[0].SetCheck(FALSE);
-		}
-
-		nVal = pView->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
-
-		int nPos;
-		nPos = int(100.0*(1.0 - (nVal-0.5)/255.0));
-		m_LightSlider2.SetPos(nPos);
-		CString str;
-		str.Format(_T("%d"), nVal);
-		myStcData2[2].SetText(str);
-
-		pDoc->WorkingInfo.Light.sVal[1] = str;
-		::WritePrivateProfileString(_T("Light1"), _T("LIGHT_VALUE"), str, PATH_WORKING_INFO);		
+		if (!myBtn2[0].GetCheck())
+			myBtn2[0].SetCheck(TRUE);
 	}
+	else
+	{
+		if (myBtn2[0].GetCheck())
+			myBtn2[0].SetCheck(FALSE);
+	}
+
+	int nPos;
+	nPos = int(100.0*(1.0 - (nVal - 0.5) / 255.0));
+	m_LightSlider2.SetPos(nPos);
+	CString str;
+	str.Format(_T("%d"), nVal);
+	myStcData2[2].SetText(str);
+
+	pDoc->WorkingInfo.Light.sVal[1] = str;
+	::WritePrivateProfileString(_T("Light1"), _T("LIGHT_VALUE"), str, PATH_WORKING_INFO);
+
+	//if(pView->m_mgrPunch->m_pLight)
+	//{
+	//	pView->m_mgrPunch->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[1]), nVal);
+
+	//	if(nVal)
+	//	{
+	//		if(!myBtn2[0].GetCheck())
+	//			myBtn2[0].SetCheck(TRUE);
+	//	}
+	//	else
+	//	{
+	//		if(myBtn2[0].GetCheck())
+	//			myBtn2[0].SetCheck(FALSE);
+	//	}
+
+	//	nVal = pView->m_mgrPunch->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
+
+	//	int nPos;
+	//	nPos = int(100.0*(1.0 - (nVal-0.5)/255.0));
+	//	m_LightSlider2.SetPos(nPos);
+	//	CString str;
+	//	str.Format(_T("%d"), nVal);
+	//	myStcData2[2].SetText(str);
+
+	//	pDoc->WorkingInfo.Light.sVal[1] = str;
+	//	::WritePrivateProfileString(_T("Light1"), _T("LIGHT_VALUE"), str, PATH_WORKING_INFO);		
+	//}
 }
 
 void CDlgMenu02::ResetLight()
 {
-	if(pView->m_pLight)
+	if(pView->m_mgrPunch->m_pLight)
 	{
 		if(myBtn[0].GetCheck())
 			myBtn[0].SetCheck(FALSE);
 
-		pView->m_pLight->Reset(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
+		pView->m_mgrPunch->m_pLight->Reset(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
 	}
 }
 
 void CDlgMenu02::ResetLight2()
 {
-	if(pView->m_pLight)
+	if(pView->m_mgrPunch->m_pLight)
 	{
 		if(myBtn2[0].GetCheck())
 			myBtn2[0].SetCheck(FALSE);
 
-		pView->m_pLight->Reset(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
+		pView->m_mgrPunch->m_pLight->Reset(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
 	}
 }
 
@@ -1179,20 +1200,20 @@ void CDlgMenu02::ResetLight2()
 // 		sMsg.Format(_T("ÇØ»óµµ ÃøÁ¤À» ÇÏ½Ã°Ú½À´Ï±î?"));
 // 		if(IDNO == pView->MyMsgBox(sMsg, MB_YESNO))
 // 			return;		
-// 		if(pView->m_pVision[0])
+// 		if(pView->m_mgrPunch->m_pVision[0])
 // 		{
 // 			myBtn[17].EnableWindow(FALSE);
-// 			pView->m_pVision[0]->ClearOverlay();
-// 			pView->m_pVision[0]->DrawRect(120, 90, 100);
+// 			pView->m_mgrPunch->m_pVision[0]->ClearOverlay();
+// 			pView->m_mgrPunch->m_pVision[0]->DrawRect(120, 90, 100);
 // 			myBtn[18].EnableWindow(TRUE);
 // 		}
 // 		break;
 // 	case 1:
-// 		if(pView->m_pVision[0])
+// 		if(pView->m_mgrPunch->m_pVision[0])
 // 		{
-// 			pView->m_pVision[0]->ClearOverlay();
+// 			pView->m_mgrPunch->m_pVision[0]->ClearOverlay();
 // 			myBtn[17].EnableWindow(FALSE);
-// 			pView->m_pVision[0]->DrawRect(120, 90, 100);
+// 			pView->m_mgrPunch->m_pVision[0]->DrawRect(120, 90, 100);
 // 			myBtn[18].EnableWindow(TRUE);
 // 		}
 // 		break;
@@ -1232,61 +1253,61 @@ void CDlgMenu02::SetJogSpd(int nSpd)
 	{
 	case 0: // VS
 		myBtn[14].SetCheck(TRUE);	//	IDC_CHK_JOG_VS
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogLowSpd / 150.0;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc / 150.0;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogLowSpd / 150.0;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc / 150.0;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogLowSpd / 150.0;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc / 150.0;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogLowSpd / 150.0;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc / 150.0;
 		}
 		break;
 	case 1: // S
 		myBtn[13].SetCheck(TRUE);	//	IDC_CHK_JOG_S
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogLowSpd / 10.0;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc / 10.0;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogLowSpd / 10.0;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc / 10.0;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogLowSpd / 10.0;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc / 10.0;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogLowSpd / 10.0;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc / 10.0;
 		}
 		break;
 	case 2: // N
 		myBtn[12].SetCheck(TRUE);	//	IDC_CHK_JOG_N
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogLowSpd;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogLowSpd;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogLowSpd;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogLowSpd;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc;
 		}
 		break;
 	case 3: // F
 		myBtn[11].SetCheck(TRUE);	//	IDC_CHK_JOG_F
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogMidSpd;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogMidSpd;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogMidSpd;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogMidSpd;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc;
 		}
 		break;
 	case 4: // VF
 		myBtn[10].SetCheck(TRUE);	//	IDC_CHK_JOG_VF
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogFastSpd;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogFastSpd;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogFastSpd;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y0].Speed.fJogAcc;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogFastSpd;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X0].Speed.fJogAcc;
 		}
 		break;
 	}
 
-	if(pView->m_pMotion)
+	if(pView->m_mgrPunch->m_pMotion)
 	{
-		pView->m_pMotion->SetVMove(MS_Y0, dSpdY, dAccY);
-//		if(!pView->m_mgrProcedure->ChkCollision())
-			pView->m_pMotion->SetVMove(MS_X0, dSpdX, dAccX);
+		pView->m_mgrPunch->m_pMotion->SetVMove(MS_Y0, dSpdY, dAccY);
+//		if(!pView->m_mgrPunch->ChkCollision())
+			pView->m_mgrPunch->m_pMotion->SetVMove(MS_X0, dSpdX, dAccX);
 		m_nJogSpd = nSpd;
 	}
 }
@@ -1307,61 +1328,61 @@ void CDlgMenu02::SetJogSpd2(int nSpd)
 	{
 	case 0: // VS
 		myBtn2[14].SetCheck(TRUE);	//	IDC_CHK_JOG_VS22
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogLowSpd / 150.0;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc / 150.0;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogLowSpd / 150.0;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc / 150.0;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogLowSpd / 150.0;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc / 150.0;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogLowSpd / 150.0;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc / 150.0;
 		}
 		break;
 	case 1: // S
 		myBtn2[13].SetCheck(TRUE);	//	IDC_CHK_JOG_S2
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogLowSpd / 10.0;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc / 10.0;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogLowSpd / 10.0;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc / 10.0;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogLowSpd / 10.0;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc / 10.0;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogLowSpd / 10.0;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc / 10.0;
 		}
 		break;
 	case 2: // N
 		myBtn2[12].SetCheck(TRUE);	//	IDC_CHK_JOG_N2
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogLowSpd;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogLowSpd;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogLowSpd;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogLowSpd;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc;
 		}
 		break;
 	case 3: // F
 		myBtn2[11].SetCheck(TRUE);	//	IDC_CHK_JOG_F2
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogMidSpd;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogMidSpd;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogMidSpd;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogMidSpd;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc;
 		}
 		break;
 	case 4: // VF
 		myBtn2[10].SetCheck(TRUE);	//	IDC_CHK_JOG_VF2
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			dSpdY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogFastSpd;
-			dAccY = pView->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc;
-			dSpdX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogFastSpd;
-			dAccX = pView->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc;
+			dSpdY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogFastSpd;
+			dAccY = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_Y1].Speed.fJogAcc;
+			dSpdX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogFastSpd;
+			dAccX = pView->m_mgrPunch->m_pMotion->m_pParamMotion[MS_X1].Speed.fJogAcc;
 		}
 		break;
 	}
 
-	if(pView->m_pMotion)
+	if(pView->m_mgrPunch->m_pMotion)
 	{
-		pView->m_pMotion->SetVMove(MS_Y1, dSpdY, dAccY);
-//		if(!pView->m_mgrProcedure->ChkCollision())
-			pView->m_pMotion->SetVMove(MS_X1, dSpdX, dAccX);
+		pView->m_mgrPunch->m_pMotion->SetVMove(MS_Y1, dSpdY, dAccY);
+//		if(!pView->m_mgrPunch->ChkCollision())
+			pView->m_mgrPunch->m_pMotion->SetVMove(MS_X1, dSpdX, dAccX);
 		m_nJogSpd = nSpd;
 	}
 }
@@ -1398,7 +1419,7 @@ void CDlgMenu02::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		nPos = m_LightSlider.GetPos();
 		str = myStcData[2].GetText();
 		LightValue = (int)floor(((double)(100-nPos)/100.0)*255.0+0.5);
-		pView->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[0]), LightValue);
+		pView->m_mgrPunch->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[0]), LightValue);
 		str.Format(_T("%d"),LightValue);
 		myStcData[2].SetText(str);
 
@@ -1410,7 +1431,7 @@ void CDlgMenu02::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		nPos = m_LightSlider2.GetPos();
 		str = myStcData2[2].GetText();
 		LightValue = (int)floor(((double)(100-nPos)/100.0)*255.0+0.5);
-		pView->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[1]), LightValue);
+		pView->m_mgrPunch->m_pLight->Set(_tstoi(pDoc->WorkingInfo.Light.sCh[1]), LightValue);
 		str.Format(_T("%d"),LightValue);
 		myStcData2[2].SetText(str);
 
@@ -1432,29 +1453,29 @@ LRESULT CDlgMenu02::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 void CDlgMenu02::SwMyBtnDown(int nCtrlID)
 {
 
-	if(pView->m_mgrProcedure->m_bProbDn[0])
-	{
-		if(pView->m_pVoiceCoil[0])
-		{
-			pView->m_pVoiceCoil[0]->SearchHomeSmac(0);
-			pView->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
-			pView->m_mgrProcedure->m_bProbDn[0] = FALSE;
-			//if(m_pDlgUtil06)
-			//	m_pDlgUtil06->myBtn[2].SetCheck(FALSE);
-		}
-	}
+	//if(pView->m_mgrPunch->m_bProbDn[0])
+	//{
+	//	if(pView->m_mgrPunch->m_pVoiceCoil[0])
+	//	{
+	//		pView->m_mgrPunch->m_pVoiceCoil[0]->SearchHomeSmac(0);
+	//		pView->m_mgrPunch->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
+	//		pView->m_mgrPunch->m_bProbDn[0] = FALSE;
+	//		//if(m_pDlgUtil06)
+	//		//	m_pDlgUtil06->myBtn[2].SetCheck(FALSE);
+	//	}
+	//}
 
-	if(pView->m_mgrProcedure->m_bProbDn[1])
-	{
-		if(pView->m_pVoiceCoil[1])
-		{
-			pView->m_pVoiceCoil[1]->SearchHomeSmac(1);
-			pView->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
-			pView->m_mgrProcedure->m_bProbDn[1] = FALSE;
-			//if(m_pDlgUtil06)
-			//	m_pDlgUtil06->myBtn[6].SetCheck(FALSE);
-		}
-	}
+	//if(pView->m_mgrPunch->m_bProbDn[1])
+	//{
+	//	if(pView->m_mgrPunch->m_pVoiceCoil[1])
+	//	{
+	//		pView->m_mgrPunch->m_pVoiceCoil[1]->SearchHomeSmac(1);
+	//		pView->m_mgrPunch->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
+	//		pView->m_mgrPunch->m_bProbDn[1] = FALSE;
+	//		//if(m_pDlgUtil06)
+	//		//	m_pDlgUtil06->myBtn[6].SetCheck(FALSE);
+	//	}
+	//}
 
 	switch(nCtrlID)
 	{
@@ -1488,47 +1509,47 @@ void CDlgMenu02::SwMyBtnDown(int nCtrlID)
 		break;
 	case IDC_BTN_BUFF_UP:		// ¸¶Å·ºÎ ÇÇµù Á¤È¸Àü ½ºÀ§Ä¡
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB005513"), 1);
+		if(pView)
+			pView->MpeWrite(_T("MB005513"), 1);
 #endif
 		break;
 	case IDC_BTN_BUFF_DN:		// ¸¶Å·ºÎ ÇÇµù ¿ªÈ¸Àü ½ºÀ§Ä¡
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB005514"), 1);
+		if(pView)
+			pView->MpeWrite(_T("MB005514"), 1);
 #endif
 		break;
 	case IDC_BTN_JOG_UP:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_Y0, M_CCW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_Y0, M_CCW);
 		break;
 	case IDC_BTN_JOG_DN:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_Y0, M_CW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_Y0, M_CW);
 		break;
 	case IDC_BTN_JOG_RT:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_X0, M_CW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_X0, M_CW);
 		break;
 	case IDC_BTN_JOG_LF:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_X0, M_CCW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_X0, M_CCW);
 		break;
 	case IDC_BTN_JOG_UP2:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_Y1, M_CCW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_Y1, M_CCW);
 		break;
 	case IDC_BTN_JOG_DN2:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_Y1, M_CW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_Y1, M_CW);
 		break;
 	case IDC_BTN_JOG_RT2:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_X1, M_CW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_X1, M_CW);
 		break;
 	case IDC_BTN_JOG_LF2:
-		if(pView->m_pMotion)
-			pView->m_pMotion->VMove(MS_X1, M_CCW);
+		if(pView->m_mgrPunch->m_pMotion)
+			pView->m_mgrPunch->m_pMotion->VMove(MS_X1, M_CCW);
 		break;
 	}
 }
@@ -1558,48 +1579,48 @@ void CDlgMenu02::SwMyBtnUp(int nCtrlID)
 		break;
 	case IDC_BTN_BUFF_UP:		// ¸¶Å·ºÎ ÇÇµù Á¤È¸Àü ½ºÀ§Ä¡
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB005513"), 0);
+		if(pView)
+			pView->MpeWrite(_T("MB005513"), 0);
 #endif
 		break;
 	case IDC_BTN_BUFF_DN:		// ¸¶Å·ºÎ ÇÇµù ¿ªÈ¸Àü ½ºÀ§Ä¡
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB005514"), 0);
+		if(pView)
+			pView->MpeWrite(_T("MB005514"), 0);
 #endif
 		break;
 	case IDC_BTN_JOG_UP:
 	case IDC_BTN_JOG_DN:
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			pView->m_pMotion->EStop(MS_Y0);
+			pView->m_mgrPunch->m_pMotion->EStop(MS_Y0);
 // 			MsClr(MS_Y);
 			ResetMotion(MS_Y0);
 		}
 		break;
 	case IDC_BTN_JOG_RT:
 	case IDC_BTN_JOG_LF:
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			pView->m_pMotion->EStop(MS_X0);
+			pView->m_mgrPunch->m_pMotion->EStop(MS_X0);
 // 			MsClr(MS_X);
 			ResetMotion(MS_X0);
 		}
 		break;
 	case IDC_BTN_JOG_UP2:
 	case IDC_BTN_JOG_DN2:
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			pView->m_pMotion->EStop(MS_Y1);
+			pView->m_mgrPunch->m_pMotion->EStop(MS_Y1);
 // 			MsClr(MS_Y);
 			ResetMotion(MS_Y1);
 		}
 		break;
 	case IDC_BTN_JOG_RT2:
 	case IDC_BTN_JOG_LF2:
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			pView->m_pMotion->EStop(MS_X1);
+			pView->m_mgrPunch->m_pMotion->EStop(MS_X1);
 // 			MsClr(MS_X);
 			ResetMotion(MS_X1);
 		}
@@ -1609,93 +1630,94 @@ void CDlgMenu02::SwMyBtnUp(int nCtrlID)
 	
 void CDlgMenu02::ResetMotion(int nMsId)
 {
-	if(!pView->m_pMotion)
-		return;
+	pView->m_mgrPunch->ResetMotion(nMsId);
+	//if(!pView->m_mgrPunch->m_pMotion)
+	//	return;
 
-	long lRtn = pView->m_pMotion->GetState(nMsId);  // -1 : MPIStateERROR, 0 : MPIStateIDLE, 1 : MPIStateSTOPPING, 2 : MPIStateMOVING
-	if(lRtn==2)
-	{
-		if(nMsId==MS_X0 || nMsId==MS_Y0)
-			pView->m_pMotion->Abort(MS_X0Y0);
-		else if(nMsId==MS_X1 || nMsId==MS_Y1)
-			pView->m_pMotion->Abort(MS_X1Y1);
-		else
-			pView->m_pMotion->Abort(nMsId);
-		Sleep(30);
-	}
+	//long lRtn = pView->m_mgrPunch->m_pMotion->GetState(nMsId);  // -1 : MPIStateERROR, 0 : MPIStateIDLE, 1 : MPIStateSTOPPING, 2 : MPIStateMOVING
+	//if(lRtn==2)
+	//{
+	//	if(nMsId==MS_X0 || nMsId==MS_Y0)
+	//		pView->m_mgrPunch->m_pMotion->Abort(MS_X0Y0);
+	//	else if(nMsId==MS_X1 || nMsId==MS_Y1)
+	//		pView->m_mgrPunch->m_pMotion->Abort(MS_X1Y1);
+	//	else
+	//		pView->m_mgrPunch->m_pMotion->Abort(nMsId);
+	//	Sleep(30);
+	//}
 
-	if(nMsId==MS_X0 || nMsId==MS_Y0)
-		pView->m_pMotion->Clear(MS_X0Y0);
-	else if(nMsId==MS_X1 || nMsId==MS_Y1)
-		pView->m_pMotion->Clear(MS_X1Y1);
-	else
-		pView->m_pMotion->Clear(nMsId);
+	//if(nMsId==MS_X0 || nMsId==MS_Y0)
+	//	pView->m_mgrPunch->m_pMotion->Clear(MS_X0Y0);
+	//else if(nMsId==MS_X1 || nMsId==MS_Y1)
+	//	pView->m_mgrPunch->m_pMotion->Clear(MS_X1Y1);
+	//else
+	//	pView->m_mgrPunch->m_pMotion->Clear(nMsId);
 
-	Sleep(30);
+	//Sleep(30);
 
-	if(!pView->m_pMotion->IsEnable(nMsId))
-	{
-		if(nMsId==MS_X0Y0 || nMsId==MS_X0 || nMsId==MS_Y0)
-		{
-			pView->m_pMotion->ServoOnOff(AXIS_X0, TRUE);
-			Sleep(30);
-			pView->m_pMotion->ServoOnOff(AXIS_Y0, TRUE);
-		}
-		else if(nMsId==MS_X1Y1 || nMsId==MS_X1 || nMsId==MS_Y1)
-		{
-			pView->m_pMotion->ServoOnOff(AXIS_X1, TRUE);
-			Sleep(30);
-			pView->m_pMotion->ServoOnOff(AXIS_Y1, TRUE);
-		}
-		else
-			pView->m_pMotion->ServoOnOff(nMsId, TRUE);
-	
-		Sleep(30);
-	}
+	//if(!pView->m_mgrPunch->m_pMotion->IsEnable(nMsId))
+	//{
+	//	if(nMsId==MS_X0Y0 || nMsId==MS_X0 || nMsId==MS_Y0)
+	//	{
+	//		pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_X0, TRUE);
+	//		Sleep(30);
+	//		pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_Y0, TRUE);
+	//	}
+	//	else if(nMsId==MS_X1Y1 || nMsId==MS_X1 || nMsId==MS_Y1)
+	//	{
+	//		pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_X1, TRUE);
+	//		Sleep(30);
+	//		pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_Y1, TRUE);
+	//	}
+	//	else
+	//		pView->m_mgrPunch->m_pMotion->ServoOnOff(nMsId, TRUE);
+	//
+	//	Sleep(30);
+	//}
 }
 
 void CDlgMenu02::MsClr(int nMsId)
 {
-	if(pView->m_pMotion)
+	if(pView->m_mgrPunch->m_pMotion)
 	{
 		Sleep(30);
 
-		long lRtn = pView->m_pMotion->GetState(nMsId);  // -1 : MPIStateERROR, 0 : MPIStateIDLE, 1 : MPIStateSTOPPING, 2 : MPIStateMOVING
+		long lRtn = pView->m_mgrPunch->m_pMotion->GetState(nMsId);  // -1 : MPIStateERROR, 0 : MPIStateIDLE, 1 : MPIStateSTOPPING, 2 : MPIStateMOVING
 		if(lRtn==2)//lRtn<0 || 
 		{
 			if(nMsId==MS_X0 || nMsId==MS_Y0)
-				pView->m_pMotion->Abort(MS_X0Y0);
+				pView->m_mgrPunch->m_pMotion->Abort(MS_X0Y0);
 			else if(nMsId==MS_X1 || nMsId==MS_Y1)
-				pView->m_pMotion->Abort(MS_X1Y1);
+				pView->m_mgrPunch->m_pMotion->Abort(MS_X1Y1);
 			else
-				pView->m_pMotion->Abort(nMsId);
+				pView->m_mgrPunch->m_pMotion->Abort(nMsId);
 			Sleep(30);
 		}
 
 		if(nMsId==MS_X0 || nMsId==MS_Y0)
-			pView->m_pMotion->Clear(MS_X0Y0);
+			pView->m_mgrPunch->m_pMotion->Clear(MS_X0Y0);
 		else if(nMsId==MS_X1 || nMsId==MS_Y1)
-			pView->m_pMotion->Clear(MS_X1Y1);
+			pView->m_mgrPunch->m_pMotion->Clear(MS_X1Y1);
 		else
-			pView->m_pMotion->Clear(nMsId);
+			pView->m_mgrPunch->m_pMotion->Clear(nMsId);
 		Sleep(30);
 
 		if(lRtn==2)//lRtn<0 || 
 		{
 			if(nMsId==MS_X0Y0 || nMsId==MS_X0 || nMsId==MS_Y0)
 			{
-				pView->m_pMotion->ServoOnOff(AXIS_X0, TRUE);
+				pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_X0, TRUE);
 				Sleep(30);
-				pView->m_pMotion->ServoOnOff(AXIS_Y0, TRUE);
+				pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_Y0, TRUE);
 			}
 			else if(nMsId==MS_X1Y1 || nMsId==MS_X1 || nMsId==MS_Y1)
 			{
-				pView->m_pMotion->ServoOnOff(AXIS_X1, TRUE);
+				pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_X1, TRUE);
 				Sleep(30);
-				pView->m_pMotion->ServoOnOff(AXIS_Y1, TRUE);
+				pView->m_mgrPunch->m_pMotion->ServoOnOff(AXIS_Y1, TRUE);
 			}
 			else
-				pView->m_pMotion->ServoOnOff(nMsId, TRUE);
+				pView->m_mgrPunch->m_pMotion->ServoOnOff(nMsId, TRUE);
 		
 			Sleep(30);
 		}
@@ -1715,7 +1737,7 @@ void CDlgMenu02::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 		{
 		case TIM_LIGHT_UP:
 	//		KillTimer(TIM_LIGHT_UP);
-			nVal = pView->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
+			nVal = pView->m_mgrPunch->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
 			nVal += 5;
 			if(nVal > 255)
 				nVal = 255;
@@ -1725,7 +1747,7 @@ void CDlgMenu02::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 			break;
 		case TIM_LIGHT_DN:
 	//		KillTimer(TIM_LIGHT_DN);
-			nVal = pView->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
+			nVal = pView->m_mgrPunch->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[0]));
 			nVal -= 5;
 			if(nVal < 0)
 				nVal = 0;
@@ -1735,7 +1757,7 @@ void CDlgMenu02::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 			break;
 		case TIM_LIGHT_UP2:
 	//		KillTimer(TIM_LIGHT_UP2);
-			nVal = pView->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
+			nVal = pView->m_mgrPunch->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
 			nVal += 5;
 			if(nVal > 255)
 				nVal = 255;
@@ -1745,7 +1767,7 @@ void CDlgMenu02::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 			break;
 		case TIM_LIGHT_DN2:
 	//		KillTimer(TIM_LIGHT_DN2);
-			nVal = pView->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
+			nVal = pView->m_mgrPunch->m_pLight->Get(_tstoi(pDoc->WorkingInfo.Light.sCh[1]));
 			nVal -= 5;
 			if(nVal < 0)
 				nVal = 0;
@@ -1879,15 +1901,15 @@ void CDlgMenu02::OnBtnPinMove2()
 
 BOOL CDlgMenu02::MovePos(int nPos) 
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return FALSE;
 
-	if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, _tstof(pDoc->WorkingInfo.Marking[0].sMeasurePosX[nPos])))
+	if(pView->m_mgrPunch->ChkCollision(AXIS_X0, _tstof(pDoc->WorkingInfo.Marking[0].sMeasurePosX[nPos])))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
 		ptPnt.y = 0.0;//pView->m_dEnc[AXIS_Y1];
-		pView->Move1(ptPnt, pView->m_mgrProcedure->m_bCam);
+		pView->Move1(ptPnt, pView->m_mgrPunch->m_bCam);
 	}
 
 	if(_tstof(pDoc->WorkingInfo.Marking[0].sMeasurePosX[nPos]) > 0.0 && _tstof(pDoc->WorkingInfo.Marking[0].sMeasurePosY[nPos]) > 0.0)
@@ -1903,10 +1925,10 @@ BOOL CDlgMenu02::MovePos(int nPos)
 		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
 		if(fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 			{
-				if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -1922,15 +1944,15 @@ BOOL CDlgMenu02::MovePos(int nPos)
 
 BOOL CDlgMenu02::MovePos2(int nPos) 
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return FALSE;
 
-	if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, _tstof(pDoc->WorkingInfo.Marking[1].sMeasurePosX[nPos])))
+	if(pView->m_mgrPunch->ChkCollision(AXIS_X1, _tstof(pDoc->WorkingInfo.Marking[1].sMeasurePosX[nPos])))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = 0.0;
 		ptPnt.y = 0.0;//pView->m_dEnc[AXIS_Y0];
-		pView->Move0(ptPnt, pView->m_mgrProcedure->m_bCam);
+		pView->Move0(ptPnt, pView->m_mgrPunch->m_bCam);
 	}
 
 	if(_tstof(pDoc->WorkingInfo.Marking[1].sMeasurePosX[nPos]) > 0.0 && _tstof(pDoc->WorkingInfo.Marking[1].sMeasurePosY[nPos]) > 0.0)
@@ -1946,10 +1968,10 @@ BOOL CDlgMenu02::MovePos2(int nPos)
 		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
 		if(fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 			{
-				if (!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -1966,66 +1988,68 @@ BOOL CDlgMenu02::MovePos2(int nPos)
 
 BOOL CDlgMenu02::MovePinPos() 
 {
-	if(!pView->m_pMotion)
-		return FALSE;
+	return pView->m_mgrPunch->MovePinPos();
 
-	SetLight();
+	//if(!pView->m_mgrPunch->m_pMotion)
+	//	return FALSE;
 
-	if(pView->m_pMotion->m_dPinPosY[0] > 0.0 && pView->m_pMotion->m_dPinPosX[0] > 0.0)
-	{
-		double dCurrX = pView->m_dEnc[AXIS_X0];
-		double dCurrY = pView->m_dEnc[AXIS_Y0];
+	//SetLight();
 
-		double pPos[2];
-		pPos[0] = pView->m_pMotion->m_dPinPosX[0];
-		pPos[1] = pView->m_pMotion->m_dPinPosY[0];
+	//if(pView->m_mgrPunch->m_pMotion->m_dPinPosY[0] > 0.0 && pView->m_mgrPunch->m_pMotion->m_dPinPosX[0] > 0.0)
+	//{
+	//	double dCurrX = pView->m_dEnc[AXIS_X0];
+	//	double dCurrY = pView->m_dEnc[AXIS_Y0];
 
-		if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
-		{
-			CfPoint ptPnt;
-			ptPnt.x =  _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
-			ptPnt.y = 0.0;//pView->m_dEnc[AXIS_Y1];
-			pView->Move1(ptPnt);
-		}
+	//	double pPos[2];
+	//	pPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+	//	pPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 
-		double fLen, fVel, fAcc, fJerk;
-		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
-		if(fLen > 0.001)
-		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
-			{
-				if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
-				{
-					pView->ClrDispMsg();
-					AfxMessageBox(_T("Move XY Error..."));
-			}
-		}
-		}
+	//	if(pView->m_mgrPunch->ChkCollision(AXIS_X0, pPos[0]))
+	//	{
+	//		CfPoint ptPnt;
+	//		ptPnt.x =  _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
+	//		ptPnt.y = 0.0;//pView->m_dEnc[AXIS_Y1];
+	//		pView->Move1(ptPnt);
+	//	}
 
-		return TRUE;
-	}
+	//	double fLen, fVel, fAcc, fJerk;
+	//	fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
+	//	if(fLen > 0.001)
+	//	{
+	//		pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+	//		if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+	//		{
+	//			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+	//			{
+	//				pView->ClrDispMsg();
+	//				AfxMessageBox(_T("Move XY Error..."));
+	//		}
+	//	}
+	//	}
 
-	return FALSE;
+	//	return TRUE;
+	//}
+
+	//return FALSE;
 }
 
 BOOL CDlgMenu02::MovePinPos2() 
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return FALSE;
 
 	SetLight2();
 
-	if(pView->m_pMotion->m_dPinPosY[1] > 0.0 && pView->m_pMotion->m_dPinPosX[1] > 0.0)
+	if(pView->m_mgrPunch->m_pMotion->m_dPinPosY[1] > 0.0 && pView->m_mgrPunch->m_pMotion->m_dPinPosX[1] > 0.0)
 	{
 		double dCurrX = pView->m_dEnc[AXIS_X1];
 		double dCurrY = pView->m_dEnc[AXIS_Y1];
 
 		double pPos[2];
-		pPos[0] = pView->m_pMotion->m_dPinPosX[1];
-		pPos[1] = pView->m_pMotion->m_dPinPosY[1];
+		pPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+		pPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 
-		if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
+		if(pView->m_mgrPunch->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x =  0.0;
@@ -2037,10 +2061,10 @@ BOOL CDlgMenu02::MovePinPos2()
 		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
 		if(fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 			{
-				if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -2056,7 +2080,7 @@ BOOL CDlgMenu02::MovePinPos2()
 
 BOOL CDlgMenu02::MoveAlign0(int nPos) 
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return FALSE;
 
 	SetLight();
@@ -2069,7 +2093,7 @@ BOOL CDlgMenu02::MoveAlign0(int nPos)
 
 BOOL CDlgMenu02::Move2PntAlign0(int nPos)
 {
-	if (pView->m_pMotion->m_dPinPosY[0] > 0.0 && pView->m_pMotion->m_dPinPosX[0] > 0.0)
+	if (pView->m_mgrPunch->m_pMotion->m_dPinPosY[0] > 0.0 && pView->m_mgrPunch->m_pMotion->m_dPinPosX[0] > 0.0)
 	{
 		double dCurrX = pView->m_dEnc[AXIS_X0];
 		double dCurrY = pView->m_dEnc[AXIS_Y0];
@@ -2077,16 +2101,16 @@ BOOL CDlgMenu02::Move2PntAlign0(int nPos)
 		double pPos[2];
 		if (nPos == 0)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[0];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[0];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 		}
 		else if (nPos == 1)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[0];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[0];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 		}
 
-		if (pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
+		if (pView->m_mgrPunch->ChkCollision(AXIS_X0, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -2098,10 +2122,10 @@ BOOL CDlgMenu02::Move2PntAlign0(int nPos)
 		fLen = sqrt(((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)));
 		if (fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-			if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 			{
-				if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -2117,7 +2141,7 @@ BOOL CDlgMenu02::Move2PntAlign0(int nPos)
 
 BOOL CDlgMenu02::Move4PntAlign0(int nPos)
 {
-	if (pView->m_pMotion->m_dPinPosY[0] > 0.0 && pView->m_pMotion->m_dPinPosX[0] > 0.0)
+	if (pView->m_mgrPunch->m_pMotion->m_dPinPosY[0] > 0.0 && pView->m_mgrPunch->m_pMotion->m_dPinPosX[0] > 0.0)
 	{
 		double dCurrX = pView->m_dEnc[AXIS_X0];
 		double dCurrY = pView->m_dEnc[AXIS_Y0];
@@ -2125,26 +2149,26 @@ BOOL CDlgMenu02::Move4PntAlign0(int nPos)
 		double pPos[2];
 		if (nPos == 0)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[0];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[0];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 		}
 		else if (nPos == 1)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[0];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[0];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 		}
 		else if (nPos == 2)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_pMotion->m_dPinPosX[0];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_pMotion->m_dPinPosY[0];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 		}
 		else if (nPos == 3)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_pMotion->m_dPinPosX[0];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[0];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 		}
 
-		if (pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
+		if (pView->m_mgrPunch->ChkCollision(AXIS_X0, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -2156,10 +2180,10 @@ BOOL CDlgMenu02::Move4PntAlign0(int nPos)
 		fLen = sqrt(((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)));
 		if (fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-			if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 			{
-				if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -2175,7 +2199,7 @@ BOOL CDlgMenu02::Move4PntAlign0(int nPos)
 
 BOOL CDlgMenu02::MoveAlign1(int nPos) 
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return FALSE;
 
 	SetLight2();
@@ -2188,7 +2212,7 @@ BOOL CDlgMenu02::MoveAlign1(int nPos)
 
 BOOL CDlgMenu02::Move2PntAlign1(int nPos)
 {
-	if (pView->m_pMotion->m_dPinPosY[1] > 0.0 && pView->m_pMotion->m_dPinPosX[1] > 0.0)
+	if (pView->m_mgrPunch->m_pMotion->m_dPinPosY[1] > 0.0 && pView->m_mgrPunch->m_pMotion->m_dPinPosX[1] > 0.0)
 	{
 		double dCurrX = pView->m_dEnc[AXIS_X1];
 		double dCurrY = pView->m_dEnc[AXIS_Y1];
@@ -2196,16 +2220,16 @@ BOOL CDlgMenu02::Move2PntAlign1(int nPos)
 		double pPos[2];
 		if (nPos == 0)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[1];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[1];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 		}
 		else if (nPos == 1)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[1];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[1];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 		}
 
-		if (pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
+		if (pView->m_mgrPunch->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = 0.0;
@@ -2218,10 +2242,10 @@ BOOL CDlgMenu02::Move2PntAlign1(int nPos)
 		fLen = sqrt(((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)));
 		if (fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-			if (!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 			{
-				if (!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -2237,7 +2261,7 @@ BOOL CDlgMenu02::Move2PntAlign1(int nPos)
 
 BOOL CDlgMenu02::Move4PntAlign1(int nPos)
 {
-	if (pView->m_pMotion->m_dPinPosY[1] > 0.0 && pView->m_pMotion->m_dPinPosX[1] > 0.0)
+	if (pView->m_mgrPunch->m_pMotion->m_dPinPosY[1] > 0.0 && pView->m_mgrPunch->m_pMotion->m_dPinPosX[1] > 0.0)
 	{
 		double dCurrX = pView->m_dEnc[AXIS_X1];
 		double dCurrY = pView->m_dEnc[AXIS_Y1];
@@ -2245,26 +2269,26 @@ BOOL CDlgMenu02::Move4PntAlign1(int nPos)
 		double pPos[2];
 		if (nPos == 0)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[1];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[1];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 		}
 		else if (nPos == 1)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[1];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[1];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 		}
 		else if (nPos == 2)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_pMotion->m_dPinPosX[1];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_pMotion->m_dPinPosY[1];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 		}
 		else if (nPos == 3)
 		{
-			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_pMotion->m_dPinPosX[1];
-			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[1];
+			pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+			pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 		}
 
-		if (pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
+		if (pView->m_mgrPunch->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = 0.0;
@@ -2277,10 +2301,10 @@ BOOL CDlgMenu02::Move4PntAlign1(int nPos)
 		fLen = sqrt(((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)));
 		if (fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-			if (!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 			{
-				if (!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -2296,32 +2320,33 @@ BOOL CDlgMenu02::Move4PntAlign1(int nPos)
 
 void CDlgMenu02::SetPinPos(int nCam, CfPoint ptPnt) 
 {
-	if(pView->m_pMotion)
-		pView->m_pMotion->SetPinPos(nCam, ptPnt.x, ptPnt.y);
-	if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
-		pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->SetPinPos(nCam, ptPnt);
-	if(pDoc->m_pSpecLocal)
-		pDoc->m_pSpecLocal->SavePinPos(nCam, ptPnt);
+	pView->SetPinPos(nCam, ptPnt);
+	//if(pView->m_mgrPunch->m_pMotion)
+	//	pView->m_mgrPunch->m_pMotion->SetPinPos(nCam, ptPnt.x, ptPnt.y);
+	//if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
+	//	pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->SetPinPos(nCam, ptPnt);
+	//if(pDoc->m_pSpecLocal)
+	//	pDoc->m_pSpecLocal->SavePinPos(nCam, ptPnt);
 
-	CString sData, sPath=PATH_WORKING_INFO;
-	sData.Format(_T("%.3f"), ptPnt.x);
-	pDoc->WorkingInfo.Motion.sPinPosX[nCam] = sData;
-	
-	sData.Format(_T("%.3f"), ptPnt.y);
-	pDoc->WorkingInfo.Motion.sPinPosY[nCam] = sData;
+	//CString sData, sPath=PATH_WORKING_INFO;
+	//sData.Format(_T("%.3f"), ptPnt.x);
+	//pDoc->WorkingInfo.Motion.sPinPosX[nCam] = sData;
+	//
+	//sData.Format(_T("%.3f"), ptPnt.y);
+	//pDoc->WorkingInfo.Motion.sPinPosY[nCam] = sData;
 
-	if(nCam==0)
-	{
-		::WritePrivateProfileString(_T("Motion"), _T("PIN_POS0_X"), pDoc->WorkingInfo.Motion.sPinPosX[nCam], sPath);
-		::WritePrivateProfileString(_T("Motion"), _T("PIN_POS0_Y"), pDoc->WorkingInfo.Motion.sPinPosY[nCam], sPath);
-	}
-	else if(nCam==1)
-	{
-		::WritePrivateProfileString(_T("Motion"), _T("PIN_POS1_X"), pDoc->WorkingInfo.Motion.sPinPosX[nCam], sPath);
-		::WritePrivateProfileString(_T("Motion"), _T("PIN_POS1_Y"), pDoc->WorkingInfo.Motion.sPinPosY[nCam], sPath);
-	}
+	//if(nCam==0)
+	//{
+	//	::WritePrivateProfileString(_T("Motion"), _T("PIN_POS0_X"), pDoc->WorkingInfo.Motion.sPinPosX[nCam], sPath);
+	//	::WritePrivateProfileString(_T("Motion"), _T("PIN_POS0_Y"), pDoc->WorkingInfo.Motion.sPinPosY[nCam], sPath);
+	//}
+	//else if(nCam==1)
+	//{
+	//	::WritePrivateProfileString(_T("Motion"), _T("PIN_POS1_X"), pDoc->WorkingInfo.Motion.sPinPosX[nCam], sPath);
+	//	::WritePrivateProfileString(_T("Motion"), _T("PIN_POS1_Y"), pDoc->WorkingInfo.Motion.sPinPosY[nCam], sPath);
+	//}
 
-	pView->SetAlignPos();
+	//pView->SetAlignPos();
 }
 
 void CDlgMenu02::OnBtnPinSave() 
@@ -2432,10 +2457,10 @@ void CDlgMenu02::OnBtnHomeMove()
 	double pTgtPos[2];
 	pTgtPos[1] = _tstof(pDoc->WorkingInfo.Motion.sStPosY[0]);
 	pTgtPos[0] = _tstof(pDoc->WorkingInfo.Motion.sStPosX[0]);
-	double dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-	double dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+	double dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+	double dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 
-	if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pTgtPos[0]))
+	if(pView->m_mgrPunch->ChkCollision(AXIS_X0, pTgtPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -2447,12 +2472,12 @@ void CDlgMenu02::OnBtnHomeMove()
 	fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
 	if(fLen > 0.001)
 	{
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
 			{
-				if(!pView->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
+				if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -2470,10 +2495,10 @@ void CDlgMenu02::OnBtnHomeMove2()
 	double pTgtPos[2];
 	pTgtPos[1] = _tstof(pDoc->WorkingInfo.Motion.sStPosY[1]);
 	pTgtPos[0] = _tstof(pDoc->WorkingInfo.Motion.sStPosX[1]);
-	double dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-	double dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+	double dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+	double dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 
-	if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pTgtPos[0]))
+	if(pView->m_mgrPunch->ChkCollision(AXIS_X1, pTgtPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = 0.0;
@@ -2485,12 +2510,12 @@ void CDlgMenu02::OnBtnHomeMove2()
 	fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
 	if(fLen > 0.001)
 	{
-		if(pView->m_pMotion)
+		if(pView->m_mgrPunch->m_pMotion)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
 			{
-				if(!pView->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
+				if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
 				{
 					pView->ClrDispMsg();
 					AfxMessageBox(_T("Move XY Error..."));
@@ -2569,12 +2594,12 @@ void CDlgMenu02::OnChkResPosSt()
 {
 	// TODO: Add your control notification handler code here
 #ifdef USE_VISION
-	if(!pView->m_pVision[0])
+	if(!pView->m_mgrPunch->m_pVision[0])
 		return;
 	myBtn[17].SetCheck(TRUE);	//	IDC_CHK_RES_POS_ST
 	myBtn[17].EnableWindow(FALSE);
 
-	pView->m_pVision[0]->CalcCameraPixelSize();
+	pView->m_mgrPunch->m_pVision[0]->CalcCameraPixelSize();
 
 	myBtn[17].EnableWindow(TRUE);
 	myBtn[17].SetCheck(FALSE);	//	IDC_CHK_RES_POS_ST
@@ -2590,13 +2615,13 @@ void CDlgMenu02::OnChkResPosSt2()
 {
 	// TODO: Add your control notification handler code here
 #ifdef USE_VISION
-	if(!pView->m_pVision[1])
+	if(!pView->m_mgrPunch->m_pVision[1])
 		return;
 
 	myBtn2[17].SetCheck(TRUE);	//	IDC_CHK_RES_POS_ST
 	myBtn2[17].EnableWindow(FALSE);
 
-	pView->m_pVision[1]->CalcCameraPixelSize();
+	pView->m_mgrPunch->m_pVision[1]->CalcCameraPixelSize();
 
 	myBtn2[17].EnableWindow(TRUE);
 	myBtn2[17].SetCheck(FALSE);	//	IDC_CHK_RES_POS_ST
@@ -2630,10 +2655,10 @@ void CDlgMenu02::OnChkMkOffsetSt()
 
 		CString str = _T("Find mark with jog button.");
 #ifdef USE_VISION
-		if(pView->m_pVision[0])
+		if(pView->m_mgrPunch->m_pVision[0])
 		{
-			pView->m_pVision[0]->DrawText(str, 200, 160, RGB_RED);
-			pView->m_pVision[0]->DrawCenterMark();
+			pView->m_mgrPunch->m_pVision[0]->DrawText(str, 200, 160, RGB_RED);
+			pView->m_mgrPunch->m_pVision[0]->DrawCenterMark();
 		}
 #endif
 		myBtn[20].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ST
@@ -2665,10 +2690,10 @@ void CDlgMenu02::OnChkMkOffsetSt2()
 
 		CString str = _T("Find mark with jog button.");
 #ifdef USE_VISION
-		if(pView->m_pVision[1])
+		if(pView->m_mgrPunch->m_pVision[1])
 		{
-			pView->m_pVision[1]->DrawText(str, 200, 160, RGB_RED);
-			pView->m_pVision[1]->DrawCenterMark();
+			pView->m_mgrPunch->m_pVision[1]->DrawText(str, 200, 160, RGB_RED);
+			pView->m_mgrPunch->m_pVision[1]->DrawCenterMark();
 		}
 #endif
 		myBtn2[19].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ST
@@ -2688,15 +2713,15 @@ void CDlgMenu02::OnChkMkOffsetEd()
 		myBtn[21].EnableWindow(FALSE);	// IDC_CHK_MK_OFFSET_ED
 		myBtn[20].SetCheck(FALSE);
 
-		if(!pView->m_pMotion)
+		if(!pView->m_mgrPunch->m_pMotion)
 		{
 			myBtn[20].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ST
 			return;
 		}
 		
 		double dCurPosX, dCurPosY;
-		dCurPosX = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);	
-		dCurPosY = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);	
+		dCurPosX = pView->m_dEnc[AXIS_X0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);	
+		dCurPosY = pView->m_dEnc[AXIS_Y0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);	
 
 		double dMkOffsetX, dMkOffsetY;
 		if(pDoc->WorkingInfo.Vision[0].sMkOffsetX.IsEmpty())
@@ -2725,10 +2750,10 @@ void CDlgMenu02::OnChkMkOffsetEd()
 		myStcData[6].SetText(sData);	// IDC_STC_CAM_MK_OFFSET_Y
 
 #ifdef USE_VISION
-		if(pView->m_pVision[0])
+		if(pView->m_mgrPunch->m_pVision[0])
 		{
-			pView->m_pVision[0]->ClearOverlay();
-			pView->m_pVision[0]->DrawCenterMark();
+			pView->m_mgrPunch->m_pVision[0]->ClearOverlay();
+			pView->m_mgrPunch->m_pVision[0]->DrawCenterMark();
 		}
 #endif
 		myBtn[21].SetCheck(FALSE);
@@ -2745,15 +2770,15 @@ void CDlgMenu02::OnChkMkOffsetEd2()
 		myBtn2[20].EnableWindow(FALSE);	// IDC_CHK_MK_OFFSET_ED2
 		myBtn2[19].SetCheck(FALSE);
 
-		if(!pView->m_pMotion)
+		if(!pView->m_mgrPunch->m_pMotion)
 		{
 			myBtn2[19].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ST
 			return;
 		}
 		
 		double dCurPosX, dCurPosY;
-		dCurPosX = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);	
-		dCurPosY = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);	
+		dCurPosX = pView->m_dEnc[AXIS_X1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);	
+		dCurPosY = pView->m_dEnc[AXIS_Y1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);	
 
 		double dMkOffsetX, dMkOffsetY;
 		if(pDoc->WorkingInfo.Vision[1].sMkOffsetX.IsEmpty())
@@ -2782,10 +2807,10 @@ void CDlgMenu02::OnChkMkOffsetEd2()
 		myStcData2[6].SetText(sData);	// IDC_STC_CAM_MK_OFFSET_Y
 
 #ifdef USE_VISION
-		if(pView->m_pVision[1])
+		if(pView->m_mgrPunch->m_pVision[1])
 		{
-			pView->m_pVision[1]->ClearOverlay();
-			pView->m_pVision[1]->DrawCenterMark();
+			pView->m_mgrPunch->m_pVision[1]->ClearOverlay();
+			pView->m_mgrPunch->m_pVision[1]->DrawCenterMark();
 		}
 #endif
 		myBtn2[20].SetCheck(FALSE);
@@ -2827,10 +2852,10 @@ void CDlgMenu02::Grab2PntAlign()
 	double dCurrY = pView->m_dEnc[AXIS_Y0];
 
 	double pPos[4];
-	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[0];
-	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[0];
-	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[0];
-	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[0];
+	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
+	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 
 	int nPos = -1;
 	if ((dCurrX > pPos[0] - 0.1 && dCurrX < pPos[0] + 0.1) && (dCurrY > pPos[1] - 0.1 && dCurrY < pPos[1] + 0.1))
@@ -2846,7 +2871,7 @@ void CDlgMenu02::Grab2PntAlign()
 	}
 
 #ifdef USE_VISION
-	if (pView->m_pVision[0]->Grab(nPos))
+	if (pView->m_mgrPunch->m_pVision[0]->Grab(nPos))
 	{
 		GetPmRst0(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -2884,15 +2909,15 @@ void CDlgMenu02::Grab4PntAlign()
 	double dCurrY = pView->m_dEnc[AXIS_Y0];
 
 	double pPos[8];
-	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[0];
-	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[0];
-	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[0];
-	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[0];
+	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
+	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 
-	pPos[4] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_pMotion->m_dPinPosX[0];
-	pPos[5] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_pMotion->m_dPinPosY[0];
-	pPos[6] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_pMotion->m_dPinPosX[0];
-	pPos[7] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[0];
+	pPos[4] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+	pPos[5] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
+	pPos[6] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+	pPos[7] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 
 	int nPos = -1;
 	if ((dCurrX > pPos[0] - 0.1 && dCurrX < pPos[0] + 0.1) && (dCurrY > pPos[1] - 0.1 && dCurrY < pPos[1] + 0.1))
@@ -2912,7 +2937,7 @@ void CDlgMenu02::Grab4PntAlign()
 	}
 
 #ifdef USE_VISION
-	if (pView->m_pVision[0]->Grab(nPos))
+	if (pView->m_mgrPunch->m_pVision[0]->Grab(nPos))
 	{
 		GetPmRst0(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -2944,13 +2969,13 @@ void CDlgMenu02::Grab4PntAlign()
 BOOL CDlgMenu02::GetPmRst0(double &dX, double &dY, double &dAgl, double &dScr)
 {
 #ifdef USE_VISION
-	if(!pView->m_pVision[0])
+	if(!pView->m_mgrPunch->m_pVision[0])
 		return FALSE;
 
-	dX = pView->m_pVision[0]->PtMtRst.dX;
-	dY = pView->m_pVision[0]->PtMtRst.dY;
-	dAgl = pView->m_pVision[0]->PtMtRst.dAngle;
-	dScr = pView->m_pVision[0]->PtMtRst.dScore;
+	dX = pView->m_mgrPunch->m_pVision[0]->PtMtRst.dX;
+	dY = pView->m_mgrPunch->m_pVision[0]->PtMtRst.dY;
+	dAgl = pView->m_mgrPunch->m_pVision[0]->PtMtRst.dAngle;
+	dScr = pView->m_mgrPunch->m_pVision[0]->PtMtRst.dScore;
 #endif
 	return TRUE;
 }
@@ -2958,13 +2983,13 @@ BOOL CDlgMenu02::GetPmRst0(double &dX, double &dY, double &dAgl, double &dScr)
 BOOL CDlgMenu02::GetPmRst1(double &dX, double &dY, double &dAgl, double &dScr)
 {
 #ifdef USE_VISION
-	if(!pView->m_pVision[1])
+	if(!pView->m_mgrPunch->m_pVision[1])
 		return FALSE;
 
-	dX = pView->m_pVision[1]->PtMtRst.dX;
-	dY = pView->m_pVision[1]->PtMtRst.dY;
-	dAgl = pView->m_pVision[1]->PtMtRst.dAngle;
-	dScr = pView->m_pVision[1]->PtMtRst.dScore;
+	dX = pView->m_mgrPunch->m_pVision[1]->PtMtRst.dX;
+	dY = pView->m_mgrPunch->m_pVision[1]->PtMtRst.dY;
+	dAgl = pView->m_mgrPunch->m_pVision[1]->PtMtRst.dAngle;
+	dScr = pView->m_mgrPunch->m_pVision[1]->PtMtRst.dScore;
 #endif
 	return TRUE;
 }
@@ -2980,10 +3005,10 @@ BOOL CDlgMenu02::Grab(int nPos, BOOL bMove)
 
 	CString str = _T("");
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
 		DWORD dwSt = GetTickCount();
-		if(pView->m_pVision[0]->Grab(nPos))
+		if(pView->m_mgrPunch->m_pVision[0]->Grab(nPos))
 		{
 			double dX, dY, dAgl, dScr;
 			GetPmRst0(dX, dY, dAgl, dScr);
@@ -3125,11 +3150,11 @@ void CDlgMenu02::OnBtnAlign2()
 
 void CDlgMenu02::SwMarking()
 {
-	if(!pView->m_pMotion)
+	if (!pView->m_mgrPunch->m_pMotion)
 		return;
 
-	double dCurPosX = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);	
-	double dCurPosY = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);	
+	double dCurPosX = pView->m_dEnc[AXIS_X0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);	
+	double dCurPosY = pView->m_dEnc[AXIS_Y0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);	
 	double dStPosX = _tstof(pDoc->WorkingInfo.Motion.sStPosX[0]);
 	double dStPosY = _tstof(pDoc->WorkingInfo.Motion.sStPosY[0]);
 	if(dCurPosX < (dStPosX+10.0) && dCurPosX > (dStPosX-10.0)
@@ -3153,7 +3178,7 @@ void CDlgMenu02::SwMarking()
 	pPos[0] = m_dCurPosX[0] + dMkOffsetX;
 	pPos[1] = m_dCurPosY[0] + dMkOffsetY;
 
-	if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
+	if(pView->m_mgrPunch->ChkCollision(AXIS_X0, pPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -3165,10 +3190,10 @@ void CDlgMenu02::SwMarking()
 	fLen = sqrt( dMkOffsetX*dMkOffsetX + dMkOffsetY*dMkOffsetY );
 	if(fLen > 0.001)
 	{
-		pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-		if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+		pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+		if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 		{
-			if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3177,19 +3202,19 @@ void CDlgMenu02::SwMarking()
 	}
 
 
-	if(pView->m_pVoiceCoil[0])
-		pView->m_pVoiceCoil[0]->SetMarking(0);
+	if(pView->m_mgrPunch->m_pVoiceCoil[0])
+		pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarking(0);
 	SetMkDlyOff(0);
 
 }
 
 void CDlgMenu02::SwMarking2()
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return;
 
-	double dCurPosX = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);	
-	double dCurPosY = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);	
+	double dCurPosX = pView->m_dEnc[AXIS_X1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);	
+	double dCurPosY = pView->m_dEnc[AXIS_Y1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);	
 	double dStPosX = _tstof(pDoc->WorkingInfo.Motion.sStPosX[1]);
 	double dStPosY = _tstof(pDoc->WorkingInfo.Motion.sStPosY[1]);
 	if(dCurPosX < (dStPosX+10.0) && dCurPosX > (dStPosX-10.0)
@@ -3213,7 +3238,7 @@ void CDlgMenu02::SwMarking2()
 	pPos[0] = m_dCurPosX[1] + dMkOffsetX;
 	pPos[1] = m_dCurPosY[1] + dMkOffsetY;
 
-	if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
+	if(pView->m_mgrPunch->ChkCollision(AXIS_X1, pPos[0]))
 	{
 		CfPoint ptPnt;
 		ptPnt.x = 0.0;
@@ -3225,10 +3250,10 @@ void CDlgMenu02::SwMarking2()
 	fLen = sqrt( dMkOffsetX*dMkOffsetX + dMkOffsetY*dMkOffsetY );
 	if(fLen > 0.001)
 	{
-		pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-		if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+		pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+		if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 		{
-			if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3237,8 +3262,8 @@ void CDlgMenu02::SwMarking2()
 	}
 
 
-	if(pView->m_pVoiceCoil[1])
-		pView->m_pVoiceCoil[1]->SetMarking(1);
+	if(pView->m_mgrPunch->m_pVoiceCoil[1])
+		pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarking(1);
 	SetMkDlyOff(1);
 
 }
@@ -3247,13 +3272,13 @@ void CDlgMenu02::SetMkCurPos(int nCam)
 {
 	if (nCam == 0)
 	{
-		m_dCurPosX[0] = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);	
-		m_dCurPosY[0] = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);	
+		m_dCurPosX[0] = pView->m_dEnc[AXIS_X0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);	
+		m_dCurPosY[0] = pView->m_dEnc[AXIS_Y0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);	
 	}
 	else
 	{
-		m_dCurPosX[1] = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);	
-		m_dCurPosY[1] = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		m_dCurPosX[1] = pView->m_dEnc[AXIS_X1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);	
+		m_dCurPosY[1] = pView->m_dEnc[AXIS_Y1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 	}
 	
 }
@@ -3269,7 +3294,7 @@ void CDlgMenu02::SetMkDlyOff(int nCam, int mSec)
 
 void CDlgMenu02::MarkingOff()
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return;
 	
 	// Ink Marking OFF
@@ -3295,7 +3320,7 @@ void CDlgMenu02::MarkingOff()
 		pPos[0] = m_dCurPosX[0];
 		pPos[1] = m_dCurPosY[0];
 
-		if(pView->m_mgrProcedure->ChkCollision(AXIS_X0, pPos[0]))
+		if(pView->m_mgrPunch->ChkCollision(AXIS_X0, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
@@ -3303,10 +3328,10 @@ void CDlgMenu02::MarkingOff()
 			pView->Move1(ptPnt);
 		}
 
-		pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-		if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+		pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+		if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 		{
-			if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3317,7 +3342,7 @@ void CDlgMenu02::MarkingOff()
 
 void CDlgMenu02::MarkingOff2()
 {
-	if(!pView->m_pMotion)
+	if(!pView->m_mgrPunch->m_pMotion)
 		return;
 	
 	// Ink Marking OFF
@@ -3343,7 +3368,7 @@ void CDlgMenu02::MarkingOff2()
 		pPos[0] = m_dCurPosX[1];
 		pPos[1] = m_dCurPosY[1];
 
-		if(pView->m_mgrProcedure->ChkCollision(AXIS_X1, pPos[0]))
+		if(pView->m_mgrPunch->ChkCollision(AXIS_X1, pPos[0]))
 		{
 			CfPoint ptPnt;
 			ptPnt.x = 0.0;
@@ -3351,10 +3376,10 @@ void CDlgMenu02::MarkingOff2()
 			pView->Move0(ptPnt);
 		}
 
-		pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-		if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+		pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+		if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 		{
-			if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 			{
 				pView->ClrDispMsg();
 				AfxMessageBox(_T("Move XY Error..."));
@@ -3369,10 +3394,10 @@ void CDlgMenu02::OnBtnBuffHome()
 	if(pDoc->WorkingInfo.Motion.bBufHomming)
 	{
 		pView->DispMsg(_T("Homming"),_T("Searching Buffer Home Position..."),RGB_GREEN,2000,TRUE);
-		//pView->m_pMotion->SearchHomeBuf(FALSE);
+		//pView->m_mgrPunch->m_pMotion->SearchHomeBuf(FALSE);
 #ifdef USE_MPE
-		if(pView->m_pMpe)
-			pView->m_pMpe->Write(_T("MB440152"), 1);	// ¸¶Å·ºÎ ¹öÆÛ·Ñ·¯ È¨µ¿ÀÛ ON
+		if(pView)
+			pView->MpeWrite(_T("MB440152"), 1);	// ¸¶Å·ºÎ ¹öÆÛ·Ñ·¯ È¨µ¿ÀÛ ON
 #endif
 		pView->m_mgrProcedure->m_bBufHomeDone = FALSE;
 		if(pView->m_pDlgMenu03)
@@ -3385,8 +3410,8 @@ void CDlgMenu02::OnBtnBuffInitMove()
 	// TODO: Add your control notification handler code here
 	pView->DispMsg(_T("Moving"),_T("Searching Buffer Initial Position..."),RGB_GREEN,2000,TRUE);
 #ifdef USE_MPE
-	if(pView->m_pMpe)
-		pView->m_pMpe->Write(_T("MB44015A"), 1);	// ¸¶Å·ºÎ ¹öÆÛ ÃÊ±âÀ§Ä¡ ÀÌµ¿(PC°¡ ON, PLC°¡ OFF)
+	if(pView)
+		pView->MpeWrite(_T("MB44015A"), 1);	// ¸¶Å·ºÎ ¹öÆÛ ÃÊ±âÀ§Ä¡ ÀÌµ¿(PC°¡ ON, PLC°¡ OFF)
 #endif
 	if(pView->m_pDlgMenu03)
 		pView->m_pDlgMenu03->ChkBufInitDone();
@@ -3395,7 +3420,7 @@ void CDlgMenu02::OnBtnBuffInitMove()
 void CDlgMenu02::OnBtnBuffInitSave() 
 {
 	// TODO: Add your control notification handler code here
-	if(!pView->m_pMotion || !pDoc->m_pMpeData)
+	if(!pView->m_mgrPunch->m_pMotion || !pDoc->m_pMpeData)
 		return;
 
 	BOOL bOn = myBtn[16].GetCheck();
@@ -3431,14 +3456,14 @@ void CDlgMenu02::DispBufEnc()
 void CDlgMenu02::DispCenterMark()
 {
 #ifdef USE_VISION
-	if (pView->m_pVision[0])
+	if (pView->m_mgrPunch->m_pVision[0])
 	{
-		pView->m_pVision[0]->DrawCross();
+		pView->m_mgrPunch->m_pVision[0]->DrawCross();
 	}
 
-	if (pView->m_pVision[1])
+	if (pView->m_mgrPunch->m_pVision[1])
 	{
-		pView->m_pVision[1]->DrawCross();
+		pView->m_mgrPunch->m_pVision[1]->DrawCross();
 	}
 #endif
 }
@@ -3446,21 +3471,21 @@ void CDlgMenu02::DispCenterMark()
 void CDlgMenu02::DispAxisPos()
 {
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
 #ifdef TEST_MODE
-		pView->m_pVision[0]->DispAxisPos(TRUE);
+		pView->m_mgrPunch->m_pVision[0]->DispAxisPos(TRUE);
 #else
-		pView->m_pVision[0]->DispAxisPos();
+		pView->m_mgrPunch->m_pVision[0]->DispAxisPos();
 #endif
 	}
 
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
 #ifdef TEST_MODE
-		pView->m_pVision[1]->DispAxisPos(TRUE);
+		pView->m_mgrPunch->m_pVision[1]->DispAxisPos(TRUE);
 #else
-		pView->m_pVision[1]->DispAxisPos();
+		pView->m_mgrPunch->m_pVision[1]->DispAxisPos();
 #endif
 	}
 #endif
@@ -3469,11 +3494,11 @@ void CDlgMenu02::DispAxisPos()
 
 // void CDlgMenu02::SetMkPos(CfPoint ptOfst)
 // {
-// 	if(!pView->m_pVision[0])
+// 	if(!pView->m_mgrPunch->m_pVision[0])
 // 		return;
 // 	int nSzCtrlX, nSzCtrlY, nSzImgX, nSzImgY;
 // // 	m_pPcsGL->GetPixelInfo(nSzCtrlX, nSzCtrlY, nSzImgX, nSzImgY);
-// 	pView->m_pVision[0]->GetPixelInfo(nSzCtrlX, nSzCtrlY, nSzImgX, nSzImgY);
+// 	pView->m_mgrPunch->m_pVision[0]->GetPixelInfo(nSzCtrlX, nSzCtrlY, nSzImgX, nSzImgY);
 // 	double dImgPixelRes = pView->m_mgrReelmap->m_Master[0].MasterInfo.dPixelSize / 1000.0; // [mm]
 // // 	double dImgPixelRes = pDoc->MasterInfo.dPixelSize / 1000.0; // [mm]
 // 	int nPixX = int(ptOfst.x/dImgPixelRes);
@@ -3482,7 +3507,7 @@ void CDlgMenu02::DispAxisPos()
 // 	ptPnt.x = nSzImgX/2 + nPixX;
 // 	ptPnt.y = nSzImgY/2 + nPixY;
 // // 	m_pPcsGL->SetMkPos(ptPnt);
-// 	pView->m_pVision[0]->SetMkPos(ptPnt);
+// 	pView->m_mgrPunch->m_pVision[0]->SetMkPos(ptPnt);
 // }
 
 // void CDlgMenu02::DispLocalSpec()
@@ -3499,18 +3524,18 @@ void CDlgMenu02::ChgModel()
 // 	m_pPcsGL->LoadPcsImg(PATH_PCS_IMG);
 
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
-// 		pView->m_pVision[0]->ShowDispPcs(nLayer);
- 		pView->m_pVision[0]->ShowDispPin(0);
-		pView->m_pVision[0]->ShowDispAlign();
+// 		pView->m_mgrPunch->m_pVision[0]->ShowDispPcs(nLayer);
+ 		pView->m_mgrPunch->m_pVision[0]->ShowDispPin(0);
+		pView->m_mgrPunch->m_pVision[0]->ShowDispAlign();
 	}
 
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
-// 		pView->m_pVision[0]->ShowDispPcs(nLayer);
- 		pView->m_pVision[1]->ShowDispPin(0);
-		pView->m_pVision[1]->ShowDispAlign();
+// 		pView->m_mgrPunch->m_pVision[0]->ShowDispPcs(nLayer);
+ 		pView->m_mgrPunch->m_pVision[1]->ShowDispPin(0);
+		pView->m_mgrPunch->m_pVision[1]->ShowDispAlign();
 	}
 #endif
 }
@@ -3518,11 +3543,11 @@ void CDlgMenu02::ChgModel()
 void CDlgMenu02::ChgModelUp()
 {
 #ifdef USE_VISION
-	if(pView->m_pVision[0])
+	if(pView->m_mgrPunch->m_pVision[0])
 	{
-// 		pView->m_pVision[0]->ShowDispPcs(nLayer);
- 		pView->m_pVision[0]->ShowDispPin(0);
-		pView->m_pVision[0]->ShowDispAlign();
+// 		pView->m_mgrPunch->m_pVision[0]->ShowDispPcs(nLayer);
+ 		pView->m_mgrPunch->m_pVision[0]->ShowDispPin(0);
+		pView->m_mgrPunch->m_pVision[0]->ShowDispAlign();
 	}
 #endif
 }
@@ -3530,11 +3555,11 @@ void CDlgMenu02::ChgModelUp()
 void CDlgMenu02::ChgModelDn()
 {
 #ifdef USE_VISION
-	if(pView->m_pVision[1])
+	if(pView->m_mgrPunch->m_pVision[1])
 	{
-// 		pView->m_pVision[0]->ShowDispPcs(nLayer);
- 		pView->m_pVision[1]->ShowDispPin(0);
-		pView->m_pVision[1]->ShowDispAlign();
+// 		pView->m_mgrPunch->m_pVision[0]->ShowDispPcs(nLayer);
+ 		pView->m_mgrPunch->m_pVision[1]->ShowDispPin(0);
+		pView->m_mgrPunch->m_pVision[1]->ShowDispAlign();
 	}
 #endif
 }
@@ -3543,11 +3568,11 @@ BOOL CDlgMenu02::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
 #ifdef USE_VISION
-	if(pView->m_pVision[0] && pView->m_pVision[1] && pView->m_pMotion)
+	if(pView->m_mgrPunch->m_pVision[0] && pView->m_mgrPunch->m_pVision[1] && pView->m_mgrPunch->m_pMotion)
 	{
 		CString sMsg;
 		int nCamSzX, nCamSzY;
-		pView->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
+		pView->m_mgrPunch->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
 
 		double dResX, dResY;
 		double dCenterX[2] = { 323, 963 };
@@ -3565,13 +3590,13 @@ BOOL CDlgMenu02::PreTranslateMessage(MSG* pMsg)
 			fLen = 1.0 * sqrt(((pMsg->pt.x - dCenterX[0]) * dResX * (pMsg->pt.x - dCenterX[0]) * dResX) + ((pMsg->pt.y - dCenterY[0]) * dResY * (pMsg->pt.y - dCenterY[0]) * dResY));
 			if (fLen > 0.001)
 			{
-				pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
 
 				pPos[0] = pView->m_dEnc[AXIS_X0] + (1.0 * (pMsg->pt.x - dCenterX[0]) * dResX);
 				pPos[1] = pView->m_dEnc[AXIS_Y0] + (1.0 * (pMsg->pt.y - dCenterY[0]) * dResY);
-				if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 				{
-					if (!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+					if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 					{
 						pView->ClrDispMsg();
 						AfxMessageBox(_T("Move X0Y0 Error..."));
@@ -3590,13 +3615,13 @@ BOOL CDlgMenu02::PreTranslateMessage(MSG* pMsg)
 			fLen = 1.0 * sqrt(((pMsg->pt.x - dCenterX[1]) * dResX * (pMsg->pt.x - dCenterX[1]) * dResX) + ((pMsg->pt.y - dCenterY[1]) * dResY * (pMsg->pt.y - dCenterY[1]) * dResY));
 			if (fLen > 0.001)
 			{
-				pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
 
 				pPos[0] = pView->m_dEnc[AXIS_X1] + (1.0 * (pMsg->pt.x - dCenterX[1]) * dResX);
 				pPos[1] = pView->m_dEnc[AXIS_Y1] + (1.0 * (pMsg->pt.y - dCenterY[1]) * dResY);
-				if (!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 				{
-					if (!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+					if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 					{
 						pView->ClrDispMsg();
 						AfxMessageBox(_T("Move X1Y1 Error..."));
@@ -3891,8 +3916,8 @@ void CDlgMenu02::OnBtnMk0PosMeas()
 	switch(m_nSelectCam0Pos) 
 	{
 	case 1:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3902,8 +3927,8 @@ void CDlgMenu02::OnBtnMk0PosMeas()
 		}
 		break;
 	case 2:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3913,8 +3938,8 @@ void CDlgMenu02::OnBtnMk0PosMeas()
 		}
 		break;
 	case 3:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3924,8 +3949,8 @@ void CDlgMenu02::OnBtnMk0PosMeas()
 		}
 		break;
 	case 4:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_FIRST_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{	
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3938,7 +3963,7 @@ void CDlgMenu02::OnBtnMk0PosMeas()
 		return;
 	}
 
-	pView->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->CalcAveSmacHeight(VOICE_COIL_FIRST_CAM);
+	pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_FIRST_CAM]->CalcAveSmacHeight(VOICE_COIL_FIRST_CAM);
 }
 
 void CDlgMenu02::OnBtnMk1PosMeas() 
@@ -3950,8 +3975,8 @@ void CDlgMenu02::OnBtnMk1PosMeas()
 	switch(m_nSelectCam1Pos) 
 	{
 	case 1:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3961,8 +3986,8 @@ void CDlgMenu02::OnBtnMk1PosMeas()
 		}
 		break;
 	case 2:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3972,8 +3997,8 @@ void CDlgMenu02::OnBtnMk1PosMeas()
 		}
 		break;
 	case 3:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3983,8 +4008,8 @@ void CDlgMenu02::OnBtnMk1PosMeas()
 		}
 		break;
 	case 4:
-		dFinalPos = pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
-		pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
+		dFinalPos = pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->GetSmacMeasureOfSurface(VOICE_COIL_SECOND_CAM);
+		pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->ClearReceive();
 		if(dFinalPos > 0.001)
 		{	
 			strVal.Format(_T("%.2f"), dFinalPos);
@@ -3997,7 +4022,7 @@ void CDlgMenu02::OnBtnMk1PosMeas()
 		return;
 	}
 
-	pView->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->CalcAveSmacHeight(VOICE_COIL_SECOND_CAM);
+	pView->m_mgrPunch->m_pVoiceCoil[VOICE_COIL_SECOND_CAM]->CalcAveSmacHeight(VOICE_COIL_SECOND_CAM);
 }
 
 void CDlgMenu02::OnBtnAlignMove2() 
@@ -4033,10 +4058,10 @@ void CDlgMenu02::Grab2PntAlign2()
 	double dCurrY = pView->m_dEnc[AXIS_Y1];
 
 	double pPos[8];
-	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[1];
-	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[1];
-	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[1];
-	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[1];
+	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
+	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 
 	int nPos = -1;
 	if ((dCurrX > pPos[0] - 0.1 && dCurrX < pPos[0] + 0.1) && (dCurrY > pPos[1] - 0.1 && dCurrY < pPos[1] + 0.1))
@@ -4052,7 +4077,7 @@ void CDlgMenu02::Grab2PntAlign2()
 	}
 
 #ifdef USE_VISION
-	if (pView->m_pVision[1]->Grab(nPos))
+	if (pView->m_mgrPunch->m_pVision[1]->Grab(nPos))
 	{
 		GetPmRst1(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -4091,15 +4116,15 @@ void CDlgMenu02::Grab4PntAlign2()
 	double dCurrY = pView->m_dEnc[AXIS_Y1];
 
 	double pPos[8];
-	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[1];
-	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[1];
-	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[1];
-	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[1];
+	pPos[0] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+	pPos[1] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
+	pPos[2] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+	pPos[3] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 
-	pPos[4] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_pMotion->m_dPinPosX[1];
-	pPos[5] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_pMotion->m_dPinPosY[1];
-	pPos[6] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_pMotion->m_dPinPosX[1];
-	pPos[7] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[1];
+	pPos[4] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+	pPos[5] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
+	pPos[6] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+	pPos[7] = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 
 	int nPos = -1;
 	if ((dCurrX > pPos[0] - 0.1 && dCurrX < pPos[0] + 0.1) && (dCurrY > pPos[1] - 0.1 && dCurrY < pPos[1] + 0.1))
@@ -4119,7 +4144,7 @@ void CDlgMenu02::Grab4PntAlign2()
 	}
 
 #ifdef USE_VISION
-	if (pView->m_pVision[1]->Grab(nPos))
+	if (pView->m_mgrPunch->m_pVision[1]->Grab(nPos))
 	{
 		GetPmRst1(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -4247,25 +4272,25 @@ void CDlgMenu02::ChkElecTest()
 		//	{
 		//		m_pDlgUtil06->ShowWindow(SW_HIDE);
 
-		//		if(pView->m_mgrProcedure->m_bProbDn[0])
+		//		if(pView->m_mgrPunch->m_bProbDn[0])
 		//		{
-		//			if(pView->m_pVoiceCoil[0])
+		//			if(pView->m_mgrPunch->m_pVoiceCoil[0])
 		//			{
-		//				pView->m_pVoiceCoil[0]->SearchHomeSmac(0);
-		//				pView->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
-		//				pView->m_mgrProcedure->m_bProbDn[0] = FALSE;
+		//				pView->m_mgrPunch->m_pVoiceCoil[0]->SearchHomeSmac(0);
+		//				pView->m_mgrPunch->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
+		//				pView->m_mgrPunch->m_bProbDn[0] = FALSE;
 		//				if(m_pDlgUtil06)
 		//					m_pDlgUtil06->myBtn[2].SetCheck(FALSE);
 		//			}
 		//		}
 
-		//		if(pView->m_mgrProcedure->m_bProbDn[1])
+		//		if(pView->m_mgrPunch->m_bProbDn[1])
 		//		{
-		//			if(pView->m_pVoiceCoil[1])
+		//			if(pView->m_mgrPunch->m_pVoiceCoil[1])
 		//			{
-		//				pView->m_pVoiceCoil[1]->SearchHomeSmac(1);
-		//				pView->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
-		//				pView->m_mgrProcedure->m_bProbDn[1] = FALSE;
+		//				pView->m_mgrPunch->m_pVoiceCoil[1]->SearchHomeSmac(1);
+		//				pView->m_mgrPunch->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
+		//				pView->m_mgrPunch->m_bProbDn[1] = FALSE;
 		//				if(m_pDlgUtil06)
 		//					m_pDlgUtil06->myBtn[6].SetCheck(FALSE);
 		//			}
@@ -4308,6 +4333,8 @@ BOOL CDlgMenu02::OnEraseBkgnd(CDC* pDC)
 // OnePointAlign==================================================================
 BOOL CDlgMenu02::OnePointAlign(CfPoint &ptPnt)
 {
+	//return pView->m_mgrPunch->OnePointAlign(ptPnt);
+
 #ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
@@ -4316,13 +4343,13 @@ BOOL CDlgMenu02::OnePointAlign(CfPoint &ptPnt)
 
 	pView->m_dMkFdOffsetX[0][0] = 0.0;
 
-	if (!pView->m_pMotion || !pView->m_pVision[0])
+	if (!pView->m_mgrPunch->m_pMotion || !pView->m_mgrPunch->m_pVision[0])
 		return FALSE;
 
 	if (pDoc->WorkingInfo.Vision[0].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[0].sResY.IsEmpty())
 		return FALSE;
 
-	if (pView->m_pVision[0]->Grab(0))
+	if (pView->m_mgrPunch->m_pVision[0]->Grab(0))
 	{
 		double dX, dY, dAgl, dScr;
 		GetPmRst0(dX, dY, dAgl, dScr);
@@ -4345,7 +4372,7 @@ BOOL CDlgMenu02::OnePointAlign(CfPoint &ptPnt)
 	}
 
 	int nCamSzX, nCamSzY;
-	pView->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
+	pView->m_mgrPunch->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
 
 	dResX = _tstof(pDoc->WorkingInfo.Vision[0].sResX);
 	dResY = _tstof(pDoc->WorkingInfo.Vision[0].sResY);
@@ -4357,11 +4384,11 @@ BOOL CDlgMenu02::OnePointAlign(CfPoint &ptPnt)
 	double dX, dY, dAgl, dScr;
 	GetPmRst0(dX, dY, dAgl, dScr);
 
-	dTgtPinX = pView->m_pMotion->m_dPinPosX[0] + (dX - double(nCamSzX / 2)) * dResX;
-	dTgtPinY = pView->m_pMotion->m_dPinPosY[0] + (dY - double(nCamSzY / 2)) * dResY;
+	dTgtPinX = pView->m_mgrPunch->m_pMotion->m_dPinPosX[0] + (dX - double(nCamSzX / 2)) * dResX;
+	dTgtPinY = pView->m_mgrPunch->m_pMotion->m_dPinPosY[0] + (dY - double(nCamSzY / 2)) * dResY;
 	pView->m_dMkFdOffsetX[0][0] = (double(nCamSzX / 2) - dX) * dResX;
 	pView->m_dMkFdOffsetY[0][0] = (double(nCamSzY / 2) - dY) * dResY;
-	// 	dTgtPinY = pView->m_pMotion->m_dPinPosY + pView->m_dMkFdOffsetX;
+	// 	dTgtPinY = pView->m_mgrPunch->m_pMotion->m_dPinPosY + pView->m_dMkFdOffsetX;
 
 	ptPnt.x = dTgtPinX;
 	ptPnt.y = dTgtPinY;
@@ -4382,13 +4409,13 @@ BOOL CDlgMenu02::OnePointAlign2(CfPoint &ptPnt)
 
 	pView->m_dMkFdOffsetX[1][0] = 0.0;
 
-	if (!pView->m_pMotion || !pView->m_pVision[1])
+	if (!pView->m_mgrPunch->m_pMotion || !pView->m_mgrPunch->m_pVision[1])
 		return FALSE;
 
 	if (pDoc->WorkingInfo.Vision[1].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[1].sResY.IsEmpty())
 		return FALSE;
 
-	if (pView->m_pVision[1]->Grab(0))
+	if (pView->m_mgrPunch->m_pVision[1]->Grab(0))
 	{
 		double dX, dY, dAgl, dScr;
 		GetPmRst1(dX, dY, dAgl, dScr);
@@ -4411,7 +4438,7 @@ BOOL CDlgMenu02::OnePointAlign2(CfPoint &ptPnt)
 	}
 
 	int nCamSzX, nCamSzY;
-	pView->m_pVision[1]->GetCameraSize(nCamSzX, nCamSzY);
+	pView->m_mgrPunch->m_pVision[1]->GetCameraSize(nCamSzX, nCamSzY);
 
 	dResX = _tstof(pDoc->WorkingInfo.Vision[1].sResX);
 	dResY = _tstof(pDoc->WorkingInfo.Vision[1].sResY);
@@ -4423,11 +4450,11 @@ BOOL CDlgMenu02::OnePointAlign2(CfPoint &ptPnt)
 	double dX, dY, dAgl, dScr;
 	GetPmRst1(dX, dY, dAgl, dScr);
 
-	dTgtPinX = pView->m_pMotion->m_dPinPosX[1] + (dX - double(nCamSzX / 2)) * dResX;
-	dTgtPinY = pView->m_pMotion->m_dPinPosY[1] + (dY - double(nCamSzY / 2)) * dResY;
+	dTgtPinX = pView->m_mgrPunch->m_pMotion->m_dPinPosX[1] + (dX - double(nCamSzX / 2)) * dResX;
+	dTgtPinY = pView->m_mgrPunch->m_pMotion->m_dPinPosY[1] + (dY - double(nCamSzY / 2)) * dResY;
 	pView->m_dMkFdOffsetX[1][0] = (double(nCamSzX / 2) - dX) * dResX;
 	pView->m_dMkFdOffsetY[1][0] = (double(nCamSzY / 2) - dY) * dResY;
-	// 	dTgtPinY = pView->m_pMotion->m_dPinPosY + pView->m_dMkFdOffsetX;
+	// 	dTgtPinY = pView->m_mgrPunch->m_pMotion->m_dPinPosY + pView->m_dMkFdOffsetX;
 
 	ptPnt.x = dTgtPinX;
 	ptPnt.y = dTgtPinY;
@@ -4453,12 +4480,12 @@ BOOL CDlgMenu02::TwoPointAlign(int nPos)
 
 BOOL CDlgMenu02::TwoPointAlign0(int nPos)
 {
-#ifdef USE_VISION
-	if (!pView->m_pMotion || !pView->m_pVision[0])
-		return FALSE;
-#endif
-	if (pDoc->WorkingInfo.Vision[0].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[0].sResY.IsEmpty())
-		return FALSE;
+//#ifdef USE_VISION
+//	if (!pView->m_mgrPunch->m_pMotion || !pView->m_mgrPunch->m_pVision[0])
+//		return FALSE;
+//#endif
+//	if (pDoc->WorkingInfo.Vision[0].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[0].sResY.IsEmpty())
+//		return FALSE;
 
 	MoveAlign0(nPos);
 
@@ -4467,6 +4494,8 @@ BOOL CDlgMenu02::TwoPointAlign0(int nPos)
 
 BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 {
+	//return pView->m_mgrPunch->TwoPointAlign0(nPos, bDraw);
+
 #ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
@@ -4477,7 +4506,8 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 	CfPoint ptPnt;
 	double dX, dY, dAgl, dScr;
 
-	if (pView->m_pVision[0]->Grab(nPos, bDraw))
+	//if (pView->m_mgrPunch->m_pVision[0]->Grab(nPos, bDraw))
+	if(pView->Grab0(nPos, bDraw))
 	{
 		GetPmRst0(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -4500,7 +4530,8 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 	{
 		Sleep(100);
 
-		if (pView->m_pVision[0]->Grab(nPos, bDraw))
+		//if (pView->m_mgrPunch->m_pVision[0]->Grab(nPos, bDraw))
+		if (pView->Grab0(nPos, bDraw))
 		{
 			GetPmRst0(dX, dY, dAgl, dScr);
 			str.Format(_T("%.1f"), dX);
@@ -4530,7 +4561,7 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 	}
 
 	int nCamSzX, nCamSzY;
-	pView->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
+	pView->m_mgrPunch->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
 
 	dResX = _tstof(pDoc->WorkingInfo.Vision[0].sResX);
 	dResY = _tstof(pDoc->WorkingInfo.Vision[0].sResY);
@@ -4545,7 +4576,7 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 
 #ifdef USE_MPE
 		//pView->IoWrite("ML45066", (long)(-1.0 * pView->m_dMkFdOffsetX[0] * 1000.0));	// ¸¶Å·ºÎ Feeding ·Ñ·¯ Offset(*1000, +:´õ º¸³¿, -´ú º¸³¿)
-		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[0][0] * 1000.0));
+		pView->MpeWrite(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[0][0] * 1000.0));
 #endif
 	}
 
@@ -4557,16 +4588,16 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 		pView->m_dMkFdOffsetY[0][1] = dMkFdOffsetY;
 
 																  // CamÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
-		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
-		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
-		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
+		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
+		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
+		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
+		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
 
 																								 // PCB»óÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][0];
-		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][0];
-		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[0]) - dMkFdOffsetX;
-		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[0]) - dMkFdOffsetY;
+		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][0];
+		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][0];
+		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]) - dMkFdOffsetX;
+		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]) - dMkFdOffsetY;
 
 		int nNodeX = 0, nNodeY = 0;
 		if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
@@ -4583,8 +4614,8 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 		{
 			for (nRow = 0; nRow < nNodeY; nRow++)
 			{
-				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_pMotion->m_dPinPosX[0];
-				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_pMotion->m_dPinPosY[0];
+				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 				pView->m_Align[0].LinearAlignment(ptRef, ptTgt);
 				if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 				{
@@ -4604,11 +4635,11 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 BOOL CDlgMenu02::TwoPointAlign1(int nPos)
 {
 #ifdef USE_VISION
-	if (!pView->m_pMotion || !pView->m_pVision[1])
-		return FALSE;
+	//if (!pView->m_mgrPunch->m_pMotion || !pView->m_mgrPunch->m_pVision[1])
+	//	return FALSE;
 
-	if (pDoc->WorkingInfo.Vision[1].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[1].sResY.IsEmpty())
-		return FALSE;
+	//if (pDoc->WorkingInfo.Vision[1].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[1].sResY.IsEmpty())
+	//	return FALSE;
 
 	MoveAlign1(nPos);
 
@@ -4620,6 +4651,8 @@ BOOL CDlgMenu02::TwoPointAlign1(int nPos)
 
 BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 {
+	//return pView->TwoPointAlign1(nPos, bDraw);
+
 #ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
@@ -4630,7 +4663,8 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 	CfPoint ptPnt;
 	double dX, dY, dAgl, dScr;
 
-	if (pView->m_pVision[1]->Grab(nPos, bDraw))
+	//if (pView->m_mgrPunch->m_pVision[1]->Grab(nPos, bDraw))
+	if(pView->Grab1(nPos, bDraw))
 	{
 		GetPmRst1(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -4653,7 +4687,8 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 	{
 		Sleep(100);
 
-		if (pView->m_pVision[1]->Grab(nPos, bDraw))
+		//if (pView->m_mgrPunch->m_pVision[1]->Grab(nPos, bDraw))
+		if (pView->Grab1(nPos, bDraw))
 		{
 			GetPmRst1(dX, dY, dAgl, dScr);
 			str.Format(_T("%.1f"), dX);
@@ -4683,7 +4718,7 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 	}
 
 	int nCamSzX, nCamSzY;
-	pView->m_pVision[1]->GetCameraSize(nCamSzX, nCamSzY);
+	pView->m_mgrPunch->m_pVision[1]->GetCameraSize(nCamSzX, nCamSzY);
 
 	dResX = _tstof(pDoc->WorkingInfo.Vision[1].sResX);
 	dResY = _tstof(pDoc->WorkingInfo.Vision[1].sResY);
@@ -4698,7 +4733,7 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 
 #ifdef USE_MPE
 		//pView->IoWrite("ML45066", (long)(-1.0 * pView->m_dMkFdOffsetX[1] * 1000.0));	// ¸¶Å·ºÎ Feeding ·Ñ·¯ Offset(*1000, +:´õ º¸³¿, -´ú º¸³¿)
-		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[1][0] * 1000.0));
+		pView->MpeWrite(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[1][0] * 1000.0));
 #endif
 	}
 
@@ -4710,16 +4745,16 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 		pView->m_dMkFdOffsetY[1][1] = dMkFdOffsetY;
 
 		// CamÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
-		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
-		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
-		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
+		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
+		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
+		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
+		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
 
 		// PCB»óÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][0];
-		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][0];
-		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_pMotion->m_dPinPosX[1]) - dMkFdOffsetX;
-		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_pMotion->m_dPinPosY[1]) - dMkFdOffsetY;
+		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][0];
+		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][0];
+		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]) - dMkFdOffsetX;
+		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]) - dMkFdOffsetY;
 
 		int nNodeX = 0, nNodeY = 0;
 		if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
@@ -4736,8 +4771,8 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 		{
 			for (nRow = 0; nRow < nNodeY; nRow++)
 			{
-				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_pMotion->m_dPinPosX[1];
-				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_pMotion->m_dPinPosY[1];
+				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 				pView->m_Align[1].LinearAlignment(ptRef, ptTgt);
 				if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 				{
@@ -4774,12 +4809,12 @@ BOOL CDlgMenu02::FourPointAlign(int nPos)
 
 BOOL CDlgMenu02::FourPointAlign0(int nPos)
 {
-#ifdef USE_VISION
-	if (!pView->m_pMotion || !pView->m_pVision[0])
-		return FALSE;
-#endif
-	if (pDoc->WorkingInfo.Vision[0].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[0].sResY.IsEmpty())
-		return FALSE;
+//#ifdef USE_VISION
+//	if (!pView->m_mgrPunch->m_pMotion || !pView->m_mgrPunch->m_pVision[0])
+//		return FALSE;
+//#endif
+//	if (pDoc->WorkingInfo.Vision[0].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[0].sResY.IsEmpty())
+//		return FALSE;
 
 	MoveAlign0(nPos);
 
@@ -4788,6 +4823,7 @@ BOOL CDlgMenu02::FourPointAlign0(int nPos)
 
 BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 {
+	//return pView->m_mgrPunch->FourPointAlign0(nPos);
 #ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
@@ -4798,7 +4834,8 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 	CfPoint ptPnt;
 	double dX, dY, dAgl, dScr;
 
-	if (pView->m_pVision[0]->Grab(nPos, bDraw))
+	//if (pView->m_mgrPunch->m_pVision[0]->Grab(nPos, bDraw))
+	if(pView->Grab0(nPos, bDraw))
 	{
 		GetPmRst0(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -4821,7 +4858,8 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 	{
 		Sleep(100);
 
-		if (pView->m_pVision[0]->Grab(nPos, bDraw))
+		//if (pView->m_mgrPunch->m_pVision[0]->Grab(nPos, bDraw))
+		if (pView->Grab0(nPos, bDraw))
 		{
 			GetPmRst0(dX, dY, dAgl, dScr);
 			str.Format(_T("%.1f"), dX);
@@ -4851,7 +4889,7 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 	}
 
 	int nCamSzX, nCamSzY;
-	pView->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
+	pView->m_mgrPunch->m_pVision[0]->GetCameraSize(nCamSzX, nCamSzY);
 
 	dResX = _tstof(pDoc->WorkingInfo.Vision[0].sResX);
 	dResY = _tstof(pDoc->WorkingInfo.Vision[0].sResY);
@@ -4865,7 +4903,7 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 		pView->m_dMkFdOffsetY[0][0] = (double(nCamSzY / 2) - dY) * dResY; // -: Á¦Ç° ³ª¿È, +: Á¦Ç° µé¾î°¨.
 #ifdef USE_MPE
 		//pView->IoWrite("ML45066", (long)(-1.0 * pView->m_dMkFdOffsetX[0] * 1000.0));	// ¸¶Å·ºÎ Feeding ·Ñ·¯ Offset(*1000, +:´õ º¸³¿, -´ú º¸³¿)
-		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[0][0] * 1000.0));
+		pView->MpeWrite(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[0][0] * 1000.0));
 #endif
 	}
 	else if (nPos == 1)
@@ -4886,24 +4924,24 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 		pView->m_dMkFdOffsetY[0][3] = dMkFdOffsetY;
 
 		// CamÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
-		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
-		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
-		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
-		double dRefAlignX2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
-		double dRefAlignY2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
-		double dRefAlignX3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
-		double dRefAlignY3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
+		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
+		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
+		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
+		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
+		double dRefAlignX2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
+		double dRefAlignY2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
+		double dRefAlignX3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]; // PCBÁÂÇ¥
+		double dRefAlignY3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]; // PCBÁÂÇ¥
 
 		// PCB»óÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][0];
-		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][0];
-		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][1];
-		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][1];
-		double dTgtAlignX2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][2];
-		double dTgtAlignY2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][2];
-		double dTgtAlignX3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][3];
-		double dTgtAlignY3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][3];
+		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][0];
+		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][0];
+		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][1];
+		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][1];
+		double dTgtAlignX2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][2];
+		double dTgtAlignY2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][2];
+		double dTgtAlignX3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0]) - pView->m_dMkFdOffsetX[0][3];
+		double dTgtAlignY3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0]) - pView->m_dMkFdOffsetY[0][3];
 
 		int nNodeX = 0, nNodeY = 0;
 		if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
@@ -4921,8 +4959,8 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 		{
 			for (nRow = 0; nRow < nNodeY; nRow++)
 			{
-				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_pMotion->m_dPinPosX[0];
-				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_pMotion->m_dPinPosY[0];
+				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_mgrPunch->m_pMotion->m_dPinPosX[0];
+				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_mgrPunch->m_pMotion->m_dPinPosY[0];
 				pView->m_Align[0].BilinearAlignment(dRefAlignX0, dRefAlignY0, dRefAlignX1, dRefAlignY1, dRefAlignX2, dRefAlignY2, dRefAlignX3, dRefAlignY3,
 													dTgtAlignX0, dTgtAlignY0, dTgtAlignX1, dTgtAlignY1, dTgtAlignX2, dTgtAlignY2, dTgtAlignX3, dTgtAlignY3, 
 													ptRef.x, ptRef.y, &ptTgt.x, &ptTgt.y);
@@ -4943,14 +4981,14 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 
 BOOL CDlgMenu02::FourPointAlign1(int nPos)
 {
-#ifdef USE_VISION
-	if (!pView->m_pMotion || !pView->m_pVision[1])
-		return FALSE;
-#else
-	return TRUE;
-#endif
-	if (pDoc->WorkingInfo.Vision[1].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[1].sResY.IsEmpty())
-		return FALSE;
+//#ifdef USE_VISION
+//	if (!pView->m_mgrPunch->m_pMotion || !pView->m_mgrPunch->m_pVision[1])
+//		return FALSE;
+//#else
+//	return TRUE;
+//#endif
+//	if (pDoc->WorkingInfo.Vision[1].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[1].sResY.IsEmpty())
+//		return FALSE;
 
 	MoveAlign1(nPos);
 
@@ -4959,6 +4997,8 @@ BOOL CDlgMenu02::FourPointAlign1(int nPos)
 
 BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 {
+	//return pView->m_mgrPunch->FourPointAlign1(nPos);
+
 #ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
@@ -4969,7 +5009,8 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 	CfPoint ptPnt;
 	double dX, dY, dAgl, dScr;
 
-	if (pView->m_pVision[1]->Grab(nPos, bDraw))
+	//if (pView->m_mgrPunch->m_pVision[1]->Grab(nPos, bDraw))
+	if (pView->Grab1(nPos, bDraw))
 	{
 		GetPmRst1(dX, dY, dAgl, dScr);
 		str.Format(_T("%.1f"), dX);
@@ -4992,7 +5033,8 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 	{
 		Sleep(100);
 
-		if (pView->m_pVision[1]->Grab(nPos, bDraw))
+		//if (pView->m_mgrPunch->m_pVision[1]->Grab(nPos, bDraw))
+		if (pView->Grab1(nPos, bDraw))
 		{
 			GetPmRst1(dX, dY, dAgl, dScr);
 			str.Format(_T("%.1f"), dX);
@@ -5022,7 +5064,7 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 	}
 
 	int nCamSzX, nCamSzY;
-	pView->m_pVision[1]->GetCameraSize(nCamSzX, nCamSzY);
+	pView->m_mgrPunch->m_pVision[1]->GetCameraSize(nCamSzX, nCamSzY);
 
 	dResX = _tstof(pDoc->WorkingInfo.Vision[1].sResX);
 	dResY = _tstof(pDoc->WorkingInfo.Vision[1].sResY);
@@ -5036,7 +5078,7 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 		pView->m_dMkFdOffsetY[1][0] = (double(nCamSzY / 2) - dY) * dResY; // -: Á¦Ç° ³ª¿È, +: Á¦Ç° µé¾î°¨.
 #ifdef USE_MPE
 		//pView->IoWrite("ML45066", (long)(-1.0 * pView->m_dMkFdOffsetX[1] * 1000.0));	// ¸¶Å·ºÎ Feeding ·Ñ·¯ Offset(*1000, +:´õ º¸³¿, -´ú º¸³¿)
-		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[1][0] * 1000.0));
+		pView->MpeWrite(_T("ML45066"), (long)(-1.0 * pView->m_dMkFdOffsetX[1][0] * 1000.0));
 #endif
 	}
 	else if (nPos == 1)
@@ -5057,24 +5099,24 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 		pView->m_dMkFdOffsetY[1][3] = dMkFdOffsetY;
 
 		// CamÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
-		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
-		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
-		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
-		double dRefAlignX2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
-		double dRefAlignY2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
-		double dRefAlignX3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
-		double dRefAlignY3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
+		double dRefAlignX0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
+		double dRefAlignY0 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
+		double dRefAlignX1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
+		double dRefAlignY1 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
+		double dRefAlignX2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X2 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
+		double dRefAlignY2 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y2 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
+		double dRefAlignX3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X3 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]; // PCBÁÂÇ¥
+		double dRefAlignY3 = pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y3 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]; // PCBÁÂÇ¥
 
 		// PCB»óÀÇ ¿øÁ¡ ±âÁØÀÇ Marking ÀÌ¹ÌÁö ÁÂÇ¥.
-		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][0];
-		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][0];
-		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][1];
-		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][1];
-		double dTgtAlignX2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][2];
-		double dTgtAlignY2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][2];
-		double dTgtAlignX3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][3];
-		double dTgtAlignY3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][3];
+		double dTgtAlignX0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][0];
+		double dTgtAlignY0 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][0];
+		double dTgtAlignX1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][1];
+		double dTgtAlignY1 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][1];
+		double dTgtAlignX2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X0 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][2];
+		double dTgtAlignY2 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y0 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][2];
+		double dTgtAlignX3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.X1 + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1]) - pView->m_dMkFdOffsetX[1][3];
+		double dTgtAlignY3 = (pView->m_mgrReelmap->m_Master[0].m_stAlignMk2.Y1 + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1]) - pView->m_dMkFdOffsetY[1][3];
 
 		int nNodeX = 0, nNodeY = 0;
 		if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
@@ -5091,8 +5133,8 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 		{
 			for (nRow = 0; nRow < nNodeY; nRow++)
 			{
-				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_pMotion->m_dPinPosX[1];
-				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_pMotion->m_dPinPosY[1];
+				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X + pView->m_mgrPunch->m_pMotion->m_dPinPosX[1];
+				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y + pView->m_mgrPunch->m_pMotion->m_dPinPosY[1];
 				pView->m_Align[0].BilinearAlignment(dRefAlignX0, dRefAlignY0, dRefAlignX1, dRefAlignY1, dRefAlignX2, dRefAlignY2, dRefAlignX3, dRefAlignY3,
 													dTgtAlignX0, dTgtAlignY0, dTgtAlignX1, dTgtAlignY1, dTgtAlignX2, dTgtAlignY2, dTgtAlignX3, dTgtAlignY3,
 													ptRef.x, ptRef.y, &ptTgt.x, &ptTgt.y);

@@ -517,8 +517,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
 
-		dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -526,8 +526,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
 		if(fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 				AfxMessageBox(_T("Move X0Y0 Error..."));
 		}
 	}
@@ -539,8 +539,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
 
-		dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -548,8 +548,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
 		if(fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 				AfxMessageBox(_T("Move X1Y1 Error..."));
 		}
 	}
@@ -561,8 +561,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt0(nPcsId);
 
-		dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y0]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -570,8 +570,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
 		if(fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pPos, fVel, fAcc, fAcc))
 				AfxMessageBox(_T("Move X0Y0 Error..."));
 		}
 
@@ -580,8 +580,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		if(pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
 			ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt1(nPcsId);
 
-		dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_pMotion->GetActualPosition(AXIS_X);
-		dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_pMotion->GetActualPosition(AXIS_Y);
+		dCurrX = pView->m_dEnc[AXIS_X1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
+		dCurrY = pView->m_dEnc[AXIS_Y1]; // pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
 		
 		pPos[0] = ptPnt.x;
 		pPos[1] = ptPnt.y;
@@ -589,8 +589,8 @@ void CDlgUtil03::MoveMkPos(int nStcId)
 		fLen = sqrt( ((pPos[0] - dCurrX) * (pPos[0] - dCurrX)) + ((pPos[1] - dCurrY) * (pPos[1] - dCurrY)) );
 		if(fLen > 0.001)
 		{
-			pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-			if(!pView->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
+			pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
+			if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pPos, fVel, fAcc, fAcc))
 				AfxMessageBox(_T("Move X1Y1 Error..."));
 		}
 	}
@@ -800,15 +800,15 @@ void CDlgUtil03::OnBtnAllMkTest()
 	if(bOn)
 	{
 		if(bOn0 && !bOn1)
-			pView->DoAllMk(CAM_LF);
+			pView->m_mgrPunch->DoAllMk(CAM_LF);
 		else if(!bOn0 && bOn1)
-			pView->DoAllMk(CAM_RT);
+			pView->m_mgrPunch->DoAllMk(CAM_RT);
 		else
-			pView->DoAllMk(CAM_BOTH);
+			pView->m_mgrPunch->DoAllMk(CAM_BOTH);
 	}
 	else
 	{
-		pView->StopAllMk();	
+		pView->m_mgrPunch->StopAllMk();	
 	}
 }
 
@@ -836,9 +836,9 @@ void CDlgUtil03::OnBtnAllMkTest()
 // // 			Sleep(300);
 // // 		}
 // 
-// 		pView->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X, fLen, fVel, fAcc, fJerk);
-// 		if(!pView->m_pMotion->Move(MS_XY, pTgtPos, fVel, fAcc, fAcc))
-// 		if(!pView->m_pMotion->Move(MS_XY, pTgtPos, fVel, fAcc, fAcc))
+// 		pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X, fLen, fVel, fAcc, fJerk);
+// 		if(!pView->m_mgrPunch->m_pMotion->Move(MS_XY, pTgtPos, fVel, fAcc, fAcc))
+// 		if(!pView->m_mgrPunch->m_pMotion->Move(MS_XY, pTgtPos, fVel, fAcc, fAcc))
 // 			AfxMessageBox(_T("Move XY Error..."));
 // 	}
 // 
@@ -1313,13 +1313,13 @@ void CDlgUtil03::OnBtnMkMoveInit()
 	BOOL bOn1 = myBtn[4].GetCheck();
 
 	if(bOn0 && !bOn1)
-		pView->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
+		pView->m_mgrPunch->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
 	else if(!bOn0 && bOn1)
-		pView->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
+		pView->m_mgrPunch->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
 	else if(bOn0 && bOn1)
 	{
-		pView->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
-		pView->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
+		pView->m_mgrPunch->m_pVoiceCoil[0]->MoveSmacShiftPos(0);
+		pView->m_mgrPunch->m_pVoiceCoil[1]->MoveSmacShiftPos(1);
 	}
 }
 
@@ -1330,13 +1330,13 @@ void CDlgUtil03::OnBtnMkHome()
 	BOOL bOn1 = myBtn[4].GetCheck();
 
 	if(bOn0 && !bOn1)
-		pView->m_pVoiceCoil[0]->SearchHomeSmac(0);
+		pView->m_mgrPunch->m_pVoiceCoil[0]->SearchHomeSmac(0);
 	else if(!bOn0 && bOn1)
-		pView->m_pVoiceCoil[1]->SearchHomeSmac(1);
+		pView->m_mgrPunch->m_pVoiceCoil[1]->SearchHomeSmac(1);
 	else if(bOn0 && bOn1)
 	{
-		pView->m_pVoiceCoil[0]->SearchHomeSmac(0);
-		pView->m_pVoiceCoil[1]->SearchHomeSmac(1);
+		pView->m_mgrPunch->m_pVoiceCoil[0]->SearchHomeSmac(0);
+		pView->m_mgrPunch->m_pVoiceCoil[1]->SearchHomeSmac(1);
 	}
 }
 
