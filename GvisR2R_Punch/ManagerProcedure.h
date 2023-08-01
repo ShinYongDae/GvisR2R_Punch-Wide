@@ -274,10 +274,10 @@ public:
 
 	//static UINT ThreadProc0(LPVOID lpContext); // DoMark0(), DoMark1()
 	//static UINT ThreadProc1(LPVOID lpContext); // ChkCollision()
-	static UINT ThreadProc2(LPVOID lpContext); // DispDefImg()
-	static UINT ThreadProc3(LPVOID lpContext); // GetCurrentInfoSignal()
-	static UINT ThreadProc4(LPVOID lpContext); // DispDefImgInner()
-	static UINT ThreadProc5(LPVOID lpContext); // RunShift2Mk()
+	static UINT ThreadProc0(LPVOID lpContext); // DispDefImg()
+	static UINT ThreadProc1(LPVOID lpContext); // GetCurrentInfoSignal()
+	static UINT ThreadProc2(LPVOID lpContext); // DispDefImgInner()
+	static UINT ThreadProc3(LPVOID lpContext); // RunShift2Mk()
 	
 
 	BOOL m_bAnswer[10];

@@ -350,10 +350,10 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 		case 0:
 			m_nStepInitView++;
 			DoDispMsg(_T("프로그램을 초기화합니다."), _T("알림"), RGB_GREEN, DELAY_TIME_MSG);
+			InitMgrPunch(); //HwInit();	
 			InitMgrReelmap();
 			//DtsInit();
 			// H/W Device 초기화.....
-			InitMgrPunch(); //HwInit();	
 			break;
 		case 1:
 			m_nStepInitView++;
@@ -15320,7 +15320,7 @@ BOOL CGvisR2R_PunchView::IsCycleStop()
 
 BOOL CGvisR2R_PunchView::IsRun()
 {
-	return IsRun();
+	return m_mgrProcedure->IsRun();
 }
 
 BOOL CGvisR2R_PunchView::IsNoMk()

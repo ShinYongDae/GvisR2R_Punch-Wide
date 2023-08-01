@@ -163,7 +163,6 @@ class CGvisR2R_PunchView : public CFormView
 
 	int m_nCntBz;
 	BOOL m_bTimBuzzerWarn;
-	BOOL m_bBtnWinker[4]; // [R/G/Y] , [Ready/Reset/Run/Stop]
 	BOOL m_bTIM_DISP_STATUS, m_bTIM_MPE_IO;
 
 	CString m_sDispMsg[10];
@@ -259,6 +258,7 @@ public:
 	double m_dAoiUpFdOffsetX, m_dAoiUpFdOffsetY;
 	double m_dAoiDnFdOffsetX, m_dAoiDnFdOffsetY;
 	double m_dEngFdOffsetX, m_dEngFdOffsetY;
+	BOOL m_bBtnWinker[4]; // [R/G/Y] , [Ready/Reset/Run/Stop]
 
 	BOOL DoReset();
 	BOOL IsRun();

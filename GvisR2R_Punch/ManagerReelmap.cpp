@@ -69,6 +69,10 @@ CManagerReelmap::CManagerReelmap(CWnd* pParent /*=NULL*/)
 	m_sEngLayerDn = _T("");
 	m_nWritedItsSerial = 0;
 
+	RECT rt = { 0,0,0,0 };
+	if (!Create(NULL, NULL, WS_CHILD, rt, pParent, 0))
+		AfxMessageBox(_T("CManagerReelmap::Create() Failed!!!"));
+
 	Init(); // New Reelmap.
 
 	TCHAR szData[200];
@@ -5785,29 +5789,34 @@ UINT CManagerReelmap::ThreadProc0(LPVOID lpContext)	// UpdateYield()
 		pThread->m_dwThreadTick[0] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[0])
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYield(pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[0]);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[0] = FALSE;
-			Sleep(0);
-		}
-		else if(pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[1] && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_UP)
-		{
-			if (pDoc->WorkingInfo.LastJob.bDualTest)
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[0])
 			{
-				if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_DN && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN)
+				pThread->UpdateYield(pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[0]);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[0] = FALSE;
+				Sleep(0);
+			}
+			else if (pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[1] && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_UP)
+			{
+				if (pDoc->WorkingInfo.LastJob.bDualTest)
 				{
-					pThread->UpdateYield(pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[1]);
+					if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_DN && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN)
+					{
+						pThread->UpdateYield(pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[1]);
+						pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[1] = FALSE;
+						Sleep(0);
+					}
+				}
+				else
+				{
 					pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[1] = FALSE;
+					pThread->UpdateYield(pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[1]);
 					Sleep(0);
 				}
 			}
 			else
-			{
-				pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[1] = FALSE;
-				pThread->UpdateYield(pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[1]);
-				Sleep(0);
-			}
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -5833,13 +5842,18 @@ UINT CManagerReelmap::ThreadProc1(LPVOID lpContext)	// UpdateRMapUp()
 		pThread->m_dwThreadTick[1] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP) // Yield Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP) // Write Reelmap
 			{
-				pThread->UpdateRMapUp(); // Write Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP = FALSE;
-				Sleep(0);
+				if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP) // Yield Reelmap
+				{
+					pThread->UpdateRMapUp(); // Write Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP = FALSE;
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -5868,15 +5882,20 @@ UINT CManagerReelmap::ThreadProc2(LPVOID lpContext)	// UpdateRMapDn()
 		pThread->m_dwThreadTick[2] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			//pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP = TRUE;
-			//pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN = TRUE;
-			if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN) // Yield Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN) // Write Reelmap
 			{
-				pThread->UpdateRMapDn(); // Write Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN = FALSE;
-				Sleep(0);
+				//pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP = TRUE;
+				//pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN = TRUE;
+				if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN) // Yield Reelmap
+				{
+					pThread->UpdateRMapDn(); // Write Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN = FALSE;
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -5905,13 +5924,18 @@ UINT CManagerReelmap::ThreadProc3(LPVOID lpContext)	// UpdateRMapAllUp()
 		pThread->m_dwThreadTick[3] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP) // Yield Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP) // Write Reelmap
 			{
-				pThread->UpdateRMapAllUp(); // Write Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP = FALSE;
-				Sleep(0);
+				if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP) // Yield Reelmap
+				{
+					pThread->UpdateRMapAllUp(); // Write Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP = FALSE;
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -5940,13 +5964,18 @@ UINT CManagerReelmap::ThreadProc4(LPVOID lpContext)	// UpdateRMapAllDn()
 		pThread->m_dwThreadTick[4] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN) // Yield Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
 			{
-				pThread->UpdateRMapAllDn(); // Write Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN = FALSE;
-				Sleep(0);
+				if (!pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN) // Yield Reelmap
+				{
+					pThread->UpdateRMapAllDn(); // Write Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN = FALSE;
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -5975,19 +6004,24 @@ UINT CManagerReelmap::ThreadProc5(LPVOID lpContext)	// UpdateReelmapYieldUp()
 		pThread->m_dwThreadTick[5] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP) // Yield Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP) // Write Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP) // Yield Reelmap
 			{
-				pThread->UpdateReelmapYieldUp(); // Yield Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP = FALSE;
-				if (!pDoc->WorkingInfo.LastJob.bDualTest) 
+				if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP) // Write Reelmap
 				{
-					if (pDoc->GetTestMode() == MODE_OUTER)
-						pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS = TRUE;
-				}
+					pThread->UpdateReelmapYieldUp(); // Yield Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP = FALSE;
+					if (!pDoc->WorkingInfo.LastJob.bDualTest)
+					{
+						if (pDoc->GetTestMode() == MODE_OUTER)
+							pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS = TRUE;
+					}
 
-				Sleep(0);
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -6016,15 +6050,20 @@ UINT CManagerReelmap::ThreadProc6(LPVOID lpContext)	// UpdateReelmapYieldDn()
 		pThread->m_dwThreadTick[6] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN) // Yield Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN) // Write Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN) // Yield Reelmap
 			{
-				pThread->UpdateReelmapYieldDn(); // Yield Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN = FALSE;
-				pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP = TRUE;
-				pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN = TRUE;
-				Sleep(0);
+				if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN) // Write Reelmap
+				{
+					pThread->UpdateReelmapYieldDn(); // Yield Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN = FALSE;
+					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP = TRUE;
+					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN = TRUE;
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -6053,15 +6092,20 @@ UINT CManagerReelmap::ThreadProc7(LPVOID lpContext)	// UpdateReelmapYieldAllUp()
 		pThread->m_dwThreadTick[7] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP) // Yield Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP) // Write Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP) // Yield Reelmap
 			{
-				pThread->UpdateReelmapYieldAllUp(); // Yield Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP = FALSE;
-				if (pDoc->GetTestMode() == MODE_OUTER)
-					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS = TRUE;
-				Sleep(0);
+				if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP) // Write Reelmap
+				{
+					pThread->UpdateReelmapYieldAllUp(); // Yield Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP = FALSE;
+					if (pDoc->GetTestMode() == MODE_OUTER)
+						pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS = TRUE;
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -6090,13 +6134,18 @@ UINT CManagerReelmap::ThreadProc8(LPVOID lpContext)	// UpdateReelmapYieldAllDn()
 		pThread->m_dwThreadTick[8] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN) // Yield Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
+			if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN) // Yield Reelmap
 			{
-				pThread->UpdateReelmapYieldAllDn(); // Yield Reelmap
-				pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN = FALSE;
-				Sleep(0);
+				if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
+				{
+					pThread->UpdateReelmapYieldAllDn(); // Yield Reelmap
+					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN = FALSE;
+					Sleep(0);
+				}
+				else
+					Sleep(30);
 			}
 			else
 				Sleep(30);
@@ -6125,11 +6174,16 @@ UINT CManagerReelmap::ThreadProc9(LPVOID lpContext)	// ReloadReelmapUp()
 		pThread->m_dwThreadTick[9] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapUp();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP)
+			{
+				pThread->ReloadReelmapUp();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6155,11 +6209,16 @@ UINT CManagerReelmap::ThreadProc10(LPVOID lpContext)	// ReloadReelmapDn()
 		pThread->m_dwThreadTick[10] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapDn();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN)
+			{
+				pThread->ReloadReelmapDn();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6185,11 +6244,16 @@ UINT CManagerReelmap::ThreadProc11(LPVOID lpContext)	// ReloadReelmapAllUp()
 		pThread->m_dwThreadTick[11] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapAllUp();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP)
+			{
+				pThread->ReloadReelmapAllUp();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6215,11 +6279,16 @@ UINT CManagerReelmap::ThreadProc12(LPVOID lpContext)	// ReloadReelmapAllDn()
 		pThread->m_dwThreadTick[12] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapAllDn();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN)
+			{
+				pThread->ReloadReelmapAllDn();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6245,11 +6314,16 @@ UINT CManagerReelmap::ThreadProc13(LPVOID lpContext) // WriteReelmapIts()
 		pThread->m_dwThreadTick[13] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ITS) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			pThread->WriteReelmapIts();
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ITS = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ITS) // Write Reelmap
+			{
+				pThread->WriteReelmapIts();
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ITS = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6275,11 +6349,16 @@ UINT CManagerReelmap::ThreadProc14(LPVOID lpContext)	// UpdateReelmapYieldIts()
 		pThread->m_dwThreadTick[14] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS) // Yield Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateReelmapYieldIts(); // Yield Reelmap
-			pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS) // Yield Reelmap
+			{
+				pThread->UpdateReelmapYieldIts(); // Yield Reelmap
+				pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ITS = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6305,11 +6384,16 @@ UINT CManagerReelmap::ThreadProc15(LPVOID lpContext)	// ReloadReelmapUpInner()
 		pThread->m_dwThreadTick[15] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP_INNER)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapUpInner();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP_INNER = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP_INNER)
+			{
+				pThread->ReloadReelmapUpInner();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP_INNER = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6335,11 +6419,16 @@ UINT CManagerReelmap::ThreadProc16(LPVOID lpContext)	// ReloadReelmapDnInner()
 		pThread->m_dwThreadTick[16] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN_INNER)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapDnInner();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN_INNER = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN_INNER)
+			{
+				pThread->ReloadReelmapDnInner();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN_INNER = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6365,11 +6454,16 @@ UINT CManagerReelmap::ThreadProc17(LPVOID lpContext)	// ReloadReelmapAllUpInner(
 		pThread->m_dwThreadTick[17] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP_INNER)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapAllUpInner();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP_INNER = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP_INNER)
+			{
+				pThread->ReloadReelmapAllUpInner();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP_INNER = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6395,11 +6489,16 @@ UINT CManagerReelmap::ThreadProc18(LPVOID lpContext)	// ReloadReelmapAllDnInner(
 		pThread->m_dwThreadTick[18] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN_INNER)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapAllDnInner();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN_INNER = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN_INNER)
+			{
+				pThread->ReloadReelmapAllDnInner();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN_INNER = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6425,11 +6524,16 @@ UINT CManagerReelmap::ThreadProc19(LPVOID lpContext)	// ReloadReelmapIts()
 		pThread->m_dwThreadTick[19] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ITS)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->ReloadReelmapIts();
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ITS = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ITS)
+			{
+				pThread->ReloadReelmapIts();
+				pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ITS = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6455,11 +6559,16 @@ UINT CManagerReelmap::ThreadProc20(LPVOID lpContext)	// UpdateRMapInnerUp()
 		pThread->m_dwThreadTick[20] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_UP) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateRMapInnerUp();
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_UP = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_UP) // Write Reelmap
+			{
+				pThread->UpdateRMapInnerUp();
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_UP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6485,13 +6594,18 @@ UINT CManagerReelmap::ThreadProc21(LPVOID lpContext)	// UpdateRMapInnerDn()
 		pThread->m_dwThreadTick[21] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_DN) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			//pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP = TRUE;
-			//pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN = TRUE;
-			pThread->UpdateRMapInnerDn();
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_DN = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_DN) // Write Reelmap
+			{
+				//pThread->m_bTHREAD_UPDATE_REELMAP_ALLUP = TRUE;
+				//pThread->m_bTHREAD_UPDATE_REELMAP_ALLDN = TRUE;
+				pThread->UpdateRMapInnerDn();
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_DN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6517,11 +6631,16 @@ UINT CManagerReelmap::ThreadProc22(LPVOID lpContext)	// UpdateRMapInnerAllUp()
 		pThread->m_dwThreadTick[22] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateRMapInnerAllUp();
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP) // Write Reelmap
+			{
+				pThread->UpdateRMapInnerAllUp();
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6547,11 +6666,16 @@ UINT CManagerReelmap::ThreadProc23(LPVOID lpContext)	// UpdateRMapInnerAllDn()
 		pThread->m_dwThreadTick[23] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN) // Write Reelmap
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateRMapInnerAllDn();
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN) // Write Reelmap
+			{
+				pThread->UpdateRMapInnerAllDn();
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6577,11 +6701,16 @@ UINT CManagerReelmap::ThreadProc24(LPVOID lpContext)	// UpdateYieldUp()
 		pThread->m_dwThreadTick[24] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_UP)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_UP = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_UP)
+			{
+				pThread->UpdateYieldUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_UP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6607,13 +6736,18 @@ UINT CManagerReelmap::ThreadProc25(LPVOID lpContext)	// UpdateYieldDn()
 		pThread->m_dwThreadTick[25] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_DN)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_DN = FALSE;
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP = TRUE;
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN = TRUE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_DN)
+			{
+				pThread->UpdateYieldDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_DN = FALSE;
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP = TRUE;
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN = TRUE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6639,22 +6773,27 @@ UINT CManagerReelmap::ThreadProc26(LPVOID lpContext)	// UpdateYieldAllUp()
 		pThread->m_dwThreadTick[26] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldAllUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP = FALSE;
-
-			if (pDoc->GetTestMode() == MODE_OUTER)
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP)
 			{
-				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ITS = TRUE;
-				//pThread->m_bTHREAD_UPDATE_YIELD_INNER_UP = TRUE;
-				//if (pDoc->WorkingInfo.LastJob.bDualTestInner)
-				//{
-				//	pThread->m_bTHREAD_UPDATE_YIELD_INNER_DN = TRUE;
-				//}
-			}
+				pThread->UpdateYieldAllUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLUP = FALSE;
 
-			Sleep(0);
+				if (pDoc->GetTestMode() == MODE_OUTER)
+				{
+					pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ITS = TRUE;
+					//pThread->m_bTHREAD_UPDATE_YIELD_INNER_UP = TRUE;
+					//if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+					//{
+					//	pThread->m_bTHREAD_UPDATE_YIELD_INNER_DN = TRUE;
+					//}
+				}
+
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6680,11 +6819,16 @@ UINT CManagerReelmap::ThreadProc27(LPVOID lpContext)	// UpdateYieldAllDn()
 		pThread->m_dwThreadTick[27] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldAllDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN)
+			{
+				pThread->UpdateYieldAllDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ALLDN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6710,11 +6854,16 @@ UINT CManagerReelmap::ThreadProc28(LPVOID lpContext)	// UpdateYieldInnerUp()
 		pThread->m_dwThreadTick[28] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_UP)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldInnerUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_UP = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_UP)
+			{
+				pThread->UpdateYieldInnerUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_UP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6740,13 +6889,18 @@ UINT CManagerReelmap::ThreadProc29(LPVOID lpContext)	// UpdateYieldInnerDn()
 		pThread->m_dwThreadTick[29] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_DN)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldInnerDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_DN = FALSE;
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = TRUE;
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = TRUE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_DN)
+			{
+				pThread->UpdateYieldInnerDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_DN = FALSE;
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = TRUE;
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = TRUE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6772,11 +6926,16 @@ UINT CManagerReelmap::ThreadProc30(LPVOID lpContext)	// UpdateYieldInnerAllUp()
 		pThread->m_dwThreadTick[30] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldInnerAllUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP)
+			{
+				pThread->UpdateYieldInnerAllUp(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLUP = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6802,11 +6961,16 @@ UINT CManagerReelmap::ThreadProc31(LPVOID lpContext)	// UpdateYieldInnerAllDn()
 		pThread->m_dwThreadTick[31] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldInnerAllDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN)
+			{
+				pThread->UpdateYieldInnerAllDn(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_INNER_ALLDN = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);
@@ -6832,11 +6996,16 @@ UINT CManagerReelmap::ThreadProc32(LPVOID lpContext)	// UpdateYieldIts()
 		pThread->m_dwThreadTick[32] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
-		if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ITS)
+		if (pView->m_mgrProcedure)
 		{
-			pThread->UpdateYieldIts(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
-			pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ITS = FALSE;
-			Sleep(0);
+			if (pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ITS)
+			{
+				pThread->UpdateYieldIts(pView->m_mgrProcedure->m_nSnTHREAD_UPDATAE_YIELD);
+				pView->m_mgrProcedure->m_bTHREAD_UPDATE_YIELD_ITS = FALSE;
+				Sleep(0);
+			}
+			else
+				Sleep(30);
 		}
 		else
 			Sleep(30);

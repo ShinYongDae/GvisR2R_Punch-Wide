@@ -4863,7 +4863,7 @@ void CGvisR2R_PunchDoc::SetTotalReelDist(double dDist)
 
 #ifdef USE_MPE
 	long lData = (long)(dDist * 1000.0);
-	if(pView && pView->m_pMpe)
+	if(pView)
 		pView->MpeWrite(_T("ML45000"), lData);	// 전체 Reel 길이 (단위 M * 1000)
 #endif
 

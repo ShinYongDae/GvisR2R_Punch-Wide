@@ -23,6 +23,24 @@ IMPLEMENT_DYNAMIC(CManagerPunch, CWnd)
 CManagerPunch::CManagerPunch(CWnd* pParent /*=NULL*/)
 {
 	m_pParent = pParent;
+
+	m_pLight = NULL;
+#ifdef USE_FLUCK
+	m_pFluck = NULL;
+#endif
+	m_pVoiceCoil[0] = NULL;
+	m_pVoiceCoil[1] = NULL;
+	m_pMotion = NULL;
+	m_pMpe = NULL;
+	m_pVision[0] = NULL;
+	m_pVision[1] = NULL;
+	m_pVisionInner[0] = NULL;
+	m_pVisionInner[1] = NULL;
+	m_pEngrave = NULL;
+	m_pSr1000w = NULL;
+	m_pDts = NULL;
+
+
 	m_bCycleStop = FALSE;
 	m_bProbDn[0] = FALSE;
 	m_bProbDn[1] = FALSE;
@@ -88,6 +106,10 @@ CManagerPunch::CManagerPunch(CWnd* pParent /*=NULL*/)
 			m_bRejectDone[a][b] = FALSE;
 		}
 	}
+
+	RECT rt = { 0,0,0,0 };
+	if (!Create(NULL, NULL, WS_CHILD, rt, pParent, 0))
+		AfxMessageBox(_T("CManagerPunch::Create() Failed!!!"));
 
 	HwInit();
 	InitPLC();
@@ -500,50 +522,50 @@ void CManagerPunch::InitPLC()
 #ifdef USE_MPE
 	long lData;
 	lData = (long)(_tstof(pDoc->WorkingInfo.Lot.sTotalReelDist) * 1000.0);
-	m_pMpe->Write(_T("ML45000"), lData);	// 전체 Reel 길이 (단위 M * 1000)
+	MpeWrite(_T("ML45000"), lData);	// 전체 Reel 길이 (단위 M * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Lot.sSeparateDist) * 1000.0);
-	m_pMpe->Write(_T("ML45002"), lData);	// Lot 분리 길이 (단위 M * 1000)
+	MpeWrite(_T("ML45002"), lData);	// Lot 분리 길이 (단위 M * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Lot.sCuttingDist) * 1000.0);
-	m_pMpe->Write(_T("ML45004"), lData);	// Lot 분리 후 절단위치 (단위 M * 1000)
+	MpeWrite(_T("ML45004"), lData);	// Lot 분리 후 절단위치 (단위 M * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Lot.sStopDist) * 1000.0);
-	m_pMpe->Write(_T("ML45006"), lData);	// 일시정지 길이 (단위 M * 1000)
+	MpeWrite(_T("ML45006"), lData);	// 일시정지 길이 (단위 M * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sAoiTq) * 1000.0);
-	m_pMpe->Write(_T("ML45042"), lData);	// 검사부 Tension 모터 토크값 (단위 Kgf * 1000)
+	MpeWrite(_T("ML45042"), lData);	// 검사부 Tension 모터 토크값 (단위 Kgf * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkTq) * 1000.0);
-	m_pMpe->Write(_T("ML45044"), lData);	// 마킹부 Tension 모터 토크값 (단위 Kgf * 1000)
+	MpeWrite(_T("ML45044"), lData);	// 마킹부 Tension 모터 토크값 (단위 Kgf * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sEngraveTq) * 1000.0);
-	m_pMpe->Write(_T("ML45050"), lData);	// 각인부 Tension 모터 토크값 (단위 Kgf * 1000)
+	MpeWrite(_T("ML45050"), lData);	// 각인부 Tension 모터 토크값 (단위 Kgf * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.LastJob.sOnePnlLen) * 1000.0);
-	m_pMpe->Write(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
+	MpeWrite(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkFdVel) * 1000.0);
-	m_pMpe->Write(_T("ML45034"), lData);	// 한 판넬 Feeding 속도 (단위 mm/sec * 1000)
+	MpeWrite(_T("ML45034"), lData);	// 한 판넬 Feeding 속도 (단위 mm/sec * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkJogVel) * 1000.0);
-	m_pMpe->Write(_T("ML45038"), lData);	// 연속공급 속도 (단위 mm/sec * 1000)
+	MpeWrite(_T("ML45038"), lData);	// 연속공급 속도 (단위 mm/sec * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sAoiJogAcc) * 1000.0);
-	m_pMpe->Write(_T("ML45040"), lData);	// 연속공급 가속도 (단위 mm/s^2 * 1000)
+	MpeWrite(_T("ML45040"), lData);	// 연속공급 가속도 (단위 mm/s^2 * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkFdAcc) * 1000.0);
-	m_pMpe->Write(_T("ML45036"), lData);	// 한 판넬 Feeding 가속도 (단위 mm/s^2 * 1000)
+	MpeWrite(_T("ML45036"), lData);	// 한 판넬 Feeding 가속도 (단위 mm/s^2 * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sAoiFdLead) * 1000.0);
-	m_pMpe->Write(_T("ML45012"), lData);	// 검사부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
-	m_pMpe->Write(_T("ML45020"), lData);	// 각인부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
+	MpeWrite(_T("ML45012"), lData);	// 검사부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
+	MpeWrite(_T("ML45020"), lData);	// 각인부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkFdLead) * 1000.0);
-	m_pMpe->Write(_T("ML45014"), lData);	// 마킹부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
+	MpeWrite(_T("ML45014"), lData);	// 마킹부 Feeding 롤러 Lead Pitch (단위 mm * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sStBufPos) * 1000.0);
-	pView->m_pMpe->Write(_T("ML45016"), lData);	// 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
+	MpeWrite(_T("ML45016"), lData);	// 버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sFdMkAoiInitDist) * 1000.0);
-	pView->m_pMpe->Write(_T("ML45008"), lData);	// AOI(하)에서 마킹까지 거리 (단위 mm * 1000)
+	MpeWrite(_T("ML45008"), lData);	// AOI(하)에서 마킹까지 거리 (단위 mm * 1000)
 	lData = (long)(_tstoi(pDoc->WorkingInfo.Motion.sFdAoiAoiDistShot) * 1000);
-	pView->m_pMpe->Write(_T("ML45010"), lData);	// AOI(상)에서 AOI(하) Shot수 (단위 Shot수 * 1000)
+	MpeWrite(_T("ML45010"), lData);	// AOI(상)에서 AOI(하) Shot수 (단위 Shot수 * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sFdEngraveAoiInitDist) * 1000.0);
-	pView->m_pMpe->Write(_T("ML45024"), lData);	// 각인부에서 AOI(상)까지 거리 (단위 mm * 1000)
+	MpeWrite(_T("ML45024"), lData);	// 각인부에서 AOI(상)까지 거리 (단위 mm * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sFdBarcodeOffsetVel) * 1000.0);
-	m_pMpe->Write(_T("ML45060"), lData);	// 2D 바코드 리더기위치까지 Feeding 속도 (단위 mm/sec * 1000)
+	MpeWrite(_T("ML45060"), lData);	// 2D 바코드 리더기위치까지 Feeding 속도 (단위 mm/sec * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sFdBarcodeOffsetAcc) * 1000.0);
-	m_pMpe->Write(_T("ML45062"), lData);	// 2D 바코드 리더기위치까지 Feeding 가속도 (단위 mm/s^2 * 1000)
+	MpeWrite(_T("ML45062"), lData);	// 2D 바코드 리더기위치까지 Feeding 가속도 (단위 mm/s^2 * 1000)
 
 	lData = (long)(_tstof(pDoc->WorkingInfo.LastJob.sUltraSonicCleannerStTim) * 100.0);
-	m_pMpe->Write(_T("MW05940"), lData);	// AOI_Dn (단위 [초] * 100) : 1 is 10 mSec.
-	m_pMpe->Write(_T("MW05942"), lData);	// AOI_Up (단위 [초] * 100) : 1 is 10 mSec.
+	MpeWrite(_T("MW05940"), lData);	// AOI_Dn (단위 [초] * 100) : 1 is 10 mSec.
+	MpeWrite(_T("MW05942"), lData);	// AOI_Up (단위 [초] * 100) : 1 is 10 mSec.
 #endif
 }
 
@@ -554,48 +576,48 @@ void CManagerPunch::InitIoWrite()
 		return;
 
 	//IoWrite(_T("MB44015E"), 0); // 부저1 On  (PC가 ON, OFF) - 20141020
-	m_pMpe->Write(_T("MB44015E"), 0);
+	MpeWrite(_T("MB44015E"), 0);
 	//IoWrite(_T("MB44015F"), 0); // 부저2 On  (PC가 ON, OFF) - 20141020
-	m_pMpe->Write(_T("MB44015F"), 0);
+	MpeWrite(_T("MB44015F"), 0);
 
 	//IoWrite(_T("MB003828"), 0); // 검사부 상 검사 시작 <-> Y4368 I/F
-	m_pMpe->Write(_T("MB003828"), 0);
+	MpeWrite(_T("MB003828"), 0);
 	//IoWrite(_T("MB003829"), 0); // 검사부 상 검사 테이블 진공 SOL <-> Y4369 I/F
-	m_pMpe->Write(_T("MB003829"), 0);
+	MpeWrite(_T("MB003829"), 0);
 	//IoWrite(_T("MB00382A"), 0); // 검사부 상 Reset <-> Y436A I/F
-	m_pMpe->Write(_T("MB00382A"), 0);
+	MpeWrite(_T("MB00382A"), 0);
 	//IoWrite(_T("MB00382B"), 0); // 마킹부 Lot End <-> Y436B I/F
-	m_pMpe->Write(_T("MB00382B"), 0);
+	MpeWrite(_T("MB00382B"), 0);
 
 	//IoWrite(_T("MB003928"), 0); // 검사부 하 검사 시작 <-> Y4468 I/F
-	m_pMpe->Write(_T("MB003928"), 0);
+	MpeWrite(_T("MB003928"), 0);
 	//IoWrite(_T("MB003929"), 0); // 검사부 하 검사 테이블 진공 SOL <-> Y4369 I/F
-	m_pMpe->Write(_T("MB003929"), 0);
+	MpeWrite(_T("MB003929"), 0);
 	//IoWrite(_T("MB00392A"), 0); // 검사부 하 Reset <-> Y436A I/F
-	m_pMpe->Write(_T("MB00392A"), 0);
+	MpeWrite(_T("MB00392A"), 0);
 	//IoWrite(_T("MB00392B"), 0); // 마킹부 Lot End <-> Y436B I/F
-	m_pMpe->Write(_T("MB00392B"), 0);
+	MpeWrite(_T("MB00392B"), 0);
 
 	//IoWrite(_T("MB44015D"), 0); // 자동 초기 운전상태(PC가 On/Off 시킴, PLC가 운전램프를 윙크동작, on->off시 운전램프 on, 다시 운전스위치가 눌러지면 off) - 20141017
-	m_pMpe->Write(_T("MB44015D"), 0);
+	MpeWrite(_T("MB44015D"), 0);
 	//IoWrite(_T("ML45064"), 0); // 검사부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄, PC가 쓰고 PLC에서 지움)
-	m_pMpe->Write(_T("ML45064"), 0);
+	MpeWrite(_T("ML45064"), 0);
 	//IoWrite(_T("ML45066"), 0); // 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄, PC가 쓰고 PLC에서 지움)
-	m_pMpe->Write(_T("ML45066"), 0);
+	MpeWrite(_T("ML45066"), 0);
 
 	//IoWrite(_T("MB600000"), 0); // PC가 PLC의 Alarm 발생여부를 확인
-	m_pMpe->Write(_T("MB600000"), 0);
+	MpeWrite(_T("MB600000"), 0);
 	//IoWrite(_T("MB600008"), 0); // PC가 PLC의 Alarm 발생여부를 확인
-	m_pMpe->Write(_T("MB600008"), 0);
+	MpeWrite(_T("MB600008"), 0);
 	//IoWrite(_T("ML60002"), 0); // 알람이 발생한 페이지 지정(PLC가 표시 할 알람의 페이지를 가리킴).
-	m_pMpe->Write(_T("ML60002"), 0);
+	MpeWrite(_T("ML60002"), 0);
 #endif
 }
 
 BOOL CManagerPunch::MpeWrite(CString strRegAddr, long lData, BOOL bCheck)
 {
 	if (m_pMpe)
-		return m_pMpe->Write(strRegAddr, lData, bCheck);
+		return MpeWrite(strRegAddr, lData, bCheck);
 	else
 		return FALSE;
 }
@@ -1339,39 +1361,39 @@ void CManagerPunch::SetPlcParam()
 		return;
 
 	//long lData;
-	m_pMpe->Write(_T("ML45006"), long(_tstof(pDoc->WorkingInfo.LastJob.sTempPauseLen)*1000.0));	// 일시정지 길이 (단위 M * 1000)
-	m_pMpe->Write(_T("ML45002"), long(_tstof(pDoc->WorkingInfo.LastJob.sLotSepLen)*1000.0));	// Lot 분리 길이 (단위 M * 1000)
-	m_pMpe->Write(_T("ML45004"), long(_tstof(pDoc->WorkingInfo.LastJob.sLotCutPosLen)*1000.0));	// Lot 분리 후 절단위치 (단위 M * 1000)
-	m_pMpe->Write(_T("ML45126"), (long)_tstoi(pDoc->WorkingInfo.LastJob.sSampleTestShotNum));	// 샘플검사 Shot수
+	MpeWrite(_T("ML45006"), long(_tstof(pDoc->WorkingInfo.LastJob.sTempPauseLen)*1000.0));	// 일시정지 길이 (단위 M * 1000)
+	MpeWrite(_T("ML45002"), long(_tstof(pDoc->WorkingInfo.LastJob.sLotSepLen)*1000.0));	// Lot 분리 길이 (단위 M * 1000)
+	MpeWrite(_T("ML45004"), long(_tstof(pDoc->WorkingInfo.LastJob.sLotCutPosLen)*1000.0));	// Lot 분리 후 절단위치 (단위 M * 1000)
+	MpeWrite(_T("ML45126"), (long)_tstoi(pDoc->WorkingInfo.LastJob.sSampleTestShotNum));	// 샘플검사 Shot수
 
 	if (pDoc->WorkingInfo.LastJob.bTempPause)
 	{
-		m_pMpe->Write(_T("MB440183"), 1);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+		MpeWrite(_T("MB440183"), 1);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 		ChkTempStop(TRUE);
 	}
 	else
 	{
-		m_pMpe->Write(_T("MB440183"), 0);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+		MpeWrite(_T("MB440183"), 0);	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 		ChkTempStop(FALSE);
 	}
 
 	if (pDoc->WorkingInfo.LastJob.bLotSep)
 	{
-		SetLotLastShot();
-		m_pMpe->Write(_T("MB440184"), 1);	// 로트분리사용(PC가 On시키고, PC가 확인하고 Off시킴)-20141031
+		pView->SetLotLastShot();
+		MpeWrite(_T("MB440184"), 1);	// 로트분리사용(PC가 On시키고, PC가 확인하고 Off시킴)-20141031
 	}
 	else
-		m_pMpe->Write(_T("MB440184"), 0);	// 로트분리사용(PC가 On시키고, PC가 확인하고 Off시킴)-20141031
+		MpeWrite(_T("MB440184"), 0);	// 로트분리사용(PC가 On시키고, PC가 확인하고 Off시킴)-20141031
 
-	m_pMpe->Write(_T("MB44017A"), (pDoc->WorkingInfo.LastJob.bDualTest) ? 0 : 1);		// 단면 검사 On
-	m_pMpe->Write(_T("MB44017B"), (pDoc->WorkingInfo.LastJob.bSampleTest) ? 1 : 0);		// Sample 검사 On
-	m_pMpe->Write(_T("MB44017D"), (pDoc->WorkingInfo.LastJob.bOneMetal) ? 1 : 0);		// One Metal On
-	m_pMpe->Write(_T("MB44017C"), (pDoc->WorkingInfo.LastJob.bTwoMetal) ? 1 : 0);		// Two Metal On
-	m_pMpe->Write(_T("MB44017E"), (pDoc->WorkingInfo.LastJob.bCore150Recoiler) ? 1 : 0);	// Recoiler Core 150mm On
-	m_pMpe->Write(_T("MB44017F"), (pDoc->WorkingInfo.LastJob.bCore150Uncoiler) ? 1 : 0);	// Uncoiler Core 150mm On
+	MpeWrite(_T("MB44017A"), (pDoc->WorkingInfo.LastJob.bDualTest) ? 0 : 1);		// 단면 검사 On
+	MpeWrite(_T("MB44017B"), (pDoc->WorkingInfo.LastJob.bSampleTest) ? 1 : 0);		// Sample 검사 On
+	MpeWrite(_T("MB44017D"), (pDoc->WorkingInfo.LastJob.bOneMetal) ? 1 : 0);		// One Metal On
+	MpeWrite(_T("MB44017C"), (pDoc->WorkingInfo.LastJob.bTwoMetal) ? 1 : 0);		// Two Metal On
+	MpeWrite(_T("MB44017E"), (pDoc->WorkingInfo.LastJob.bCore150Recoiler) ? 1 : 0);	// Recoiler Core 150mm On
+	MpeWrite(_T("MB44017F"), (pDoc->WorkingInfo.LastJob.bCore150Uncoiler) ? 1 : 0);	// Uncoiler Core 150mm On
 
-	m_pMpe->Write(_T("MB44010E"), (pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler ? 1 : 0));
-	m_pMpe->Write(_T("MB44010F"), (pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler ? 1 : 0));
+	MpeWrite(_T("MB44010E"), (pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler ? 1 : 0));
+	MpeWrite(_T("MB44010F"), (pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler ? 1 : 0));
 #endif
 }
 
@@ -1380,10 +1402,10 @@ void CManagerPunch::Winker(int nId, int nDly) // 0:Ready, 1:Reset, 2:Run, 3:Stop
 #ifdef USE_MPE
 	if (nId == MN_RUN)
 	{
-		if (pView->m_pMpe)
+		if (pView)
 		{
-			m_bBtnWinker[nId] = TRUE;
-			m_pMpe->Write(_T("MB44015D"), 1); // 자동 초기 운전상태(PC가 On/Off 시킴, PLC가 운전램프를 윙크동작, on->off시 운전램프 on, 다시 운전스위치가 눌러지면 off) - 20141017
+			pView->m_bBtnWinker[nId] = TRUE;
+			MpeWrite(_T("MB44015D"), 1); // 자동 초기 운전상태(PC가 On/Off 시킴, PLC가 운전램프를 윙크동작, on->off시 운전램프 on, 다시 운전스위치가 눌러지면 off) - 20141017
 		}
 	}
 #endif
@@ -1445,7 +1467,7 @@ void CManagerPunch::MonDispMain()
 #ifdef USE_MPE
 	if (pDoc->m_pMpeSignal[2] & (0x01 << 0))		// 운전중(PLC가 PC에 알려주는 설비 상태) - 20141031
 	{
-		if (m_sDispMain != _T("운전중"))
+		if (pView->m_sDispMain != _T("운전중"))
 		{
 			DispMain(_T("운전중"), RGB_GREEN);
 			pDoc->SetMkMenu03(_T("Main"), _T("Run"), TRUE);
@@ -1461,7 +1483,7 @@ void CManagerPunch::MonDispMain()
 		bDispStop = FALSE;
 		//if(!WatiDispMain(10))
 		{
-			if (m_sDispMain != _T("운전준비"))
+			if (pView->m_sDispMain != _T("운전준비"))
 			{
 				DispMain(_T("운전준비"), RGB_GREEN);
 				pDoc->SetMkMenu03(_T("Main"), _T("Ready"), TRUE);
@@ -1479,14 +1501,14 @@ void CManagerPunch::MonDispMain()
 				{
 					if (pDoc->WorkingInfo.LastJob.bDualTest)
 					{
-						if (m_sDispMain != _T("양면샘플"))
+						if (pView->m_sDispMain != _T("양면샘플"))
 						{
 							DispMain(_T("양면샘플"), RGB_GREEN);
 						}
 					}
 					else
 					{
-						if (m_sDispMain != _T("단면샘플"))
+						if (pView->m_sDispMain != _T("단면샘플"))
 						{
 							DispMain(_T("단면샘플"), RGB_GREEN);
 						}
@@ -1494,14 +1516,14 @@ void CManagerPunch::MonDispMain()
 				}
 				else if (pDoc->WorkingInfo.LastJob.bDualTest)
 				{
-					if (m_sDispMain != _T("양면검사"))
+					if (pView->m_sDispMain != _T("양면검사"))
 					{
 						DispMain(_T("양면검사"), RGB_GREEN);
 					}
 				}
 				else
 				{
-					if (m_sDispMain != _T("단면검사"))
+					if (pView->m_sDispMain != _T("단면검사"))
 					{
 						DispMain(_T("단면검사"), RGB_GREEN);
 					}
@@ -1510,7 +1532,7 @@ void CManagerPunch::MonDispMain()
 		}
 		else
 		{
-			if (m_sDispMain != _T("운전준비"))
+			if (pView->m_sDispMain != _T("운전준비"))
 			{
 				bDispStop = TRUE;
 			}
@@ -1526,7 +1548,7 @@ void CManagerPunch::MonDispMain()
 	{
 		if (bDispStop)
 		{
-			if (m_sDispMain != _T("정 지"))
+			if (pView->m_sDispMain != _T("정 지"))
 			{
 				DispMain(_T("정 지"), RGB_RED);
 				pDoc->SetMkMenu03(_T("Main"), _T("Stop"), TRUE);
@@ -1551,7 +1573,7 @@ void CManagerPunch::PlcAlm(BOOL bMon, BOOL bClr)
 		}
 
 		Sleep(300);
-		m_pMpe->Write(_T("MB600008"), 1);
+		MpeWrite(_T("MB600008"), 1);
 	}
 	else if (!bMon && pView->m_mgrProcedure->m_nMonAlmF)
 	{
@@ -1581,7 +1603,7 @@ void CManagerPunch::PlcAlm(BOOL bMon, BOOL bClr)
 			m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
 		}
 		Sleep(300);
-		m_pMpe->Write(_T("MB600009"), 1);
+		MpeWrite(_T("MB600009"), 1);
 
 	}
 	else if (!bClr && pView->m_mgrProcedure->m_nClrAlmF)
@@ -1649,7 +1671,7 @@ void CManagerPunch::FindAlarm()
 
 void CManagerPunch::ResetMonAlm()
 {
-	m_pMpe->Write(_T("MB600008"), 0);
+	MpeWrite(_T("MB600008"), 0);
 }
 
 void CManagerPunch::ClrAlarm()
@@ -1664,7 +1686,7 @@ void CManagerPunch::ClrAlarm()
 
 void CManagerPunch::ResetClear()
 {
-	m_pMpe->Write(_T("MB600009"), 0);
+	MpeWrite(_T("MB600009"), 0);
 }
 
 void CManagerPunch::DoIO()
@@ -1752,16 +1774,16 @@ void CManagerPunch::Ink(BOOL bOn)
 void CManagerPunch::MoveAoi(double dOffset)
 {
 	long lData = (long)(dOffset * 1000.0);		// 검사부 피딩 ON (PLC가 피딩완료 후 OFF)
-	m_pMpe->Write(_T("MB440160"), 1);	// 검사부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
-	m_pMpe->Write(_T("ML45064"), lData);
+	MpeWrite(_T("MB440160"), 1);	// 검사부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
+	MpeWrite(_T("ML45064"), lData);
 }
 
 void CManagerPunch::MoveMk(double dOffset)
 {
 #ifdef USE_MPE
 	long lData = (long)(dOffset * 1000.0);
-	m_pMpe->Write(_T("MB440161"), 1);		// 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF))
-	m_pMpe->Write(_T("ML45066"), lData);		// 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
+	MpeWrite(_T("MB440161"), 1);		// 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF))
+	MpeWrite(_T("ML45066"), lData);		// 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
 #endif
 }
 
@@ -1960,14 +1982,14 @@ void CManagerPunch::SetMainMc(BOOL bOn)
 	if (bOn)
 	{
 		if (m_pMpe)
-			m_pMpe->Write(_T("MB440159"), 1); // 마킹부 Door Interlock ON
-		//m_pMpe->Write(_T("MB440159"), 1); // 마킹부 MC ON
+			MpeWrite(_T("MB440159"), 1); // 마킹부 Door Interlock ON
+		//MpeWrite(_T("MB440159"), 1); // 마킹부 MC ON
 	}
 	else
 	{
 		if (m_pMpe)
-			m_pMpe->Write(_T("MB440158"), 0); // 마킹부 Door Interlock OFF
-		//m_pMpe->Write(_T("MB440159"), 0); // 마킹부 MC OFF
+			MpeWrite(_T("MB440158"), 0); // 마킹부 Door Interlock OFF
+		//MpeWrite(_T("MB440159"), 0); // 마킹부 MC OFF
 	}
 }
 
@@ -6312,8 +6334,8 @@ void CManagerPunch::DoModeSel()
 		pDoc->Status.bOneCycle = FALSE;
 
 		m_bAuto = TRUE;
-		pView->m_mgrProcedure->m_bManual = FALSE;
-		pView->m_mgrProcedure->m_bOneCycle = FALSE;
+		m_bManual = FALSE;
+		m_bOneCycle = FALSE;
 	}
 	else
 	{
@@ -6321,9 +6343,9 @@ void CManagerPunch::DoModeSel()
 		pDoc->Status.bAuto = FALSE;
 		pDoc->Status.bOneCycle = FALSE;
 
-		pView->m_mgrProcedure->m_bManual = TRUE;
+		m_bManual = TRUE;
 		m_bAuto = FALSE;
-		pView->m_mgrProcedure->m_bOneCycle = FALSE;
+		m_bOneCycle = FALSE;
 	}
 
 #else
@@ -8518,7 +8540,7 @@ BOOL CManagerPunch::DoAutoGetLotEndSignal()
 			}
 			break;
 		case LOT_END + 1:
-			m_pMpe->Write(_T("MB440180"), 1);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+			MpeWrite(_T("MB440180"), 1);			// 작업종료(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 			DispMain(_T("작업종료"), RGB_RED);
 			pView->m_mgrProcedure->m_nLotEndAuto++;
 			break;
@@ -8554,7 +8576,7 @@ void CManagerPunch::DoInterlock()
 		if (pView->m_mgrProcedure->m_bStopFeeding)
 		{
 			pView->m_mgrProcedure->m_bStopFeeding = FALSE;
-			m_pMpe->Write(_T("MB440115"), 0); // 마킹부Feeding금지
+			MpeWrite(_T("MB440115"), 0); // 마킹부Feeding금지
 		}
 	}
 	else
@@ -8562,7 +8584,7 @@ void CManagerPunch::DoInterlock()
 		if (!pView->m_mgrProcedure->m_bStopFeeding)
 		{
 			pView->m_mgrProcedure->m_bStopFeeding = TRUE;
-			m_pMpe->Write(_T("MB440115"), 1); // 마킹부Feeding금지
+			MpeWrite(_T("MB440115"), 1); // 마킹부Feeding금지
 		}
 	}
 }
@@ -9729,10 +9751,10 @@ void CManagerPunch::Buzzer(BOOL bOn, int nCh)
 		switch (nCh)
 		{
 		case 0:
-			m_pMpe->Write(_T("MB44015E"), 0);
+			MpeWrite(_T("MB44015E"), 0);
 			break;
 		case 1:
-			m_pMpe->Write(_T("MB44015F"), 0);
+			MpeWrite(_T("MB44015F"), 0);
 			break;
 		}
 	}
@@ -9741,14 +9763,14 @@ void CManagerPunch::Buzzer(BOOL bOn, int nCh)
 		switch (nCh)
 		{
 		case 0:
-			pView->m_pMpe->Write(_T("MB44015E"), 0);
+			MpeWrite(_T("MB44015E"), 0);
 			Sleep(300);
-			pView->m_pMpe->Write(_T("MB44015E"), 1);
+			MpeWrite(_T("MB44015E"), 1);
 			break;
 		case 1:
-			pView->m_pMpe->Write(_T("MB44015E"), 0);
+			MpeWrite(_T("MB44015E"), 0);
 			Sleep(300);
-			pView->m_pMpe->Write(_T("MB44015F"), 1);
+			MpeWrite(_T("MB44015F"), 1);
 			break;
 		}
 	}
@@ -9779,13 +9801,13 @@ void CManagerPunch::ChkReTestAlarmOnAoiUp()
 				pView->SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				if (m_pMpe)
-					m_pMpe->Write(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+					MpeWrite(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
 			}
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial <= pView->m_mgrProcedure->m_nLotEndSerial)
 		{
 			if (m_pMpe)
-				m_pMpe->Write(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
+				MpeWrite(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
 		}
 	}
 	else
@@ -9797,13 +9819,13 @@ void CManagerPunch::ChkReTestAlarmOnAoiUp()
 				pView->SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				if (m_pMpe)
-					m_pMpe->Write(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+					MpeWrite(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
 			}
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial >= pView->m_mgrProcedure->m_nLotEndSerial)
 		{
 			if (m_pMpe)
-				m_pMpe->Write(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
+				MpeWrite(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
 		}
 	}
 
@@ -9833,13 +9855,13 @@ void CManagerPunch::ChkReTestAlarmOnAoiDn()
 				pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				if (m_pMpe)
-					m_pMpe->Write(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+					MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
 			}
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial <= pView->m_mgrProcedure->m_nLotEndSerial)
 		{
 			//if (m_pMpe)
-			//	m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
+			//	MpeWrite(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
 		}
 	}
 	else
@@ -9851,13 +9873,13 @@ void CManagerPunch::ChkReTestAlarmOnAoiDn()
 				pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				if (m_pMpe)
-					m_pMpe->Write(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+					MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
 			}
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial >= pView->m_mgrProcedure->m_nLotEndSerial)
 		{
 			//if (m_pMpe)
-			//	m_pMpe->Write(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
+			//	MpeWrite(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
 		}
 	}
 
@@ -9890,8 +9912,8 @@ void CManagerPunch::SetBufHomeParam(double dVel, double dAcc)
 {
 	long lVel = long(dVel*1000.0);
 	long lAcc = long(dAcc*1000.0);
-	//	pView->m_pMpe->Write(_T("ML00000"), lVel); // 마킹부 버퍼 홈 속도
-	//	pView->m_pMpe->Write(_T("ML00000"), lAcc); // 마킹부 버퍼 홈 가속도
+	//	MpeWrite(_T("ML00000"), lVel); // 마킹부 버퍼 홈 속도
+	//	MpeWrite(_T("ML00000"), lAcc); // 마킹부 버퍼 홈 가속도
 	//	pDoc->SetBufInitPos(dVel, dAcc);
 }
 
@@ -10070,26 +10092,26 @@ BOOL CManagerPunch::GetDelay1(int &mSec, int nId) // F:Done, T:On Waiting....
 void CManagerPunch::CntMk()
 {
 #ifdef USE_MPE
-	if (pView->m_mgrProcedure->m_nPrevTotMk[0] != pView->m_mgrProcedure->m_nTotMk[0])
+	if (m_nPrevTotMk[0] != m_nTotMk[0])
 	{
-		pView->m_mgrProcedure->m_nPrevTotMk[0] = pView->m_mgrProcedure->m_nTotMk[0];
-		pView->m_pMpe->Write(_T("ML45096"), (long)pView->m_mgrProcedure->m_nTotMk[0]);	// 마킹부 (좌) 총 마킹수 
+		m_nPrevTotMk[0] = m_nTotMk[0];
+		MpeWrite(_T("ML45096"), (long)m_nTotMk[0]);	// 마킹부 (좌) 총 마킹수 
 	}
-	if (pView->m_mgrProcedure->m_nPrevCurMk[0] != m_nMkPcs[0])//m_nCurMk[0])
+	if (m_nPrevCurMk[0] != m_nMkPcs[0])//m_nCurMk[0])
 	{
-		pView->m_mgrProcedure->m_nPrevCurMk[0] = m_nMkPcs[0];//m_nCurMk[0];
-		pView->m_pMpe->Write(_T("ML45098"), (long)m_nMkPcs[0]);	// 마킹부 (좌) 현재 마킹한 수
+		m_nPrevCurMk[0] = m_nMkPcs[0];//m_nCurMk[0];
+		MpeWrite(_T("ML45098"), (long)m_nMkPcs[0]);	// 마킹부 (좌) 현재 마킹한 수
 	}
 
-	if (pView->m_mgrProcedure->m_nPrevTotMk[1] != pView->m_mgrProcedure->m_nTotMk[1])
+	if (m_nPrevTotMk[1] != m_nTotMk[1])
 	{
-		pView->m_mgrProcedure->m_nPrevTotMk[1] = pView->m_mgrProcedure->m_nTotMk[1];
-		pView->m_pMpe->Write(_T("ML45100"), (long)pView->m_mgrProcedure->m_nTotMk[1]);	// 마킹부 (우) 총 마킹수 
+		m_nPrevTotMk[1] = m_nTotMk[1];
+		MpeWrite(_T("ML45100"), (long)m_nTotMk[1]);	// 마킹부 (우) 총 마킹수 
 	}
-	if (pView->m_mgrProcedure->m_nPrevCurMk[1] != m_nMkPcs[1])//m_nCurMk[1])
+	if (m_nPrevCurMk[1] != m_nMkPcs[1])//m_nCurMk[1])
 	{
-		pView->m_mgrProcedure->m_nPrevCurMk[1] = m_nMkPcs[1];//m_nCurMk[1];
-		pView->m_pMpe->Write(_T("ML45102"), (long)m_nMkPcs[1]);	// 마킹부 (우) 현재 마킹한 수
+		m_nPrevCurMk[1] = m_nMkPcs[1];//m_nCurMk[1];
+		MpeWrite(_T("ML45102"), (long)m_nMkPcs[1]);	// 마킹부 (우) 현재 마킹한 수
 	}
 #endif
 }
@@ -10130,32 +10152,38 @@ UINT CManagerPunch::ThreadProc0(LPVOID lpContext)	// DoMark0(), DoMark1()
 			{
 				if (pThread->m_bTHREAD_MK[0])
 				{
-					if (pView->m_mgrProcedure->m_nBufUpSerial[0] > 0)
+					if (pView->m_mgrProcedure)
 					{
-						if (pDoc->GetTestMode() == MODE_OUTER)
-							pThread->DoMark0Its();
+						if (pView->m_mgrProcedure->m_nBufUpSerial[0] > 0)
+						{
+							if (pDoc->GetTestMode() == MODE_OUTER)
+								pThread->DoMark0Its();
+							else
+								pThread->DoMark0();
+						}
 						else
-							pThread->DoMark0();
-					}
-					else
-					{
-						pThread->m_bDoneMk[0] = TRUE;
-						pThread->m_bTHREAD_MK[0] = FALSE;
+						{
+							pThread->m_bDoneMk[0] = TRUE;
+							pThread->m_bTHREAD_MK[0] = FALSE;
+						}
 					}
 				}
 				if (pThread->m_bTHREAD_MK[1])
 				{
-					if (pView->m_mgrProcedure->m_nBufUpSerial[1] > 0)
+					if (pView->m_mgrProcedure)
 					{
-						if (pDoc->GetTestMode() == MODE_OUTER)
-							pThread->DoMark1Its();
+						if (pView->m_mgrProcedure->m_nBufUpSerial[1] > 0)
+						{
+							if (pDoc->GetTestMode() == MODE_OUTER)
+								pThread->DoMark1Its();
+							else
+								pThread->DoMark1();
+						}
 						else
-							pThread->DoMark1();
-					}
-					else
-					{
-						pThread->m_bDoneMk[1] = TRUE;
-						pThread->m_bTHREAD_MK[1] = FALSE;
+						{
+							pThread->m_bDoneMk[1] = TRUE;
+							pThread->m_bTHREAD_MK[1] = FALSE;
+						}
 					}
 				}
 			}
@@ -10163,22 +10191,28 @@ UINT CManagerPunch::ThreadProc0(LPVOID lpContext)	// DoMark0(), DoMark1()
 			{
 				if (pThread->m_bTHREAD_MK[1])
 				{
-					if (pView->m_mgrProcedure->m_nBufUpSerial[1] > 0)
-						pThread->DoMark1();
-					else
+					if (pView->m_mgrProcedure)
 					{
-						pThread->m_bDoneMk[1] = TRUE;
-						pThread->m_bTHREAD_MK[1] = FALSE;
+						if (pView->m_mgrProcedure->m_nBufUpSerial[1] > 0)
+							pThread->DoMark1();
+						else
+						{
+							pThread->m_bDoneMk[1] = TRUE;
+							pThread->m_bTHREAD_MK[1] = FALSE;
+						}
 					}
 				}
 				if (pThread->m_bTHREAD_MK[0])
 				{
-					if (pView->m_mgrProcedure->m_nBufUpSerial[0] > 0)
-						pThread->DoMark0();
-					else
+					if (pView->m_mgrProcedure)
 					{
-						pThread->m_bDoneMk[0] = TRUE;
-						pThread->m_bTHREAD_MK[0] = FALSE;
+						if (pView->m_mgrProcedure->m_nBufUpSerial[0] > 0)
+							pThread->DoMark0();
+						else
+						{
+							pThread->m_bDoneMk[0] = TRUE;
+							pThread->m_bTHREAD_MK[0] = FALSE;
+						}
 					}
 				}
 			}

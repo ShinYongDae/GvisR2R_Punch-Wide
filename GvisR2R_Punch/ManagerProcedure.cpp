@@ -105,20 +105,20 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	//m_dwThreadTick[1] = 0;
 
 	// DispDefImg
+	m_bThread[0] = FALSE;
+	m_dwThreadTick[0] = 0;
+
+	// Engrave Auto Sequence - Response Check
+	m_bThread[1] = FALSE;
+	m_dwThreadTick[1] = 0;
+
+	// DispDefImgInner
 	m_bThread[2] = FALSE;
 	m_dwThreadTick[2] = 0;
 
-	// Engrave Auto Sequence - Response Check
+	// DoShift2Mk
 	m_bThread[3] = FALSE;
 	m_dwThreadTick[3] = 0;
-
-	// DispDefImgInner
-	m_bThread[4] = FALSE;
-	m_dwThreadTick[4] = 0;
-
-	// DoShift2Mk
-	m_bThread[5] = FALSE;
-	m_dwThreadTick[5] = 0;
 
 	m_bContEngraveF = FALSE;
 
@@ -306,6 +306,10 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 		m_nMkStAuto = _ttoi(szData);
 	else
 		m_nMkStAuto = 0;
+
+	RECT rt = { 0,0,0,0 };
+	if (!Create(NULL, NULL, WS_CHILD, rt, pParent, 0))
+		AfxMessageBox(_T("CManagerProcedure::Create() Failed!!!"));
 
 	InitVal();
 	InitThread();
@@ -1128,20 +1132,20 @@ void CManagerProcedure::InitThread()
 	//	m_Thread[1].Start(GetSafeHwnd(), this, ThreadProc1);
 
 	// DispDefImg
+	if (!m_bThread[0])
+		m_Thread[0].Start(GetSafeHwnd(), this, ThreadProc0);
+
+	// Engrave Auto Sequence - Response Check
+	if (!m_bThread[1])
+		m_Thread[1].Start(GetSafeHwnd(), this, ThreadProc1);
+
+	// DispDefImgInner
 	if (!m_bThread[2])
 		m_Thread[2].Start(GetSafeHwnd(), this, ThreadProc2);
 
-	// Engrave Auto Sequence - Response Check
+	// DoShift2Mk
 	if (!m_bThread[3])
 		m_Thread[3].Start(GetSafeHwnd(), this, ThreadProc3);
-
-	// DispDefImgInner
-	if (!m_bThread[4])
-		m_Thread[4].Start(GetSafeHwnd(), this, ThreadProc4);
-
-	// DoShift2Mk
-	if (!m_bThread[5])
-		m_Thread[5].Start(GetSafeHwnd(), this, ThreadProc5);
 }
 
 void CManagerProcedure::KillThread()
@@ -1166,7 +1170,27 @@ void CManagerProcedure::KillThread()
 	//	}
 	//}
 
-	if (m_bThread[2])	// DispDefImg
+	if (m_bThread[0])	// DispDefImg
+	{
+		m_Thread[0].Stop();
+		Sleep(100);
+		while (m_bThread[0])
+		{
+			Sleep(20);
+		}
+	}
+
+	if (m_bThread[1])	// Engrave Auto Sequence - Response Check
+	{
+		m_Thread[1].Stop();
+		Sleep(100);
+		while (m_bThread[1])
+		{
+			Sleep(20);
+		}
+	}
+
+	if (m_bThread[2])	// DispDefImgInner
 	{
 		m_Thread[2].Stop();
 		Sleep(100);
@@ -1176,31 +1200,11 @@ void CManagerProcedure::KillThread()
 		}
 	}
 
-	if (m_bThread[3])	// Engrave Auto Sequence - Response Check
+	if (m_bThread[3])	// DoShift2Mk
 	{
 		m_Thread[3].Stop();
 		Sleep(100);
 		while (m_bThread[3])
-		{
-			Sleep(20);
-		}
-	}
-
-	if (m_bThread[4])	// DispDefImgInner
-	{
-		m_Thread[4].Stop();
-		Sleep(100);
-		while (m_bThread[4])
-		{
-			Sleep(20);
-		}
-	}
-
-	if (m_bThread[5])	// DoShift2Mk
-	{
-		m_Thread[5].Stop();
-		Sleep(100);
-		while (m_bThread[5])
 		{
 			Sleep(20);
 		}
@@ -1368,7 +1372,7 @@ void CManagerProcedure::KillThread()
 //	return 0;
 //}
 
-UINT CManagerProcedure::ThreadProc2(LPVOID lpContext)	// DispDefImg()
+UINT CManagerProcedure::ThreadProc0(LPVOID lpContext)	// DispDefImg()
 {
 	// Turn the passed in 'this' pointer back into a CProgressMgr instance
 	CManagerProcedure* pThread = reinterpret_cast< CManagerProcedure* >(lpContext);
@@ -1377,10 +1381,10 @@ UINT CManagerProcedure::ThreadProc2(LPVOID lpContext)	// DispDefImg()
 	DWORD dwTick = GetTickCount();
 	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
 
-	pThread->m_bThread[2] = TRUE;
-	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[2].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	pThread->m_bThread[0] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[0].GetShutdownEvent(), dwShutdownEventCheckPeriod))
 	{
-		pThread->m_dwThreadTick[2] = GetTickCount() - dwTick;
+		pThread->m_dwThreadTick[0] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
 		if (!bLock)
@@ -1398,12 +1402,12 @@ UINT CManagerProcedure::ThreadProc2(LPVOID lpContext)	// DispDefImg()
 			bLock = FALSE;
 		}
 	}
-	pThread->m_bThread[2] = FALSE;
+	pThread->m_bThread[0] = FALSE;
 
 	return 0;
 }
 
-UINT CManagerProcedure::ThreadProc3(LPVOID lpContext)	// GetCurrentInfoSignal()
+UINT CManagerProcedure::ThreadProc1(LPVOID lpContext)	// GetCurrentInfoSignal()
 {
 	// Turn the passed in 'this' pointer back into a CProgressMgr instance
 	CManagerProcedure* pThread = reinterpret_cast<CManagerProcedure*>(lpContext);
@@ -1412,10 +1416,10 @@ UINT CManagerProcedure::ThreadProc3(LPVOID lpContext)	// GetCurrentInfoSignal()
 	DWORD dwTick = GetTickCount();
 	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
 
-	pThread->m_bThread[3] = TRUE;
-	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[3].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	pThread->m_bThread[1] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[1].GetShutdownEvent(), dwShutdownEventCheckPeriod))
 	{
-		pThread->m_dwThreadTick[3] = GetTickCount() - dwTick;
+		pThread->m_dwThreadTick[1] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
 		if (!pView->m_bDestroyedView)
@@ -1429,12 +1433,12 @@ UINT CManagerProcedure::ThreadProc3(LPVOID lpContext)	// GetCurrentInfoSignal()
 		}
 		Sleep(100);
 	}
-	pThread->m_bThread[3] = FALSE;
+	pThread->m_bThread[1] = FALSE;
 
 	return 0;
 }
 
-UINT CManagerProcedure::ThreadProc4(LPVOID lpContext) // DispDefImgInner()
+UINT CManagerProcedure::ThreadProc2(LPVOID lpContext) // DispDefImgInner()
 {
 	// Turn the passed in 'this' pointer back into a CProgressMgr instance
 	CManagerProcedure* pThread = reinterpret_cast<CManagerProcedure*>(lpContext);
@@ -1443,10 +1447,10 @@ UINT CManagerProcedure::ThreadProc4(LPVOID lpContext) // DispDefImgInner()
 	DWORD dwTick = GetTickCount();
 	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
 
-	pThread->m_bThread[4] = TRUE;
-	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[4].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	pThread->m_bThread[2] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[2].GetShutdownEvent(), dwShutdownEventCheckPeriod))
 	{
-		pThread->m_dwThreadTick[4] = GetTickCount() - dwTick;
+		pThread->m_dwThreadTick[2] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
 		if (!bLock)
@@ -1464,12 +1468,12 @@ UINT CManagerProcedure::ThreadProc4(LPVOID lpContext) // DispDefImgInner()
 			bLock = FALSE;
 		}
 	}
-	pThread->m_bThread[4] = FALSE;
+	pThread->m_bThread[2] = FALSE;
 
 	return 0;
 }
 
-UINT CManagerProcedure::ThreadProc5(LPVOID lpContext)	// RunShift2Mk()
+UINT CManagerProcedure::ThreadProc3(LPVOID lpContext)	// RunShift2Mk()
 {
 	// Turn the passed in 'this' pointer back into a CProgressMgr instance
 	CManagerProcedure* pThread = reinterpret_cast<CManagerProcedure*>(lpContext);
@@ -1478,10 +1482,10 @@ UINT CManagerProcedure::ThreadProc5(LPVOID lpContext)	// RunShift2Mk()
 	DWORD dwTick = GetTickCount();
 	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
 
-	pThread->m_bThread[5] = TRUE;
-	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[5].GetShutdownEvent(), dwShutdownEventCheckPeriod))
+	pThread->m_bThread[3] = TRUE;
+	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[3].GetShutdownEvent(), dwShutdownEventCheckPeriod))
 	{
-		pThread->m_dwThreadTick[5] = GetTickCount() - dwTick;
+		pThread->m_dwThreadTick[3] = GetTickCount() - dwTick;
 		dwTick = GetTickCount();
 
 		if (pThread->m_bTHREAD_SHIFT2MK)
@@ -1499,7 +1503,7 @@ UINT CManagerProcedure::ThreadProc5(LPVOID lpContext)	// RunShift2Mk()
 			Sleep(30);
 	}
 
-	pThread->m_bThread[5] = FALSE;
+	pThread->m_bThread[3] = FALSE;
 
 	return 0;
 }
@@ -6501,7 +6505,7 @@ void CManagerProcedure::Mk2PtDoMarking()
 				m_bShift2Mk = TRUE;
 				DoShift2Mk();
 
-				pView->m_mgrPunch->SetMkFdLen();
+				SetMkFdLen();
 				SetCycTime();
 				m_dwCycSt = GetTickCount();
 
@@ -6733,7 +6737,7 @@ void CManagerProcedure::Mk2PtShift2Mk() // MODE_INNER
 				m_bShift2Mk = TRUE;
 				DoShift2Mk();
 
-				pView->m_mgrPunch->SetMkFdLen();
+				SetMkFdLen();
 				SetCycTime();
 				m_dwCycSt = GetTickCount();
 
@@ -8633,7 +8637,7 @@ void CManagerProcedure::Mk4PtDoMarking()
 
 				Shift2Mk();			// PCR 이동(Buffer->Marked) // 기록(WorkingInfo.LastJob.sSerial)
 				UpdateRst();
-				pView->m_mgrPunch->SetMkFdLen();
+				SetMkFdLen();
 
 				SetCycTime();
 				m_dwCycSt = GetTickCount();
