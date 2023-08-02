@@ -8,7 +8,7 @@
 #include "Device/Vision.h"
 #include "Device/MpDevice.h"
 #include "Device/SR1000W.h"
-#include "Device/Engrave.h"
+//#include "Device/Engrave.h"
 #include "Device/Dts.h"
 
 #include "Process/PtAlign.h"
@@ -50,11 +50,11 @@ public:
 #endif
 	//CPtAlign m_Align[2];	// [0] : LeftCam , [1] : RightCam
 
-	CEngrave* m_pEngrave;
+	//CEngrave* m_pEngrave;
 	CSr1000w* m_pSr1000w;
 	CDts* m_pDts;
 
-	BOOL m_bCam, m_bReview;
+	BOOL m_bCam, m_bReview; // 비젼확인
 	double m_dNextTarget[MAX_AXIS];
 
 	BOOL m_bProbDn[2]; // 좌/우 .
@@ -293,7 +293,7 @@ public:
 	void SwAoiFdVac();
 	void SwAoiTqVac();
 
-	afx_msg LRESULT wmClientReceived(WPARAM wParam, LPARAM lParam);
+	//afx_msg LRESULT wmClientReceived(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT wmClientReceivedSr(WPARAM wParam, LPARAM lParam);
 
 protected:

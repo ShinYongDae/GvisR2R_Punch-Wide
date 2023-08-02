@@ -2809,9 +2809,9 @@ void CDlgMenu06::DispStTime()
 #ifdef USE_ENGRAVE
 	if (pView)
 	{
-		if (pView->m_mgrPunch->m_pEngrave)
+		if (pView->m_pEngrave)
 		{
-			pView->m_mgrPunch->m_pEngrave->SetStTime();
+			pView->m_pEngrave->SetStTime();
 		}
 	}
 #endif
@@ -2909,9 +2909,9 @@ void CDlgMenu06::DispRunTime()
 #ifdef USE_ENGRAVE
 			if (pView)
 			{
-				if (pView->m_mgrPunch->m_pEngrave)
+				if (pView->m_pEngrave)
 				{
-					pView->m_mgrPunch->m_pEngrave->SetRunTime();
+					pView->m_pEngrave->SetRunTime();
 				}
 			}
 #endif
@@ -2951,9 +2951,9 @@ void CDlgMenu06::DispEdTime()
 #ifdef USE_ENGRAVE
 	if (pView)
 	{
-		if (pView->m_mgrPunch->m_pEngrave)
+		if (pView->m_pEngrave)
 		{
-			pView->m_mgrPunch->m_pEngrave->SetEdTime();
+			pView->m_pEngrave->SetEdTime();
 		}
 	}
 #endif
@@ -3286,9 +3286,9 @@ void CDlgMenu06::UpdateWorking()
 //#ifdef USE_ENGRAVE
 //	if (pView)
 //	{
-//		if (pView->m_mgrPunch->m_pEngrave)
+//		if (pView->m_pEngrave)
 //		{
-//			pView->m_mgrPunch->m_pEngrave->UpdateWorking();
+//			pView->m_pEngrave->UpdateWorking();
 //		}
 //	}
 //#endif
@@ -3325,11 +3325,11 @@ void CDlgMenu06::UpdateRst() // Menu01 화면에서의 수율정보를 업데이트함.
 //#ifdef USE_ENGRAVE
 //	if (pView)
 //	{
-//		if (pView->m_mgrPunch->m_pEngrave)
+//		if (pView->m_pEngrave)
 //		{
-//			pView->m_mgrPunch->m_pEngrave->SetTotRatio();
-//			pView->m_mgrPunch->m_pEngrave->SetStripRatio();
-//			pView->m_mgrPunch->m_pEngrave->SetDef();
+//			pView->m_pEngrave->SetTotRatio();
+//			pView->m_pEngrave->SetStripRatio();
+//			pView->m_pEngrave->SetDef();
 //		}
 //	}
 //#endif
@@ -5588,8 +5588,8 @@ void CDlgMenu06::ChkTpStop()
 		pView->m_mgrReelmap->m_pReelMapInner->m_bUseTempPause = bUse;
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
 #endif
 
 	CString sData = bUse ? _T("1") : _T("0");

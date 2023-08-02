@@ -146,14 +146,14 @@ LRESULT CDlgMyMsgSub01::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 	{
 	case IDC_BTN_00: // Yes
 #ifdef USE_ENGRAVE
-		if (pView && pView->m_mgrPunch->m_pEngrave)
-			pView->m_mgrPunch->m_pEngrave->SetMyMsgYes();	//_SigInx::_MyMsgYes
+		if (pView && pView->m_pEngrave)
+			pView->m_pEngrave->SetMyMsgYes();	//_SigInx::_MyMsgYes
 #endif
 		break;
 	case IDC_BTN_01: // No
 #ifdef USE_ENGRAVE
-		if (pView && pView->m_mgrPunch->m_pEngrave)
-			pView->m_mgrPunch->m_pEngrave->SetMyMsgNo();	//_SigInx::_MyMsgNo
+		if (pView && pView->m_pEngrave)
+			pView->m_pEngrave->SetMyMsgNo();	//_SigInx::_MyMsgNo
 #endif
 		break;
 	}

@@ -833,8 +833,8 @@ void CDlgInfo::OnStc0020()
 	pDoc->SetCuttingDist(_tstof(sVal));
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetLotCutLen();	//_ItemInx::_LotCutLen
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetLotCutLen();	//_ItemInx::_LotCutLen
 #endif
 }
 
@@ -865,8 +865,8 @@ void CDlgInfo::OnStc0024()
 // 	pView->MpeWrite(_T("ML45006", long(_tstof(sVal)*1000.0));
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetTempStopLen();	//_ItemInx::_LotCutPosLen
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetTempStopLen();	//_ItemInx::_LotCutPosLen
 #endif
 }
 
@@ -890,8 +890,8 @@ void CDlgInfo::OnStc0030()
 	::WritePrivateProfileString(_T("Last Job"), _T("Limit Total Yield"), sVal, PATH_WORKING_INFO);	
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetLmtTotYld();	//_ItemInx::_LmtTotYld
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetLmtTotYld();	//_ItemInx::_LmtTotYld
 #endif
 }
 
@@ -915,8 +915,8 @@ void CDlgInfo::OnStc0034()
 	::WritePrivateProfileString(_T("Last Job"), _T("Limit Partial Yield"), sVal, PATH_WORKING_INFO);	
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetLmtPatlYld();	//_ItemInx::_LmtPatlYld
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetLmtPatlYld();	//_ItemInx::_LmtPatlYld
 #endif
 }
 
@@ -940,8 +940,8 @@ void CDlgInfo::OnStc0037()
 	::WritePrivateProfileString(_T("Last Job"), _T("Number of Continuous Fix Defect"), sVal, PATH_WORKING_INFO);	
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetNumContFixDef();	//_ItemInx::_NumContFixDef
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetNumContFixDef();	//_ItemInx::_NumContFixDef
 #endif
 }
 
@@ -975,8 +975,8 @@ void CDlgInfo::OnStc32()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetUltraSonicStTim();	//_ItemInx::_UltraSonicStTim
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetUltraSonicStTim();	//_ItemInx::_UltraSonicStTim
 #endif
 }
 
@@ -998,8 +998,8 @@ void CDlgInfo::OnChk000()
 		::WritePrivateProfileString(_T("Last Job"), _T("Operator Name"), pDoc->WorkingInfo.LastJob.sSelUserName, PATH_WORKING_INFO);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetOpName();	//_ItemInx::_OpName
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetOpName();	//_ItemInx::_OpName
 #endif
 }
 
@@ -1033,8 +1033,8 @@ void CDlgInfo::OnChk001()
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Lot seperate"), sData, PATH_WORKING_INFO);
 	pDoc->SetMkInfo(_T("Signal"), _T("SeparateLot"), bUse);
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetLotCut();	//_ItemInx::_LotCut
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetLotCut();	//_ItemInx::_LotCut
 #endif
 }
 
@@ -1079,8 +1079,8 @@ void CDlgInfo::OnChk002()
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Temporary Pause"), sData, PATH_WORKING_INFO);
 	pDoc->SetMkInfo(_T("Signal"), _T("TempStop"), bUse);
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
 #endif
 }
 
@@ -1096,8 +1096,8 @@ void CDlgInfo::OnChk003()
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Continuous Fix Defect"), sData, PATH_WORKING_INFO);	
 	pDoc->SetMkInfo(_T("Signal"), _T("FixBed"), pDoc->WorkingInfo.LastJob.bContFixDef);
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetFixDef();	//_stSigInx::_FixDef
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetFixDef();	//_stSigInx::_FixDef
 #endif
 }
 
@@ -1125,8 +1125,8 @@ void CDlgInfo::OnChk004()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetDoorRecoiler();	//_stSigInx::_DoorRecoiler
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetDoorRecoiler();	//_stSigInx::_DoorRecoiler
 #endif
 }
 
@@ -1156,8 +1156,8 @@ void CDlgInfo::OnChk005()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetDoorAoiUp();	//_stSigInx::_DoorAoiUp
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetDoorAoiUp();	//_stSigInx::_DoorAoiUp
 #endif
 }
 
@@ -1185,8 +1185,8 @@ void CDlgInfo::OnChk006()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetDoorMk();	//_stSigInx::_DoorMk
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetDoorMk();	//_stSigInx::_DoorMk
 #endif
 }
 
@@ -1214,8 +1214,8 @@ void CDlgInfo::OnChk007()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetDoorUncoiler();	//_stSigInx::_DoorUncoiler
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetDoorUncoiler();	//_stSigInx::_DoorUncoiler
 #endif
 }
 
@@ -1266,8 +1266,8 @@ void CDlgInfo::OnChk009()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetDoorEngrave();	//_stSigInx::_DoorEngrave
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetDoorEngrave();	//_stSigInx::_DoorEngrave
 #endif
 
 	//if(myBtn[9].GetCheck())
@@ -1292,8 +1292,8 @@ void CDlgInfo::OnChk010()
 	pDoc->SetMkInfo(_T("Signal"), _T("SaftySensPunch"), pDoc->WorkingInfo.LastJob.bMkSftySen);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetSaftyMk();	//_stSigInx::_SaftyMk
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetSaftyMk();	//_stSigInx::_SaftyMk
 #endif
 }
 
@@ -1323,8 +1323,8 @@ void CDlgInfo::OnChk011()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetDoorAoiDn();	//_stSigInx::_DoorAoiDn
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetDoorAoiDn();	//_stSigInx::_DoorAoiDn
 #endif
 
 
@@ -1366,8 +1366,8 @@ void CDlgInfo::OnStc174()
 	::WritePrivateProfileString(_T("Last Job"), _T("Strip Out Ratio"), sVal, PATH_WORKING_INFO);	
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetStripOutRatio();	//_ItemInx::_StripOutRatio
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetStripOutRatio();	//_ItemInx::_StripOutRatio
 #endif
 }
 
@@ -1391,8 +1391,8 @@ void CDlgInfo::OnStc183()
 	::WritePrivateProfileString(_T("Last Job"), _T("Custom Need Ratio"), sVal, PATH_WORKING_INFO);	
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetCustomNeedRatio();	//_ItemInx::_CustomNeedRatio
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetCustomNeedRatio();	//_ItemInx::_CustomNeedRatio
 #endif
 }
 
@@ -1416,8 +1416,8 @@ void CDlgInfo::OnStc178()
 	::WritePrivateProfileString(_T("Last Job"), _T("Partial Speed"), sVal, PATH_WORKING_INFO);	
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetPartVel();	//_ItemInx::_PartVel
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetPartVel();	//_ItemInx::_PartVel
 #endif
 }
 
@@ -1455,8 +1455,8 @@ void CDlgInfo::OnStc61()
 	::WritePrivateProfileString(_T("Last Job"), _T("Shot Num of Range in Fix Defect"), sVal, PATH_WORKING_INFO);	
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetNumRangeFixDef();	//_ItemInx::_NumRangeFixDef
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetNumRangeFixDef();	//_ItemInx::_NumRangeFixDef
 #endif
 
 }
@@ -1475,8 +1475,8 @@ void CDlgInfo::SetTestMode(int nMode)
 //	::WritePrivateProfileString(_T("Last Job"), _T("Test Mode"), sData, PATH_WORKING_INFO);
 //
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetTestMode();	//_ItemInx::_TestMode
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetTestMode();	//_ItemInx::_TestMode
 #endif
 
 	pDoc->SetTestMode(nMode);
@@ -1528,7 +1528,7 @@ void CDlgInfo::SetDualTest(BOOL bOn)
 	CString sData = bOn ? _T("1") : _T("0");
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Dual AOI"), sData, PATH_WORKING_INFO);
 	pDoc->SetMkInfo(_T("Signal"), _T("Use Dual AOI"), bOn);
-	if(pView->m_mgrPunch->m_pEngrave)
+	if(pView->m_pEngrave)
 		::WritePrivateProfileString(_T("Last Job"), _T("Use Dual AOI"), sData, PATH_WORKING_INFO);
 
 	if(bOn)
@@ -1552,8 +1552,8 @@ void CDlgInfo::SetDualTest(BOOL bOn)
 	pView->SetDualTest(bOn);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetDualTest();	//_stSigInx::_DualTest
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetDualTest();	//_stSigInx::_DualTest
 #endif
 }
 
@@ -1579,8 +1579,8 @@ void CDlgInfo::SetTwoMetal(BOOL bOn)
 		}
 		pView->SetTwoMetal(bOn, bChk[1]);
 #ifdef USE_ENGRAVE
-		if (pView && pView->m_mgrPunch->m_pEngrave)
-			pView->m_mgrPunch->m_pEngrave->SetUncoilerCcw();	//_stSigInx::_UncoilerCcw
+		if (pView && pView->m_pEngrave)
+			pView->m_pEngrave->SetUncoilerCcw();	//_stSigInx::_UncoilerCcw
 #endif
 
 // 		if(bChk[0])
@@ -1605,8 +1605,8 @@ void CDlgInfo::SetTwoMetal(BOOL bOn)
 		}
 		pView->SetTwoMetal(bOn, bChk[0]);
 #ifdef USE_ENGRAVE
-		if (pView && pView->m_mgrPunch->m_pEngrave)
-			pView->m_mgrPunch->m_pEngrave->SetRecoilerCcw();	//_stSigInx::_RecoilerCcw
+		if (pView && pView->m_pEngrave)
+			pView->m_pEngrave->SetRecoilerCcw();	//_stSigInx::_RecoilerCcw
 #endif
 
 // 		if(!bChk[0])
@@ -1684,8 +1684,8 @@ void CDlgInfo::OnChkSampleTest()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetSampleTest();	//_stSigInx::_SampleTest
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetSampleTest();	//_stSigInx::_SampleTest
 #endif
 }
 
@@ -1717,8 +1717,8 @@ void CDlgInfo::OnChkOneMetal()
 	pDoc->SetMkInfo(_T("Signal"), _T("RecoilerCcw"), bOn);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetRecoilerCcw();	//_stSigInx::_RecoilerCcw
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetRecoilerCcw();	//_stSigInx::_RecoilerCcw
 #endif
 }
 
@@ -1750,8 +1750,8 @@ void CDlgInfo::OnChkTwoMetal()
 	pDoc->SetMkInfo(_T("Signal"), _T("UncoilerCcw"), bOn);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetUncoilerCcw();	//_stSigInx::_UncoilerCcw
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetUncoilerCcw();	//_stSigInx::_UncoilerCcw
 #endif
 }
 
@@ -1780,8 +1780,8 @@ void CDlgInfo::OnStc181()
 #endif
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetSampleShotNum();	//_stSigInx::_SampleShotNum
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetSampleShotNum();	//_stSigInx::_SampleShotNum
 #endif
 }
 
@@ -1820,8 +1820,8 @@ void CDlgInfo::OnBnClickedChk2PointAlign()
 	}
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetAlignMethode();	//_stSigInx::_AlignMethode  // TWO_POINT, FOUR_POINT
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetAlignMethode();	//_stSigInx::_AlignMethode  // TWO_POINT, FOUR_POINT
 #endif
 }
 
@@ -1860,8 +1860,8 @@ void CDlgInfo::OnBnClickedChk4PointAlign()
 	}
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetAlignMethode();	//_stSigInx::_AlignMethode  // TWO_POINT, FOUR_POINT
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetAlignMethode();	//_stSigInx::_AlignMethode  // TWO_POINT, FOUR_POINT
 #endif
 }
 
@@ -1888,8 +1888,8 @@ void CDlgInfo::OnBnClickedChk85()
 	pDoc->SetMkInfo(_T("Signal"), _T("CleanRolerAoiDn"), pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetCleannerAoiDn();	//_stSigInx::_CleannerAoiDn
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetCleannerAoiDn();	//_stSigInx::_CleannerAoiDn
 #endif
 }
 
@@ -1916,8 +1916,8 @@ void CDlgInfo::OnBnClickedChk86()
 	pDoc->SetMkInfo(_T("Signal"), _T("CleanRolerAoiUp"), pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetCleannerAoiUp();	//_stSigInx::_CleannerAoiUp
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetCleannerAoiUp();	//_stSigInx::_CleannerAoiUp
 #endif
 }
 
@@ -1945,8 +1945,8 @@ void CDlgInfo::OnBnClickedChk1187()
 	pDoc->SetMkInfo(_T("Signal"), _T("UltrasonicAoi"), pDoc->WorkingInfo.LastJob.bUseAoiDnUltrasonic);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetUltraSonicAoiDn();	//_stSigInx::_UltraSonicAoiDn
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetUltraSonicAoiDn();	//_stSigInx::_UltraSonicAoiDn
 #endif
 }
 
@@ -1974,8 +1974,8 @@ void CDlgInfo::OnBnClickedChk1188()
 	pDoc->SetMkInfo(_T("Signal"), _T("UltrasonicEngrave"), pDoc->WorkingInfo.LastJob.bUseEngraveUltrasonic);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetUltraSonicEngrave();	//_stSigInx::_UltraSonicEngrave
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetUltraSonicEngrave();	//_stSigInx::_UltraSonicEngrave
 #endif
 }
 
@@ -2026,8 +2026,8 @@ void CDlgInfo::OnStnClickedStc17()
 	pDoc->SetEngItsCode(sData);
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetEngItsCode();	//_ItemInx::_EngItsCode
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetEngItsCode();	//_ItemInx::_EngItsCode
 #endif
 }
 

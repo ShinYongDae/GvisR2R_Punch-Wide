@@ -36,7 +36,7 @@ CManagerPunch::CManagerPunch(CWnd* pParent /*=NULL*/)
 	m_pVision[1] = NULL;
 	m_pVisionInner[0] = NULL;
 	m_pVisionInner[1] = NULL;
-	m_pEngrave = NULL;
+	//m_pEngrave = NULL;
 	m_pSr1000w = NULL;
 	m_pDts = NULL;
 
@@ -139,7 +139,7 @@ CManagerPunch::~CManagerPunch()
 BEGIN_MESSAGE_MAP(CManagerPunch, CWnd)
 	ON_WM_TIMER()
 	ON_MESSAGE(WM_CLIENT_RECEIVED_SR, wmClientReceivedSr)
-	ON_MESSAGE(WM_CLIENT_RECEIVED, wmClientReceived)
+	//ON_MESSAGE(WM_CLIENT_RECEIVED, wmClientReceived)
 END_MESSAGE_MAP()
 
 
@@ -238,6 +238,31 @@ BOOL CManagerPunch::HwInit()
 
 void CManagerPunch::HwKill()
 {
+#ifdef USE_VISION
+	if (m_pVisionInner[1])
+	{
+		delete m_pVisionInner[1];
+		m_pVisionInner[1] = NULL;
+	}
+
+	if (m_pVisionInner[0])
+	{
+		delete m_pVisionInner[0];
+		m_pVisionInner[0] = NULL;
+	}
+	if (m_pVision[1])
+	{
+		delete m_pVision[1];
+		m_pVision[1] = NULL;
+	}
+
+	if (m_pVision[0])
+	{
+		delete m_pVision[0];
+		m_pVision[0] = NULL;
+	}
+#endif
+
 	if (m_pMotion)
 	{
 		delete m_pMotion;
@@ -269,12 +294,12 @@ void CManagerPunch::HwKill()
 		m_pLight = NULL;
 	}
 
-	if (m_pEngrave)
-	{
-		m_pEngrave->Close();
-		delete m_pEngrave;
-		m_pEngrave = NULL;
-	}
+	//if (m_pEngrave)
+	//{
+	//	m_pEngrave->Close();
+	//	delete m_pEngrave;
+	//	m_pEngrave = NULL;
+	//}
 
 	if (m_pSr1000w)
 	{
@@ -1566,10 +1591,10 @@ void CManagerPunch::PlcAlm(BOOL bMon, BOOL bClr)
 		pView->m_mgrProcedure->m_nMonAlmF = 1;
 		//ResetMonAlm();
 		FindAlarm();
-		if (m_pEngrave)
+		if (pView->m_pEngrave)
 		{
 			pDoc->m_sIsAlmMsg = _T("");
-			m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
+			pView->m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
 		}
 
 		Sleep(300);
@@ -1582,12 +1607,12 @@ void CManagerPunch::PlcAlm(BOOL bMon, BOOL bClr)
 	}
 	else
 	{
-		if (m_pEngrave)
+		if (pView->m_pEngrave)
 		{
 			if (pDoc->m_sIsAlmMsg != pDoc->m_sAlmMsg)
 			{
-				if (m_pEngrave)
-					m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
+				if (pView->m_pEngrave)
+					pView->m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
 			}
 		}
 	}
@@ -1597,10 +1622,10 @@ void CManagerPunch::PlcAlm(BOOL bMon, BOOL bClr)
 	{
 		pView->m_mgrProcedure->m_nClrAlmF = 1;
 		ClrAlarm();
-		if (m_pEngrave)
+		if (pView->m_pEngrave)
 		{
 			pDoc->m_sAlmMsg = _T("");
-			m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
+			pView->m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
 		}
 		Sleep(300);
 		MpeWrite(_T("MB600009"), 1);
@@ -1613,12 +1638,12 @@ void CManagerPunch::PlcAlm(BOOL bMon, BOOL bClr)
 	}
 	else
 	{
-		if (m_pEngrave)
+		if (pView->m_pEngrave)
 		{
 			if (pDoc->m_sIsAlmMsg != pDoc->m_sAlmMsg)
 			{
-				if (m_pEngrave)
-					m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
+				if (pView->m_pEngrave)
+					pView->m_pEngrave->SetAlarm(pDoc->m_sAlmMsg);
 			}
 		}
 	}
@@ -1737,24 +1762,6 @@ void CManagerPunch::DoIO()
 		DoAutoEng();
 		DoAuto();
 	}
-
-	//if (pView->IsRun())
-	//{
-	//	if (pView->m_pDlgMenu01)
-	//	{
-	//		if (pView->m_pDlgMenu01->IsEnableBtn())
-	//			pView->m_pDlgMenu01->EnableBtn(FALSE);
-	//	}
-	//}
-	//else
-	//{
-	//	if (pView->m_pDlgMenu01)
-	//	{
-	//		if (!pView->m_pDlgMenu01->IsEnableBtn())
-	//			pView->m_pDlgMenu01->EnableBtn(TRUE);
-	//	}
-	//}
-
 }
 
 void CManagerPunch::Ink(BOOL bOn)
@@ -3246,7 +3253,7 @@ void CManagerPunch::DoMark0()
 		{
 			if (IsMoveDone0())
 			{
-				Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move0(ptPnt, m_bCam);
 				m_nStepMk[0]++;
 			}
 		}
@@ -3256,7 +3263,7 @@ void CManagerPunch::DoMark0()
 			{
 				m_bCollision[0] = FALSE;
 				m_bPriority[0] = FALSE;
-				Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move0(ptPnt, m_bCam);
 				m_nStepMk[0]++;
 			}
 		}
@@ -3524,7 +3531,7 @@ void CManagerPunch::DoMark0()
 	case ERR_PROC + 1:
 		nSerial = pView->m_mgrProcedure->m_nBufUpSerial[0]; // Cam0
 
-		if (pView->m_mgrPunch->m_bCam)
+		if (m_bCam)
 			sMsg.Format(_T("%d번 Shot을 다시 불량확인을 하시겠습니까?"), nSerial);
 		else
 			sMsg.Format(_T("%d번 Shot을 다시 마킹하시겠습니까?"), nSerial);
@@ -3808,7 +3815,7 @@ void CManagerPunch::DoMark1()
 		{
 			if (IsMoveDone1())
 			{
-				Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move1(ptPnt, m_bCam);
 				m_nStepMk[1]++;
 			}
 		}
@@ -3818,7 +3825,7 @@ void CManagerPunch::DoMark1()
 			{
 				m_bCollision[1] = FALSE;
 				m_bPriority[1] = FALSE;
-				Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move1(ptPnt, m_bCam);
 				m_nStepMk[1]++;
 			}
 		}
@@ -4085,7 +4092,7 @@ void CManagerPunch::DoMark1()
 	case ERR_PROC + 1:
 		nSerial = pView->m_mgrProcedure->m_nBufUpSerial[1]; // Cam1
 
-		if (pView->m_mgrPunch->m_bCam)
+		if (m_bCam)
 			sMsg.Format(_T("%d번 Shot을 다시 불량확인을 하시겠습니까?"), nSerial);
 		else
 			sMsg.Format(_T("%d번 Shot을 다시 마킹하시겠습니까?"), nSerial);
@@ -4209,7 +4216,7 @@ void CManagerPunch::DoMark0All()
 			{
 				if (IsMoveDone0())
 				{
-					Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+					Move0(ptPnt, m_bCam);
 					m_nStepMk[2]++;
 				}
 			}
@@ -4218,7 +4225,7 @@ void CManagerPunch::DoMark0All()
 				if (IsMoveDone0())
 				{
 					m_bPriority[0] = FALSE;
-					Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+					Move0(ptPnt, m_bCam);
 					m_nStepMk[2]++;
 				}
 			}
@@ -4362,7 +4369,7 @@ void CManagerPunch::DoMark1All()
 			{
 				if (IsMoveDone1())
 				{
-					Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+					Move1(ptPnt, m_bCam);
 					m_nStepMk[3]++;
 				}
 			}
@@ -4371,7 +4378,7 @@ void CManagerPunch::DoMark1All()
 				if (IsMoveDone1())
 				{
 					m_bPriority[1] = FALSE;
-					Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+					Move1(ptPnt, m_bCam);
 					m_nStepMk[3]++;
 				}
 			}
@@ -4846,7 +4853,7 @@ void CManagerPunch::DoMark0Its()
 		{
 			if (IsMoveDone0())
 			{
-				Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move0(ptPnt, m_bCam);
 				m_nStepMk[0]++;
 			}
 		}
@@ -4856,7 +4863,7 @@ void CManagerPunch::DoMark0Its()
 			{
 				m_bCollision[0] = FALSE;
 				m_bPriority[0] = FALSE;
-				Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move0(ptPnt, m_bCam);
 				m_nStepMk[0]++;
 			}
 		}
@@ -5123,7 +5130,7 @@ void CManagerPunch::DoMark0Its()
 	case ERR_PROC + 1:
 		nSerial = pView->m_mgrProcedure->m_nBufUpSerial[0];
 
-		if (pView->m_mgrPunch->m_bCam)
+		if (m_bCam)
 			sMsg.Format(_T("%d번 Shot을 다시 불량확인을 하시겠습니까?"), nSerial);
 		else
 			sMsg.Format(_T("%d번 Shot을 다시 마킹하시겠습니까?"), nSerial);
@@ -5410,7 +5417,7 @@ void CManagerPunch::DoMark1Its()
 		{
 			if (IsMoveDone1())
 			{
-				Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move1(ptPnt, m_bCam);
 				m_nStepMk[1]++;
 			}
 		}
@@ -5420,7 +5427,7 @@ void CManagerPunch::DoMark1Its()
 			{
 				m_bCollision[1] = FALSE;
 				m_bPriority[1] = FALSE;
-				Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move1(ptPnt, m_bCam);
 				m_nStepMk[1]++;
 			}
 		}
@@ -5687,7 +5694,7 @@ void CManagerPunch::DoMark1Its()
 	case ERR_PROC + 1:
 		nSerial = pView->m_mgrProcedure->m_nBufUpSerial[1]; // Cam1
 
-		if (pView->m_mgrPunch->m_bCam)
+		if (m_bCam)
 			sMsg.Format(_T("%d번 Shot을 다시 불량확인을 하시겠습니까?"), nSerial);
 		else
 			sMsg.Format(_T("%d번 Shot을 다시 마킹하시겠습니까?"), nSerial);
@@ -5854,13 +5861,13 @@ void CManagerPunch::DoReject0()
 			m_bCollision[0] = ChkCollision(AXIS_X0, ptPnt.x);
 			if (!m_bCollision[0])
 			{
-				Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move0(ptPnt, m_bCam);
 				m_nStepMk[2]++;
 			}
 			else if (m_bPriority[0])
 			{
 				m_bPriority[0] = FALSE;
-				Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move0(ptPnt, m_bCam);
 				m_nStepMk[2]++;
 			}
 			else if (m_bPriority[2])
@@ -5868,7 +5875,7 @@ void CManagerPunch::DoReject0()
 				m_bPriority[2] = FALSE;
 				ptPnt.x = 0.0;
 				ptPnt.y = 0.0;//m_dEnc[AXIS_Y0];
-				Move0(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move0(ptPnt, m_bCam);
 			}
 		}
 		else
@@ -6119,13 +6126,13 @@ void CManagerPunch::DoReject1()
 			m_bCollision[1] = ChkCollision(AXIS_X1, ptPnt.x);
 			if (!m_bCollision[1])
 			{
-				Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move1(ptPnt, m_bCam);
 				m_nStepMk[3]++;
 			}
 			else if (m_bPriority[1])
 			{
 				m_bPriority[1] = FALSE;
-				Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move1(ptPnt, m_bCam);
 				m_nStepMk[3]++;
 			}
 			else if (m_bPriority[3])
@@ -6133,7 +6140,7 @@ void CManagerPunch::DoReject1()
 				m_bPriority[3] = FALSE;
 				ptPnt.x = _tstof(pDoc->WorkingInfo.Motion.sSafeZone);
 				ptPnt.y = 0.0;//m_dEnc[AXIS_Y1];
-				Move1(ptPnt, pView->m_mgrPunch->m_bCam);
+				Move1(ptPnt, m_bCam);
 			}
 		}
 		else
@@ -6287,13 +6294,13 @@ BOOL CManagerPunch::TcpIpInit()
 	}
 #endif	
 
-#ifdef USE_TCPIP
-	if (!m_pEngrave)
-	{
-		m_pEngrave = new CEngrave(pDoc->WorkingInfo.System.sIpClient[ID_PUNCH], pDoc->WorkingInfo.System.sIpServer[ID_ENGRAVE], pDoc->WorkingInfo.System.sPort[ID_ENGRAVE], this);
-		m_pEngrave->SetHwnd(this->GetSafeHwnd());
-	}
-#endif
+//#ifdef USE_TCPIP
+//	if (!m_pEngrave)
+//	{
+//		m_pEngrave = new CEngrave(pDoc->WorkingInfo.System.sIpClient[ID_PUNCH], pDoc->WorkingInfo.System.sIpServer[ID_ENGRAVE], pDoc->WorkingInfo.System.sPort[ID_ENGRAVE], this);
+//		m_pEngrave->SetHwnd(this->GetSafeHwnd());
+//	}
+//#endif
 
 	return TRUE;
 }
@@ -11057,43 +11064,43 @@ BOOL CManagerPunch::IsAuto()
 	return FALSE;
 }
 
-LRESULT CManagerPunch::wmClientReceived(WPARAM wParam, LPARAM lParam)
-{
-	if (!m_pEngrave)
-		return (LRESULT)0;
-
-	int nAcceptId = (int)wParam;
-	SOCKET_DATA sSockData;
-	SOCKET_DATA *pSocketData = (SOCKET_DATA*)lParam;
-	SOCKET_DATA rSockData = *pSocketData;
-	int nCmdCode = rSockData.nCmdCode;
-	int nMsgId = rSockData.nMsgID;
-
-	switch (nCmdCode)
-	{
-	case _GetSig:
-		break;
-	case _GetData:
-		break;
-	case _SetSig:
-		if (m_pEngrave && m_pEngrave->IsConnected())
-			m_pEngrave->GetSysSignal(rSockData);
-
-		pView->m_bSetSig = TRUE;
-		break;
-	case _SetData:
-		if (m_pEngrave && m_pEngrave->IsConnected())
-			m_pEngrave->GetSysData(rSockData);
-
-		pView->m_bSetData = TRUE;
-		break;
-	default:
-		break;
-	}
-
-
-	return (LRESULT)1;
-}
+//LRESULT CManagerPunch::wmClientReceived(WPARAM wParam, LPARAM lParam)
+//{
+//	if (!m_pEngrave)
+//		return (LRESULT)0;
+//
+//	int nAcceptId = (int)wParam;
+//	SOCKET_DATA sSockData;
+//	SOCKET_DATA *pSocketData = (SOCKET_DATA*)lParam;
+//	SOCKET_DATA rSockData = *pSocketData;
+//	int nCmdCode = rSockData.nCmdCode;
+//	int nMsgId = rSockData.nMsgID;
+//
+//	switch (nCmdCode)
+//	{
+//	case _GetSig:
+//		break;
+//	case _GetData:
+//		break;
+//	case _SetSig:
+//		if (m_pEngrave && m_pEngrave->IsConnected())
+//			m_pEngrave->GetSysSignal(rSockData);
+//
+//		pView->m_bSetSig = TRUE;
+//		break;
+//	case _SetData:
+//		if (m_pEngrave && m_pEngrave->IsConnected())
+//			m_pEngrave->GetSysData(rSockData);
+//
+//		pView->m_bSetData = TRUE;
+//		break;
+//	default:
+//		break;
+//	}
+//
+//
+//	return (LRESULT)1;
+//}
 
 LRESULT CManagerPunch::wmClientReceivedSr(WPARAM wParam, LPARAM lParam)
 {

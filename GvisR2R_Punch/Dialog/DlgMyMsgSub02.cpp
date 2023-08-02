@@ -147,8 +147,8 @@ LRESULT CDlgMyMsgSub02::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 	{
 	case IDC_BTN_00: // Ok...
 #ifdef USE_ENGRAVE
-		if (pView && pView->m_mgrPunch->m_pEngrave)
-			pView->m_mgrPunch->m_pEngrave->SetMyMsgOk();	//_SigInx::_MyMsgYes
+		if (pView && pView->m_pEngrave)
+			pView->m_pEngrave->SetMyMsgOk();	//_SigInx::_MyMsgYes
 #endif
 		break;
 	}

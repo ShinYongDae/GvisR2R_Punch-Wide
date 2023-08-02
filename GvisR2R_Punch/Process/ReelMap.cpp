@@ -275,13 +275,42 @@ void CReelMap::LoadConfig()
 
 BOOL CReelMap::LoadDefectTableDB()
 {
+	BOOL bRtn = FALSE;
 	if (pView && pView->m_mgrPunch->m_pDts)
 	{
 		COLORREF rgbDef[MAX_PATH];
 		int nDefCode[MAX_PATH], nMaxR, nMaxC;
 		CString sEngN[MAX_PATH], sKorN[MAX_PATH];
 
-		return pView->m_mgrPunch->m_pDts->LoadDefectTable(nDefCode, rgbDef, sKorN, sEngN, &nMaxR, &nMaxC);
+		bRtn = pView->m_mgrPunch->m_pDts->LoadDefectTable(nDefCode, rgbDef, sKorN, sEngN, &nMaxR, &nMaxC);
+		if (bRtn)
+		{			
+			TCHAR szData[200];
+			TCHAR sep[] = { _T(",;\r\n\t") };
+			CString sIdx, sVal;
+			int k;
+
+			for (k = 1; k < MAX_DEF; k++)
+			{
+				sIdx.Format(_T("%d"), k);
+				sVal = _tcstok(szData, sep);
+				m_sEngDef[nDefCode[k]].Format(_T("%s"), sEngN[nDefCode[k]]);
+				sVal = _tcstok(NULL, sep);
+				m_sKorDef[nDefCode[k]].Format(_T("%s"), sKorN[nDefCode[k]]);
+				sVal = _tcstok(NULL, sep);
+				//m_cBigDef[k] = sVal.GetAt(0);
+				//sVal = _tcstok(NULL, sep);
+				//m_cSmallDef[k] = sVal.GetAt(0);
+				//sVal = _tcstok(NULL, sep);
+				m_rgbDef[nDefCode[k]] = (COLORREF)rgbDef[nDefCode[k]];
+				//sVal = _tcstok(NULL, sep);
+				//m_nOdr[k] = _tstoi(sVal);
+			}
+
+			return TRUE;
+		}
+
+		return bRtn;
 	}
 
 	return FALSE;

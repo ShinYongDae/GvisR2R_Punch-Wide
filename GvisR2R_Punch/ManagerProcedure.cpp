@@ -41,7 +41,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 
 	m_nRtnMyMsgBoxIdx = -1;
 	m_bDispMyMsgBox = FALSE;
-	//m_bProbDn[0] = m_bProbDn[1] = FALSE;
 
 	m_nSelRmap = RMAP_UP;
 	m_nSelRmapInner = RMAP_INNER_UP;
@@ -78,8 +77,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_nStepAuto = 0;
 	m_nPrevStepAuto = 0;
 	m_nPrevMkStAuto = 0;
-	//m_nStepMk[0] = 0;
-	//m_nStepMk[1] = 0;
 	m_sTick = _T("");
 	m_sDispTime = _T("");
 
@@ -95,14 +92,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bTHREAD_DISP_DEF_INNER = FALSE;
 	m_nStepTHREAD_DISP_DEF_INNER = 0;
 	m_bTHREAD_SHIFT2MK = FALSE;
-
-	//// DoMark0(), DoMark1()
-	//m_bThread[0] = FALSE;
-	//m_dwThreadTick[0] = 0;
-
-	//// ChkCollision
-	//m_bThread[1] = FALSE;
-	//m_dwThreadTick[1] = 0;
 
 	// DispDefImg
 	m_bThread[0] = FALSE;
@@ -130,25 +119,7 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bInitAutoLoadMstInfo = FALSE;
 
 	m_bSerialDecrese = FALSE;
-
-	//m_bTHREAD_MK[0] = FALSE;
-	//m_bTHREAD_MK[1] = FALSE;
-	//m_bTHREAD_MK[2] = FALSE;
-	//m_bTHREAD_MK[3] = FALSE;
-
-	//m_nMkPcs[0] = 0;
-	//m_nMkPcs[1] = 0;
-	//m_nMkPcs[2] = 0;
-	//m_nMkPcs[3] = 0;
-
 	m_nErrCnt = 0;
-
-	//m_bAuto = FALSE;
-	//m_bManual = FALSE;
-	//m_bOneCycle = FALSE;
-
-	//for (int nAxis = 0; nAxis < MAX_AXIS; nAxis++)
-	//	pView->m_dEnc[nAxis] = 0.0;
 
 	m_bNewModel = FALSE;
 	m_dTotVel = 0.0; m_dPartVel = 0.0;
@@ -160,8 +131,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_lFuncId = 0;
 
 	m_bCont = FALSE;
-	//pView->m_mgrPunch->m_bCam = FALSE;
-	//m_bReview = FALSE;
 
 	m_bChkBufIdx[0] = TRUE;
 	m_nChkBufIdx[0] = 0;
@@ -177,12 +146,8 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bBufHomeDone = FALSE;
 	m_bReadyDone = FALSE;
 
-	//ResetPriority();
 	m_Flag = 0L;
 	m_AoiLdRun = 0L;
-
-	//m_bCollision[0] = FALSE;
-	//m_bCollision[1] = FALSE;
 
 	m_bDoneDispMkInfo[0][0] = FALSE; // Cam0, Up
 	m_bDoneDispMkInfo[0][1] = FALSE; // Cam0, Dn
@@ -231,13 +196,6 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bFailAlign[1][2] = FALSE; // [nCam][nPos] 
 	m_bFailAlign[1][3] = FALSE; // [nCam][nPos] 
 
-	//pView->m_mgrPunch->m_bDoMk[0] = TRUE;
-	//pView->m_mgrPunch->m_bDoMk[1] = TRUE;
-	//pView->m_mgrPunch->m_bDoneMk[0] = FALSE;
-	//pView->m_mgrPunch->m_bDoneMk[1] = FALSE;
-	//pView->m_mgrPunch->m_bReMark[0] = FALSE;
-	//pView->m_mgrPunch->m_bReMark[1] = FALSE;
-
 	m_nMonAlmF = 0;
 	m_nClrAlmF = 0;
 
@@ -272,22 +230,12 @@ CManagerProcedure::CManagerProcedure(CWnd* pParent /*=NULL*/)
 	m_bAoiFdWriteF[0] = FALSE;
 	m_bAoiFdWriteF[1] = FALSE;
 
-	//for (int a = 0; a < 2; a++)
-	//{
-	//	for (int b = 0; b < 4; b++)
-	//	{
-	//		pView->m_mgrPunch->m_nMkStrip[a][b] = 0;
-	//		m_bRejectDone[a][b] = FALSE;
-	//	}
-	//}
-
 	m_bReMk = FALSE;
 	m_bWaitPcr[0] = FALSE;
 	m_bWaitPcr[1] = FALSE;
 
 	m_bShowMyMsg = FALSE;
 	m_bContDiffLot = FALSE;
-	//m_nStepElecChk = 0;
 
 	for (int nAns = 0; nAns < 10; nAns++)
 		m_bAnswer[nAns] = FALSE;
@@ -319,7 +267,6 @@ CManagerProcedure::~CManagerProcedure()
 {
 	m_bTIM_CHK_DONE_READY = FALSE;
 	Sleep(100);
-
 	KillThread();
 }
 
@@ -702,16 +649,6 @@ BOOL CManagerProcedure::ChkBufDn(int* pSerial, int &nTot)
 		if (!cFile.IsDirectory())
 		{
 			sFileName = cFile.GetFileName();
-			//nPos = sFileName.ReverseFind('.');
-			//if (nPos > 0)
-			//	sSerial = sFileName.Left(nPos);
-
-			//nSerial = _tstoi(sSerial);
-			//if (nSerial > 0)
-			//{
-			//	pSerial[nTot] = nSerial;
-			//	nTot++;
-			//}
 
 			if (!SortingInDn(pDoc->WorkingInfo.System.sPathVrsBufDn + sFileName, nTot))
 				return FALSE;
@@ -757,7 +694,6 @@ BOOL CManagerProcedure::SortingInDn(CString sPath, int nIndex)
 	if (_stat(filename, &buf) != 0)
 	{
 		sMsg.Format(_T("일시정지 - Failed getting information."));
-		//MsgBox(sMsg);
 		pView->ClrDispMsg();
 		AfxMessageBox(sMsg);
 		return FALSE;
@@ -1019,52 +955,6 @@ BOOL CManagerProcedure::ChkShareDn(int &nSerial)
 	return FALSE;
 }
 
-//void CManagerProcedure::ResetPriority()
-//{
-//	m_bPriority[0] = FALSE;
-//	m_bPriority[1] = FALSE;
-//	m_bPriority[2] = FALSE;
-//	m_bPriority[3] = FALSE;
-//}
-//
-//void CManagerProcedure::SetPriority()
-//{
-//	int nDir[2];
-//	nDir[0] = (m_dTarget[AXIS_X0] - pView->m_dEnc[AXIS_X0]) >= 0.0 ? 1 : -1;
-//	nDir[1] = (m_dTarget[AXIS_X1] - pView->m_dEnc[AXIS_X1]) >= 0.0 ? 1 : -1;
-//
-//	// Cam0 : m_bPriority[0], m_bPriority[3]
-//	// Cam1 : m_bPriority[1], m_bPriority[2]
-//	if (nDir[1] > 0) // Cam1 ->
-//	{
-//		m_bPriority[0] = FALSE;
-//		m_bPriority[1] = TRUE;
-//		m_bPriority[2] = FALSE;
-//		m_bPriority[3] = FALSE;
-//	}
-//	else if (nDir[0] < 0) // Cam0 <-
-//	{
-//		m_bPriority[0] = TRUE;
-//		m_bPriority[1] = FALSE;
-//		m_bPriority[2] = FALSE;
-//		m_bPriority[3] = FALSE;
-//	}
-//	else if (nDir[1] < 0) // Cam1 <-
-//	{
-//		m_bPriority[0] = FALSE;
-//		m_bPriority[1] = FALSE;
-//		m_bPriority[2] = TRUE;
-//		m_bPriority[3] = FALSE;
-//	}
-//	else // Cam0 ->
-//	{
-//		m_bPriority[0] = FALSE;
-//		m_bPriority[1] = FALSE;
-//		m_bPriority[2] = FALSE;
-//		m_bPriority[3] = TRUE;
-//	}
-//}
-
 void CManagerProcedure::DelOverLotEndSerialUp(int nSerial)
 {
 	CString sSrc;
@@ -1123,14 +1013,6 @@ void CManagerProcedure::DelOverLotEndSerialDn(int nSerial)
 
 void CManagerProcedure::InitThread()
 {
-	//// DoMark0(), DoMark1()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-	//if (!m_bThread[0])
-	//	m_Thread[0].Start(GetSafeHwnd(), this, ThreadProc0);
-
-	//// ChkCollision
-	//if (!m_bThread[1])
-	//	m_Thread[1].Start(GetSafeHwnd(), this, ThreadProc1);
-
 	// DispDefImg
 	if (!m_bThread[0])
 		m_Thread[0].Start(GetSafeHwnd(), this, ThreadProc0);
@@ -1150,26 +1032,6 @@ void CManagerProcedure::InitThread()
 
 void CManagerProcedure::KillThread()
 {
-	//if (m_bThread[0])	// DoMark0(), DoMark1()
-	//{
-	//	m_Thread[0].Stop();
-	//	Sleep(100);
-	//	while (m_bThread[0])
-	//	{
-	//		Sleep(20);
-	//	}
-	//}
-
-	//if (m_bThread[1])	// ChkCollision
-	//{
-	//	m_Thread[1].Stop();
-	//	Sleep(100);
-	//	while (m_bThread[1])
-	//	{
-	//		Sleep(20);
-	//	}
-	//}
-
 	if (m_bThread[0])	// DispDefImg
 	{
 		m_Thread[0].Stop();
@@ -1210,167 +1072,6 @@ void CManagerProcedure::KillThread()
 		}
 	}
 }
-
-//UINT CManagerProcedure::ThreadProc0(LPVOID lpContext)	// DoMark0(), DoMark1()
-//{
-//	// Turn the passed in 'this' pointer back into a CProgressMgr instance
-//	CManagerProcedure* pThread = reinterpret_cast< CManagerProcedure* >(lpContext);
-//
-//	BOOL bLock = FALSE;
-//	DWORD dwTick = GetTickCount();
-//	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
-//
-//	pThread->m_bThread[0] = TRUE;
-//	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[0].GetShutdownEvent(), dwShutdownEventCheckPeriod))
-//	{
-//		pThread->m_dwThreadTick[0] = GetTickCount() - dwTick;
-//		dwTick = GetTickCount();
-//
-//		if (!bLock)
-//		{
-//			bLock = TRUE;
-//#ifndef TEST_MODE
-//			//if (m_Master[0].MasterInfo.nActionCode == 1 || m_Master[0].MasterInfo.nActionCode == 3)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
-//			if (pView->GetCamMstActionCode() == 1 || pView->GetCamMstActionCode() == 3)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
-//			{
-//				if (pThread->m_bTHREAD_MK[0])
-//				{
-//					if (pThread->m_nBufUpSerial[0] > 0)
-//					{
-//						if (pDoc->GetTestMode() == MODE_OUTER)
-//							pThread->DoMark0Its();
-//						else
-//							pThread->DoMark0();
-//					}
-//					else
-//					{
-//						pThread->pView->m_mgrPunch->m_bDoneMk[0] = TRUE;
-//						pThread->m_bTHREAD_MK[0] = FALSE;
-//					}
-//				}
-//				if (pThread->m_bTHREAD_MK[1])
-//				{
-//					if (pThread->m_nBufUpSerial[1] > 0)
-//					{
-//						if (pDoc->GetTestMode() == MODE_OUTER)
-//							pThread->DoMark1Its();
-//						else
-//							pThread->DoMark1();
-//					}
-//					else
-//					{
-//						pThread->pView->m_mgrPunch->m_bDoneMk[1] = TRUE;
-//						pThread->m_bTHREAD_MK[1] = FALSE;
-//					}
-//				}
-//			}
-//			else
-//			{
-//				if (pThread->m_bTHREAD_MK[1])
-//				{
-//					if (pThread->m_nBufUpSerial[1] > 0)
-//						pThread->DoMark1();
-//					else
-//					{
-//						pThread->pView->m_mgrPunch->m_bDoneMk[1] = TRUE;
-//						pThread->m_bTHREAD_MK[1] = FALSE;
-//					}
-//				}
-//				if (pThread->m_bTHREAD_MK[0])
-//				{
-//					if (pThread->m_nBufUpSerial[0] > 0)
-//						pThread->DoMark0();
-//					else
-//					{
-//						pThread->pView->m_mgrPunch->m_bDoneMk[0] = TRUE;
-//						pThread->m_bTHREAD_MK[0] = FALSE;
-//					}
-//				}
-//			}
-//#else
-//			pThread->DoMark1();
-//			pThread->DoMark0();
-//			Sleep(100);
-//#endif
-//			if (pThread->m_bTHREAD_MK[3])
-//				pThread->DoReject1();
-//
-//			if (pThread->m_bTHREAD_MK[2])
-//				pThread->DoReject0();
-//
-//			if (!pThread->m_bTHREAD_MK[0] && !pThread->m_bTHREAD_MK[1] &&
-//				!pThread->m_bTHREAD_MK[2] && !pThread->m_bTHREAD_MK[3])
-//				Sleep(50);
-//
-//			bLock = FALSE;
-//		}
-//		Sleep(10);
-//	}
-//	pThread->m_bThread[0] = FALSE;
-//
-//	return 0;
-//}
-
-//UINT CManagerProcedure::ThreadProc1(LPVOID lpContext)	// ChkCollision()
-//{
-//	// Turn the passed in 'this' pointer back into a CProgressMgr instance
-//	CManagerProcedure* pThread = reinterpret_cast< CManagerProcedure* >(lpContext);
-//
-//	BOOL bLock = FALSE, bEStop = FALSE, bCollision = FALSE;
-//	DWORD dwTick = GetTickCount();
-//	DWORD dwShutdownEventCheckPeriod = 0; // thread shutdown event check period
-//
-//	pThread->m_bThread[1] = TRUE;
-//	while (WAIT_OBJECT_0 != WaitForSingleObject(pThread->m_Thread[1].GetShutdownEvent(), dwShutdownEventCheckPeriod))
-//	{
-//		pThread->m_dwThreadTick[1] = GetTickCount() - dwTick;
-//		dwTick = GetTickCount();
-//
-//		if (!bLock)
-//		{
-//			bLock = TRUE;
-//
-//			//pThread->ChkCollision();
-//			pThread->GetEnc();
-//
-//			if (!pThread->m_bTHREAD_MK[0] && !pThread->m_bTHREAD_MK[1] &&
-//			!pThread->m_bTHREAD_MK[2] && !pThread->m_bTHREAD_MK[3])
-//			{
-//				if (pThread->ChkCollision() && !bEStop)
-//				{
-//					if (pThread->IsRunAxisX())
-//					{
-//						bEStop = TRUE;
-//						pThread->EStop();
-//					}
-//				}
-//				else if (!pThread->ChkCollision() && bEStop)
-//				{
-//					bEStop = FALSE;
-//				}
-//			}
-//			else
-//			{
-//				if (pThread->m_bCollision[0] && pThread->m_bCollision[1])
-//				{
-//					if (!bCollision)
-//					{
-//						bCollision = TRUE;
-//						pThread->SetPriority();
-//					}
-//				}
-//				else
-//				bCollision = FALSE;
-//			}
-//
-//			bLock = FALSE;
-//		}
-//		Sleep(10);
-//	}
-//	pThread->m_bThread[1] = FALSE;
-//
-//	return 0;
-//}
 
 UINT CManagerProcedure::ThreadProc0(LPVOID lpContext)	// DispDefImg()
 {
@@ -2086,116 +1787,6 @@ BOOL CManagerProcedure::CopyDefImg(int nSerial, CString sNewLot)
 	return pView->CopyDefImg(nSerial, sNewLot);
 }
 
-//BOOL CManagerProcedure::ChkCollision()
-//{
-//	double dMg = _tstof(pDoc->WorkingInfo.Motion.sCollisionLength) - _tstof(pDoc->WorkingInfo.Motion.sCollisionMargin);
-//
-//	if (m_bTHREAD_MK[0] || m_bTHREAD_MK[1]
-//		|| m_bTHREAD_MK[2] || m_bTHREAD_MK[3])
-//	{
-//		if (pDoc->WorkingInfo.System.bNoMk || pView->m_mgrPunch->m_bCam)
-//			dMg += (_tstof(pDoc->WorkingInfo.Vision[0].sMkOffsetX) - _tstof(pDoc->WorkingInfo.Vision[1].sMkOffsetX));
-//	}
-//
-//	if ((pView->m_dEnc[AXIS_X0] - dMg) > pView->m_dEnc[AXIS_X1])
-//		return TRUE;
-//
-//	if (pView->m_dEnc[AXIS_X0] < -1.0 || pView->m_dEnc[AXIS_X1] < -1.0)
-//		return TRUE;
-//
-//	return FALSE;
-//}
-
-//BOOL CManagerProcedure::ChkCollision(int nAxisId, double dTgtPosX)
-//{
-//	double dMg = _tstof(pDoc->WorkingInfo.Motion.sCollisionLength) - _tstof(pDoc->WorkingInfo.Motion.sCollisionMargin);
-//
-//
-//	if (m_bTHREAD_MK[0] || m_bTHREAD_MK[1]
-//		|| m_bTHREAD_MK[2] || m_bTHREAD_MK[3])
-//	{
-//		if (pDoc->WorkingInfo.System.bNoMk || pView->m_mgrPunch->m_bCam)
-//			dMg += (_tstof(pDoc->WorkingInfo.Vision[0].sMkOffsetX) - _tstof(pDoc->WorkingInfo.Vision[1].sMkOffsetX));
-//	}
-//
-//	if (nAxisId == AXIS_X0)
-//	{
-//		if (dTgtPosX > pView->m_dEnc[AXIS_X1] + dMg)
-//			return TRUE;
-//		if (pView->m_mgrPunch->m_bDoMk[1] && !pView->m_mgrPunch->m_bDoneMk[1])
-//		{
-//			if (!pView->m_mgrPunch->m_bDoneMk[0] && m_bTHREAD_MK[0])
-//			{
-//				if (m_dTarget[AXIS_X1] > 0.0)
-//				{
-//					if (dTgtPosX > m_dTarget[AXIS_X1] + dMg && m_dTarget[AXIS_X1] > 0.0)
-//						return TRUE;
-//					else if (m_dNextTarget[AXIS_X1] > 0.0)
-//					{
-//						if (dTgtPosX > m_dNextTarget[AXIS_X1] + dMg)
-//							return TRUE;
-//					}
-//				}
-//			}
-//		}
-//	}
-//	else if (nAxisId == AXIS_X1)
-//	{
-//		if (dTgtPosX < pView->m_dEnc[AXIS_X0] - dMg)
-//			return TRUE;
-//	}
-//
-//	return FALSE;
-//}
-//
-//BOOL CManagerProcedure::ChkCollision(int nAxisId, double dTgtPosX, double dTgtNextPosX)
-//{
-//	double dMg = _tstof(pDoc->WorkingInfo.Motion.sCollisionLength) - _tstof(pDoc->WorkingInfo.Motion.sCollisionMargin);
-//
-//	if (m_bTHREAD_MK[0] || m_bTHREAD_MK[1]
-//		|| m_bTHREAD_MK[2] || m_bTHREAD_MK[3])
-//	{
-//		if (pDoc->WorkingInfo.System.bNoMk || pView->m_mgrPunch->m_bCam)
-//			dMg += (_tstof(pDoc->WorkingInfo.Vision[0].sMkOffsetX) - _tstof(pDoc->WorkingInfo.Vision[1].sMkOffsetX));
-//	}
-//
-//	if (nAxisId == AXIS_X0)
-//	{
-//		if (dTgtPosX > pView->m_dEnc[AXIS_X1] + dMg)
-//			return TRUE;
-//		if (pView->m_mgrPunch->m_bDoMk[1] && !pView->m_mgrPunch->m_bDoneMk[1])
-//		{
-//			if (!pView->m_mgrPunch->m_bDoneMk[0] && m_bTHREAD_MK[0])
-//			{
-//				if (dTgtPosX > m_dTarget[AXIS_X1] + dMg && m_dTarget[AXIS_X1] > 0.0)
-//					return TRUE;
-//				else if (dTgtPosX > m_dNextTarget[AXIS_X1] + dMg && m_dNextTarget[AXIS_X1] > 0.0)
-//					return TRUE;
-//			}
-//		}
-//	}
-//	else if (nAxisId == AXIS_X1)
-//	{
-//		if (dTgtPosX < pView->m_dEnc[AXIS_X0] - dMg)
-//			return TRUE;
-//		if (pView->m_mgrPunch->m_bDoMk[0])
-//		{
-//			if (!pView->m_mgrPunch->m_bDoneMk[1] && m_bTHREAD_MK[1])
-//			{
-//				if (!pView->IsMotionDone(MS_X0))
-//				{
-//					if (dTgtPosX < m_dTarget[AXIS_X0] - dMg && m_dTarget[AXIS_X0] > 0.0)
-//						return TRUE;
-//					else if (dTgtPosX < m_dNextTarget[AXIS_X0] - dMg && m_dNextTarget[AXIS_X0] > 0.0)
-//						return TRUE;
-//				}
-//			}
-//		}
-//	}
-//
-//	return FALSE;
-//}
-
 void CManagerProcedure::DoMark0Its()
 {
 	pView->m_mgrPunch->DoMark0Its();
@@ -2287,32 +1878,14 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	m_bAoiLdRunF = FALSE;
 	m_bNewModel = FALSE;
 	m_nLotEndSerial = 0;
-	//pView->m_mgrPunch->m_bCam = FALSE;
-	//m_bReview = FALSE;
 
 	m_bChkBufIdx[0] = TRUE;
 	m_bChkBufIdx[1] = TRUE;
 
 	m_nErrCnt = 0;
-
-	//m_nStepMk[0] = 0;
-	//m_nStepMk[1] = 0;
-	//m_nStepMk[2] = 0;
-	//m_nStepMk[3] = 0;
-	//m_bTHREAD_MK[0] = FALSE;
-	//m_bTHREAD_MK[1] = FALSE;
-	//m_bTHREAD_MK[2] = FALSE;
-	//m_bTHREAD_MK[3] = FALSE;
-	//m_nMkPcs[0] = 0;
-	//m_nMkPcs[1] = 0;
-	//m_nMkPcs[2] = 0;
-	//m_nMkPcs[3] = 0;
-
 	m_bMkTmpStop = FALSE;
-
 	m_bWaitPcr[0] = FALSE;
 	m_bWaitPcr[1] = FALSE;
-
 
 	m_nShareUpS = 0;
 	m_nShareUpSerial[0] = 0;
@@ -2359,22 +1932,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	m_bFailAlign[1][2] = FALSE;	// [nCam][nPos]
 	m_bFailAlign[1][3] = FALSE;	// [nCam][nPos]
 
-	//pView->m_mgrPunch->m_bDoMk[0] = TRUE;			// [nCam]
-	//pView->m_mgrPunch->m_bDoMk[1] = TRUE;			// [nCam]
-	//pView->m_mgrPunch->m_bDoneMk[0] = FALSE;		// [nCam]
-	//pView->m_mgrPunch->m_bDoneMk[1] = FALSE;		// [nCam]
-	//pView->m_mgrPunch->m_bReMark[0] = FALSE;		// [nCam]
-	//pView->m_mgrPunch->m_bReMark[1] = FALSE;		// [nCam]
-
-	//m_nTotMk[0] = 0;
-	//m_nCurMk[0] = 0;
-	//m_nTotMk[1] = 0;
-	//m_nCurMk[1] = 0;
-	//m_nPrevTotMk[0] = 0;
-	//m_nPrevCurMk[0] = 0;
-	//m_nPrevTotMk[1] = 0;
-	//m_nPrevCurMk[1] = 0;
-
 	m_bMkSt = FALSE;
 	::WritePrivateProfileString(_T("Last Job"), _T("MkSt"), _T("0"), PATH_WORKING_INFO);
 	m_bMkStSw = FALSE;
@@ -2409,15 +1966,6 @@ void CManagerProcedure::InitAuto(BOOL bInit)
 	m_bTHREAD_DISP_DEF = FALSE;				// CopyDefImg Stop
 	m_nStepTHREAD_DISP_DEF_INNER = 0;
 	m_bTHREAD_DISP_DEF_INNER = FALSE;		// DispDefImg Stop
-
-	//for (a = 0; a < 2; a++)
-	//{
-	//	for (b = 0; b < 4; b++)
-	//	{
-	//		pView->m_mgrPunch->m_nMkStrip[a][b] = 0;
-	//		m_bRejectDone[a][b] = FALSE;
-	//	}
-	//}
 
 	InitVal();
 
@@ -2582,53 +2130,6 @@ int CManagerProcedure::GetVsDnBufLastSerial()
 
 	return 4;
 }
-
-//BOOL CManagerProcedure::IsReview()
-//{
-//	return (pDoc->WorkingInfo.LastJob.bReview);
-//}
-//
-//BOOL CManagerProcedure::IsReview0()
-//{
-//	return (pDoc->WorkingInfo.LastJob.bReview);
-//}
-//
-//BOOL CManagerProcedure::IsReview1()
-//{
-//	return (pDoc->WorkingInfo.LastJob.bReview);
-//}
-//
-//BOOL CManagerProcedure::IsVs()
-//{
-//	if (!m_bChkLastProcVs)
-//	{
-//		BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-//		if (bDualTest)
-//		{
-//			if (GetAoiDnVsStatus())
-//				return TRUE;
-//			else if (GetAoiUpVsStatus())
-//				return TRUE;
-//		}
-//		else
-//		{
-//			if (GetAoiUpVsStatus())
-//				return TRUE;
-//		}
-//	}
-//
-//	return FALSE;
-//}
-//
-//BOOL CManagerProcedure::IsVsUp()
-//{
-//	return GetAoiUpVsStatus();
-//}
-//
-//BOOL CManagerProcedure::IsVsDn()
-//{
-//	return GetAoiDnVsStatus();
-//}
 
 void CManagerProcedure::SetDummyUp()
 {
@@ -2981,24 +2482,6 @@ BOOL CManagerProcedure::IsSetLotEnd()
 	return FALSE;
 }
 
-//BOOL CManagerProcedure::IsNoMk()
-//{
-//	BOOL bNoMk = (pDoc->WorkingInfo.System.bNoMk | pView->m_mgrPunch->m_bCam); // pDoc->WorkingInfo.LastJob.bVerify
-//	return bNoMk;
-//}
-//
-//BOOL CManagerProcedure::IsNoMk0()
-//{
-//	BOOL bNoMk = (pDoc->WorkingInfo.System.bNoMk | pView->m_mgrPunch->m_bCam); // pDoc->WorkingInfo.LastJob.bVerify
-//	return bNoMk;
-//}
-//
-//BOOL CManagerProcedure::IsNoMk1()
-//{
-//	BOOL bNoMk = (pDoc->WorkingInfo.System.bNoMk | pView->m_mgrPunch->m_bCam); // pDoc->WorkingInfo.LastJob.bVerify
-//	return bNoMk;
-//}
-
 void CManagerProcedure::SetListBuf()	// pDoc->m_ListBuf에 버퍼 폴더의 시리얼번호를 가지고 재갱신함.
 {
 	pDoc->m_ListBuf[0].Clear();
@@ -3020,221 +2503,6 @@ int CManagerProcedure::GetTotDefPcs(int nSerial)
 {
 	return pView->GetTotDefPcs(nSerial);
 }
-
-//BOOL CManagerProcedure::SetMkIts(BOOL bRun)	// Marking Start
-//{
-//	CfPoint ptPnt;
-//	int nSerial, nTot, a, b;
-//
-//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-//
-//	for (a = 0; a < 2; a++)
-//	{
-//		for (b = 0; b < MAX_STRIP_NUM; b++)
-//		{
-//			pView->m_mgrPunch->m_nMkStrip[a][b] = 0;			// [nCam][nStrip]:[2][4] - [좌/우][] : 스트립에 펀칭한 피스 수 count
-//			m_bRejectDone[a][b] = FALSE;	// [nCam][nStrip]:[2][4] - [좌/우][] : 스트립에 펀칭한 피스 수 count가 스트립 폐기 설정수 완료 여부 
-//		}
-//	}
-//
-//	if (bRun)
-//	{
-//		if (pView->m_mgrPunch->m_bDoMk[0])
-//		{
-//			if (!m_bTHREAD_MK[0])
-//			{
-//				m_nStepMk[0] = 0;
-//				m_nMkPcs[0] = 0;
-//				pView->m_mgrPunch->m_bDoneMk[0] = FALSE;
-//				m_bTHREAD_MK[0] = TRUE;
-//
-//				nSerial = m_nBufUpSerial[0]; // Cam0
-//
-//				m_nTotMk[0] = nTot = pView->GetTotDefPcsIts(nSerial);
-//				m_nCurMk[0] = 0;
-//				if (nTot > 0)
-//				{
-//					ptPnt = pView->GetMkPntIts(nSerial, 0);
-//					//ptPnt = pView->GetMkPntIts(nSerial, 0);
-//					m_dTarget[AXIS_X0] = ptPnt.x;
-//					m_dTarget[AXIS_Y0] = ptPnt.y;
-//					if (nTot > 1)
-//					{
-//						ptPnt = pView->GetMkPntIts(nSerial, 1);
-//						m_dNextTarget[AXIS_X0] = ptPnt.x;
-//						m_dNextTarget[AXIS_Y0] = ptPnt.y;
-//					}
-//					else
-//					{
-//						m_dNextTarget[AXIS_X0] = -1.0;
-//						m_dNextTarget[AXIS_Y0] = -1.0;
-//					}
-//				}
-//				else
-//				{
-//					m_dTarget[AXIS_X0] = -1.0;
-//					m_dTarget[AXIS_Y0] = -1.0;
-//					m_dNextTarget[AXIS_X0] = -1.0;
-//					m_dNextTarget[AXIS_Y0] = -1.0;
-//				}
-//			}
-//		}
-//
-//		if (pView->m_mgrPunch->m_bDoMk[1])
-//		{
-//			if (!m_bTHREAD_MK[1])
-//			{
-//				m_nStepMk[1] = 0;
-//				m_nMkPcs[1] = 0;
-//				pView->m_mgrPunch->m_bDoneMk[1] = FALSE;
-//				m_bTHREAD_MK[1] = TRUE;
-//
-//				nSerial = m_nBufUpSerial[1]; // Cam1
-//
-//				m_nTotMk[1] = nTot = pView->GetTotDefPcsIts(nSerial);
-//				m_nCurMk[1] = 0;
-//				if (nTot > 0)
-//				{
-//					ptPnt = pView->GetMkPntIts(nSerial, 0);
-//					m_dTarget[AXIS_X1] = ptPnt.x;
-//					m_dTarget[AXIS_Y1] = ptPnt.y;
-//					if (nTot > 1)
-//					{
-//						ptPnt = pView->GetMkPntIts(nSerial, 1);
-//						m_dNextTarget[AXIS_X1] = ptPnt.x;
-//						m_dNextTarget[AXIS_Y1] = ptPnt.y;
-//					}
-//					else
-//					{
-//						m_dNextTarget[AXIS_X1] = -1.0;
-//						m_dNextTarget[AXIS_Y1] = -1.0;
-//					}
-//				}
-//				else
-//				{
-//					m_dTarget[AXIS_X1] = -1.0;
-//					m_dTarget[AXIS_Y1] = -1.0;
-//					m_dNextTarget[AXIS_X1] = -1.0;
-//					m_dNextTarget[AXIS_Y1] = -1.0;
-//				}
-//			}
-//		}
-//	}
-//	else
-//	{
-//		m_bTHREAD_MK[0] = FALSE;
-//		m_bTHREAD_MK[1] = FALSE;
-//	}
-//	return TRUE;
-//}
-
-//BOOL CManagerProcedure::SetMk(BOOL bRun)	// Marking Start
-//{
-//	CfPoint ptPnt;
-//	int nSerial, nTot, a, b;
-//
-//	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-//
-//	for (a = 0; a < 2; a++)
-//	{
-//		for (b = 0; b < MAX_STRIP_NUM; b++)
-//		{
-//			pView->m_mgrPunch->m_nMkStrip[a][b] = 0;			// [nCam][nStrip]:[2][4] - [좌/우][] : 스트립에 펀칭한 피스 수 count
-//			m_bRejectDone[a][b] = FALSE;	// [nCam][nStrip]:[2][4] - [좌/우][] : 스트립에 펀칭한 피스 수 count가 스트립 폐기 설정수 완료 여부 
-//		}
-//	}
-//
-//	if (bRun)
-//	{
-//		if (pView->m_mgrPunch->m_bDoMk[0])
-//		{
-//			if (!m_bTHREAD_MK[0])
-//			{
-//				m_nStepMk[0] = 0;
-//				m_nMkPcs[0] = 0;
-//				pView->m_mgrPunch->m_bDoneMk[0] = FALSE;
-//				//pView->m_mgrPunch->m_bReMark[0] = FALSE;
-//				m_bTHREAD_MK[0] = TRUE;
-//
-//				nSerial = m_nBufUpSerial[0]; // Cam0
-//
-//				m_nTotMk[0] = nTot = GetTotDefPcs(nSerial);
-//				m_nCurMk[0] = 0;
-//				if (nTot > 0)
-//				{
-//					ptPnt = GetMkPnt(nSerial, 0);
-//					m_dTarget[AXIS_X0] = ptPnt.x;
-//					m_dTarget[AXIS_Y0] = ptPnt.y;
-//					if (nTot > 1)
-//					{
-//						ptPnt = GetMkPnt(nSerial, 1);
-//						m_dNextTarget[AXIS_X0] = ptPnt.x;
-//						m_dNextTarget[AXIS_Y0] = ptPnt.y;
-//					}
-//					else
-//					{
-//						m_dNextTarget[AXIS_X0] = -1.0;
-//						m_dNextTarget[AXIS_Y0] = -1.0;
-//					}
-//				}
-//				else
-//				{
-//					m_dTarget[AXIS_X0] = -1.0;
-//					m_dTarget[AXIS_Y0] = -1.0;
-//					m_dNextTarget[AXIS_X0] = -1.0;
-//					m_dNextTarget[AXIS_Y0] = -1.0;
-//				}
-//			}
-//		}
-//
-//		if (pView->m_mgrPunch->m_bDoMk[1])
-//		{
-//			if (!m_bTHREAD_MK[1])
-//			{
-//				m_nStepMk[1] = 0;
-//				m_nMkPcs[1] = 0;
-//				pView->m_mgrPunch->m_bDoneMk[1] = FALSE;
-//				//pView->m_mgrPunch->m_bReMark[1] = FALSE;
-//				m_bTHREAD_MK[1] = TRUE;
-//
-//				nSerial = m_nBufUpSerial[1]; // Cam1
-//
-//				m_nTotMk[1] = nTot = GetTotDefPcs(nSerial);
-//				m_nCurMk[1] = 0;
-//				if (nTot > 0)
-//				{
-//					ptPnt = GetMkPnt(nSerial, 0);
-//					m_dTarget[AXIS_X1] = ptPnt.x;
-//					m_dTarget[AXIS_Y1] = ptPnt.y;
-//					if (nTot > 1)
-//					{
-//						ptPnt = GetMkPnt(nSerial, 1);
-//						m_dNextTarget[AXIS_X1] = ptPnt.x;
-//						m_dNextTarget[AXIS_Y1] = ptPnt.y;
-//					}
-//					else
-//					{
-//						m_dNextTarget[AXIS_X1] = -1.0;
-//						m_dNextTarget[AXIS_Y1] = -1.0;
-//					}
-//				}
-//				else
-//				{
-//					m_dTarget[AXIS_X1] = -1.0;
-//					m_dTarget[AXIS_Y1] = -1.0;
-//					m_dNextTarget[AXIS_X1] = -1.0;
-//					m_dNextTarget[AXIS_Y1] = -1.0;
-//				}
-//			}
-//		}
-//	}
-//	else
-//	{
-//		m_bTHREAD_MK[0] = FALSE;
-//		m_bTHREAD_MK[1] = FALSE;
-//	}
-//	return TRUE;
-//}
 
 void CManagerProcedure::UpdateYield()
 {
@@ -3540,32 +2808,6 @@ void CManagerProcedure::SetReject()
 {
 	return pView->m_mgrPunch->SetReject();
 }
-//void CManagerProcedure::SetReject()
-//{
-//	CfPoint ptPnt;
-//
-//	if (pView->m_mgrPunch->m_bDoMk[0])
-//	{
-//		if (!m_bTHREAD_MK[2])
-//		{
-//			pView->m_mgrPunch->m_bDoneMk[0] = FALSE;
-//			m_nStepMk[2] = 0;
-//			m_nMkPcs[2] = 0;
-//			m_bTHREAD_MK[2] = TRUE;
-//		}
-//	}
-//
-//	if (pView->m_mgrPunch->m_bDoMk[1])
-//	{
-//		if (!m_bTHREAD_MK[3])
-//		{
-//			pView->m_mgrPunch->m_bDoneMk[1] = FALSE;
-//			m_nStepMk[3] = 0;
-//			m_nMkPcs[3] = 0;
-//			m_bTHREAD_MK[3] = TRUE;
-//		}
-//	}
-//}
 
 void CManagerProcedure::DoShift2Mk()
 {
@@ -3651,11 +2893,6 @@ void CManagerProcedure::InitInfo()
 {
 	pView->InitInfo();
 }
-
-//void CManagerProcedure::SetMkInfo(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-//{
-//	pDoc->SetMkInfo(nAoi);
-//}
 
 void CManagerProcedure::ModelChange(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn 
 {
@@ -3912,34 +3149,31 @@ void CManagerProcedure::DoAuto()
 void CManagerProcedure::DoAtuoGetMkStSignal()
 {
 #ifdef USE_MPE
-	//if (m_pMpe)
+	if (!m_bMkSt)
 	{
-		if (!m_bMkSt)
+		if (IsRun())
 		{
-			if (IsRun())
+			if (pDoc->m_pMpeSignal[1] & (0x01 << 0) || m_bMkStSw) // AlignTest		// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
 			{
-				if (pDoc->m_pMpeSignal[1] & (0x01 << 0) || m_bMkStSw) // AlignTest		// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
-				{
-					m_bMkStSw = FALSE;
-					pView->MpeWrite(_T("MB440110"), 0);			// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
+				m_bMkStSw = FALSE;
+				pView->MpeWrite(_T("MB440110"), 0);			// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
 
-					if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
-						pView->MpeWrite(_T("MB440101"), 0);		// 마킹부 Feeding완료
+				if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
+					pView->MpeWrite(_T("MB440101"), 0);		// 마킹부 Feeding완료
 
-					m_bMkSt = TRUE;
-					m_nMkStAuto = MK_ST;
-					::WritePrivateProfileString(_T("Last Job"), _T("MkSt"), _T("1"), PATH_WORKING_INFO);
+				m_bMkSt = TRUE;
+				m_nMkStAuto = MK_ST;
+				::WritePrivateProfileString(_T("Last Job"), _T("MkSt"), _T("1"), PATH_WORKING_INFO);
 
-					if (!pDoc->GetLastShotMk())
-						pView->SetLotSt();		// 새로운 로트의 시작시간을 설정함. // 전체속도의 처음 시작되는 시간 설정.
-				}
+				if (!pDoc->GetLastShotMk())
+					pView->SetLotSt();		// 새로운 로트의 시작시간을 설정함. // 전체속도의 처음 시작되는 시간 설정.
 			}
 		}
 	}
 #endif
 }
 
-void CManagerProcedure::DoAutoSetLastProcAtPlc()
+void CManagerProcedure::DoAutoSetLastProcAtPlc() 
 {
 	if (m_bLastProc)
 	{
@@ -4724,32 +3958,6 @@ void CManagerProcedure::DoAutoChkShareFolder()
 			{
 				m_bNewModel = TRUE;
 				pView->ChangeModel();
-				//InitInfo();
-				//pView->InitMstData();
-
-				////if (m_pEngrave)
-				////	m_pEngrave->SwMenu01UpdateWorking(TRUE);
-				//pView->SwMenu01UpdateWorking(TRUE);
-
-				//SetAlignPos();
-				//ModelChange(0); // 0 : AOI-Up , 1 : AOI-Dn
-
-				//if (m_pDlgMenu01)
-				//{
-				//	m_pDlgMenu01->InitGL();
-				//	m_bDrawGL = TRUE;
-				//	m_pDlgMenu01->RefreshRmap();
-				//	m_pDlgMenu01->InitCadImg();
-				//	m_pDlgMenu01->SetPnlNum();
-				//	m_pDlgMenu01->SetPnlDefNum();
-				//}
-
-				//if (m_pDlgMenu02)
-				//{
-				//	m_pDlgMenu02->ChgModelUp(); // PinImg, AlignImg를 Display함.
-				//	m_pDlgMenu02->InitCadImg();
-				//}
-
 			}
 			else
 			{

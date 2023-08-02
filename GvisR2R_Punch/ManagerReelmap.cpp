@@ -452,11 +452,6 @@ BOOL CManagerReelmap::InitReelmap()
 	if (m_pReelMap)
 	{
 		m_pReelMapDisp = m_pReelMap;
-
-		//if (bDualTest)
-		//	pView->m_pDlgMenu01->SelMap(ALL);
-		//else
-		//	pView->m_pDlgMenu01->SelMap(UP);
 	}
 	return TRUE;
 }
@@ -648,20 +643,6 @@ BOOL CManagerReelmap::LoadMstInfo()
 				// Reelmap 정보 Loading.....
 				InitReelmapInner(); // Delete & New
 				SetReelmapInner(ROT_NONE);
-
-				//if (m_pDlgMenu06)
-				//{
-				//	m_pDlgMenu06->InitGL();
-				//	m_pDlgMenu06->RefreshRmap();
-				//	m_pDlgMenu06->InitCadImg();
-				//	m_pDlgMenu06->SetPnlNum();
-				//	m_pDlgMenu06->SetPnlDefNum();
-
-				//	if (bDualTestInner)
-				//		m_pDlgMenu06->SelMap(ALL);
-				//	else
-				//		m_pDlgMenu06->SelMap(UP);
-				//}
 			}
 			else
 			{
@@ -670,42 +651,11 @@ BOOL CManagerReelmap::LoadMstInfo()
 			}
 		}
 	}
-
-//	if (m_pDlgMenu01)
-//	{
-//		m_pDlgMenu01->InitGL();
-//		m_bDrawGL = TRUE;
-//		m_pDlgMenu01->RefreshRmap();
-//		m_pDlgMenu01->InitCadImg();
-//		m_pDlgMenu01->SetPnlNum();
-//		m_pDlgMenu01->SetPnlDefNum();
-//	}
-//
-//	if (m_pDlgMenu02)
-//	{
-//		m_pDlgMenu02->ChgModelUp(); // PinImg, AlignImg를 Display함.
-//		m_pDlgMenu02->InitCadImg();
-//	}
-//
-//	if (m_pDlgMenu01)
-//		m_pDlgMenu01->RedrawWindow();
 #ifndef TEST_MODE
 	pView->DispMsg(_T("릴맵을 초기화합니다."), _T("알림"), RGB_GREEN, DELAY_TIME_MSG);
 	OpenReelmap();
 #endif
 	SetPathAtBuf(); // Reelmap path를 설정함.
-
-	//LoadPcrFromBuf();
-
-	//int nSrl = pDoc->GetLastShotMk();
-	//SetMkFdLen();
-	//if (nSrl >= 0)
-	//{
-	//	if (bDualTest)
-	//		m_pDlgMenu01->SelMap(ALL);
-	//	else
-	//		m_pDlgMenu01->SelMap(UP);
-	//}
 
 	return TRUE;
 }
@@ -1124,18 +1074,9 @@ BOOL CManagerReelmap::GetAoiDnInfo(int nSerial, int *pNewLot, BOOL bFromBuf) // 
 	}
 
 	BOOL Info1;//Info0, 
- 	//Info0 = GetAoiInfoUp(nSerial);
-
- 	//double dCurPosMkFd = (double)m_pMpeData[0][0];	// 마킹부 Feeding 엔코더 값(단위 mm )
- 	//double dTgtFd = _tstof(WorkingInfo.Motion.sFdAoiAoiDistShot) * _tstof(WorkingInfo.Motion.sAoiFdDist);
- 	//if(dCurPosMkFd < dTgtFd-_tstof(WorkingInfo.Motion.sAoiFdDist) + 10.0)
- 	//	return FALSE;
- 	//else
-	{
-		Info1 = GetAoiInfoDn(nSerial, pNewLot, bFromBuf);
-		if (Info1)
-			return TRUE;
-	}
+	Info1 = GetAoiInfoDn(nSerial, pNewLot, bFromBuf);
+	if (Info1)
+		return TRUE;
 
 	return FALSE;
 }
@@ -1157,7 +1098,7 @@ BOOL CManagerReelmap::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) // 
 	{
 		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
 		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(FALSE);
 	}
 
@@ -1598,12 +1539,9 @@ int CManagerReelmap::LoadPCR0(int nSerial, BOOL bFromShare)	// return : 2(Failed
 
 	int nRtn[2] = { 1 };
 	nRtn[0] = LoadPCRUp(nSerial, bFromShare);
-	//nRtn[1] = LoadPCRAllUp(nSerial, bFromShare);
 
 	if (nRtn[0] != 1)
 		return nRtn[0];
-	//if (nRtn[1] != 1)
-	//	return nRtn[1];
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
@@ -1847,7 +1785,7 @@ int CManagerReelmap::LoadPCRAllDn(int nSerial, BOOL bFromShare)	// return : 2(Fa
 	{
 		str.Format(_T("PCR파일이 설정되지 않았습니다."));
 		pView->MsgBox(str);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -1855,7 +1793,7 @@ int CManagerReelmap::LoadPCRAllDn(int nSerial, BOOL bFromShare)	// return : 2(Fa
 	{
 		str.Format(_T("PCR[3]관련 메모리가 할당되지 않았습니다."));
 		pView->MsgBox(str);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -1904,21 +1842,6 @@ int CManagerReelmap::LoadPCRAllDn(int nSerial, BOOL bFromShare)	// return : 2(Fa
 	else
 		nComp = nTotDef[1];
 
-	// 	for(i=0; i<nComp; i++)
-	// 	{
-	// 		if(i<nTotDef[0])
-	// 		{
-	// 			nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];
-	// 			pPcrMgr[nPcsId].nIdx = i;
-	// 			pPcrMgr[nPcsId].nIdxUp = i;	// Up
-	// 		}
-	// 		if(i<nTotDef[1])
-	// 		{
-	// 			nPcsId = m_pPcr[1][nIdx]->m_pDefPcs[i];
-	// 			pPcrMgr[nPcsId].nIdx = i;
-	// 			pPcrMgr[nPcsId].nIdxDn = i; // Dn
-	// 		}
-	// 	}
 	for (i = 0; i < nTotDef[0]; i++)
 	{
 		nPcsId = m_pPcr[0][nIdx]->m_pDefPcs[i];
@@ -2024,7 +1947,7 @@ int CManagerReelmap::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Faile
 	{
 		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
 		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -2032,7 +1955,7 @@ int CManagerReelmap::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Faile
 	{
 		strFileData.Format(_T("PCR[0]관련 메모리가 할당되지 않았습니다."));
 		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -2077,7 +2000,7 @@ int CManagerReelmap::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Faile
 	{
 		strFileData.Format(_T("PCR[Up] 파일이 존재하지 않습니다.\r\n%s"), sPath);
 		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -2181,18 +2104,12 @@ int CManagerReelmap::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Faile
 		pDoc->WorkingInfo.LastJob.sModelUp = strModel;
 		pDoc->WorkingInfo.LastJob.sLayerUp = strLayer;
 
-		//if (!WorkingInfo.LastJob.bDualTest)
-		{
-			pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-		}
+		pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
 	}
 
 	if (pDoc->m_bUpdateForNewJob[0])
 	{
 		pDoc->WriteChangedModel();
-
-		//if (pView->m_pDlgMenu01)
-		//	pView->m_pDlgMenu01->UpdateData();
 
 		if (pDoc->GetTestMode() == MODE_OUTER)
 		{
@@ -6979,7 +6896,7 @@ UINT CManagerReelmap::ThreadProc31(LPVOID lpContext)	// UpdateYieldInnerAllDn()
 	pThread->m_bThread[31] = FALSE;
 
 	return 0;
-}
+} 
 
 UINT CManagerReelmap::ThreadProc32(LPVOID lpContext)	// UpdateYieldIts()
 {

@@ -85,7 +85,6 @@ class CDlgMenu02 : public CDialog
 	void DispCenterMark();
 	void MarkingOff();
 	void MarkingOff2();
-	CfPoint GetPcsCenterOffset(CPoint pt);
 	void MsClr(int nMsId);
 	void ChkElecTest();
 	void ChkMarkingTest2();
@@ -96,6 +95,7 @@ class CDlgMenu02 : public CDialog
 	void InitBtnDuo();
 	void ShowDlg(int nID);
 	
+	double CalcCameraPixelSize(int nCamId);
 // 	void InitResMeas();
 // 	void SetResMeas(int nStep);
 
@@ -114,7 +114,6 @@ public:
  	//BOOL m_bMkDnSolOff;
 
 	double m_dOneShotRemainLen;
-	void DispOneShotRemainLen();
 
 	CDlgUtil03 *m_pDlgUtil03;
 	//CDlgUtil06 *m_pDlgUtil06;

@@ -17,7 +17,7 @@ class CManagerProcedure : public CWnd
 	void InitThread();
 	void KillThread();
 
-	// DoAuto()
+	// DoAuto
 	void DoAtuoGetMkStSignal();
 	void DoAutoSetLastProcAtPlc();
 	void DoAutoSetFdOffsetLastProc();

@@ -77,9 +77,9 @@ class CVision : public CWnd
 	int m_nTest;
 	double m_dEnc[MAX_AXIS], m_dBufEnc, m_dFdEnc;
 
-#ifdef USE_IRAYPLE
-	CCamIRayple *m_pIRayple;
-#endif
+//#ifdef USE_IRAYPLE
+//	CCamIRayple *m_pIRayple;
+//#endif
 
 #ifdef USE_IDS
 	CCamIds *m_pIds[2];
@@ -122,7 +122,7 @@ class CVision : public CWnd
 
 
 	void DrawCross(int nCenterX, int nCenterY, int nLineLength);
-	void SetClrOverlay();
+	//void SetClrOverlay();
 
 	BOOL GrabIRayple(int nPos, BOOL bDraw = TRUE);
 	BOOL GrabCrevis(int nPos, BOOL bDraw = TRUE);
@@ -138,6 +138,9 @@ public:
 public:
 	CLibMil *m_pMil;
 	stPtMtRst PtMtRst;
+#ifdef USE_IRAYPLE
+	CCamIRayple *m_pIRayple;
+#endif
 
 // Operations
 public:
@@ -152,7 +155,7 @@ public:
 
 	// from Crevis
 
-
+	void SetClrOverlay();
 	void DisplaySelect(int nKind, HWND hDispCtrl, CRect rtDispCtrl, int nIdx); // nKind : CAD_image[0], Defect_image[1]
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,7 +205,7 @@ public:
 	void SetDispAxisPos();
 	void DispAxisPos(BOOL bForceWrite=FALSE);
 
-	double CalcCameraPixelSize();
+	//double CalcCameraPixelSize();
 	BOOL Grab(int nPos, BOOL bDraw=TRUE);
 	void GetCameraSize(int &nX, int &nY);
 	void GetIdsSize(int &nX, int &nY);

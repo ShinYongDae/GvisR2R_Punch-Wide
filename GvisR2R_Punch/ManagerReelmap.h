@@ -165,9 +165,6 @@ public:
 	CString GetItsReelmapPath();
 	BOOL GetInnerFolderPath(int nItsSerial, CString  &sUp, CString &sDn);
 
-	char* StrToChar(CString str);
-	void StrToChar(CString str, char* pCh);
-
 	// For MODE_OUTER ============================================
 	int LoadPCRAllUpInner(int nSerial, BOOL bFromShare = FALSE);	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)
 	int LoadPCRAllDnInner(int nSerial, BOOL bFromShare = FALSE);	// return : 2(Failed), 1(정상), -1(Align Error, 노광불량), -2(Lot End)

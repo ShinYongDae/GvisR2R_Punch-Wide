@@ -2550,17 +2550,14 @@ void CEngrave::GetMkInfo(SOCKET_DATA SockData)
 		{
 		case _ItemInx::_MkLeadPitch:
 			pDoc->WorkingInfo.Motion.sMkFdLead = CharToString(SockData.strData);
-
 			pDoc->SetMkFdPitch(_tstof(pDoc->WorkingInfo.Motion.sMkFdLead));
 			break;
 		case _ItemInx::_MkPushOffLen:
-			pDoc->WorkingInfo.Motion.sMkFdVacOff = CharToString(SockData.strData);
-	
+			pDoc->WorkingInfo.Motion.sMkFdVacOff = CharToString(SockData.strData);	
 			::WritePrivateProfileString(_T("Motion"), _T("MARKING_FEEDING_VACUUM_OFF"), pDoc->WorkingInfo.Motion.sMkFdVacOff, PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkTqVal:
 			pDoc->WorkingInfo.Motion.sMkTq = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Motion"), _T("MARKING_TENSION_SERVO_TORQUE"), pDoc->WorkingInfo.Motion.sMkTq, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sMkTq) * 1000.0);
@@ -2570,7 +2567,6 @@ void CEngrave::GetMkInfo(SOCKET_DATA SockData)
 			break;
 		case _ItemInx::_MkBuffInitPos:
 			pDoc->WorkingInfo.Motion.sStBufPos = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Motion"), _T("START_BUFFER_POSITION"), pDoc->WorkingInfo.Motion.sStBufPos, PATH_WORKING_INFO);
 #ifdef USE_MPE
 			lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sStBufPos) * 1000.0);
@@ -2583,25 +2579,21 @@ void CEngrave::GetMkInfo(SOCKET_DATA SockData)
 			break;
 		case _ItemInx::_MkNumLf:
 			pDoc->WorkingInfo.Marking[0].nMkCnt = SockData.nData1;
-
 			sData.Format(_T("%d"), pDoc->WorkingInfo.Marking[0].nMkCnt);
 			::WritePrivateProfileString(_T("Marking0"), _T("Marking Count"), sData, PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkNumRt:
 			pDoc->WorkingInfo.Marking[1].nMkCnt = SockData.nData1;
-
 			sData.Format(_T("%d"), pDoc->WorkingInfo.Marking[1].nMkCnt);
 			::WritePrivateProfileString(_T("Marking1"), _T("Marking Count"), sData, PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkMaxNumLf:
 			pDoc->WorkingInfo.Marking[0].nMkLimit = SockData.nData1;
-
 			sData.Format(_T("%d"), pDoc->WorkingInfo.Marking[0].nMkLimit);
 			::WritePrivateProfileString(_T("Marking0"), _T("Marking Limit"), sData, PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkMaxNumRt:
 			pDoc->WorkingInfo.Marking[1].nMkLimit = SockData.nData1;
-
 			sData.Format(_T("%d"), pDoc->WorkingInfo.Marking[1].nMkLimit);
 			::WritePrivateProfileString(_T("Marking1"), _T("Marking Limit"), sData, PATH_WORKING_INFO);
 			break;
@@ -2615,6 +2607,7 @@ void CEngrave::GetMkInfoLf(SOCKET_DATA SockData)
 {
 	int nCmdCode = SockData.nCmdCode;
 	int nMsgId = SockData.nMsgID;
+	CSmac* pVoiceCoil = pView->m_mgrPunch->m_pVoiceCoil[0];
 
 	if (nCmdCode == _SetData)
 	{
@@ -2622,89 +2615,75 @@ void CEngrave::GetMkInfoLf(SOCKET_DATA SockData)
 		{
 		case _ItemInx::_MkInitPosLf:
 			pDoc->WorkingInfo.Marking[0].sWaitPos = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_WAIT_POS"), pDoc->WorkingInfo.Marking[0].sWaitPos, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkShiftData(0);
+			pVoiceCoil->SetMarkShiftData(0);
 			break;
 		case _ItemInx::_MkInitVelLf:
 			pDoc->WorkingInfo.Marking[0].sWaitVel = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_WAIT_VEL"), pDoc->WorkingInfo.Marking[0].sWaitVel, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkShiftData(0);
+			pVoiceCoil->SetMarkShiftData(0);
 			break;
 		case _ItemInx::_MkInitAccLf:
 			pDoc->WorkingInfo.Marking[0].sWaitAcc = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_WAIT_ACC"), pDoc->WorkingInfo.Marking[0].sWaitAcc, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkShiftData(0);
+			pVoiceCoil->SetMarkShiftData(0);
 			break;
 		case _ItemInx::_MkFnlPosLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingPos = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_POS"), pDoc->WorkingInfo.Marking[0].sMarkingPos, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
+			pVoiceCoil->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkFnlVelLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingVel = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_VEL"), pDoc->WorkingInfo.Marking[0].sMarkingVel, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
+			pVoiceCoil->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkFnlAccLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingAcc = CharToString(SockData.strData);
 
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_ACC"), pDoc->WorkingInfo.Marking[0].sMarkingAcc, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
+			pVoiceCoil->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkFnlTqLf:
 			pDoc->WorkingInfo.Marking[0].sMarkingToq = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MARKING_TOQ"), pDoc->WorkingInfo.Marking[0].sMarkingToq, PATH_WORKING_INFO);
 			pView->m_mgrPunch->m_pVoiceCoil[0]->SetMarkFinalData(0);
 			break;
 		case _ItemInx::_MkHgtPosX1Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosX[0] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSX1"), pDoc->WorkingInfo.Marking[0].sMeasurePosX[0], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY1Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosY[0] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSY1"), pDoc->WorkingInfo.Marking[0].sMeasurePosY[0], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosX2Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosX[1] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSX2"), pDoc->WorkingInfo.Marking[0].sMeasurePosX[1], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY2Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosY[1] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSY2"), pDoc->WorkingInfo.Marking[0].sMeasurePosY[1], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosX3Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosX[2] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSX3"), pDoc->WorkingInfo.Marking[0].sMeasurePosX[2], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY3Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosY[2] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSY3"), pDoc->WorkingInfo.Marking[0].sMeasurePosY[2], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosX4Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosX[3] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSX4"), pDoc->WorkingInfo.Marking[0].sMeasurePosX[3], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY4Lf:
 			pDoc->WorkingInfo.Marking[0].sMeasurePosY[3] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_MEASURE_POSY4"), pDoc->WorkingInfo.Marking[0].sMeasurePosY[3], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtAvgPosLf:
 			pDoc->WorkingInfo.Marking[0].sAverDist = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking0"), _T("MARKING_AVER_DIST"), pDoc->WorkingInfo.Marking[0].sAverDist, PATH_WORKING_INFO);
 			break;
 		default:
@@ -2717,6 +2696,7 @@ void CEngrave::GetMkInfoRt(SOCKET_DATA SockData)
 {
 	int nCmdCode = SockData.nCmdCode;
 	int nMsgId = SockData.nMsgID;
+	CSmac* pVoiceCoil = pView->m_mgrPunch->m_pVoiceCoil[1];
 
 	if (nCmdCode == _SetData)
 	{
@@ -2724,69 +2704,57 @@ void CEngrave::GetMkInfoRt(SOCKET_DATA SockData)
 		{
 		case _ItemInx::_MkInitPosRt:
 			pDoc->WorkingInfo.Marking[1].sWaitPos = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_WAIT_POS"), pDoc->WorkingInfo.Marking[1].sWaitPos, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkShiftData(1);
+			pVoiceCoil->SetMarkShiftData(1);
 			break;
 		case _ItemInx::_MkInitVelRt:
 			pDoc->WorkingInfo.Marking[1].sWaitVel = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_WAIT_VEL"), pDoc->WorkingInfo.Marking[1].sWaitVel, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkShiftData(1);
+			pVoiceCoil->SetMarkShiftData(1);
 			break;
 		case _ItemInx::_MkInitAccRt:
 			pDoc->WorkingInfo.Marking[1].sWaitAcc = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_WAIT_ACC"), pDoc->WorkingInfo.Marking[1].sWaitAcc, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkShiftData(1);
+			pVoiceCoil->SetMarkShiftData(1);
 			break;
 		case _ItemInx::_MkFnlPosRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingPos = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_POS"), pDoc->WorkingInfo.Marking[1].sMarkingPos, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pVoiceCoil->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkFnlVelRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingVel = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_VEL"), pDoc->WorkingInfo.Marking[1].sMarkingVel, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pVoiceCoil->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkFnlAccRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingAcc = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_ACC"), pDoc->WorkingInfo.Marking[1].sMarkingAcc, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pVoiceCoil->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkFnlTqRt:
 			pDoc->WorkingInfo.Marking[1].sMarkingToq = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MARKING_TOQ"), pDoc->WorkingInfo.Marking[1].sMarkingToq, PATH_WORKING_INFO);
-			pView->m_mgrPunch->m_pVoiceCoil[1]->SetMarkFinalData(1);
+			pVoiceCoil->SetMarkFinalData(1);
 			break;
 		case _ItemInx::_MkHgtPosX1Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosX[0] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MEASURE_POSX1"), pDoc->WorkingInfo.Marking[1].sMeasurePosX[0], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY1Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosY[0] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MEASURE_POSY1"), pDoc->WorkingInfo.Marking[1].sMeasurePosY[0], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosX2Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosX[1] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MEASURE_POSX2"), pDoc->WorkingInfo.Marking[1].sMeasurePosX[1], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY2Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosY[1] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MEASURE_POSY2"), pDoc->WorkingInfo.Marking[1].sMeasurePosY[1], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosX3Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosX[2] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MEASURE_POSX3"), pDoc->WorkingInfo.Marking[1].sMeasurePosX[2], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY3Rt:
@@ -2796,17 +2764,14 @@ void CEngrave::GetMkInfoRt(SOCKET_DATA SockData)
 			break;
 		case _ItemInx::_MkHgtPosX4Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosX[3] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MEASURE_POSX4"), pDoc->WorkingInfo.Marking[1].sMeasurePosX[3], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtPosY4Rt:
 			pDoc->WorkingInfo.Marking[1].sMeasurePosY[3] = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_MEASURE_POSY4"), pDoc->WorkingInfo.Marking[1].sMeasurePosY[3], PATH_WORKING_INFO);
 			break;
 		case _ItemInx::_MkHgtAvgPosRt:
 			pDoc->WorkingInfo.Marking[1].sAverDist = CharToString(SockData.strData);
-
 			::WritePrivateProfileString(_T("Marking1"), _T("MARKING_AVER_DIST"), pDoc->WorkingInfo.Marking[1].sAverDist, PATH_WORKING_INFO);
 			break;
 		default:

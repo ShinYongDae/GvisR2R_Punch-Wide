@@ -4245,27 +4245,11 @@ int CDlgMenu05::LoadPCRUpFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 			nFileSize = nFileSize - nTemp - 1;
 
 			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
-			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
-			{
-				pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-
-				//switch (m_Master[0].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
-				//{
-				//case 0:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//case 1:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));
-				//	break;
-				//case 3:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
-				//	break;
-				//default:
-				//	m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//}
-			}
-			else
+			//if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
+			//{
+			//	pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+			//}
+			//else
 				pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
 
 			pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pLayer[i] = 0; // Up
@@ -4348,7 +4332,7 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	{
 		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
 		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -4356,7 +4340,7 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	{
 		strFileData.Format(_T("PCR[1]관련 메모리가 할당되지 않았습니다."));
 		pView->MsgBox(strFileData);
-		// 		AfxMessageBox(strFileData);
+		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -4409,12 +4393,6 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	strFileData.Delete(0, nTemp + 1);
 	nFileSize = nFileSize - nTemp - 1;
 	pView->m_mgrReelmap->m_pPcr[1][nIdx]->m_nErrPnl = _tstoi(strHeaderErrorInfo);
-
-	//if (m_pPcrInner[1][nIdx]->m_nErrPnl == -1)
-	//{
-	//	int syd = 1;
-	//}
-
 
 	// Model
 	nTemp = strFileData.Find(',', 0);
@@ -4479,62 +4457,6 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 			pView->m_mgrReelmap->m_sItsCode = sItsCode;
 	}
 
-	//BOOL bUpdate = FALSE;
-
-	//if (WorkingInfo.LastJob.sLotDn != strLot || WorkingInfo.LastJob.sEngItsCode != sItsCode)
-	//{
-	//	bUpdate = TRUE;
-	//	WorkingInfo.LastJob.sLotDn = strLot;
-	//	m_sItsCode = WorkingInfo.LastJob.sEngItsCode = sItsCode;
-	//}
-
-	//if (WorkingInfo.LastJob.sModelDn != strModel || WorkingInfo.LastJob.sLayerDn != strLayer)
-	//{
-	//	bUpdate = TRUE;
-	//	WorkingInfo.LastJob.sModelDn = strModel;
-	//	WorkingInfo.LastJob.sLayerDn = strLayer;
-
-	//	//if (WorkingInfo.LastJob.bDualTest)
-	//	//{
-	//	//	pView->ResetMkInfo(0); // CAD 데이터 리로딩 --->  0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//	//}
-	//}
-
-	//if (bUpdate)
-	//{
-	//	WriteChangedModel();
-
-	//	if (pView->m_pDlgMenu01)
-	//		pView->m_pDlgMenu01->UpdateData();
-	//}
-
-	//if (!strModel.IsEmpty() && !strLot.IsEmpty() && !strLayer.IsEmpty())
-	//{
-	//	if (WorkingInfo.LastJob.sModelDn.IsEmpty() || WorkingInfo.LastJob.sLotDn.IsEmpty() || WorkingInfo.LastJob.sLayerDn.IsEmpty())
-	//	{
-	//		WorkingInfo.LastJob.sModelDn = strModel;
-	//		WorkingInfo.LastJob.sLotDn = strLot;
-	//		WorkingInfo.LastJob.sLayerDn = strLayer;
-
-	//		if (WorkingInfo.LastJob.bDualTest)
-	//		{
-	//			pView->ResetMkInfo(2); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//		}
-	//	}
-	//	else if (WorkingInfo.LastJob.sModelDn != strModel || WorkingInfo.LastJob.sLayerDn != strLayer /*|| WorkingInfo.LastJob.sLotDn != strLot*/)
-	//	{
-	//		WorkingInfo.LastJob.sModelDn = strModel;
-	//		WorkingInfo.LastJob.sLotDn = strLot;
-	//		WorkingInfo.LastJob.sLayerDn = strLayer;
-
-	//		if (WorkingInfo.LastJob.bDualTest)
-	//		{
-	//			pView->ResetMkInfo(2); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//		}
-	//	}
-	//}
-
-
 	int nTotDef = _tstoi(strTotalBadPieceNum);
 
 	pView->m_mgrReelmap->m_pPcr[1][nIdx]->Init(nSerial, nTotDef);
@@ -4558,25 +4480,7 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 
 			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
 			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
-			{
 				pView->m_mgrReelmap->m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-
-				//switch (m_Master[1].MasterInfo.nActionCode)	// 0 : Rotation / Mirror 적용 없음(CAM Data 원본), 1 : 좌우 미러, 2 : 상하 미러, 3 : 180 회전, 4 : 270 회전(CCW), 5 : 90 회전(CW)
-				//{
-				//case 0:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//case 1:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = MirrorLR(_tstoi(strPieceID));
-				//	break;
-				//case 3:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = Rotate180(_tstoi(strPieceID));
-				//	break;
-				//default:
-				//	m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-				//	break;
-				//}
-			}
 			else
 				pView->m_mgrReelmap->m_pPcr[1][nIdx]->m_pDefPcs[i] = pView->m_mgrReelmap->MirrorLR(_tstoi(strPieceID));	// 초기 양면검사기용
 

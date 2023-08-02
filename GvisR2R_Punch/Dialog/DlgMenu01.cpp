@@ -666,8 +666,11 @@ void CDlgMenu01::InitMkInfo()
 
 void CDlgMenu01::SelDisp()
 {
+	CVision* pVision0 = pView->m_mgrPunch->m_pVision[0];
+	CVision* pVision1 = pView->m_mgrPunch->m_pVision[1];
+
 #ifdef USE_VISION
-	if(!pView->m_mgrPunch->m_pVision[0] || !pView->m_mgrPunch->m_pVision[1])
+	if(!pVision0 || !pVision1)
 		return;
 #endif
 
@@ -712,12 +715,12 @@ void CDlgMenu01::SelDisp()
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
+			pVision0->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
 #endif
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
+			pVision0->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
 #endif
 
 			switch(nIdxMkInfo)
@@ -750,23 +753,23 @@ void CDlgMenu01::SelDisp()
 
 // 			hW = NULL;
 // 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-// 			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
+// 			pVision0->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
 // 
 // 			hW = NULL;
 // 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-// 			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
+// 			pVision0->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo+DEF_VIEW_IMG_NUMBER/2);
 
 
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_mgrPunch->m_pVision[1]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
+			pVision1->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
 #endif
 
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_mgrPunch->m_pVision[1]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
+			pVision1->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
 #endif
 		}
 	}
@@ -830,33 +833,32 @@ void CDlgMenu01::SelDisp()
 // 			{
 // 				hW = NULL;
 // 				GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-// 				pView->m_mgrPunch->m_pVision[1]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
+// 				pVision1->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
 // 
 // 				hW = NULL;
 // 				GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-// 				pView->m_mgrPunch->m_pVision[1]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
+// 				pVision1->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo-DEF_VIEW_IMG_NUMBER/2);
 // 			}
 
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
+			pVision0->DisplaySelect(CAD_IMG, hW, rt, nIdxMkInfo);
 #endif
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_mgrPunch->m_pVision[0]->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
+			pVision0->DisplaySelect(DEF_IMG, hW, rt, nIdxMkInfo);
 #endif
 		}
-
 	}
-
 }
 
 void CDlgMenu01::InitMkInfoUp()
 {
+	CVision* pVision = pView->m_mgrPunch->m_pVision[0];
 #ifdef USE_VISION
-	if(!pView->m_mgrPunch->m_pVision[0])
+	if(!pVision)
 		return;
 #else
 	return;
@@ -903,12 +905,12 @@ void CDlgMenu01::InitMkInfoUp()
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-			pView->m_mgrPunch->m_pVision[0]->SelDispCad(hW, rt, nIdxMkInfo);
-			pView->m_mgrPunch->m_pVision[0]->SetOvrCadFontSz(nIdxMkInfo);
+			pVision->SelDispCad(hW, rt, nIdxMkInfo);
+			pVision->SetOvrCadFontSz(nIdxMkInfo);
 
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-			pView->m_mgrPunch->m_pVision[0]->SelDispDef(hW, rt, nIdxMkInfo);
+			pVision->SelDispDef(hW, rt, nIdxMkInfo);
 #endif
 		}
 	}
@@ -972,12 +974,12 @@ void CDlgMenu01::InitMkInfoUp()
 #ifdef USE_VISION
 			hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-			pView->m_mgrPunch->m_pVision[0]->SelDispCad(hW, rt, nIdxMkInfo);
-			pView->m_mgrPunch->m_pVision[0]->SetOvrCadFontSz(nIdxMkInfo);
+			pVision->SelDispCad(hW, rt, nIdxMkInfo);
+			pVision->SetOvrCadFontSz(nIdxMkInfo);
 
 			hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 			GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-			pView->m_mgrPunch->m_pVision[0]->SelDispDef(hW, rt, nIdxMkInfo);
+			pVision->SelDispDef(hW, rt, nIdxMkInfo);
 #endif
  		}
 	}
@@ -986,12 +988,13 @@ void CDlgMenu01::InitMkInfoUp()
 
 void CDlgMenu01::InitMkInfoDn()
 {
+	CVision* pVision = pView->m_mgrPunch->m_pVision[1];
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	if(!bDualTest)
 		return;
 
 #ifdef USE_VISION
-	if(!pView->m_mgrPunch->m_pVision[1])
+	if(!pVision)
 		return;
 #else
 	return;
@@ -1035,12 +1038,12 @@ void CDlgMenu01::InitMkInfoDn()
 		hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
 #ifdef USE_VISION
-		pView->m_mgrPunch->m_pVision[1]->SelDispCad(hW, rt, nIdxMkInfo);
-		pView->m_mgrPunch->m_pVision[1]->SetOvrCadFontSz(nIdxMkInfo);
+		pVision->SelDispCad(hW, rt, nIdxMkInfo);
+		pVision->SetOvrCadFontSz(nIdxMkInfo);
 
 		hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-		pView->m_mgrPunch->m_pVision[1]->SelDispDef(hW, rt, nIdxMkInfo);
+		pVision->SelDispDef(hW, rt, nIdxMkInfo);
 #endif
 	}
 
@@ -1048,8 +1051,10 @@ void CDlgMenu01::InitMkInfoDn()
 
 void CDlgMenu01::FreeMkInfoUp()
 {
+	CVision* pVision = pView->m_mgrPunch->m_pVision[0];
+
 #ifdef USE_VISION
-	if (!pView->m_mgrPunch->m_pVision[0])
+	if (!pVision)
 		return;
 #else
 	return;
@@ -1092,11 +1097,11 @@ void CDlgMenu01::FreeMkInfoUp()
 #ifdef USE_VISION
 		hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-		pView->m_mgrPunch->m_pVision[0]->FreeDispCad(hW, rt, nIdxMkInfo);
+		pVision->FreeDispCad(hW, rt, nIdxMkInfo);
 
 		hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-		pView->m_mgrPunch->m_pVision[0]->FreeDispDef(hW, rt, nIdxMkInfo);
+		pVision->FreeDispDef(hW, rt, nIdxMkInfo);
 #endif
 	}
 
@@ -1104,8 +1109,10 @@ void CDlgMenu01::FreeMkInfoUp()
 
 void CDlgMenu01::FreeMkInfoDn()
 {
+	CVision* pVision = pView->m_mgrPunch->m_pVision[1];
+
 #ifdef USE_VISION
-	if (!pView->m_mgrPunch->m_pVision[1])
+	if (!pVision)
 		return;
 #else
 	return;
@@ -1148,11 +1155,11 @@ void CDlgMenu01::FreeMkInfoDn()
 #ifdef USE_VISION
 		hW = GetDlgItem(nCtrlIdCad)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdCad)->GetWindowRect(&rt);
-		pView->m_mgrPunch->m_pVision[1]->FreeDispCad(hW, rt, nIdxMkInfo);
+		pVision->FreeDispCad(hW, rt, nIdxMkInfo);
 
 		hW = GetDlgItem(nCtrlIdDef)->GetSafeHwnd();
 		GetDlgItem(nCtrlIdDef)->GetWindowRect(&rt);
-		pView->m_mgrPunch->m_pVision[1]->FreeDispDef(hW, rt, nIdxMkInfo);
+		pVision->FreeDispDef(hW, rt, nIdxMkInfo);
 #endif
 	}
 
@@ -1473,6 +1480,8 @@ void CDlgMenu01::DispMkInfo(int nSerial)
 
 void CDlgMenu01::DispMkInfoUp(int nSerial)
 {
+	CVision* pVision = pView->m_mgrPunch->m_pVision[0];
+
 	if(nSerial <= 0)
 	{
 		pView->MsgBox(_T("Serial Error.3"));
@@ -1485,7 +1494,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 #ifdef USE_VISION
 	if(bDualTest)
 	{
-		if(pView->m_mgrPunch->m_pVision[0])
+		if(pVision)
 		{
  			int nIdxMkInfo = (m_nIdxMkInfo[0] < MENU01_STC_DEFINFO_HARF) ? m_nIdxMkInfo[0] : (MENU01_STC_DEFINFO_HARF-1);	
 			//int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
@@ -1504,10 +1513,10 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 							{
 								if(m_nIdxMkInfo[0] >= MENU01_STC_DEFINFO_HARF)
 									ShiftDefInfoUp();
- 								pView->m_mgrPunch->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
-								pView->m_mgrPunch->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
+								pVision->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
+								pVision->ShowOvrCad(nIdxMkInfo, nSerial);
 								nDefImg = pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]]; // 화면에 표시할 불량이미지 인덱스
-								pView->m_mgrPunch->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
+								pVision->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
 								ShowDefInfoUp(nIdxMkInfo); // 화면의 IDC 인덱스
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg); // (nSerial, 화면의 IDC 인덱스, 불량피스 인덱스, 불량이미지 인덱스)
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
@@ -1528,7 +1537,7 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 	}
 	else
 	{
-		if(pView->m_mgrPunch->m_pVision[0])
+		if(pVision)
 		{
  			int nIdxMkInfo = (m_nIdxMkInfo[0] < MENU01_STC_DEFINFO_HARF*2) ? m_nIdxMkInfo[0] : (MENU01_STC_DEFINFO_HARF*2-1);	
 	//		int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
@@ -1547,10 +1556,10 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 							{
 								if(m_nIdxMkInfo[0] >= MENU01_STC_DEFINFO_HARF*2)
 									ShiftDefInfoUp();
- 								pView->m_mgrPunch->m_pVision[0]->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
-								pView->m_mgrPunch->m_pVision[0]->ShowOvrCad(nIdxMkInfo, nSerial);
+								pVision->ShowDispCad(nIdxMkInfo, nSerial, 0, m_nIdxDef[0]);
+								pVision->ShowOvrCad(nIdxMkInfo, nSerial);
 								nDefImg = pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pImg[m_nIdxDef[0]];
-								pView->m_mgrPunch->m_pVision[0]->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
+								pVision->ShowDispDef(nIdxMkInfo, nSerial, 0, nDefImg);
 								ShowDefInfoUp(nIdxMkInfo);
 								WriteDefInfoUp(nSerial, nIdxMkInfo, m_nIdxDef[0], nDefImg);
 								SaveCadImgUp(nSerial, nIdxMkInfo, nDefImg);
@@ -1574,6 +1583,8 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 
 void CDlgMenu01::DispMkInfoDn(int nSerial)
 {
+	CVision* pVision = pView->m_mgrPunch->m_pVision[1];
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	if(!bDualTest)
 		return;
@@ -1586,7 +1597,7 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 	}
 
 #ifdef USE_VISION
-	if(pView->m_mgrPunch->m_pVision[1])
+	if(pVision)
 	{
  		int nIdxMkInfo = (m_nIdxMkInfo[1] < MENU01_STC_DEFINFO_HARF) ? m_nIdxMkInfo[1] : (MENU01_STC_DEFINFO_HARF-1);	
 //		int nIdxMkInfo = (MENU01_STC_DEFINFO_HARF-1);	
@@ -1605,10 +1616,10 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 						{
  							if(m_nIdxMkInfo[1] >= MENU01_STC_DEFINFO_HARF)
 								ShiftDefInfoDn();
- 							pView->m_mgrPunch->m_pVision[1]->ShowDispCad(nIdxMkInfo, nSerial, 1, m_nIdxDef[1]);
-							pView->m_mgrPunch->m_pVision[1]->ShowOvrCad(nIdxMkInfo, nSerial);
+							pVision->ShowDispCad(nIdxMkInfo, nSerial, 1, m_nIdxDef[1]);
+							pVision->ShowOvrCad(nIdxMkInfo, nSerial);
 							nDefImg = pView->m_mgrReelmap->m_pPcr[1][nIdx]->m_pImg[m_nIdxDef[1]];
-							pView->m_mgrPunch->m_pVision[1]->ShowDispDef(nIdxMkInfo, nSerial, 1, nDefImg);
+							pVision->ShowDispDef(nIdxMkInfo, nSerial, 1, nDefImg);
 							ShowDefInfoDn(nIdxMkInfo);
 							WriteDefInfoDn(nSerial, nIdxMkInfo, m_nIdxDef[1], nDefImg);
 							SaveCadImgDn(nSerial, nIdxMkInfo, nDefImg);
@@ -2853,9 +2864,9 @@ void CDlgMenu01::DispStTime()
 #ifdef USE_ENGRAVE
 	if (pView)
 	{
-		if (pView->m_mgrPunch->m_pEngrave)
+		if (pView->m_pEngrave)
 		{
-			pView->m_mgrPunch->m_pEngrave->SetStTime();
+			pView->m_pEngrave->SetStTime();
 		}
 	}
 #endif
@@ -2955,9 +2966,9 @@ void CDlgMenu01::DispRunTime()
 #ifdef USE_ENGRAVE
 			if (pView)
 			{
-				if (pView->m_mgrPunch->m_pEngrave)
+				if (pView->m_pEngrave)
 				{
-					pView->m_mgrPunch->m_pEngrave->SetRunTime();
+					pView->m_pEngrave->SetRunTime();
 				}
 			}
 #endif
@@ -3000,9 +3011,9 @@ void CDlgMenu01::DispEdTime()
 #ifdef USE_ENGRAVE
 	if (pView)
 	{
-		if (pView->m_mgrPunch->m_pEngrave)
+		if (pView->m_pEngrave)
 		{
-			pView->m_mgrPunch->m_pEngrave->SetEdTime();
+			pView->m_pEngrave->SetEdTime();
 		}
 	}
 #endif
@@ -3341,9 +3352,9 @@ void CDlgMenu01::UpdateWorking()
 //#ifdef USE_ENGRAVE
 //	if (pView)
 //	{
-//		if (pView->m_mgrPunch->m_pEngrave)
+//		if (pView->m_pEngrave)
 //		{
-//			pView->m_mgrPunch->m_pEngrave->UpdateWorking();
+//			pView->m_pEngrave->UpdateWorking();
 //		}
 //	}
 //#endif
@@ -5691,8 +5702,8 @@ void CDlgMenu01::ChkTpStop()
 		pView->m_mgrReelmap->m_pReelMap->m_bUseTempPause = bUse;
 
 #ifdef USE_ENGRAVE
-	if (pView && pView->m_mgrPunch->m_pEngrave)
-		pView->m_mgrPunch->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
+	if (pView && pView->m_pEngrave)
+		pView->m_pEngrave->SetTempPause();	//_stSigInx::_TempPause
 #endif
 
 	CString sData = bUse ? _T("1") : _T("0");
