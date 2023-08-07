@@ -780,7 +780,7 @@ BOOL CCamMaster::LoadStripPieceRegion_Binary()	//20121120-ndy for PairPanel
 	int nFrameSize = 0;
 
 	file.Read((void *)&nFrameSize, sizeof(int));
-	FrameRgnNum = nFrameSize; 
+	FrameRgnNum = nFrameSize; // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 
 	file.Read((void *)&PieceRgnNum, sizeof(int));
 	file.Read((void *)&m_nCornerNum, sizeof(int));
@@ -2162,4 +2162,9 @@ BOOL CCamMaster::IsMstSpec(CString sSpecFolderPath, CString  sModel, CString sLa
 		return FALSE;
 
 	return TRUE;
+}
+
+int CCamMaster::GetStripNum()
+{
+	return FrameRgnNum;
 }

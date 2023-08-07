@@ -214,7 +214,7 @@ void CDlgMenu01::LoadImg()
 	int i;
 	for(i=0; i<MAX_MENU01_BTN; i++)
 	{
-		if(i==7 || i==8 || i==9 || i==10 || i==11)
+		if(i==7 || i==8 || i==9 || i==10 || i==11 || i==25 || i==26)
 		{
 			myBtn[i].LoadBkImage(NI_BTN_UP_DlgMenu01, BTN_IMG_UP);
 			myBtn[i].LoadBkImage(NI_BTN_DN_DlgMenu01, BTN_IMG_DN);
@@ -308,18 +308,22 @@ BOOL CDlgMenu01::OnInitDialog()
 
 	GetDlgItem(IDC_CHK_REMARKING)->ShowWindow(SW_HIDE);
 
-// 	GetDlgItem(IDC_STC_ST)->ShowWindow(SW_HIDE);
-// 	GetDlgItem(IDC_STC_GD_RA_1)->ShowWindow(SW_HIDE);
-// 	GetDlgItem(IDC_STC_GD_RA_2)->ShowWindow(SW_HIDE);
-// 	GetDlgItem(IDC_STC_GD_RA_3)->ShowWindow(SW_HIDE);
-// 	GetDlgItem(IDC_STC_GD_RA_4)->ShowWindow(SW_HIDE);
-// 	GetDlgItem(IDC_STC_GD_RA_ALL)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_ST)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_GD_RA_1)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_GD_RA_2)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_GD_RA_3)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_GD_RA_4)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_GD_RA_5)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_GD_RA_6)->ShowWindow(SW_HIDE);
+ 	//GetDlgItem(IDC_STC_GD_RA_ALL)->ShowWindow(SW_HIDE);
 	
 	GetDlgItem(IDC_BTN_ST)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_1)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_2)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_3)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_4)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_BTN_GD_RA_5)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_BTN_GD_RA_6)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_ALL)->ShowWindow(SW_HIDE);
 
 	GetDlgItem(IDC_CHK_2LAYER)->ShowWindow(SW_HIDE);
@@ -2084,6 +2088,14 @@ void CDlgMenu01::InitBtn()
 	myBtn[10].SetHwnd(this->GetSafeHwnd(), IDC_CHK_MK_4);
 	myBtn[10].SetBtnType(BTN_TYPE_CHECK);
 	
+	myBtn[25].SubclassDlgItem(IDC_CHK_MK_5, this);
+	myBtn[25].SetHwnd(this->GetSafeHwnd(), IDC_CHK_MK_5);
+	myBtn[25].SetBtnType(BTN_TYPE_CHECK);
+	
+	myBtn[26].SubclassDlgItem(IDC_CHK_MK_6, this);
+	myBtn[26].SetHwnd(this->GetSafeHwnd(), IDC_CHK_MK_6);
+	myBtn[26].SetBtnType(BTN_TYPE_CHECK);
+	
 	myBtn[11].SubclassDlgItem(IDC_BTN_MK_ALL, this);
 	myBtn[11].SetHwnd(this->GetSafeHwnd(), IDC_BTN_MK_ALL);
 	
@@ -2114,6 +2126,12 @@ void CDlgMenu01::InitBtn()
 	myBtn[19].SubclassDlgItem(IDC_BTN_GD_RA_4, this);
 	myBtn[19].SetHwnd(this->GetSafeHwnd(), IDC_BTN_GD_RA_4);
 
+	myBtn[23].SubclassDlgItem(IDC_BTN_GD_RA_5, this);
+	myBtn[23].SetHwnd(this->GetSafeHwnd(), IDC_BTN_GD_RA_5);
+
+	myBtn[24].SubclassDlgItem(IDC_BTN_GD_RA_6, this);
+	myBtn[24].SetHwnd(this->GetSafeHwnd(), IDC_BTN_GD_RA_6);
+
 	myBtn[20].SubclassDlgItem(IDC_BTN_GD_RA_ALL, this);
 	myBtn[20].SetHwnd(this->GetSafeHwnd(), IDC_BTN_GD_RA_ALL);
 
@@ -2132,11 +2150,11 @@ void CDlgMenu01::InitBtn()
 	{
 		if(i==1 || i==2)
 			myBtn[i].SetFont(_T("굴림체"),12,TRUE);
-		else if(i==7 || i==8 || i==9 || i==10 || i==11)
+		else if(i==7 || i==8 || i==9 || i==10 || i==11 || i==25 || i==26)
 			myBtn[i].SetFont(_T("굴림체"),11,TRUE);
 		else if(i==12 || i==13 || i==14)
 			myBtn[i].SetFont(_T("굴림체"),12,TRUE);
-		else if(i==15 || i==16 || i==17 || i==18 || i==19 || i==20 || i==21)
+		else if(i==15 || i==16 || i==17 || i==18 || i==19 || i==20 || i==21 || i==23 || i==24)
 		{
 			myBtn[i].SetFont(_T("굴림체"),11,TRUE);
 			//myBtn[i].SetBtnType(BTN_TYPE_CHECK);
@@ -2256,18 +2274,24 @@ void CDlgMenu01::InitStcData()
 	myStcData[60].SubclassDlgItem(IDC_STC_GD_RA_2_UP, this);
 	myStcData[61].SubclassDlgItem(IDC_STC_GD_RA_3_UP, this);
 	myStcData[62].SubclassDlgItem(IDC_STC_GD_RA_4_UP, this);
+	myStcData[87].SubclassDlgItem(IDC_STC_GD_RA_5_UP, this);
+	myStcData[88].SubclassDlgItem(IDC_STC_GD_RA_6_UP, this);
 	myStcData[63].SubclassDlgItem(IDC_STC_GD_RA_ALL_UP, this);
 
 	myStcData[64].SubclassDlgItem(IDC_STC_GD_RA_1_DN, this);
 	myStcData[65].SubclassDlgItem(IDC_STC_GD_RA_2_DN, this);
 	myStcData[66].SubclassDlgItem(IDC_STC_GD_RA_3_DN, this);
 	myStcData[67].SubclassDlgItem(IDC_STC_GD_RA_4_DN, this);
+	myStcData[89].SubclassDlgItem(IDC_STC_GD_RA_5_DN, this);
+	myStcData[90].SubclassDlgItem(IDC_STC_GD_RA_6_DN, this);
 	myStcData[68].SubclassDlgItem(IDC_STC_GD_RA_ALL_DN, this);
 
 	myStcData[69].SubclassDlgItem(IDC_STC_GD_RA_1_ALL, this);
 	myStcData[70].SubclassDlgItem(IDC_STC_GD_RA_2_ALL, this);
 	myStcData[71].SubclassDlgItem(IDC_STC_GD_RA_3_ALL, this);
 	myStcData[72].SubclassDlgItem(IDC_STC_GD_RA_4_ALL, this);
+	myStcData[91].SubclassDlgItem(IDC_STC_GD_RA_5_ALL, this);
+	myStcData[92].SubclassDlgItem(IDC_STC_GD_RA_6_ALL, this);
 	myStcData[73].SubclassDlgItem(IDC_STC_GD_RA_ALL_ALL, this);
 
 	myStcData[74].SubclassDlgItem(IDC_STC_AOI_UP, this);
@@ -2465,6 +2489,8 @@ void CDlgMenu01::InitStcTitle()
 	myStcTitle[57].SubclassDlgItem(IDC_STC_GD_RA_2, this);
 	myStcTitle[58].SubclassDlgItem(IDC_STC_GD_RA_3, this);
 	myStcTitle[59].SubclassDlgItem(IDC_STC_GD_RA_4, this);
+	myStcTitle[69].SubclassDlgItem(IDC_STC_GD_RA_5, this);
+	myStcTitle[70].SubclassDlgItem(IDC_STC_GD_RA_6, this);
 	myStcTitle[60].SubclassDlgItem(IDC_STC_GD_RA_ALL, this);
 	for(i=56; i<61; i++)
 	{
@@ -2499,11 +2525,19 @@ void CDlgMenu01::InitStcTitle()
 	myStcTitle[67].SubclassDlgItem(IDC_STC_TQ_L, this);
 	myStcTitle[68].SubclassDlgItem(IDC_STC_TQ_R, this);
 
-	for(i=65; i<MAX_MENU01_STC_TITLE; i++)
+	for(i=65; i<MAX_MENU01_STC_TITLE-2; i++)
 	{
 		myStcTitle[i].SetFontName(_T("Arial"));
 		myStcTitle[i].SetFontSize(12);
 		myStcTitle[i].SetFontBold(FALSE);
+		myStcTitle[i].SetTextColor(RGB_BLACK);
+		myStcTitle[i].SetBkColor(RGB_LTDKORANGE);
+	}
+	for (i = MAX_MENU01_STC_TITLE - 2; i < MAX_MENU01_STC_TITLE; i++)
+	{
+		myStcTitle[i].SetFontName(_T("Arial"));
+		myStcTitle[i].SetFontSize(12);
+		myStcTitle[i].SetFontBold(TRUE);
 		myStcTitle[i].SetTextColor(RGB_BLACK);
 		myStcTitle[i].SetBkColor(RGB_LTDKORANGE);
 	}
@@ -4525,31 +4559,41 @@ void CDlgMenu01::OnStcDn()
 void CDlgMenu01::OnBtnMkAll() 
 {
 	// TODO: Add your control notification handler code here
-	BOOL bEnable[4];
+	BOOL bEnable[6];
 	bEnable[0] = myBtn[7].IsWindowEnabled();
 	bEnable[1] = myBtn[8].IsWindowEnabled();
 	bEnable[2] = myBtn[9].IsWindowEnabled();
 	bEnable[3] = myBtn[10].IsWindowEnabled();
+	bEnable[4] = myBtn[25].IsWindowEnabled();
+	bEnable[5] = myBtn[26].IsWindowEnabled();
 
-	if(!bEnable[0])
+	if (!bEnable[0])
 		myBtn[7].EnableWindow(TRUE);
-	if(!bEnable[1])
+	if (!bEnable[1])
 		myBtn[8].EnableWindow(TRUE);
-	if(!bEnable[2])
+	if (!bEnable[2])
 		myBtn[9].EnableWindow(TRUE);
-	if(!bEnable[3])
+	if (!bEnable[3])
 		myBtn[10].EnableWindow(TRUE);
+	if (!bEnable[4])
+		myBtn[25].EnableWindow(TRUE);
+	if (!bEnable[5])
+		myBtn[26].EnableWindow(TRUE);
 
 	SetStripAllMk();
 
-	if(!bEnable[0])
+	if (!bEnable[0])
 		myBtn[7].EnableWindow(FALSE);
-	if(!bEnable[1])
+	if (!bEnable[1])
 		myBtn[8].EnableWindow(FALSE);
-	if(!bEnable[2])
+	if (!bEnable[2])
 		myBtn[9].EnableWindow(FALSE);
-	if(!bEnable[3])
+	if (!bEnable[3])
 		myBtn[10].EnableWindow(FALSE);
+	if (!bEnable[4])
+		myBtn[25].EnableWindow(FALSE);
+	if (!bEnable[5])
+		myBtn[26].EnableWindow(FALSE);
 
 	this->MoveWindow(m_pRect, TRUE);
 }
@@ -4560,6 +4604,8 @@ void CDlgMenu01::SetStripAllMk()
 	myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
 	myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
 	myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
+	myBtn[25].SetCheck(TRUE); // IDC_CHK_MK_5
+	myBtn[26].SetCheck(TRUE); // IDC_CHK_MK_6
 
 	this->MoveWindow(m_pRect, TRUE);
 }
@@ -4571,6 +4617,8 @@ void CDlgMenu01::EnableBtn(BOOL bEnable)
 	myBtn[8].EnableWindow(bEnable); // IDC_CHK_MK_2
 	myBtn[9].EnableWindow(bEnable); // IDC_CHK_MK_3
 	myBtn[10].EnableWindow(bEnable); // IDC_CHK_MK_4
+	myBtn[25].EnableWindow(bEnable); // IDC_CHK_MK_5
+	myBtn[26].EnableWindow(bEnable); // IDC_CHK_MK_6
 }
 
 BOOL CDlgMenu01::IsEnableBtn()
@@ -4601,7 +4649,7 @@ void CDlgMenu01::SetTempStop(BOOL bOn)
 	}
 }
 
-BOOL CDlgMenu01::GetChkStrip(int nStrip) // 0, 1, 2, 3
+BOOL CDlgMenu01::GetChkStrip(int nStrip) // 0, 1, 2, 3, 4, 5
 {
 	BOOL bOn = TRUE;
 	switch(nStrip)
@@ -4620,6 +4668,14 @@ BOOL CDlgMenu01::GetChkStrip(int nStrip) // 0, 1, 2, 3
 		break;
 	case 3:
 		if(!myBtn[10].GetCheck()) // IDC_CHK_MK_4
+			bOn = FALSE;
+		break;
+	case 4:
+		if(!myBtn[25].GetCheck()) // IDC_CHK_MK_5
+			bOn = FALSE;
+		break;
+	case 5:
+		if(!myBtn[26].GetCheck()) // IDC_CHK_MK_6
 			bOn = FALSE;
 		break;
 	}
@@ -5389,142 +5445,6 @@ void CDlgMenu01::OnChk2layer()
 	this->MoveWindow(m_pRect, TRUE);
 }
 
-
-//void CDlgMenu01::OnBnClickedChkMk1()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[7].GetCheck();
-//	if(!bOn)
-//		myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	else
-//		myBtn[7].SetCheck(FALSE); // IDC_CHK_MK_1
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-//
-//
-//void CDlgMenu01::OnBnClickedChkMk2()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[8].GetCheck();
-//	if (!bOn)
-//		myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	else
-//		myBtn[8].SetCheck(FALSE); // IDC_CHK_MK_2
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-//
-//
-//void CDlgMenu01::OnBnClickedChkMk3()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[9].GetCheck();
-//	if (!bOn)
-//		myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	else
-//		myBtn[9].SetCheck(FALSE); // IDC_CHK_MK_3
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-//
-//
-//void CDlgMenu01::OnBnClickedChkMk4()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[10].GetCheck();
-//	if (!bOn)
-//		myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	else
-//		myBtn[10].SetCheck(FALSE); // IDC_CHK_MK_4
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-//
-//
-//void CDlgMenu01::OnDoubleclickedChkMk1()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[7].GetCheck();
-//	if (bOn)
-//		myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	else
-//		myBtn[7].SetCheck(FALSE); // IDC_CHK_MK_1
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-//
-//
-//void CDlgMenu01::OnDoubleclickedChkMk2()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[8].GetCheck();
-//	if (bOn)
-//		myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	else
-//		myBtn[8].SetCheck(FALSE); // IDC_CHK_MK_2
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-//
-//
-//void CDlgMenu01::OnDoubleclickedChkMk3()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[9].GetCheck();
-//	if (bOn)
-//		myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	else
-//		myBtn[9].SetCheck(FALSE); // IDC_CHK_MK_3
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-//
-//
-//void CDlgMenu01::OnDoubleclickedChkMk4()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	//myBtn[7].SetCheck(TRUE); // IDC_CHK_MK_1
-//	//myBtn[8].SetCheck(TRUE); // IDC_CHK_MK_2
-//	//myBtn[9].SetCheck(TRUE); // IDC_CHK_MK_3
-//	//myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	BOOL bOn = myBtn[10].GetCheck();
-//	if (bOn)
-//		myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
-//	else
-//		myBtn[10].SetCheck(FALSE); // IDC_CHK_MK_4
-//
-//	this->MoveWindow(m_pRect, TRUE);
-//}
-
 LRESULT CDlgMenu01::OnMyBtnDblClk(WPARAM wPara, LPARAM lPara)
 {
 	int nCtrlID = (int)lPara;
@@ -5559,6 +5479,20 @@ LRESULT CDlgMenu01::OnMyBtnDblClk(WPARAM wPara, LPARAM lPara)
 			myBtn[10].SetCheck(TRUE); // IDC_CHK_MK_4
 		else
 			myBtn[10].SetCheck(FALSE); // IDC_CHK_MK_4
+		break;
+	case IDC_CHK_MK_5:
+		bOn = myBtn[25].GetCheck();
+		if (!bOn)
+			myBtn[25].SetCheck(TRUE); // IDC_CHK_MK_5
+		else
+			myBtn[25].SetCheck(FALSE); // IDC_CHK_MK_5
+		break;
+	case IDC_CHK_MK_6:
+		bOn = myBtn[26].GetCheck();
+		if (!bOn)
+			myBtn[26].SetCheck(TRUE); // IDC_CHK_MK_6
+		else
+			myBtn[26].SetCheck(FALSE); // IDC_CHK_MK_6
 		break;
 	}
 

@@ -18,7 +18,7 @@
 
 #define MAX_PCS					10000
 #ifndef MAX_STRIP
-	#define MAX_STRIP				4
+	#define MAX_STRIP				6
 #endif
 
 //#define MAX_PIECE_NODE_X_NUM	600		// 130319 jsy edit
@@ -112,6 +112,7 @@ public:
 	BOOL LoadMstInfo();
 	BOOL WriteStripPieceRegion_Text(CString sBasePath, CString sLot);
 
+	int GetStripNum();
 	void SetMasterPanelInfo(); // for DTS
 	BOOL LoadCadAlignMkPos();
 	BOOL LoadCad2PntAlignMkPos(CString sPath);

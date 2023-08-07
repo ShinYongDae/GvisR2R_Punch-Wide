@@ -3577,7 +3577,17 @@ void  CGvisR2R_PunchView::SetLotLastShot()
 
 BOOL CGvisR2R_PunchView::IsMkStrip(int nStripIdx)
 {
-	if (!m_pDlgMenu01 || nStripIdx < 1 || nStripIdx > MAX_STRIP_NUM)
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	if (pView->m_mgrReelmap)
+		nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+	else
+		nMaxStrip = MAX_STRIP;
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
+	if (!m_pDlgMenu01 || nStripIdx < 1 || nStripIdx > nMaxStrip)
 		return TRUE;
 
 	return (m_pDlgMenu01->GetChkStrip(nStripIdx - 1));

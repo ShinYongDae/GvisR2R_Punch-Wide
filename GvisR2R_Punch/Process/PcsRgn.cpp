@@ -233,9 +233,16 @@ BOOL CPcsRgn::GetMkMatrix(int nPcsId, int &nC, int &nR)
 
 BOOL CPcsRgn::GetMkMatrix(int nPcsId, int &nStrip, int &nC, int &nR) // nStrip:0~3 , nC:0~ , nR:0~
 {
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	int nNodeX = nCol;
 	int nNodeY = nRow;
-	int nStPcsY = nNodeY / MAX_STRIP_NUM;
+	int nStPcsY = nNodeY / nMaxStrip;
 	int nRow;// , nCol;
 
 	if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS¿ë

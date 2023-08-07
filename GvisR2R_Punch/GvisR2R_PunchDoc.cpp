@@ -6378,6 +6378,17 @@ void CGvisR2R_PunchDoc::GetMkMenu01()
 	if (sPath.IsEmpty())
 		return;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	if(pView->m_mgrReelmap)
+		nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+	else
+		nMaxStrip = MAX_STRIP;
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
+
 	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Operator"), NULL, szData, sizeof(szData), sPath))
 		pDoc->WorkingInfo.LastJob.sSelUserName = pDoc->Menu01Status.Info.sOperator = CString(szData);
 	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Model"), NULL, szData, sizeof(szData), sPath))
@@ -6453,7 +6464,7 @@ void CGvisR2R_PunchDoc::GetMkMenu01()
 		pDoc->Menu01Status.YieldTot.dTotal = _ttof(szData);
 
 	int i; CString sItem;
-	for (i = 0; i < MAX_STRIP; i++)
+	for (i = 0; i < nMaxStrip; i++)
 	{
 		sItem.Format(_T("Yield Strip%d"), i);
 		if (0 < ::GetPrivateProfileString(sItem, _T("Up"), NULL, szData, sizeof(szData), sPath))

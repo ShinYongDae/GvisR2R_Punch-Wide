@@ -93,7 +93,6 @@ class CReelMap : public CWnd
 
 	void LoadConfig();
 	BOOL MakeDir();
-	BOOL MakeDir(CString sModel, CString sLayer, CString sLot);
 	BOOL MakeDirRmap();
 	BOOL MakeDirRmap(CString sModel, CString sLayer, CString sLot);
 	CString MakeDirRmapRestore();

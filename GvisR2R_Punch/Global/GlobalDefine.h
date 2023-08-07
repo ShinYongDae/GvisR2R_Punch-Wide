@@ -10,15 +10,15 @@
 #endif // _MSC_VER > 1000
 
 
-//#define TEST_MODE		1
+#define TEST_MODE		1
 
 #ifndef MAX_STRIP
-	#define MAX_STRIP				4
+	#define MAX_STRIP				6
 #endif
 
 #define MSG_BOX_PATH				_T("C:\\R2RSet\\MsgBox.exe")
 
-#define MAX_STRIP_NUM				4
+#define MAX_STRIP_NUM				6
 #define MAX_PCE_COL					100
 #define MAX_PCE_ROW					100
 
@@ -1122,23 +1122,6 @@ struct stYield
 		;
 	}
 };
-
-
-// struct stMasterInfo
-// {
-// 	double dPixelSize;
-// 	CString strMasterLocation, strCADImgPath, strCADImgBackUpPath, strTwoMetalOppLayer;
-// 	int nImageCompression;
-// 	BOOL bTwoMetalInspection;
-// 
-// 	stMasterInfo()
-// 	{
-// 		dPixelSize=0.0;
-// 		strMasterLocation=""); strCADImgPath=""); strCADImgBackUpPath=""); strTwoMetalOppLayer="");
-// 		nImageCompression=0;
-// 		bTwoMetalInspection=FALSE;
-// 	}
-// };
 
 struct stSliceIo
 {

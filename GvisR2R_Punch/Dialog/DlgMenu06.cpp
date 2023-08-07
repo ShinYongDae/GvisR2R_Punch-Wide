@@ -330,8 +330,6 @@ BOOL CDlgMenu06::OnInitDialog()
 	//}
 #endif
 
-
-
 	InitStatic();
 	InitBtn();
 
@@ -363,6 +361,8 @@ BOOL CDlgMenu06::OnInitDialog()
 	GetDlgItem(IDC_BTN_GD_RA_2)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_3)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_4)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_BTN_GD_RA_5)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_BTN_GD_RA_6)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_GD_RA_ALL)->ShowWindow(SW_HIDE);
 
 	//InitCadImg();
@@ -370,8 +370,6 @@ BOOL CDlgMenu06::OnInitDialog()
 
 	m_bTIM_DISP_MK_CNT = TRUE;
 	SetTimer(TIM_DISP_MK_CNT, 300, NULL);
-
-
 
 	GetDlgItem(IDC_STC_WORK_INFO)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STC_TOT_REEL)->ShowWindow(SW_HIDE);
@@ -415,6 +413,8 @@ BOOL CDlgMenu06::OnInitDialog()
 	GetDlgItem(IDC_CHK_MK_2)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CHK_MK_3)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CHK_MK_4)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHK_MK_7)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHK_MK_8)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BTN_MK_ALL)->ShowWindow(SW_HIDE);
 
 	GetDlgItem(IDC_STC_WK)->ShowWindow(SW_HIDE);
@@ -461,6 +461,14 @@ BOOL CDlgMenu06::OnInitDialog()
 	GetDlgItem(IDC_STC_GD_RA_4_UP)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STC_GD_RA_4_DN)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STC_GD_RA_4_ALL)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_7)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_7_UP)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_7_DN)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_7_ALL)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_8)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_8_UP)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_8_DN)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STC_GD_RA_8_ALL)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STC_GD_RA_ALL)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STC_GD_RA_ALL_UP)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STC_GD_RA_ALL_DN)->ShowWindow(SW_HIDE);
