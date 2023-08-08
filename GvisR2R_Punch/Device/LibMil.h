@@ -69,8 +69,8 @@ class CLibMil : public CWnd
 // 			MilDisplayOverlay[4],
 // 			MilGraphicContextID[4],
 // 			MilImage[4];				/* Image buffer identifier. */
-	CLibMilDisp*	MilDisplay[4];
-	CLibMilBuf*	MilImage[4];
+	CLibMilDisp* MilDisplay[4];
+	CLibMilBuf*	MilImage[4];			/* Image buffer identifier. */
 	CLibMilDraw* MilDraw[4];
 
 	HWND	UserWindowHandle[4];

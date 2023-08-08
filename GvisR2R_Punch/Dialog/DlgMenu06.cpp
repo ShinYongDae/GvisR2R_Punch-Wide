@@ -2604,15 +2604,6 @@ void CDlgMenu06::ChkUserInfo(BOOL bOn)
 	myBtn[1].SetCheck(bOn);
 }
 
-void CDlgMenu06::OnPaint() 
-{
-	CPaintDC dc(this); // device context for painting
-	
-	// TODO: Add your message handler code here
-
-	// Do not call CDialog::OnPaint() for painting messages
-}
-
 
 LRESULT CDlgMenu06::OnMyStaticRedraw(WPARAM wPara, LPARAM lPara)
 {
@@ -3465,15 +3456,22 @@ void CDlgMenu06::DispTotRatio()
 void CDlgMenu06::DispStripRatio()
 {
 	CString str;
-	int nGood=0, nBad=0, nTot=0, nStTot=0, nSum=0, nVal[2][4];
-	int nMer[4];
+	int nGood=0, nBad=0, nTot=0, nStTot=0, nSum=0, nVal[2][MAX_STRIP];
+	int nMer[MAX_STRIP];
 	int nPnl = m_nSerial - 1;
 	double dRatio=0.0;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTestInner;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	for(int i=0; i<2; i++)
 	{
-		for(int k=0; k<4; k++)
+		for(int k=0; k<MAX_STRIP; k++)
 			nVal[i][k] = 0;
 	}
 
@@ -3483,7 +3481,7 @@ void CDlgMenu06::DispStripRatio()
 	// < 스트립 별 수율 >
 	pView->m_mgrReelmap->m_pReelMapInnerUp->GetPcsNum(nGood, nBad);
 	nTot = nGood + nBad;
-	nStTot = nTot / 4;
+	nStTot = nTot / nMaxStrip;
 
 	// 상면
 	nVal[0][0] = pView->m_mgrReelmap->m_pReelMapInnerUp->GetDefStrip(0);
@@ -3525,6 +3523,29 @@ void CDlgMenu06::DispStripRatio()
 	str.Format(_T("%.1f"), dRatio);
 	myStcData[62].SetText(str); // IDC_STC_GD_RA_4_UP
 	pDoc->SetMkMenu01(_T("Yield Strip3"), _T("Up"), str);
+
+	if (nMaxStrip == 6)
+	{
+		nVal[0][4] = pView->m_mgrReelmap->m_pReelMapInnerUp->GetDefStrip(4);
+		nSum += nVal[0][4];
+		if(nTot > 0)
+			dRatio = ((double)(nStTot-nVal[0][4])/(double)nStTot) * 100.0;
+		else
+			dRatio = 0.0;
+		str.Format(_T("%.1f"), dRatio);
+		//myStcData[62].SetText(str); // IDC_STC_GD_RA_5_UP
+		pDoc->SetMkMenu01(_T("Yield Strip4"), _T("Up"), str);
+
+		nVal[0][5] = pView->m_mgrReelmap->m_pReelMapInnerUp->GetDefStrip(5);
+		nSum += nVal[0][5];
+		if(nTot > 0)
+			dRatio = ((double)(nStTot-nVal[0][5])/(double)nStTot) * 100.0;
+		else
+			dRatio = 0.0;
+		str.Format(_T("%.1f"), dRatio);
+		//myStcData[62].SetText(str); // IDC_STC_GD_RA_6_UP
+		pDoc->SetMkMenu01(_T("Yield Strip5"), _T("Up"), str);
+	}
 
 	if(nTot > 0)
 		dRatio = ((double)(nTot-nSum)/(double)nTot) * 100.0;
@@ -3582,6 +3603,29 @@ void CDlgMenu06::DispStripRatio()
 		myStcData[67].SetText(str); // IDC_STC_GD_RA_4_DN
 		pDoc->SetMkMenu01(_T("Yield Strip3"), _T("Dn"), str);
 
+		if (nMaxStrip == 6)
+		{
+			nVal[1][4] = pView->m_mgrReelmap->m_pReelMapInnerDn->GetDefStrip(4);
+			nSum += nVal[1][4];
+			if(nTot > 0)
+				dRatio = ((double)(nStTot-nVal[1][4])/(double)nStTot) * 100.0;
+			else
+				dRatio = 0.0;
+			str.Format(_T("%.1f"), dRatio);
+			//myStcData[67].SetText(str); // IDC_STC_GD_RA_5_DN
+			pDoc->SetMkMenu01(_T("Yield Strip4"), _T("Dn"), str);
+
+			nVal[1][5] = pView->m_mgrReelmap->m_pReelMapInnerDn->GetDefStrip(5);
+			nSum += nVal[1][5];
+			if(nTot > 0)
+				dRatio = ((double)(nStTot-nVal[1][5])/(double)nStTot) * 100.0;
+			else
+				dRatio = 0.0;
+			str.Format(_T("%.1f"), dRatio);
+			//myStcData[67].SetText(str); // IDC_STC_GD_RA_6_DN
+			pDoc->SetMkMenu01(_T("Yield Strip5"), _T("Dn"), str);
+		}
+
 		if(nTot > 0)
 			dRatio = ((double)(nTot-nSum)/(double)nTot) * 100.0;
 		else
@@ -3635,6 +3679,29 @@ void CDlgMenu06::DispStripRatio()
 		str.Format(_T("%.1f"), dRatio);
 		myStcData[72].SetText(str); // IDC_STC_GD_RA_4_ALL
 		pDoc->SetMkMenu01(_T("Yield Strip3"), _T("Total"), str);
+
+		if (nMaxStrip == 6)
+		{
+			nMer[4] = pView->m_mgrReelmap->m_pReelMapInnerAllUp->GetDefStrip(4);
+			nSum += nMer[4];
+			if(nTot > 0)
+				dRatio = ((double)(nStTot-nMer[4])/(double)nStTot) * 100.0;
+			else
+				dRatio = 0.0;
+			str.Format(_T("%.1f"), dRatio);
+			//myStcData[72].SetText(str); // IDC_STC_GD_RA_5_ALL
+			pDoc->SetMkMenu01(_T("Yield Strip4"), _T("Total"), str);
+
+			nMer[5] = pView->m_mgrReelmap->m_pReelMapInnerAllUp->GetDefStrip(5);
+			nSum += nMer[5];
+			if(nTot > 0)
+				dRatio = ((double)(nStTot-nMer[5])/(double)nStTot) * 100.0;
+			else
+				dRatio = 0.0;
+			str.Format(_T("%.1f"), dRatio);
+			//myStcData[72].SetText(str); // IDC_STC_GD_RA_6_ALL
+			pDoc->SetMkMenu01(_T("Yield Strip5"), _T("Total"), str);
+		}
 
 		if(nTot > 0)
 			dRatio = ((double)(nTot-nSum)/(double)nTot) * 100.0;

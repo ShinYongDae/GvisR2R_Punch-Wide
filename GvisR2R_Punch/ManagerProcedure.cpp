@@ -5506,6 +5506,13 @@ void CManagerProcedure::Mk2PtElecChk()
 
 void CManagerProcedure::Mk2PtDoMarking()
 {
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	CString sRst, sMsg;
 	int a, b, nSerial, nPrevSerial;
@@ -5676,7 +5683,7 @@ void CManagerProcedure::Mk2PtDoMarking()
 
 			for (a = 0; a < 2; a++)
 			{
-				for (b = 0; b < MAX_STRIP_NUM; b++)
+				for (b = 0; b < MAX_STRIP; b++)
 				{
 					pView->m_mgrPunch->m_nMkStrip[a][b] = 0;
 					pView->m_mgrPunch->m_bRejectDone[a][b] = FALSE;

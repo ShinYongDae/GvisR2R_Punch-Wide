@@ -16,8 +16,8 @@ class CYield
 	BOOL bValid;
 	int nCol, nRow;		// Panel의 Col, Row 의 Pcs수.
 	int m_nSerial;
-	double dYield[MAX_STRIP_NUM], dYieldAll;	// 4열
-	int nTotDef[MAX_STRIP_NUM];					// 4열
+	double dYield[MAX_STRIP_NUM], dYieldAll;	// 6열
+	int nTotDef[MAX_STRIP_NUM];					// 6열
 
 	int nTot;
 	int nAllDef;

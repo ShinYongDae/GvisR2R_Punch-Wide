@@ -1931,29 +1931,6 @@ struct stStatus
 	}
 };
 
-
-// struct stAlignMark
-// {
-// 	float X1, Y1;
-// 	float X2, Y2;
-// 
-// 	stAlignMark()
-// 	{
-// 		X1=0.0; Y1=0.0;
-// 		X2=0.0; Y2=0.0;
-// 	}
-// };
-
-// struct stPieceMark
-// {
-// 	float X, Y;
-// 
-// 	stPieceMark()
-// 	{
-// 		X=0.0; Y=0.0;
-// 	}
-// };
-
 struct stMpeIoWrite
 {
 	int nIdx;

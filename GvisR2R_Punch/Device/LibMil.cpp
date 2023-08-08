@@ -35,10 +35,10 @@ CLibMil::CLibMil(int nIdx, MIL_ID &MilSysId, HWND *hCtrl, int nCamWidth, int nCa
 	MilApplication = M_NULL;			/* Application identifier.		*/
 	MilSystem = MilSysId;				/* System identifier.			*/
 	MilImageCam = M_NULL;			    /* Image buffer identifier.			*/
-	MilImageCamRotate = M_NULL;			    /* Image buffer identifier.			*/
-	MilImageCamFlip = M_NULL;			    /* Image buffer identifier.			*/
+	MilImageCamRotate = M_NULL;			/* Image buffer identifier.			*/
+	MilImageCamFlip = M_NULL;			/* Image buffer identifier.			*/
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i < 4; i++)
 	{
 		MilDisplay[i] = NULL;			/* Display identifier.			*/
 		MilImage[i] = NULL;				/* Image buffer identifier.		*/
@@ -102,7 +102,7 @@ CLibMil::CLibMil(int nIdx, int *nPixelMode, HWND *hCtrl, CWnd* pParent /*=NULL*/
 	MilImageCamRotate = M_NULL;				/* Image buffer identifier.		*/
 	MilImageCamFlip = M_NULL;				/* Image buffer identifier.		*/
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i < 4; i++)
 	{
 		MilDisplay[i] = NULL;			    /* Display identifier.		*/
 		MilImage[i] = NULL;					/* Image buffer identifier.	*/
@@ -142,21 +142,6 @@ CLibMil::CLibMil(int nIdx, int *nPixelMode, HWND *hCtrl, CWnd* pParent /*=NULL*/
 CLibMil::~CLibMil()
 {
 // 	/* Remove the MIL buffer from the display. */
-// 	MdispSelect(MilDisplay[0], M_NULL);
-// 	MdispSelect(MilDisplay[1], M_NULL);
-// 	MdispSelect(MilDisplay[2], M_NULL);
-// 	MdispSelect(MilDisplay[3], M_NULL);
-// 	
-// 	/* Free allocated objects. */
-// 	MbufFree(MilImage[0]);
-// 	MbufFree(MilImage[1]);
-// 	MbufFree(MilImage[2]);
-// 	MbufFree(MilImage[3]);
-// 	MdispFree(MilDisplay[0]);
-// 	MdispFree(MilDisplay[1]);
-// 	MdispFree(MilDisplay[2]);
-// 	MdispFree(MilDisplay[3]);
-
 	if(MilImageCamFlip)
 	{
 		MbufFree(MilImageCamFlip);
@@ -176,7 +161,7 @@ CLibMil::~CLibMil()
 	}
 
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i < 4; i++)
 	{
 		if(MilDraw[i])
 		{
@@ -222,31 +207,6 @@ int CLibMil::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	
 	// TODO: Add your specialized creation code here
-
-// 	/* Allocate a default MIL application, system, display and image. */
-// 	MappAllocDefault(M_COMPLETE, &MilApplication, &MilSystem, &MilDisplay, M_NULL, &MilImage);
-// 
-// 	/* If no allocation errors. */
-// 	if (MappGetError(M_GLOBAL, M_NULL))
-// 	{
-// 		TRACE("System allocation error !\n\n");
-// 		return -1;
-// 	}
-// 
-// 	/* Perform graphic operations in the display image. */ 
-// 	MgraColor(M_DEFAULT, 0xF0);
-// 	MgraFont(M_DEFAULT, M_FONT_DEFAULT_LARGE);
-// 	MgraText(M_DEFAULT, MilImage, 160L, 230L, MIL_TEXT(" Welcome to MIL !!! "));
-// 	MgraColor(M_DEFAULT, 0xC0);
-// 	MgraRect(M_DEFAULT, MilImage, 100L, 150L, 530L, 340L);
-// 	MgraRect(M_DEFAULT, MilImage, 120L, 170L, 510L, 320L);
-// 	MgraRect(M_DEFAULT, MilImage, 140L, 190L, 490L, 300L);
-// 
-// 	/* Print a message. */
-// 	TRACE("\nSYSTEM ALLOCATION:\n");
-// 	TRACE("------------------\n\n");
-// 	TRACE("System allocation successful.\n\n");
-// 	TRACE("     \"Welcome to MIL !!!\"\n\n");
 #ifdef USE_IRAYPLE
 	MbufAllocColor(MilSystem, 1, m_nCamWidth, m_nCamHeight, 8L + M_UNSIGNED, M_IMAGE + M_DISP + M_PROC, &MilImageCam);
 	MbufClear(MilImageCam, 0);
@@ -263,7 +223,7 @@ int CLibMil::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	MbufClear(MilImageCamFlip, 0);
 #endif
 
-	for(int i=0; i<4; i++)
+	for(int i=0; i < 4; i++)
 	{
 		if(UserWindowHandle[i])
 		{
@@ -280,58 +240,6 @@ int CLibMil::OnCreate(LPCREATESTRUCT lpCreateStruct)
 			MilDraw[i] = new CLibMilDraw(MilSystem, MilDisplay[i]);
 		}
 	}
-
-// 	if(UserWindowHandle[0])
-// 		MdispAlloc(MilSystem, M_DEFAULT, _T("M_DEFAULT"), M_DEFAULT, &MilDisplay[0]);
-// 	if(UserWindowHandle[1])
-// 		MdispAlloc(MilSystem, M_DEFAULT, _T("M_DEFAULT"), M_DEFAULT, &MilDisplay[1]);
-// 	if(UserWindowHandle[2])
-// 		MdispAlloc(MilSystem, M_DEFAULT, _T("M_DEFAULT"), M_DEFAULT, &MilDisplay[2]);
-// 	if(UserWindowHandle[3])
-// 		MdispAlloc(MilSystem, M_DEFAULT, _T("M_DEFAULT"), M_DEFAULT, &MilDisplay[3]);
-
-//	MbufAlloc2d(MilSystem, 640, 480, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage);
-//	MbufAllocColor(MilSystem, 3, 640, 480, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage);
-
-// 	if(UserWindowHandle[0])
-// 		MbufAllocColor(MilSystem, 3, 640, 480, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[0]);
-// 	if(UserWindowHandle[1])
-// 		MbufAllocColor(MilSystem, 3, 640, 480, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[1]);
-// 	if(UserWindowHandle[2])
-// 		MbufAllocColor(MilSystem, 3, 640, 480, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[2]);
-// 	if(UserWindowHandle[3])
-// 		MbufAllocColor(MilSystem, 3, 640, 480, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[3]);
-
-	//if(m_nPixelMode[0]==8)
-	//	MbufAllocColor(MilSystem, 1, 1280, 1024, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[0]);
-	//else
-	//	MbufAllocColor(MilSystem, 3, 1280, 1024, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[0]);
-
-	//if(m_nPixelMode[1]==8)
-	//	MbufAllocColor(MilSystem, 1, 1280, 1024, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[1]);
-	//else
-	//	MbufAllocColor(MilSystem, 3, 1280, 1024, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC, &MilImage[1]);
-
-	/* Clear the buffer. */
-// 	if(UserWindowHandle[0])
-// 		MbufClear(MilImage[0], 0);
-// 	if(UserWindowHandle[1])
-// 		MbufClear(MilImage[1], 0);
-// 	if(UserWindowHandle[2])
-// 		MbufClear(MilImage[2], 0);
-// 	if(UserWindowHandle[3])
-// 		MbufClear(MilImage[3], 0);
-
-	/* Select the MIL buffer to be displayed in the user-specified window. */
-// 	if(UserWindowHandle[0])
-// 		MdispSelectWindow(MilDisplay[0], MilImage[0], UserWindowHandle[0]);
-// 	if(UserWindowHandle[1])
-// 		MdispSelectWindow(MilDisplay[1], MilImage[1], UserWindowHandle[1]);
-// 	if(UserWindowHandle[2])
-// 		MdispSelectWindow(MilDisplay[2], MilImage[2], UserWindowHandle[2]);
-// 	if(UserWindowHandle[3])
-// 		MdispSelectWindow(MilDisplay[3], MilImage[3], UserWindowHandle[3]);
-	
 
 	return 0;
 }

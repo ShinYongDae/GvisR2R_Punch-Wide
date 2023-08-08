@@ -24,8 +24,8 @@ class CDlgMenu05 : public CDialog
 
 	//CString m_strDefectTitle[MAX_DEF];
 
-	int m_nDefStrip[4], m_nDefPerStrip[4][MAX_DEF];
-	int m_nStripOut[4], m_nTotStOut;
+	int m_nDefStrip[MAX_STRIP], m_nDefPerStrip[MAX_STRIP][MAX_DEF];
+	int m_nStripOut[MAX_STRIP], m_nTotStOut;
 	int m_nEntireAddedDefect[MAX_DEF];
 // 	int m_nArrayDefNum[MAX_DEF][MAX_DEF];
 

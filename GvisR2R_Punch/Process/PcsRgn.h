@@ -26,7 +26,7 @@ public:
 	int nCol, nRow;
 	CRect rtFrm;
 	CRect *pPcs;
-	CfPoint *pCenter, *pMkPnt[2]; // [Cam]
+	CfPoint *pCenter, *pCamMkPos, *pMkPnt[2]; // [Cam]
 
 // Operations
 public:

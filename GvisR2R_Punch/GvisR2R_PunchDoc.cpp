@@ -163,7 +163,7 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 
 	for (i = 0; i < 3; i++)
 	{
-		for (k = 0; k < 5; k++)
+		for (k = 0; k < 7; k++)
 		{
 			m_dStripRatio[i][k] = 0.0;				// [3]: Up/Dn/ALL , [5]: Strip 0~3, ALL
 			m_dTotRatio[i][k];						// [3]: Up/Dn/ALL , [5]: Strip 0~3, ALL

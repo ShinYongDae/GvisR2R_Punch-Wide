@@ -46,14 +46,21 @@ void CYield::SetDef(int nSerial, int *pDef)	// int pDef[4];
 		return;
 	}
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	if(nSerial>m_nSerial)
 	{
 		bValid = TRUE;
 		m_nSerial = nSerial;
 		nTot = nCol*nRow*m_nSerial;
 		nAllDef=0;
-		int nTotSt = nTot/ MAX_STRIP_NUM;
-		for(int i=0; i<MAX_STRIP_NUM; i++)
+		int nTotSt = nTot / nMaxStrip;
+		for(int i=0; i < nMaxStrip; i++)
 		{
 			nTotDef[i] += pDef[i];
 			dYield[i] = 100.0*(double)(nTotSt-nTotDef[i])/(double)nTotSt;
@@ -95,6 +102,12 @@ int CYield::GetGood()
 
 int CYield::GetGood(int nStrip)
 {
-	int nTotSt = nTot/ MAX_STRIP_NUM;
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+	int nTotSt = nTot / nMaxStrip;
 	return ((int)(nTotSt-nTotDef[nStrip]));
 }

@@ -2292,7 +2292,7 @@ BOOL CDlgMenu05::ReloadReelmap()
 	m_nNodeY = nNodeY;
 
 
-	int nDefStrip[4];
+	int nDefStrip[MAX_STRIP];
 	int nPnl, nRow, nCol, nDefCode, i, k, nStrip, nC, nR;
 	//char sep[] = {",/;\r\n\t"};
 	TCHAR sep[] = { _T(",/;\r\n\t") };
@@ -2689,13 +2689,20 @@ CString CDlgMenu05::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN,
 	//CString sItsCode = pView->m_mgrReelmap->m_sItsCode;
 	//CString sPath = pDoc->GetItsPath(nSerial, nLayer);
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	CString str = _T(""), sSide = _T(""), sTemp = _T(""), sItsData = _T("");
 	//CString sItsCode = pDoc->WorkingInfo.LastJob.sEngItsCode;
 	CString sItsCode = m_sLot;
 
 	int nNodeX = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nCol;
 	int nNodeY = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nRow;
-	int nStripY = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nRow / 4; // Strip(1~4);
+	int nStripY = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nRow / nMaxStrip; // Strip(1~4or6);
 	int nIdx = pView->m_mgrReelmap->GetPcrIdx(nSerial);
 
 	int nTotDefPcs = 0;

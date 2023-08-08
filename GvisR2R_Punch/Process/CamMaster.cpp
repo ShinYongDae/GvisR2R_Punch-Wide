@@ -141,7 +141,7 @@ BOOL CCamMaster::LoadMstInfo()
 
 		LoadPcsImg();
 		LoadCadImg();
-		LoadCadAlignMkPos(); //.pch
+		LoadCadAlignMkPos(); //.pch (m_stPcsMk[MAX_PCS])	// Ä·¸¶½ºÅÍ¿¡¼­ °¡Á®¿Â ¸¶Å· ÀÎµ¦½º ÁÂÇ¥.
 
 		//InitOrderingMk();
 
@@ -2087,6 +2087,11 @@ void CCamMaster::SetCad2PntAlignMkPos()
 				MstPnl.Strip[k].Piece[j][i].MkPos.dY = m_stPcsMk[nPcsIdx].Y; // [mm]
 				MstPnl.Piece[nPcsIdx].MkPos.dX = m_stPcsMk[nPcsIdx].X; // [mm]
 				MstPnl.Piece[nPcsIdx].MkPos.dY = m_stPcsMk[nPcsIdx].Y; // [mm]
+				if (m_pPcsRgn)
+				{
+					m_pPcsRgn->pCamMkPos[nPcsIdx].x = m_stPcsMk[nPcsIdx].X; // [mm]
+					m_pPcsRgn->pCamMkPos[nPcsIdx].y = m_stPcsMk[nPcsIdx].Y; // [mm]
+				}
 			}
 		}
 	}
@@ -2128,6 +2133,11 @@ void CCamMaster::SetCad4PntAlignMkPos()
 				MstPnl.Strip[k].Piece[j][i].MkPos.dY = m_stPcsMk[nPcsIdx].Y; // [mm]
 				MstPnl.Piece[nPcsIdx].MkPos.dX = m_stPcsMk[nPcsIdx].X; // [mm]
 				MstPnl.Piece[nPcsIdx].MkPos.dY = m_stPcsMk[nPcsIdx].Y; // [mm]
+				if (m_pPcsRgn)
+				{
+					m_pPcsRgn->pCamMkPos[nPcsIdx].x = m_stPcsMk[nPcsIdx].X; // [mm]
+					m_pPcsRgn->pCamMkPos[nPcsIdx].y = m_stPcsMk[nPcsIdx].Y; // [mm]
+				}
 			}
 		}
 	}

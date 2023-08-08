@@ -3549,8 +3549,8 @@ CfPoint CManagerReelmap::GetMkPnt(int nMkPcs)
 	ptPnt.y = -1.0;
 
 #ifndef TEST_MODE
-	if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)
-		ptPnt = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt(nMkPcs); // Cam0의 Mk 포인트.
+	if (m_Master[0].m_pPcsRgn)
+		ptPnt = m_Master[0].m_pPcsRgn->GetMkPnt(nMkPcs); // Cam0의 Mk 포인트.
 #else
 	ptPnt.x = 1.0;
 	ptPnt.y = 1.0;
@@ -3616,9 +3616,15 @@ CfPoint CManagerReelmap::GetMkPnt(int nSerial, int nMkPcs) // pcr 시리얼, pcr 불
 
 int CManagerReelmap::GetMkStripIdx(int nDefPcsId) // 0 : Fail , 1~4 : Strip Idx
 {
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = m_Master[0].GetStripNum(); // 총 스트립의 갯수
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
 	int nNodeX = m_Master[0].m_pPcsRgn->nCol;
 	int nNodeY = m_Master[0].m_pPcsRgn->nRow;
-	int nStripY = int(nNodeY / 4);
+	int nStripY = int(nNodeY / nMaxStrip);
 	int nStripIdx = 0;
 
 #ifndef TEST_MODE
@@ -3640,11 +3646,17 @@ int CManagerReelmap::GetMkStripIdx(int nDefPcsId) // 0 : Fail , 1~4 : Strip Idx
 
 int CManagerReelmap::GetMkStripIdx(int nSerial, int nMkPcs) // 0 : Fail , 1~4 : Strip Idx
 {
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = m_Master[0].GetStripNum(); // 총 스트립의 갯수
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	int nIdx = GetPcrIdx0(nSerial);
 	int nNodeX = m_Master[0].m_pPcsRgn->nCol;
 	int nNodeY = m_Master[0].m_pPcsRgn->nRow;
-	int nStripY = int(nNodeY / MAX_STRIP_NUM);
+	int nStripY = int(nNodeY / nMaxStrip);
 	int nStripIdx = 0;
 
 #ifndef TEST_MODE
@@ -3769,11 +3781,18 @@ int CManagerReelmap::GetMkStripIdxIts(int nSerial, int nMkPcs) // 0 : Fail , 1~4
 		return 0;
 	}
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = m_Master[0].GetStripNum(); // 총 스트립의 갯수
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	int nIdx = GetPcrIdx0(nSerial);
 	int nNodeX = m_Master[0].m_pPcsRgn->nCol;
 	int nNodeY = m_Master[0].m_pPcsRgn->nRow;
-	int nStripY = int(nNodeY / MAX_STRIP_NUM);
+	int nStripY = int(nNodeY / nMaxStrip);
 	int nStripIdx = 0;
 
 #ifndef TEST_MODE
@@ -3833,6 +3852,13 @@ BOOL CManagerReelmap::IsFixPcsUp(int nSerial)
 	if (!m_pReelMapUp)
 		return FALSE;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = m_Master[0].GetStripNum(); // 총 스트립의 갯수
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	CString sMsg = _T(""), str = _T("");
 	int nStrip, pCol[2500], pRow[2500], nTot, nRepeat;
 	BOOL bCont = FALSE;
@@ -3841,7 +3867,7 @@ BOOL CManagerReelmap::IsFixPcsUp(int nSerial)
 	{
 		int nNodeX = m_Master[0].m_pPcsRgn->nCol;
 		int nNodeY = m_Master[0].m_pPcsRgn->nRow;
-		int nStPcsY = nNodeY / MAX_STRIP_NUM;
+		int nStPcsY = nNodeY / nMaxStrip;
 
 		if (bCont)
 			sMsg.Format(_T("상면 연속 고정불량 발생"));
@@ -3888,6 +3914,13 @@ BOOL CManagerReelmap::IsFixPcsDn(int nSerial)
 	if (!m_pReelMapUp)
 		return FALSE;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = m_Master[0].GetStripNum(); // 총 스트립의 갯수
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	CString sMsg = _T(""), str = _T("");
 	int nStrip, pCol[2500], pRow[2500], nTot, nRepeat;
 	BOOL bCont = FALSE;
@@ -3896,7 +3929,7 @@ BOOL CManagerReelmap::IsFixPcsDn(int nSerial)
 	{
 		int nNodeX = m_Master[0].m_pPcsRgn->nCol;
 		int nNodeY = m_Master[0].m_pPcsRgn->nRow;
-		int nStPcsY = nNodeY / MAX_STRIP_NUM;
+		int nStPcsY = nNodeY / nMaxStrip;
 
 		if (bCont)
 			sMsg.Format(_T("하면 연속 고정불량 발생"));

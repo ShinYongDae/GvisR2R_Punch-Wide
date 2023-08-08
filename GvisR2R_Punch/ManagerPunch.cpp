@@ -100,7 +100,7 @@ CManagerPunch::CManagerPunch(CWnd* pParent /*=NULL*/)
 
 	for (int a = 0; a < 2; a++)
 	{
-		for (int b = 0; b < 4; b++)
+		for (int b = 0; b < MAX_STRIP; b++)
 		{
 			m_nMkStrip[a][b] = 0;
 			m_bRejectDone[a][b] = FALSE;
@@ -3032,10 +3032,17 @@ void CManagerPunch::DoMark0()
 	if (!m_bAuto)
 		return;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	int nSerial, nIdx, nErrCode, nRtn;
 	CfPoint ptPnt;
 	CString sMsg;
-	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / MAX_STRIP_NUM) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
+	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / nMaxStrip) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
 	int nStripOut = int(dStripOut);
 	if (dStripOut > nStripOut)
 		nStripOut++;			// ½ºÆ®¸³ ¾çÆó ºñÀ²
@@ -3598,10 +3605,17 @@ void CManagerPunch::DoMark1()
 	if (!m_bAuto)
 		return;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	int nSerial, nIdx, nErrCode, nRtn;
 	CfPoint ptPnt;
 	CString sMsg;
-	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / MAX_STRIP_NUM) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
+	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / nMaxStrip) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
 	int nStripOut = int(dStripOut);
 	if (dStripOut > nStripOut)
 		nStripOut++;
@@ -4637,10 +4651,17 @@ void CManagerPunch::DoMark0Its()
 	if (!m_bAuto)
 		return;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	int nSerial, nIdx, nErrCode, nRtn;
 	CfPoint ptPnt;
 	CString sMsg;
-	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / MAX_STRIP_NUM) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
+	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / nMaxStrip) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
 	int nStripOut = int(dStripOut);
 	if (dStripOut > nStripOut)
 		nStripOut++;			// ½ºÆ®¸³ ¾çÆó ºñÀ²
@@ -5197,11 +5218,18 @@ void CManagerPunch::DoMark1Its()
 	if (!m_bAuto)
 		return;
 
+	int nMaxStrip;
+#ifdef USE_CAM_MASTER
+	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+#else
+	nMaxStrip = MAX_STRIP;
+#endif
+
 	//BOOL bOn;
 	int nSerial, nIdx, nErrCode, nRtn;
 	CfPoint ptPnt;
 	CString sMsg;
-	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / MAX_STRIP_NUM) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
+	double dStripOut = (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs / nMaxStrip) * _tstof(pDoc->WorkingInfo.LastJob.sStripOutRatio) / 100.0;
 	int nStripOut = int(dStripOut);
 	if (dStripOut > nStripOut)
 		nStripOut++;
@@ -5785,14 +5813,11 @@ void CManagerPunch::DoReject0()
 	case 0:
 		if (IsNoMk())
 			pView->ShowLive();
-		m_nMkStrip[0][0] = 0;
-		m_nMkStrip[0][1] = 0;
-		m_nMkStrip[0][2] = 0;
-		m_nMkStrip[0][3] = 0;
-		m_bRejectDone[0][0] = FALSE;
-		m_bRejectDone[0][1] = FALSE;
-		m_bRejectDone[0][2] = FALSE;
-		m_bRejectDone[0][3] = FALSE;
+		for (nIdx = 0; nIdx < MAX_STRIP; nIdx++)
+		{
+			m_nMkStrip[0][nIdx] = 0;
+			m_bRejectDone[0][nIdx] = FALSE;
+		}
 		m_nStepMk[2]++;
 		break;
 	case 1:
@@ -6009,10 +6034,8 @@ void CManagerPunch::DoReject0()
 			m_bTHREAD_MK[2] = FALSE;
 			m_bDoneMk[0] = TRUE;
 			m_nStepMk[2] = 0;
-			m_nMkStrip[0][0] = 0;
-			m_nMkStrip[0][1] = 0;
-			m_nMkStrip[0][2] = 0;
-			m_nMkStrip[0][3] = 0;
+			for(nIdx=0; nIdx<MAX_STRIP; nIdx++)
+				m_nMkStrip[0][nIdx] = 0;
 		}
 		break;
 	}
@@ -6050,14 +6073,11 @@ void CManagerPunch::DoReject1()
 	case 0:
 		if (IsNoMk())
 			pView->ShowLive();
-		m_nMkStrip[1][0] = 0;
-		m_nMkStrip[1][1] = 0;
-		m_nMkStrip[1][2] = 0;
-		m_nMkStrip[1][3] = 0;
-		m_bRejectDone[1][0] = FALSE;
-		m_bRejectDone[1][1] = FALSE;
-		m_bRejectDone[1][2] = FALSE;
-		m_bRejectDone[1][3] = FALSE;
+		for (nIdx = 0; nIdx < MAX_STRIP; nIdx++)
+		{
+			m_nMkStrip[1][nIdx] = 0;
+			m_bRejectDone[1][nIdx] = FALSE;
+		}
 		m_nStepMk[3]++;
 		break;
 	case 1:
@@ -6273,10 +6293,8 @@ void CManagerPunch::DoReject1()
 			m_bTHREAD_MK[3] = FALSE;
 			m_bDoneMk[1] = TRUE;
 			m_nStepMk[3] = 0;
-			m_nMkStrip[1][0] = 0;
-			m_nMkStrip[1][1] = 0;
-			m_nMkStrip[1][2] = 0;
-			m_nMkStrip[1][3] = 0;
+			for (nIdx = 0; nIdx < MAX_STRIP; nIdx++)
+				m_nMkStrip[1][nIdx] = 0;
 		}
 		break;
 	}
@@ -10869,7 +10887,7 @@ void CManagerPunch::InitAuto(BOOL bInit)
 
 	for (a = 0; a < 2; a++)
 	{
-		for (b = 0; b < 4; b++)
+		for (b = 0; b < MAX_STRIP; b++)
 		{
 			m_nMkStrip[a][b] = 0;
 			m_bRejectDone[a][b] = FALSE;

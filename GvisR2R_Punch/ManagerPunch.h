@@ -75,7 +75,7 @@ public:
 	BOOL m_bSwStopNow;
 	BOOL m_bSwRun, m_bSwRunF;
 	int m_nMkStrip[2][MAX_STRIP_NUM]; // [nCam][nStrip] - [좌/우][] : 스트립에 펀칭한 피스 수 count
-	BOOL m_bRejectDone[2][MAX_STRIP_NUM]; // Shot[2], Strip[4] - [좌/우][] : 스트립에 펀칭한 피스 수 count가 스트립 폐기 설정수 완료 여부 
+	BOOL m_bRejectDone[2][MAX_STRIP_NUM]; // Shot[2], Strip[6] - [좌/우][] : 스트립에 펀칭한 피스 수 count가 스트립 폐기 설정수 완료 여부 
 	double m_dEnc[MAX_AXIS], m_dTarget[MAX_AXIS];
 	int m_nStepElecChk;
 	BOOL m_bCollision[2], m_bPriority[4];

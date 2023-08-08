@@ -236,7 +236,6 @@ protected:
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnChkUserInfo();
-	afx_msg void OnPaint();
 	//afx_msg void OnChkTpStop();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);// (UINT nIDEvent);
 	afx_msg void OnChkEjectBuffer();

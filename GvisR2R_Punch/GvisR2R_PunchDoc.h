@@ -86,8 +86,8 @@ public:
 	double m_dBadRatio[3], m_dGoodRatio[3];		// [0]: Up, [1]: Dn, [2]: Total
 	int m_nTestNum[3];							// [0]: Up, [1]: Dn, [2]: Total
 	CString m_sLotStTime, m_sLotEdTime, m_sLotRunTime;
-	double m_dStripRatio[3][5];					// [3]: Up/Dn/ALL , [5]: Strip 1~4 , ALL
-	double m_dTotRatio[3][5];					// [3]: Up/Dn/ALL , [5]: Strip 1~4 , ALL
+	double m_dStripRatio[3][7];					// [3]: Up/Dn/ALL , [7]: Strip 1~6 , ALL
+	double m_dTotRatio[3][7];					// [3]: Up/Dn/ALL , [7]: Strip 1~6 , ALL
 	int m_nDef[MAX_DEF];						// [3]: Up/Dn/ALL
 	double m_dMkBuffCurrPos;
 

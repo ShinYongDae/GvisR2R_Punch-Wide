@@ -24,6 +24,7 @@ CPcsRgn::CPcsRgn(int nPcs)
 {
 	pPcs = NULL;
 	pCenter = NULL;
+	pCamMkPos = NULL;
 	pMkPnt[0] = NULL;
 	pMkPnt[1] = NULL;
 	nTotPcs = nPcs;
@@ -31,6 +32,7 @@ CPcsRgn::CPcsRgn(int nPcs)
 	{
 		pPcs = new CRect[nPcs];
 		pCenter = new CfPoint[nPcs];
+		pCamMkPos = new CfPoint[nPcs];
 		pMkPnt[0] = new CfPoint[nPcs];
 		pMkPnt[1] = new CfPoint[nPcs];
 	}
@@ -58,6 +60,11 @@ CPcsRgn::~CPcsRgn()
 	{
 		delete[] pCenter;
 		pCenter = NULL;
+	}
+	if (pCamMkPos)
+	{
+		delete[] pCamMkPos;
+		pCamMkPos = NULL;
 	}
 	if(pMkPnt[0])
 	{
@@ -93,8 +100,10 @@ void CPcsRgn::SetMkPnt(int nCam)
 		{
 			for(nR=0; nR<nRow; nR++)
 			{
-				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X;
-				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y;
+				//ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X;
+				//ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y;
+				ptRef.x = pCamMkPos[idx].x;
+				ptRef.y = pCamMkPos[idx].y;
 
 				pMkPnt[0][idx].x = ptRef.x + m_ptPinPos[0].x;
 				pMkPnt[0][idx].y = ptRef.y + m_ptPinPos[0].y;
@@ -111,8 +120,10 @@ void CPcsRgn::SetMkPnt(int nCam)
 		{
 			for(nR=0; nR<nRow; nR++)
 			{
-				ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X;
-				ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y;
+				//ptRef.x = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].X;
+				//ptRef.y = pView->m_mgrReelmap->m_Master[0].m_stPcsMk[idx].Y;
+				ptRef.x = pCamMkPos[idx].x;
+				ptRef.y = pCamMkPos[idx].y;
 
 				pMkPnt[nCam][idx].x = ptRef.x + m_ptPinPos[nCam].x;
 				pMkPnt[nCam][idx].y = ptRef.y + m_ptPinPos[nCam].y;
