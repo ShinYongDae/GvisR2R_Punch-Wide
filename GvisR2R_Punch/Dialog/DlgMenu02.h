@@ -58,7 +58,6 @@ class CDlgMenu02 : public CDialog
 	CMyLabel myStcTitle2[MAX_MENU02_STC_DUO];
 	CMyStatic myStcData2[MAX_MENU02_STC_DATA_DUO];
 
-	//CMyGL *m_pPcsGL;//, *m_pPinGL;
 	BOOL m_bLoadImg, m_bLockTimer;
 
 	BOOL m_bTIM_LIGHT_UP, m_bTIM_LIGHT_DN, m_bTIM_LIGHT_UP2, m_bTIM_LIGHT_DN2, m_bTIM_BUF_ENC;
@@ -78,7 +77,6 @@ class CDlgMenu02 : public CDialog
 	void InitStcTitle();
 	void InitStcData();
 	void InitBtn();
-//	void InitGL();
 	void InitSlider();
 	void DispBufEnc();
 	void DispAxisPos();
@@ -96,8 +94,6 @@ class CDlgMenu02 : public CDialog
 	void ShowDlg(int nID);
 	
 	double CalcCameraPixelSize(int nCamId);
-// 	void InitResMeas();
-// 	void SetResMeas(int nStep);
 
 // Construction
 public:
@@ -107,11 +103,6 @@ public:
 	CRect* m_pRect;
 	int m_nJogSpd;
 	int m_nBtnAlignCam0Pos, m_nBtnAlignCam1Pos;
-	//double m_dMkFdOffsetX[2][4], m_dMkFdOffsetY[2][4];	// 2Cam / 4Point Align
-	//double m_dAoiUpFdOffsetX, m_dAoiUpFdOffsetY;
-	//double m_dAoiDnFdOffsetX, m_dAoiDnFdOffsetY;
-	//double m_dEngFdOffsetX, m_dEngFdOffsetY;
- 	//BOOL m_bMkDnSolOff;
 
 	double m_dOneShotRemainLen;
 
@@ -172,27 +163,18 @@ public:
 	void SwMarking();
 	void SwMarking2();
 
-//	void SetMkPos(CfPoint ptOfst);
 	void SetMkCurPos(int nCam);
 	void SetMkDlyOff(int nCam, int mSec=WAIT_MARKING);
 	void SetPinPos(int nCam, CfPoint ptPnt);
-//	void DispLocalSpec();
-// 	void SetPcsOffset();
 	void ChgModel();
 	void ChgModelUp();
 	void ChgModelDn();
-
-// 	void PinSave();
 	void ResetMotion(int nMsId);
-
 	BOOL ShowKeypad(int nCtlID, CPoint ptSt=(0, 0), int nDir=TO_NONE);
-
 	void ResetMkTestBtn();
 	void InitCadImg(); // for PinImg, AlignImg
-
 	void Grab2PntAlign();
 	void Grab4PntAlign();
-
 	void Grab2PntAlign2();
 	void Grab4PntAlign2();
 

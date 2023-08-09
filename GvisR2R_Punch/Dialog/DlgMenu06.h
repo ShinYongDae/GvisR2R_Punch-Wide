@@ -110,7 +110,6 @@ public:
 	void SetTitleStcDef();
 
 	void SelMap(int nSel);
-	//BOOL OpenReelmap(CString sPath); // for Test
 	void OpenReelmap(int nSelRmap);
 	BOOL DispReelmap(int nSerial, BOOL bDumy=FALSE);
 	void DispMain(CString sMsg, COLORREF rgb=RGB_GREEN);
@@ -143,7 +142,6 @@ public:
 	void ClrDefImg();
 	void ClrDefImgUp();
 	void ClrDefImgDn();
-//	void ClrRmap();
 	void SetPnlNum();
 	void SetPnlDefNum();
 	void ClrInfo();
@@ -216,7 +214,6 @@ protected:
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnChkUserInfo();
-	//afx_msg void OnChkTpStop();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);// (UINT nIDEvent);
 	afx_msg void OnChkEjectBuffer();
 	afx_msg void OnChkReview();
@@ -236,15 +233,6 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 public:
-	//afx_msg void OnBnClickedChkMk1();
-	//afx_msg void OnBnClickedChkMk2();
-	//afx_msg void OnBnClickedChkMk3();
-	//afx_msg void OnBnClickedChkMk4();
-	//afx_msg void OnDoubleclickedChkMk1();
-	//afx_msg void OnDoubleclickedChkMk2();
-	//afx_msg void OnDoubleclickedChkMk3();
-	//afx_msg void OnDoubleclickedChkMk4();
-	//afx_msg void OnBnClickedChkTpStop();
 	afx_msg void OnStnClickedStcLotSrl();
 };
 

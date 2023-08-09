@@ -403,127 +403,6 @@ void CDlgMenu05::ModifyLayerData()
 	}
 }
 
-// void CDlgMenu05::ModifyLayerData()
-// {
-// 	((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->ResetContent();
-// 
-// 	CString Dir, strFileName;
-// 	Dir = pDoc->WorkingInfo.System.sPathOldFile + m_sModel + "\\" + m_sLot + "\\");
-// 
-// 	char FN[100];
-// 	sprintf(FN, "%s*.*"), Dir);
-// 
-// 	((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->Dir(0x8010, FN);
-// 	int t=0;
-// 	
-// //	"[..]"를 제거 
-// 	((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->DeleteString(0);
-// 	int nIndex = ((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->FindStringExact(-1, "[..]");
-// 	((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->DeleteString(nIndex);
-// 
-// 	int nCount  = ((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->GetCount();
-// 
-// 	CString strBuf, strBuf2;
-// 	int i;
-// 
-// 	for (i = nCount; i > 0 ; i--)
-// 	{
-// 		((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->GetText(i-1, strBuf);
-// 
-// 		if (strBuf.GetLength() < 3)
-// 			continue;
-// //		기종이름에서 "[]"를 제거 
-// 		CString strBuf2 = strBuf.Mid(1, strBuf.GetLength() - 2);
-// 		((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->InsertString(t+nCount, strBuf2);	//090211-ndy
-// 		t++;
-// 	}
-// 
-// // 	for (i = 0; i < nCount ; i++)
-// // 		((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->DeleteString(0);
-// }
-
-// CString CDlgMenu05::SearchLayerName()
-// {
-// 	CString strPanelFacePath, strPath;
-// 
-// 	strPanelFacePath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile, 
-// 											m_sModel, m_sLot, m_sLayer);
-// 
-// 	int nTemp, nFileSize, nRSize;
-// 	CString strFileData, strHeaderErrorInfo, strModel, strLayer, strLot, strTotalBadPieceNum, strMsg;
-// 	char FileD[200];
-// 	CFileFind findfile;
-// 	FILE *fp;
-// 	char *FileData;
-// 	
-// 	strPath.Format(_T("%s\\%04d.pcr"), strPanelFacePath, 1); // 첫번째 샷의 파일.
-// 
-// 	if(findfile.FindFile(strPath)) //find file.
-// 	{
-// 		strcpy(FileD, strPath);
-// 		if((fp = fopen((LPCTSTR)FileD, "r")) != NULL)
-// 		{
-// 			fseek(fp, 0, SEEK_END);
-// 			nFileSize = ftell(fp);
-// 			fseek(fp, 0, SEEK_SET);
-// 
-// 			/* Allocate space for a path name */
-// 			//FileData = (char*)malloc( nFileSize );
-// 			FileData = (char*)calloc(nFileSize+1, sizeof(char));
-// 			
-// 			nRSize = fread(FileData, sizeof(char), nFileSize, fp);
-// 			strFileData.Format(_T("%s"), FileData);
-// 			fclose(fp);
-// 			free( FileData );
-// 		}
-// 		else
-// 		{
-// 			strMsg.Format(_T("%s 위치의 파일이 오픈되지 않습니다."), strPath);
-// 			AfxMessageBox(strMsg,MB_ICONWARNING|MB_OK);
-// 			strLayer = _T("");
-// 		}
-// 
-// 		// Error Code
-// 		nTemp = strFileData.Find(',', 0);
-// 		strHeaderErrorInfo = strFileData.Left(nTemp);
-// 		strFileData.Delete(0, nTemp+1);
-// 		nFileSize = nFileSize - nTemp - 1;
-// 		
-// 		// Model
-// 		nTemp = strFileData.Find(',', 0);
-// 		strModel = strFileData.Left(nTemp);
-// 		strFileData.Delete(0, nTemp+1);
-// 		nFileSize = nFileSize - nTemp - 1;
-// 
-// 		// Layer
-// 		nTemp = strFileData.Find(',', 0);
-// 		strLayer = strFileData.Left(nTemp);
-// 		strFileData.Delete(0, nTemp+1);
-// 		nFileSize = nFileSize - nTemp - 1;
-// 
-// 		// Lot
-// 		nTemp = strFileData.Find('\n', 0);
-// 		strLot = strFileData.Left(nTemp);
-// 		strFileData.Delete(0, nTemp+1);
-// 		nFileSize = nFileSize - nTemp - 1;
-// 
-// 		//strTotalBadPieceNum = strFileData;
-// 		nTemp = strFileData.Find('\n', 0);
-// 		strTotalBadPieceNum = strFileData.Left(nTemp);;
-// 		strFileData.Delete(0, nTemp+1);
-// 		nFileSize = nFileSize - nTemp - 1;
-// 		
-// 	}
-// 	else
-// 	{
-// 		strMsg.Format(_T("%s 위치의 파일이 없습니다."), strPath);
-// 		AfxMessageBox(strMsg,MB_ICONWARNING|MB_OK);
-// 		strLayer = _T("");
-// 	}
-// 
-// 	return strLayer;
-// }
-
 BOOL CDlgMenu05::PreTranslateMessage(MSG* pMsg) 
 {
 	// TODO: Add your specialized code here and/or call the base class
@@ -698,7 +577,6 @@ CString CDlgMenu05::DisplayData()
 
 	CString strFileData, strData;
 	int nStripNumY = pView->m_mgrReelmap->m_Master[0].GetStripNum();	// 한판넬의 총 스트립의 갯수
-	//int nStripNumY = 4;
 	int nEntireStripPcs = m_nEntirePieceNum / nStripNumY;				// 스트립별 전체작업의 총 피스 갯수
 	int nEntireStripOnRow = m_nEntireStripNum / nStripNumY;				// 열별 전체작업의 총 스트립 갯수
 
@@ -858,7 +736,6 @@ CString CDlgMenu05::DisplayData()
 
 	strData.Format(_T("\t1\t    %s    \t"), pView->m_mgrReelmap->m_pReelMap->m_sKorDef[DEF_OPEN]);
 	strFileData += strData; // "\t 1\t    오픈    \t");
-	//strData.Format(_T("%13d"), m_nEntireAddedDefect[DEF_OPEN]);
 	strData.Format(_T("%3d"), m_nDefPerStrip[0][DEF_OPEN]);
 	strFileData += strData;
 	strFileData += _T("\t\t");
@@ -1507,7 +1384,6 @@ void CDlgMenu05::DisplayReelMapUser()
 	CString strReelMapPath, strReelMapData, sReelmapSrc;
 
 	CString sModel, sLot, sLayer[2];
-	//char szData[MAX_PATH];
 	TCHAR szData[MAX_PATH];
 
 	BOOL bSuccess[3] = {FALSE};
@@ -1580,22 +1456,14 @@ void CDlgMenu05::DisplayReelMapUser()
 	pView->m_mgrReelmap->m_pReelMapDn->m_bThreadAliveRemakeReelmap = FALSE;
 	pView->m_mgrReelmap->m_pReelMapAllUp->m_bThreadAliveRemakeReelmap = FALSE;
 	
-//	pView->MyMsgBox(_T("On converting Reelmap....."));
-	
-	//sReelmapSrc.Format(_T("%s%s\\%s\\%s\\ReelMapDataUp.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
-	//													   sModel, sLot, sLayer[0]);
 	if (pView->m_mgrReelmap->m_pReelMapUp)
 		pView->m_mgrReelmap->m_pReelMapUp->StartThreadRemakeReelmap(); // RemakeReelmap(sReelmapSrc);
 
 	if(bDualTest)
 	{
-		//sReelmapSrc.Format(_T("%s%s\\%s\\%s\\ReelMapDataDn.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
-		//													   m_sModel, sLot, sLayer[1]);
 		if(pView->m_mgrReelmap->m_pReelMapDn)
 			pView->m_mgrReelmap->m_pReelMapDn->StartThreadRemakeReelmap(); //RemakeReelmap(sReelmapSrc);
 
-		//sReelmapSrc.Format(_T("%s%s\\%s\\%s\\ReelMapDataAll.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
-		//													   m_sModel, m_sLot, sLayer[0]);
 		if(pView->m_mgrReelmap->m_pReelMapAllUp)
 			pView->m_mgrReelmap->m_pReelMapAllUp->StartThreadRemakeReelmap(); // RemakeReelmap(sReelmapSrc);
 	}
@@ -1653,9 +1521,6 @@ void CDlgMenu05::DisplayReelMapUser()
 
 	strReelMapData = LoadFile(strReelMapPath);
 	GetDlgItem(IDC_EDIT_RESULT)->SetWindowText(strReelMapData);
-
-//	pView->MsgBox(_T("Done converting Reelmap....."));
-
 }
 
 CString CDlgMenu05::LoadFile(CString sPath)
@@ -1759,9 +1624,6 @@ void CDlgMenu05::OnBtnSearch()
 		return;
 	}
 	((CListBox*)GetDlgItem(IDC_LIST_LOT))->SetCurSel(nSel);
-
-// 	DisplayResultData();
-
 	((CListBox*)GetDlgItem(IDC_LIST_LOT))->SetTopIndex(nSel);
 }
 
@@ -1774,20 +1636,17 @@ void CDlgMenu05::OnChkReelmap()
 		if(m_nCurSelLotIdx < 0)
 		{
 			pView->MsgBox(_T("로트를 선택해 주세요."));
-			//AfxMessageBox(_T("로트를 선택해 주세요."));
 			((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 			return;
 		}
 		if(m_nCurSelLayerIdx < 0)
 		{
 			pView->MsgBox(_T("레이어를 선택해 주세요."));
-			//AfxMessageBox(_T("레이어를 선택해 주세요."));
 			((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 			return;
 		}
 		((CListBox*)GetDlgItem(IDC_LIST_LOT))->SetCurSel(m_nCurSelLotIdx);
 		((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->SetCurSel(m_nCurSelLayerIdx);
-// 		DisplayReelMapData();
 		DisplayReelMapUser();
 	}
 	else
@@ -1849,17 +1708,6 @@ BOOL CDlgMenu05::ShowMyKeypad(int nCtlID, CPoint ptSt, int nDir)
 void CDlgMenu05::OnStcLot() 
 {
 	// TODO: Add your control notification handler code here
-// 	myStcLot.SetBkColor(RGB_RED);
-// 	myStcLot.RedrawWindow();
-// 
-// 	CPoint pt;	CRect rt;
-// 	GetDlgItem(IDC_STC_LOT)->GetWindowRect(&rt);
-// 	pt.x = rt.right; pt.y = rt.bottom;
-// 	ShowKeypad(IDC_STC_LOT, pt, TO_BOTTOM|TO_RIGHT);
-// 
-// 	myStcLot.SetBkColor(RGB_WHITE);
-// 	myStcLot.RedrawWindow();
-
 	myStcLot.SetBkColor(RGB_RED);
 	myStcLot.RedrawWindow();
 
@@ -1930,20 +1778,17 @@ void CDlgMenu05::OnSelchangeComboLayer()
 			if(m_nCurSelLotIdx < 0)
 			{
 				pView->MsgBox(_T("로트를 선택해 주세요."));
-				//AfxMessageBox(_T("로트를 선택해 주세요."));
 				((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 				return;
 			}
 			if(m_nCurSelLayerIdx < 0)
 			{
 				pView->MsgBox(_T("레이어를 선택해 주세요."));
-				//AfxMessageBox(_T("레이어를 선택해 주세요."));
 				((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 				return;
 			}
 			((CListBox*)GetDlgItem(IDC_LIST_LOT))->SetCurSel(m_nCurSelLotIdx);
 			((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->SetCurSel(m_nCurSelLayerIdx);
-			//DisplayReelMapData();
 			DisplayReelMapUser();
 		}
 		else
@@ -1956,7 +1801,6 @@ void CDlgMenu05::OnSelchangeComboLayer()
 void CDlgMenu05::OnBtnSave() 
 {
 	// TODO: Add your control notification handler code here
-//	if(IDNO == pView->DoMyMsgBox(_T("검사결과를 저장하시겠습니까?"), MB_YESNO))
 	if(IDNO == pView->MsgBox(_T("검사결과를 저장하시겠습니까?"), 0, MB_YESNO))
 		return;
 	
@@ -1964,10 +1808,6 @@ void CDlgMenu05::OnBtnSave()
 	CString strDestPath;
 	strDestPath.Format(_T("%s%s\\%s\\%s.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
 												   m_sModel, m_sLot, _T("Result"));
-// 	strDestPath.Format(_T("%s%s\\%s\\%s.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
-// 												   m_sModel, m_sLot, m_sLot);
-// 	strDestPath.Format(_T("%s%s\\%s\\%s\\%s.txt"), pDoc->WorkingInfo.System.sPathOldFile, 
-// 												   m_sModel, m_sLot, m_sLayer, m_sLot);
 
 	CFileFind cFile;
 	if(cFile.FindFile(strDestPath))
@@ -1978,8 +1818,6 @@ void CDlgMenu05::OnBtnSave()
 	CString strData;
 	strData = TxtDataMDS();
 	TCHAR lpszCurDirPathFile[MAX_PATH];
-	//char lpszCurDirPathFile[MAX_PATH];
-	//strcpy(lpszCurDirPathFile, strDestPath);	
 	_stprintf(lpszCurDirPathFile, _T("%s"), strDestPath);
 	
 	CFile file;
@@ -2009,16 +1847,21 @@ CString CDlgMenu05::TxtDataMDS()
 {
 	CString strFileData, strData;
 
-	int nMaxStrip;
-#ifdef USE_CAM_MASTER
-	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
-#else
-	nMaxStrip = MAX_STRIP;
-#endif
-
-	int nTot, nEntireStripPcs;
-	nTot = m_nDefPerStrip[0][DEF_LIGHT] + m_nDefPerStrip[1][DEF_LIGHT] + m_nDefPerStrip[2][DEF_LIGHT] + m_nDefPerStrip[3][DEF_LIGHT];
-	nEntireStripPcs = m_nEntirePieceNum / nMaxStrip;
+	//int nStripNumY = pDoc->m_Master[0].GetStripNum();										// 한 판넬의 총 스트립의 갯수
+	int nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum();							// 한 판넬의 총 스트립의 갯수
+	int nEntireStripPcs = m_nEntirePieceNum / nMaxStrip;									// 전체작업한 한 스트립당 총 피스 갯수
+	int nEntireStripNum = m_nMarkedShot*nMaxStrip;											// 전체작업한 스트립의 총 갯수
+	int nEntireStripEachRow = nEntireStripNum / nMaxStrip;									// 전체작업한 열별 스트립의 총 갯수
+	int nEntireGoodPcs = m_nEntirePieceNum - m_nDefectPieceNum;								// 전체작업한 총 양품 피스 갯수
+	double dEntireGoodPcsRto = 100.0*(double)nEntireGoodPcs / (double)m_nEntirePieceNum;	// 전체작업한 총 양품 피스 율
+	int nEntireGoodStrip = nEntireStripNum - m_nTotStOut;									// 전체작업한 총 양품 스트립 갯수
+	double dEntireGoodStripRto = 100.0*(double)nEntireGoodStrip / (double)nEntireStripNum;	// 전체작업한 총 양품 스트립 율
+	int nEntireDefPcs = m_nDefectPieceNum;													// 전체작업한 총 양품 피스 갯수
+	double dEntireDefPcsRto = 100.0*(double)nEntireDefPcs / (double)m_nEntirePieceNum;		// 전체작업한 총 양품 피스 율
+	int nEntireDefStrip = m_nTotStOut;														// 전체작업한 총 양품 스트립 갯수
+	double dEntireDefStripRto = 100.0*(double)nEntireDefStrip / (double)nEntireStripNum;	// 전체작업한 총 양품 스트립 율
+	int nTot;
+	
 
 	//리포트 작성. =====================================================================
 
@@ -2040,9 +1883,9 @@ CString CDlgMenu05::TxtDataMDS()
 	strFileData += _T("2. 제품 검사 결과\r\n");
 	strData.Format(_T("    총 검 사 Unit 수 : %9d\r\n"), m_nEntirePieceNum);
 	strFileData += strData;
-	strData.Format(_T("    양    품 Unit 수 : %9d        양  품  율(%%) : %9.2f\r\n"), m_nEntirePieceNum - m_nDefectPieceNum, 100.0*(double)(m_nEntirePieceNum-m_nDefectPieceNum)/(double)m_nEntirePieceNum);
+	strData.Format(_T("    양    품 Unit 수 : %9d        양  품  율(%%) : %9.2f\r\n"), nEntireGoodPcs, dEntireGoodPcsRto);
 	strFileData += strData;
-	strData.Format(_T("    불    량 Unit 수 : %9d        불  량  율(%%) : %9.2f\r\n"), m_nDefectPieceNum, 100.0*(double)m_nDefectPieceNum/(double)m_nEntirePieceNum);
+	strData.Format(_T("    불    량 Unit 수 : %9d        불  량  율(%%) : %9.2f\r\n"), nEntireDefPcs, dEntireDefPcsRto);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 
@@ -2136,6 +1979,7 @@ CString CDlgMenu05::TxtDataMDS()
 		strFileData += strData;
 		strData.Format(_T("    18        VH결함 %10d%10d%10d%10d%10d%10d%20d\r\n"), m_nDefPerStrip[0][DEF_VH_DEF], m_nDefPerStrip[1][DEF_VH_DEF], m_nDefPerStrip[2][DEF_VH_DEF], m_nDefPerStrip[3][DEF_VH_DEF], m_nDefPerStrip[4][DEF_VH_DEF], m_nDefPerStrip[5][DEF_VH_DEF], m_nEntireAddedDefect[DEF_VH_DEF]);
 		strFileData += strData;
+		nTot = m_nDefPerStrip[0][DEF_LIGHT] + m_nDefPerStrip[1][DEF_LIGHT] + m_nDefPerStrip[2][DEF_LIGHT] + m_nDefPerStrip[3][DEF_LIGHT] + m_nDefPerStrip[4][DEF_LIGHT] + m_nDefPerStrip[5][DEF_LIGHT];
 		strData.Format(_T("    19         노광  %10d%10d%10d%10d%10d%10d%20d\r\n"), m_nDefPerStrip[0][DEF_LIGHT], m_nDefPerStrip[1][DEF_LIGHT], m_nDefPerStrip[2][DEF_LIGHT], m_nDefPerStrip[3][DEF_LIGHT], m_nDefPerStrip[4][DEF_LIGHT], m_nDefPerStrip[5][DEF_LIGHT], nTot);
 		strFileData += strData;
 		strFileData += _T("    -------------------------------------------------------------------------------------------------\r\n");
@@ -2181,6 +2025,7 @@ CString CDlgMenu05::TxtDataMDS()
 		strFileData += strData;
 		strData.Format(_T("    18        VH결함 %10d%10d%10d%10d%20d\r\n"), m_nDefPerStrip[0][DEF_VH_DEF], m_nDefPerStrip[1][DEF_VH_DEF], m_nDefPerStrip[2][DEF_VH_DEF], m_nDefPerStrip[3][DEF_VH_DEF], m_nEntireAddedDefect[DEF_VH_DEF]);
 		strFileData += strData;
+		nTot = m_nDefPerStrip[0][DEF_LIGHT] + m_nDefPerStrip[1][DEF_LIGHT] + m_nDefPerStrip[2][DEF_LIGHT] + m_nDefPerStrip[3][DEF_LIGHT];
 		strData.Format(_T("    19         노광  %10d%10d%10d%10d%20d\r\n"), m_nDefPerStrip[0][DEF_LIGHT], m_nDefPerStrip[1][DEF_LIGHT], m_nDefPerStrip[2][DEF_LIGHT], m_nDefPerStrip[3][DEF_LIGHT], nTot);
 		strFileData += strData;
 		strFileData += _T("    -----------------------------------------------------------------------------\r\n");
@@ -2225,7 +2070,6 @@ BOOL CDlgMenu05::ReloadReelmap()
 		return FALSE; // Failed.
 	}
 
-	//char szData[MAX_PATH];
 	TCHAR szData[MAX_PATH];
 
 	if(m_nSerialSt > 0)
@@ -2294,7 +2138,6 @@ BOOL CDlgMenu05::ReloadReelmap()
 
 	int nDefStrip[MAX_STRIP];
 	int nPnl, nRow, nCol, nDefCode, i, k, nStrip, nC, nR;
-	//char sep[] = {",/;\r\n\t"};
 	TCHAR sep[] = { _T(",/;\r\n\t") };
 	int nTotPcs, nGoodPcs, nBadPcs, nDef[MAX_DEF];	// [DefCode] : Total Num.
 
@@ -2305,7 +2148,7 @@ BOOL CDlgMenu05::ReloadReelmap()
 		nDef[i] = 0;
 
 	m_nTotStOut = 0;
-	for(k=0; k < nMaxStrip; k++)
+	for(k=0; k < MAX_STRIP; k++)
 	{
 		m_nStripOut[k] = 0;
 		m_nDefStrip[k] = 0;
@@ -2335,19 +2178,16 @@ BOOL CDlgMenu05::ReloadReelmap()
 		{
 			sPnl.Format(_T("%d"), nPnl+1);
 			sRow.Format(_T("%02d"), nRow);
-// 			sRow.Format(_T("%d"), nRow+1);
 			if (0 < ::GetPrivateProfileString(sPnl, sRow, NULL, szData, sizeof(szData), sRmapPath))
 			{
 				for(nCol=0; nCol<nNodeY; nCol++)
 				{
 					if(nCol==0)
 						sVal = _tcstok(szData,sep);
-						//sVal = strtok(szData,sep);
 					else
 						sVal = _tcstok(NULL,sep);
 
 					nDefCode = _tstoi(sVal);
- 					//pPnlBuf[nPnl][nRow][nCol] = nDefCode;
 					nDef[nDefCode]++;
 					nTotPcs++;
 					if(nDefCode > 0)
@@ -2490,7 +2330,6 @@ void CDlgMenu05::OnStcProc()
 	GetDlgItem(IDC_STC_PROC)->GetWindowRect(&rt);
 	pt.x = rt.right; pt.y = rt.bottom;
 	ShowMyKeypad(IDC_STC_PROC, pt, TO_TOP|TO_RIGHT);
-	//ShowKeypad(IDC_STC_PROC, pt, TO_BOTTOM|TO_RIGHT);
 	
 	myStcProc.SetBkColor(RGB_WHITE);
 	myStcProc.RedrawWindow();
@@ -2503,20 +2342,16 @@ void CDlgMenu05::OnStcProc()
 
 	if(m_sModel.IsEmpty())
 		pView->MsgBox(_T("모델 정보가 없습니다."));
-		//AfxMessageBox(_T("모델 정보가 없습니다."));
 
 	if(m_sLot.IsEmpty())
 		pView->MsgBox(_T("로트 정보가 없습니다."));
-		//AfxMessageBox(_T("로트 정보가 없습니다."));
 
 	if(sData.IsEmpty())
 		pView->MsgBox(_T("공정코드 정보가 없습니다."));
-		//AfxMessageBox(_T("공정코드 정보가 없습니다."));
 
 	if(m_sProcessNum.Compare(sData)) // FALSE: Ideal Equal, TRUE: Different. 
 	{
 		sMsg.Format(_T("기존 공종코드: %s\r\n새로운 공종코드: %s\r\n기존의 공종코드를 새로운 공종코드로 바꾸시겠습니까?"), m_sProcessNum, sData);
-//		if(IDYES == pView->DoMyMsgBox(sMsg, MB_YESNO))
 		if(IDYES == pView->MsgBox(sMsg, 0, MB_YESNO))
 		{
 			CFileFind findfile;
@@ -2535,7 +2370,6 @@ void CDlgMenu05::OnStcProc()
 			
 			m_sProcessNum = sData;
 			pDoc->UpdateProcessNum(m_sProcessNum);
-			//::WritePrivateProfileString(_T("Info"), _T("Process Code"), m_sProcessNum, m_sRmapPath);
 		}
 		else
 			myStcProc.SetText(m_sProcessNum);
@@ -2550,7 +2384,6 @@ void CDlgMenu05::DispProcCode(CString sPath)
 CString CDlgMenu05::GetProcCode(CString sPath)
 {
 	CString str;
-	//char szData[MAX_PATH];
 	TCHAR szData[MAX_PATH];
 
 	if (0 < ::GetPrivateProfileString(_T("Info"), _T("Process Code"), NULL, szData, sizeof(szData), sPath))
@@ -2564,7 +2397,6 @@ CString CDlgMenu05::GetProcCode(CString sPath)
 void CDlgMenu05::OnBtnSave4() 
 {
 	// TODO: Add your control notification handler code here
-
 	if(IDYES==pView->MsgBox(_T("ITS용의 파일을 저장하시겠습니까?"), 0, MB_YESNO))
 		MakeIts();
 }
@@ -2686,9 +2518,6 @@ void CDlgMenu05::MakeItsFile(int nSerial, int nLayer)
 
 CString CDlgMenu05::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN, RMAP_INNER_UP, RMAP_INNER_DN
 {
-	//CString sItsCode = pView->m_mgrReelmap->m_sItsCode;
-	//CString sPath = pDoc->GetItsPath(nSerial, nLayer);
-
 	int nMaxStrip;
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
@@ -2697,7 +2526,6 @@ CString CDlgMenu05::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN,
 #endif
 
 	CString str = _T(""), sSide = _T(""), sTemp = _T(""), sItsData = _T("");
-	//CString sItsCode = pDoc->WorkingInfo.LastJob.sEngItsCode;
 	CString sItsCode = m_sLot;
 
 	int nNodeX = pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nCol;
@@ -2732,11 +2560,6 @@ CString CDlgMenu05::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN,
 			if (pView->m_mgrReelmap->m_pPcrInner[0][nIdx])
 				nTotDefPcs = pView->m_mgrReelmap->m_pPcrInner[0][nIdx]->m_nTotDef;
 		}
-		//if (pView->m_mgrReelmap->m_pPcr[nLayer])
-		//{
-		//	if (pView->m_mgrReelmap->m_pPcr[nLayer][nIdx])
-		//		nTotDefPcs = pView->m_mgrReelmap->m_pPcr[nLayer][nIdx]->m_nTotDef;
-		//}
 		break;
 	case RMAP_INNER_DN:
 		sSide = _T("B");
@@ -2745,11 +2568,6 @@ CString CDlgMenu05::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN,
 			if (pView->m_mgrReelmap->m_pPcrInner[1][nIdx])
 				nTotDefPcs = pView->m_mgrReelmap->m_pPcrInner[1][nIdx]->m_nTotDef;
 		}
-		//if (pView->m_mgrReelmap->m_pPcr[nLayer])
-		//{
-		//	if (pView->m_mgrReelmap->m_pPcr[nLayer][nIdx])
-		//		nTotDefPcs = pView->m_mgrReelmap->m_pPcr[nLayer][nIdx]->m_nTotDef;
-		//}
 		break;
 	}
 
@@ -2766,7 +2584,6 @@ CString CDlgMenu05::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN,
 		nR = nRow;
 		for (nCol = 0; nCol < nNodeX; nCol++)
 		{
-			//pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->GetMkPnt(nCol, nRow, nPcsId, ptPnt);
 			nDefCode = pView->m_mgrReelmap->m_pPcr[nLayer][nIdx]->m_arDefType[nR][nCol]; //m_pPnlBuf[nSerial - 1][nR][nCol]; // DefCode 3D Array : [nSerial][nRow][nCol] - 릴맵파일 정보용.
 			if (nDefCode > 0)
 			{
@@ -2861,7 +2678,6 @@ void CDlgMenu05::OnBtnSave3()
 {
 	// TODO: Add your control notification handler code here
 
-	//	if(IDYES==pView->DoMyMsgBox(_T("Sap3용의 파일을 저장하시겠습니까?"), MB_YESNO))
 	if (IDYES == pView->MsgBox(_T("Sap3용의 파일을 저장하시겠습니까?"), 0, MB_YESNO))
 		MakeSapp3();
 }
@@ -2925,13 +2741,6 @@ CString CDlgMenu05::Sapp3Data()
 			dEntireSpeed =_tstof(szData);
 		else
 			dEntireSpeed = 0.0;
-
-		// 레이어
-		// m_sLayer;
-// 		if (0 < ::GetPrivateProfileString(_T("WorkInfo"), _T("LAYER_NAME"), NULL, szData, sizeof(szData), strPath))
-// 			m_strLayer = CString(szData);
-// 		else
-// 			m_strLayer = SearchLayerName();
 	}
 	else
 	{
@@ -4169,10 +3978,18 @@ void CDlgMenu05::PrintData(HDC hPrtdc, int xpage, int ypage)
 	int nHorizOffset = xpage / 48; // 한Line을 48등분의 Offset 설정.
 
 	//int nStripNumY = MAX_STRIP_NUM; // pGlobalDoc->m_aryStripRegion.NodeNumY/pGlobalDoc->m_aryStripRegion.nCellDivideY; // 4
-	int nStripNumY = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
-	int nEntireStripPcs = m_nEntirePieceNum / nStripNumY; // 스트립의 총 피스 갯수
-
-	int nEntireStripNum = m_nMarkedShot*nStripNumY;
+	int nStripNumY = pView->m_mgrReelmap->m_Master[0].GetStripNum();						// 한 판넬의 총 스트립의 갯수
+	int nEntireStripPcs = m_nEntirePieceNum / nStripNumY;									// 전체작업한 한 스트립당 총 피스 갯수
+	int nEntireStripNum = m_nMarkedShot*nStripNumY;											// 전체작업한 스트립의 총 갯수
+	int nEntireStripEachRow = nEntireStripNum / nStripNumY;									// 전체작업한 열별 스트립의 총 갯수
+	int nEntireGoodPcs = m_nEntirePieceNum - m_nDefectPieceNum;								// 전체작업한 총 양품 피스 갯수
+	double dEntireGoodPcsRto = 100.0*(double)nEntireGoodPcs / (double)m_nEntirePieceNum;	// 전체작업한 총 양품 피스 율
+	int nEntireGoodStrip = nEntireStripNum - m_nTotStOut;									// 전체작업한 총 양품 스트립 갯수
+	double dEntireGoodStripRto = 100.0*(double)nEntireGoodStrip / (double)nEntireStripNum;	// 전체작업한 총 양품 스트립 율
+	int nEntireDefPcs = m_nDefectPieceNum;													// 전체작업한 총 양품 피스 갯수
+	double dEntireDefPcsRto = 100.0*(double)nEntireDefPcs / (double)m_nEntirePieceNum;		// 전체작업한 총 양품 피스 율
+	int nEntireDefStrip = m_nTotStOut;														// 전체작업한 총 양품 스트립 갯수
+	double dEntireDefStripRto = 100.0*(double)nEntireDefStrip / (double)nEntireStripNum;	// 전체작업한 총 양품 스트립 율
 	int nTot;
 
 	//리포트 작성. =====================================================================
@@ -4197,161 +4014,266 @@ void CDlgMenu05::PrintData(HDC hPrtdc, int xpage, int ypage)
 
 
 	strFileData = _T("2. 제품 검사 결과");
-	TextOut(hPrtdc,nHorizOffset,12*nCharHight,strFileData,strFileData.GetLength());
+	TextOut(hPrtdc, nHorizOffset, 12 * nCharHight, strFileData, strFileData.GetLength());
 
 	strFileData.Format(_T("    총 검 사 Unit 수 : %9d        총 검 사 Strip 수 : %9d"), m_nEntirePieceNum, nEntireStripNum);
-	TextOut(hPrtdc,nHorizOffset,13*nCharHight,strFileData,strFileData.GetLength());
+	TextOut(hPrtdc, nHorizOffset, 13 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    양    품 Unit 수 : %9d        양    품 Strip 수 : %9d"), m_nEntirePieceNum - m_nDefectPieceNum, nEntireStripNum - m_nTotStOut);
-	TextOut(hPrtdc,nHorizOffset,14*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    양    품 Unit 수 : %9d        양    품 Strip 수 : %9d"), nEntireGoodPcs, nEntireGoodStrip);
+	TextOut(hPrtdc, nHorizOffset, 14 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    양  품  Unit 율(%%) : %9.2f        양  품  Strip 율(%%) : %9.2f"), 100.0*(double)(m_nEntirePieceNum-m_nDefectPieceNum)/(double)m_nEntirePieceNum, 100.0*(double)(nEntireStripNum-m_nTotStOut)/(double)nEntireStripNum);
-	TextOut(hPrtdc,nHorizOffset,15*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    양  품  Unit 율(%%) : %9.2f        양  품  Strip 율(%%) : %9.2f"), dEntireGoodPcsRto, dEntireGoodStripRto);
+	TextOut(hPrtdc, nHorizOffset, 15 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    불    량 Unit 수 : %9d        불    량 Strip 수 : %9d"), (m_nDefectPieceNum), m_nTotStOut);
-	TextOut(hPrtdc,nHorizOffset,16*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    불    량 Unit 수 : %9d        불    량 Strip 수 : %9d"), nEntireDefPcs, nEntireDefStrip);
+	TextOut(hPrtdc, nHorizOffset, 16 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    불  량  Unit 율(%%) : %9.2f        불  량  Strip 율(%%) : %9.2f"), 100.0*(double)(m_nDefectPieceNum)/(double)m_nEntirePieceNum, 100.0*(double)m_nTotStOut/(double)nEntireStripNum);
-	TextOut(hPrtdc,nHorizOffset,17*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    불  량  Unit 율(%%) : %9.2f        불  량  Strip 율(%%) : %9.2f"), dEntireDefPcsRto, dEntireDefStripRto);
+	TextOut(hPrtdc, nHorizOffset, 17 * nCharHight, strFileData, strFileData.GetLength());
 
 
 	strFileData = _T("3. 열별 검사 수율");
-	TextOut(hPrtdc,nHorizOffset,19*nCharHight,strFileData,strFileData.GetLength());
+	TextOut(hPrtdc, nHorizOffset, 19 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    1열 검사 Unit 수 : %9d        1열 검사 Strip 수 : %9d"), nEntireStripPcs, nEntireStripNum/nStripNumY);
-	TextOut(hPrtdc,nHorizOffset,20*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    1열 검사 Unit 수 : %9d        1열 검사 Strip 수 : %9d"), nEntireStripPcs, nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 20 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    1열 양품 Unit 수 : %9d        1열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[0], nEntireStripNum/nStripNumY - m_nStripOut[0]);
-	TextOut(hPrtdc,nHorizOffset,21*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    1열 양품 Unit 수 : %9d        1열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[0], nEntireStripEachRow - m_nStripOut[0]);
+	TextOut(hPrtdc, nHorizOffset, 21 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    1열 양품 Unit 율(%%) : %9.2f        1열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[0])/(double)nEntireStripPcs, 100.0*(double)(nEntireStripNum/nStripNumY - m_nStripOut[0])/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,22*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    1열 양품 Unit 율(%%) : %9.2f        1열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[0]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripEachRow - m_nStripOut[0]) / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 22 * nCharHight, strFileData, strFileData.GetLength());
 
 	strFileData.Format(_T("    1열 불량 Unit 수 : %9d        1열 불량 Strip 수 : %9d"), m_nDefStrip[0], m_nStripOut[0]);
-	TextOut(hPrtdc,nHorizOffset,23*nCharHight,strFileData,strFileData.GetLength());
+	TextOut(hPrtdc, nHorizOffset, 23 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    1열 불량 Unit 율(%%) : %9.2f        1열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)(m_nDefStrip[0])/(double)nEntireStripPcs, 100.0*(double)m_nStripOut[0]/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,24*nCharHight,strFileData,strFileData.GetLength());
-
-
-	strFileData.Format(_T("    2열 검사 Unit 수 : %9d        2열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripNum/nStripNumY);
-	TextOut(hPrtdc,nHorizOffset,26*nCharHight,strFileData,strFileData.GetLength());
-
-	strFileData.Format(_T("    2열 양품 Unit 수 : %9d        2열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[1], nEntireStripNum/nStripNumY - m_nStripOut[1]);
-	TextOut(hPrtdc,nHorizOffset,27*nCharHight,strFileData,strFileData.GetLength());
-
-	strFileData.Format(_T("    2열 양품 Unit 율(%%) : %9.2f        2열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[1])/(double)nEntireStripPcs, 100.0*(double)(nEntireStripNum/nStripNumY - m_nStripOut[1])/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,28*nCharHight,strFileData,strFileData.GetLength());
-
-	strFileData.Format(_T("    2열 불량 Unit 수 : %9d        2열 불량 Strip 수 : %9d"), (m_nDefStrip[1]), m_nStripOut[1]);
-	TextOut(hPrtdc,nHorizOffset,29*nCharHight,strFileData,strFileData.GetLength());
-
-	strFileData.Format(_T("    2열 불량 Unit 율(%%) : %9.2f        2열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)(m_nDefStrip[1])/(double)nEntireStripPcs, 100.0*(double)m_nStripOut[1]/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,30*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    1열 불량 Unit 율(%%) : %9.2f        1열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)m_nDefStrip[0] / (double)nEntireStripPcs, 100.0*(double)m_nStripOut[0] / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 24 * nCharHight, strFileData, strFileData.GetLength());
 
 
-	strFileData.Format(_T("    3열 검사 Unit 수 : %9d        3열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripNum/nStripNumY);
-	TextOut(hPrtdc,nHorizOffset,32*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    2열 검사 Unit 수 : %9d        2열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 26 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    3열 양품 Unit 수 : %9d        3열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[2], nEntireStripNum/nStripNumY - m_nStripOut[2]);
-	TextOut(hPrtdc,nHorizOffset,33*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    2열 양품 Unit 수 : %9d        2열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[1], nEntireStripEachRow - m_nStripOut[1]);
+	TextOut(hPrtdc, nHorizOffset, 27 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    3열 양품 Unit 율(%%) : %9.2f        3열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[2])/(double)nEntireStripPcs, 100.0*(double)(nEntireStripNum/nStripNumY - m_nStripOut[2])/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,34*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    2열 양품 Unit 율(%%) : %9.2f        2열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[1]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripEachRow - m_nStripOut[1]) / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 28 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    3열 불량 Unit 수 : %9d        3열 불량 Strip 수 : %9d"), (m_nDefStrip[2]), m_nStripOut[2]);
-	TextOut(hPrtdc,nHorizOffset,35*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    2열 불량 Unit 수 : %9d        2열 불량 Strip 수 : %9d"), m_nDefStrip[1], m_nStripOut[1]);
+	TextOut(hPrtdc, nHorizOffset, 29 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    3열 불량 Unit 율(%%) : %9.2f        3열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)(m_nDefStrip[2])/(double)nEntireStripPcs, 100.0*(double)m_nStripOut[2]/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,36*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    2열 불량 Unit 율(%%) : %9.2f        2열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)m_nDefStrip[1] / (double)nEntireStripPcs, 100.0*(double)m_nStripOut[1] / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 30 * nCharHight, strFileData, strFileData.GetLength());
 
 
-	strFileData.Format(_T("    4열 검사 Unit 수 : %9d        4열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripNum/nStripNumY);
-	TextOut(hPrtdc,nHorizOffset,38*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    3열 검사 Unit 수 : %9d        3열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 32 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    4열 양품 Unit 수 : %9d        4열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[3], nEntireStripNum/nStripNumY - m_nStripOut[3]);
-	TextOut(hPrtdc,nHorizOffset,39*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    3열 양품 Unit 수 : %9d        3열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[2], nEntireStripEachRow - m_nStripOut[2]);
+	TextOut(hPrtdc, nHorizOffset, 33 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    4열 양품 Unit 율(%%) : %9.2f        4열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[3])/(double)nEntireStripPcs, 100.0*(double)(nEntireStripNum/nStripNumY - m_nStripOut[3])/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,40*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    3열 양품 Unit 율(%%) : %9.2f        3열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[2]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripEachRow - m_nStripOut[2]) / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 34 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    4열 불량 Unit 수 : %9d        4열 불량 Strip 수 : %9d"), (m_nDefStrip[3]), m_nStripOut[3]);
-	TextOut(hPrtdc,nHorizOffset,41*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    3열 불량 Unit 수 : %9d        3열 불량 Strip 수 : %9d"), m_nDefStrip[2], m_nStripOut[2]);
+	TextOut(hPrtdc, nHorizOffset, 35 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    4열 불량 Unit 율(%%) : %9.2f        4열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)(m_nDefStrip[3])/(double)nEntireStripPcs, 100.0*(double)m_nStripOut[3]/(double)(nEntireStripNum/nStripNumY));
-	TextOut(hPrtdc,nHorizOffset,42*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    3열 불량 Unit 율(%%) : %9.2f        3열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)m_nDefStrip[2] / (double)nEntireStripPcs, 100.0*(double)m_nStripOut[2] / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 36 * nCharHight, strFileData, strFileData.GetLength());
 
-	
-	strFileData = _T("4. 불량 내역");
-	TextOut(hPrtdc,nHorizOffset,44*nCharHight,strFileData,strFileData.GetLength());
-	strFileData = _T("    -----------------------------------------------------------------------------");
-	TextOut(hPrtdc,nHorizOffset,45*nCharHight,strFileData,strFileData.GetLength());
-	strFileData = _T("    번호     불량유형       1열       2열       3열       4열       유형별 불량수");
-	TextOut(hPrtdc,nHorizOffset,46*nCharHight,strFileData,strFileData.GetLength());
-	strFileData = _T("    -----------------------------------------------------------------------------");
-	TextOut(hPrtdc,nHorizOffset,47*nCharHight,strFileData,strFileData.GetLength());
 
-	strFileData.Format(_T("     1         오픈  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_OPEN], m_nDefPerStrip[1][DEF_OPEN], m_nDefPerStrip[2][DEF_OPEN], m_nDefPerStrip[3][DEF_OPEN], m_nEntireAddedDefect[DEF_OPEN]);
-	TextOut(hPrtdc,nHorizOffset,48*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    4열 검사 Unit 수 : %9d        4열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 38 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     2         쇼트  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_SHORT], m_nDefPerStrip[1][DEF_SHORT], m_nDefPerStrip[2][DEF_SHORT], m_nDefPerStrip[3][DEF_SHORT], m_nEntireAddedDefect[DEF_SHORT]);
-	TextOut(hPrtdc,nHorizOffset,49*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    4열 양품 Unit 수 : %9d        4열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[3], nEntireStripEachRow - m_nStripOut[3]);
+	TextOut(hPrtdc, nHorizOffset, 39 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     3        U-쇼트 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_USHORT], m_nDefPerStrip[1][DEF_USHORT], m_nDefPerStrip[2][DEF_USHORT], m_nDefPerStrip[3][DEF_USHORT], m_nEntireAddedDefect[DEF_USHORT]);
-	TextOut(hPrtdc,nHorizOffset,50*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    4열 양품 Unit 율(%%) : %9.2f        4열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[3]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripEachRow - m_nStripOut[3]) / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 40 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     4         결손  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_NICK], m_nDefPerStrip[1][DEF_NICK], m_nDefPerStrip[2][DEF_NICK], m_nDefPerStrip[3][DEF_NICK], m_nEntireAddedDefect[DEF_NICK]);
-	TextOut(hPrtdc,nHorizOffset,51*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    4열 불량 Unit 수 : %9d        4열 불량 Strip 수 : %9d"), m_nDefStrip[3], m_nStripOut[3]);
+	TextOut(hPrtdc, nHorizOffset, 41 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     5        선간폭 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_SPACE], m_nDefPerStrip[1][DEF_SPACE], m_nDefPerStrip[2][DEF_SPACE], m_nDefPerStrip[3][DEF_SPACE], m_nEntireAddedDefect[DEF_SPACE]);
-	TextOut(hPrtdc,nHorizOffset,52*nCharHight,strFileData,strFileData.GetLength());
+	strFileData.Format(_T("    4열 불량 Unit 율(%%) : %9.2f        4열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)m_nDefStrip[3] / (double)nEntireStripPcs, 100.0*(double)m_nStripOut[3] / (double)nEntireStripEachRow);
+	TextOut(hPrtdc, nHorizOffset, 42 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     6         잔동  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_EXTRA], m_nDefPerStrip[1][DEF_EXTRA], m_nDefPerStrip[2][DEF_EXTRA], m_nDefPerStrip[3][DEF_EXTRA], m_nEntireAddedDefect[DEF_EXTRA]);
-	TextOut(hPrtdc,nHorizOffset,53*nCharHight,strFileData,strFileData.GetLength());
+	if (nStripNumY == 6)
+	{
+		strFileData.Format(_T("    5열 검사 Unit 수 : %9d        5열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripEachRow);
+		TextOut(hPrtdc, nHorizOffset, 43 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     7         돌기  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PROTRUSION], m_nDefPerStrip[1][DEF_PROTRUSION], m_nDefPerStrip[2][DEF_PROTRUSION], m_nDefPerStrip[3][DEF_PROTRUSION], m_nEntireAddedDefect[DEF_PROTRUSION]);
-	TextOut(hPrtdc,nHorizOffset,54*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    5열 양품 Unit 수 : %9d        5열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[4], nEntireStripEachRow - m_nStripOut[4]);
+		TextOut(hPrtdc, nHorizOffset, 44 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     8         핀홀  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PINHOLE], m_nDefPerStrip[1][DEF_PINHOLE], m_nDefPerStrip[2][DEF_PINHOLE], m_nDefPerStrip[3][DEF_PINHOLE], m_nEntireAddedDefect[DEF_PINHOLE]);
-	TextOut(hPrtdc,nHorizOffset,55*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    5열 양품 Unit 율(%%) : %9.2f        5열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[4]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripEachRow - m_nStripOut[4]) / (double)nEntireStripEachRow);
+		TextOut(hPrtdc, nHorizOffset, 45 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("     9       패드결함%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PAD], m_nDefPerStrip[1][DEF_PAD], m_nDefPerStrip[2][DEF_PAD], m_nDefPerStrip[3][DEF_PAD], m_nEntireAddedDefect[DEF_PAD]);
-	TextOut(hPrtdc,nHorizOffset,56*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    5열 불량 Unit 수 : %9d        5열 불량 Strip 수 : %9d"), m_nDefStrip[4], m_nStripOut[4]);
+		TextOut(hPrtdc, nHorizOffset, 46 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    10        홀오픈 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_OPEN], m_nDefPerStrip[1][DEF_HOLE_OPEN], m_nDefPerStrip[2][DEF_HOLE_OPEN], m_nDefPerStrip[3][DEF_HOLE_OPEN], m_nEntireAddedDefect[DEF_HOLE_OPEN]);
-	TextOut(hPrtdc,nHorizOffset,57*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    5열 불량 Unit 율(%%) : %9.2f        5열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)m_nDefStrip[4] / (double)nEntireStripPcs, 100.0*(double)m_nStripOut[4] / (double)nEntireStripEachRow);
+		TextOut(hPrtdc, nHorizOffset, 47 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    11        홀없음 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_MISS], m_nDefPerStrip[1][DEF_HOLE_MISS], m_nDefPerStrip[2][DEF_HOLE_MISS], m_nDefPerStrip[3][DEF_HOLE_MISS], m_nEntireAddedDefect[DEF_HOLE_MISS]);
-	TextOut(hPrtdc,nHorizOffset,58*nCharHight,strFileData,strFileData.GetLength());
 
-	strFileData.Format(_T("    12        홀편심 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_POSITION], m_nDefPerStrip[1][DEF_HOLE_POSITION], m_nDefPerStrip[2][DEF_HOLE_POSITION], m_nDefPerStrip[3][DEF_HOLE_POSITION], m_nEntireAddedDefect[DEF_HOLE_POSITION]);
-	TextOut(hPrtdc,nHorizOffset,59*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    6열 검사 Unit 수 : %9d        6열 검사 Unit 수 : %9d"), nEntireStripPcs, nEntireStripEachRow);
+		TextOut(hPrtdc, nHorizOffset, 48 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    13       홀내불량%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_DEFECT], m_nDefPerStrip[1][DEF_HOLE_DEFECT], m_nDefPerStrip[2][DEF_HOLE_DEFECT], m_nDefPerStrip[3][DEF_HOLE_DEFECT], m_nEntireAddedDefect[DEF_HOLE_DEFECT]);
-	TextOut(hPrtdc,nHorizOffset,60*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    6열 양품 Unit 수 : %9d        6열 양품 Strip 수 : %9d"), nEntireStripPcs - m_nDefStrip[5], nEntireStripEachRow - m_nStripOut[5]);
+		TextOut(hPrtdc, nHorizOffset, 49 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    14          POI  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_POI], m_nDefPerStrip[1][DEF_POI], m_nDefPerStrip[2][DEF_POI], m_nDefPerStrip[3][DEF_POI], m_nEntireAddedDefect[DEF_POI]);
-	TextOut(hPrtdc,nHorizOffset,61*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    6열 양품 Unit 율(%%) : %9.2f        6열 양품 Strip 율(%%) : %9.2f"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[5]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripEachRow - m_nStripOut[5]) / (double)nEntireStripEachRow);
+		TextOut(hPrtdc, nHorizOffset, 50 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    15        VH오픈 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_OPEN], m_nDefPerStrip[1][DEF_VH_OPEN], m_nDefPerStrip[2][DEF_VH_OPEN], m_nDefPerStrip[3][DEF_VH_OPEN], m_nEntireAddedDefect[DEF_VH_OPEN]);
-	TextOut(hPrtdc,nHorizOffset,62*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    6열 불량 Unit 수 : %9d        6열 불량 Strip 수 : %9d"), m_nDefStrip[5], m_nStripOut[5]);
+		TextOut(hPrtdc, nHorizOffset, 51 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    16        VH없음 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_MISS], m_nDefPerStrip[1][DEF_VH_MISS], m_nDefPerStrip[2][DEF_VH_MISS], m_nDefPerStrip[3][DEF_VH_MISS], m_nEntireAddedDefect[DEF_VH_MISS]);
-	TextOut(hPrtdc,nHorizOffset,63*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("    6열 불량 Unit 율(%%) : %9.2f        6열 불량 Strip 율(%%) : %9.2f"), 100.0*(double)m_nDefStrip[5] / (double)nEntireStripPcs, 100.0*(double)m_nStripOut[5] / (double)nEntireStripEachRow);
+		TextOut(hPrtdc, nHorizOffset, 52 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData.Format(_T("    17        VH편심 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_POSITION], m_nDefPerStrip[1][DEF_VH_POSITION], m_nDefPerStrip[2][DEF_VH_POSITION], m_nDefPerStrip[3][DEF_VH_POSITION], m_nEntireAddedDefect[DEF_VH_POSITION]);
-	TextOut(hPrtdc,nHorizOffset,64*nCharHight,strFileData,strFileData.GetLength());
 
-	strFileData.Format(_T("    18        VH결함 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_DEF], m_nDefPerStrip[1][DEF_VH_DEF], m_nDefPerStrip[2][DEF_VH_DEF], m_nDefPerStrip[3][DEF_VH_DEF], m_nEntireAddedDefect[DEF_VH_DEF]);
-	TextOut(hPrtdc,nHorizOffset,65*nCharHight,strFileData,strFileData.GetLength());
+		strFileData = _T("4. 불량 내역");
+		TextOut(hPrtdc, nHorizOffset, 54 * nCharHight, strFileData, strFileData.GetLength());
+		strFileData = _T("    -------------------------------------------------------------------------------------------------");
+		TextOut(hPrtdc, nHorizOffset, 55 * nCharHight, strFileData, strFileData.GetLength());
+		strFileData = _T("    번호     불량유형       1열       2열       3열       4열       5열       6열       유형별 불량수");
+		TextOut(hPrtdc, nHorizOffset, 56 * nCharHight, strFileData, strFileData.GetLength());
+		strFileData = _T("    -------------------------------------------------------------------------------------------------");
+		TextOut(hPrtdc, nHorizOffset, 57 * nCharHight, strFileData, strFileData.GetLength());
 
-	nTot = m_nDefPerStrip[0][DEF_LIGHT]+m_nDefPerStrip[1][DEF_LIGHT]+m_nDefPerStrip[2][DEF_LIGHT]+m_nDefPerStrip[3][DEF_LIGHT];
-	strFileData.Format(_T("    19         노광  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_LIGHT], m_nDefPerStrip[1][DEF_LIGHT], m_nDefPerStrip[2][DEF_LIGHT], m_nDefPerStrip[3][DEF_LIGHT], nTot);
-	TextOut(hPrtdc,nHorizOffset,66*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("     1         오픈  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_OPEN], m_nDefPerStrip[1][DEF_OPEN], m_nDefPerStrip[2][DEF_OPEN], m_nDefPerStrip[3][DEF_OPEN], m_nDefPerStrip[4][DEF_OPEN], m_nDefPerStrip[5][DEF_OPEN], m_nEntireAddedDefect[DEF_OPEN]);
+		TextOut(hPrtdc, nHorizOffset, 58 * nCharHight, strFileData, strFileData.GetLength());
 
-	strFileData = _T("    -----------------------------------------------------------------------------");
-	TextOut(hPrtdc,nHorizOffset,67*nCharHight,strFileData,strFileData.GetLength());
+		strFileData.Format(_T("     2         쇼트  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_SHORT], m_nDefPerStrip[1][DEF_SHORT], m_nDefPerStrip[2][DEF_SHORT], m_nDefPerStrip[3][DEF_SHORT], m_nDefPerStrip[4][DEF_SHORT], m_nDefPerStrip[5][DEF_SHORT], m_nEntireAddedDefect[DEF_SHORT]);
+		TextOut(hPrtdc, nHorizOffset, 59 * nCharHight, strFileData, strFileData.GetLength());
 
+		strFileData.Format(_T("     3        U-쇼트 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_USHORT], m_nDefPerStrip[1][DEF_USHORT], m_nDefPerStrip[2][DEF_USHORT], m_nDefPerStrip[3][DEF_USHORT], m_nDefPerStrip[4][DEF_USHORT], m_nDefPerStrip[5][DEF_USHORT], m_nEntireAddedDefect[DEF_USHORT]);
+		TextOut(hPrtdc, nHorizOffset, 60 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     4         결손  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_NICK], m_nDefPerStrip[1][DEF_NICK], m_nDefPerStrip[2][DEF_NICK], m_nDefPerStrip[3][DEF_NICK], m_nDefPerStrip[4][DEF_NICK], m_nDefPerStrip[5][DEF_NICK], m_nEntireAddedDefect[DEF_NICK]);
+		TextOut(hPrtdc, nHorizOffset, 61 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     5        선간폭 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_SPACE], m_nDefPerStrip[1][DEF_SPACE], m_nDefPerStrip[2][DEF_SPACE], m_nDefPerStrip[3][DEF_SPACE], m_nDefPerStrip[4][DEF_SPACE], m_nDefPerStrip[5][DEF_SPACE], m_nEntireAddedDefect[DEF_SPACE]);
+		TextOut(hPrtdc, nHorizOffset, 62 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     6         잔동  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_EXTRA], m_nDefPerStrip[1][DEF_EXTRA], m_nDefPerStrip[2][DEF_EXTRA], m_nDefPerStrip[3][DEF_EXTRA], m_nDefPerStrip[4][DEF_EXTRA], m_nDefPerStrip[5][DEF_EXTRA], m_nEntireAddedDefect[DEF_EXTRA]);
+		TextOut(hPrtdc, nHorizOffset, 63 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     7         돌기  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PROTRUSION], m_nDefPerStrip[1][DEF_PROTRUSION], m_nDefPerStrip[2][DEF_PROTRUSION], m_nDefPerStrip[3][DEF_PROTRUSION], m_nDefPerStrip[4][DEF_PROTRUSION], m_nDefPerStrip[5][DEF_PROTRUSION], m_nEntireAddedDefect[DEF_PROTRUSION]);
+		TextOut(hPrtdc, nHorizOffset, 64 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     8         핀홀  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PINHOLE], m_nDefPerStrip[1][DEF_PINHOLE], m_nDefPerStrip[2][DEF_PINHOLE], m_nDefPerStrip[3][DEF_PINHOLE], m_nDefPerStrip[4][DEF_PINHOLE], m_nDefPerStrip[5][DEF_PINHOLE], m_nEntireAddedDefect[DEF_PINHOLE]);
+		TextOut(hPrtdc, nHorizOffset, 65 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     9       패드결함%10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PAD], m_nDefPerStrip[1][DEF_PAD], m_nDefPerStrip[2][DEF_PAD], m_nDefPerStrip[3][DEF_PAD], m_nDefPerStrip[4][DEF_PAD], m_nDefPerStrip[5][DEF_PAD], m_nEntireAddedDefect[DEF_PAD]);
+		TextOut(hPrtdc, nHorizOffset, 66 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    10        홀오픈 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_OPEN], m_nDefPerStrip[1][DEF_HOLE_OPEN], m_nDefPerStrip[2][DEF_HOLE_OPEN], m_nDefPerStrip[3][DEF_HOLE_OPEN], m_nDefPerStrip[4][DEF_HOLE_OPEN], m_nDefPerStrip[5][DEF_HOLE_OPEN], m_nEntireAddedDefect[DEF_HOLE_OPEN]);
+		TextOut(hPrtdc, nHorizOffset, 67 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    11        홀없음 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_MISS], m_nDefPerStrip[1][DEF_HOLE_MISS], m_nDefPerStrip[2][DEF_HOLE_MISS], m_nDefPerStrip[3][DEF_HOLE_MISS], m_nDefPerStrip[4][DEF_HOLE_MISS], m_nDefPerStrip[5][DEF_HOLE_MISS], m_nEntireAddedDefect[DEF_HOLE_MISS]);
+		TextOut(hPrtdc, nHorizOffset, 68 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    12        홀편심 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_POSITION], m_nDefPerStrip[1][DEF_HOLE_POSITION], m_nDefPerStrip[2][DEF_HOLE_POSITION], m_nDefPerStrip[3][DEF_HOLE_POSITION], m_nDefPerStrip[4][DEF_HOLE_POSITION], m_nDefPerStrip[5][DEF_HOLE_POSITION], m_nEntireAddedDefect[DEF_HOLE_POSITION]);
+		TextOut(hPrtdc, nHorizOffset, 69 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    13       홀내불량%10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_DEFECT], m_nDefPerStrip[1][DEF_HOLE_DEFECT], m_nDefPerStrip[2][DEF_HOLE_DEFECT], m_nDefPerStrip[3][DEF_HOLE_DEFECT], m_nDefPerStrip[4][DEF_HOLE_DEFECT], m_nDefPerStrip[5][DEF_HOLE_DEFECT], m_nEntireAddedDefect[DEF_HOLE_DEFECT]);
+		TextOut(hPrtdc, nHorizOffset, 70 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    14          POI  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_POI], m_nDefPerStrip[1][DEF_POI], m_nDefPerStrip[2][DEF_POI], m_nDefPerStrip[3][DEF_POI], m_nDefPerStrip[4][DEF_POI], m_nDefPerStrip[5][DEF_POI], m_nEntireAddedDefect[DEF_POI]);
+		TextOut(hPrtdc, nHorizOffset, 71 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    15        VH오픈 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_OPEN], m_nDefPerStrip[1][DEF_VH_OPEN], m_nDefPerStrip[2][DEF_VH_OPEN], m_nDefPerStrip[3][DEF_VH_OPEN], m_nDefPerStrip[4][DEF_VH_OPEN], m_nDefPerStrip[5][DEF_VH_OPEN], m_nEntireAddedDefect[DEF_VH_OPEN]);
+		TextOut(hPrtdc, nHorizOffset, 72 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    16        VH없음 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_MISS], m_nDefPerStrip[1][DEF_VH_MISS], m_nDefPerStrip[2][DEF_VH_MISS], m_nDefPerStrip[3][DEF_VH_MISS], m_nDefPerStrip[4][DEF_VH_MISS], m_nDefPerStrip[5][DEF_VH_MISS], m_nEntireAddedDefect[DEF_VH_MISS]);
+		TextOut(hPrtdc, nHorizOffset, 73 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    17        VH편심 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_POSITION], m_nDefPerStrip[1][DEF_VH_POSITION], m_nDefPerStrip[2][DEF_VH_POSITION], m_nDefPerStrip[3][DEF_VH_POSITION], m_nDefPerStrip[4][DEF_VH_POSITION], m_nDefPerStrip[5][DEF_VH_POSITION], m_nEntireAddedDefect[DEF_VH_POSITION]);
+		TextOut(hPrtdc, nHorizOffset, 74 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    18        VH결함 %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_DEF], m_nDefPerStrip[1][DEF_VH_DEF], m_nDefPerStrip[2][DEF_VH_DEF], m_nDefPerStrip[3][DEF_VH_DEF], m_nDefPerStrip[4][DEF_VH_DEF], m_nDefPerStrip[5][DEF_VH_DEF], m_nEntireAddedDefect[DEF_VH_DEF]);
+		TextOut(hPrtdc, nHorizOffset, 75 * nCharHight, strFileData, strFileData.GetLength());
+
+		nTot = m_nDefPerStrip[0][DEF_LIGHT] + m_nDefPerStrip[1][DEF_LIGHT] + m_nDefPerStrip[2][DEF_LIGHT] + m_nDefPerStrip[3][DEF_LIGHT] + m_nDefPerStrip[4][DEF_LIGHT] + m_nDefPerStrip[5][DEF_LIGHT];
+		strFileData.Format(_T("    19         노광  %10d%10d%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_LIGHT], m_nDefPerStrip[1][DEF_LIGHT], m_nDefPerStrip[2][DEF_LIGHT], m_nDefPerStrip[3][DEF_LIGHT], m_nDefPerStrip[4][DEF_LIGHT], m_nDefPerStrip[5][DEF_LIGHT], nTot);
+		TextOut(hPrtdc, nHorizOffset, 76 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData = _T("    -------------------------------------------------------------------------------------------------");
+		TextOut(hPrtdc, nHorizOffset, 77 * nCharHight, strFileData, strFileData.GetLength());
+	}
+	else
+	{
+		strFileData = _T("4. 불량 내역");
+		TextOut(hPrtdc, nHorizOffset, 44 * nCharHight, strFileData, strFileData.GetLength());
+		strFileData = _T("    -----------------------------------------------------------------------------");
+		TextOut(hPrtdc, nHorizOffset, 45 * nCharHight, strFileData, strFileData.GetLength());
+		strFileData = _T("    번호     불량유형       1열       2열       3열       4열       유형별 불량수");
+		TextOut(hPrtdc, nHorizOffset, 46 * nCharHight, strFileData, strFileData.GetLength());
+		strFileData = _T("    -----------------------------------------------------------------------------");
+		TextOut(hPrtdc, nHorizOffset, 47 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     1         오픈  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_OPEN], m_nDefPerStrip[1][DEF_OPEN], m_nDefPerStrip[2][DEF_OPEN], m_nDefPerStrip[3][DEF_OPEN], m_nEntireAddedDefect[DEF_OPEN]);
+		TextOut(hPrtdc, nHorizOffset, 48 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     2         쇼트  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_SHORT], m_nDefPerStrip[1][DEF_SHORT], m_nDefPerStrip[2][DEF_SHORT], m_nDefPerStrip[3][DEF_SHORT], m_nEntireAddedDefect[DEF_SHORT]);
+		TextOut(hPrtdc, nHorizOffset, 49 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     3        U-쇼트 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_USHORT], m_nDefPerStrip[1][DEF_USHORT], m_nDefPerStrip[2][DEF_USHORT], m_nDefPerStrip[3][DEF_USHORT], m_nEntireAddedDefect[DEF_USHORT]);
+		TextOut(hPrtdc, nHorizOffset, 50 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     4         결손  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_NICK], m_nDefPerStrip[1][DEF_NICK], m_nDefPerStrip[2][DEF_NICK], m_nDefPerStrip[3][DEF_NICK], m_nEntireAddedDefect[DEF_NICK]);
+		TextOut(hPrtdc, nHorizOffset, 51 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     5        선간폭 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_SPACE], m_nDefPerStrip[1][DEF_SPACE], m_nDefPerStrip[2][DEF_SPACE], m_nDefPerStrip[3][DEF_SPACE], m_nEntireAddedDefect[DEF_SPACE]);
+		TextOut(hPrtdc, nHorizOffset, 52 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     6         잔동  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_EXTRA], m_nDefPerStrip[1][DEF_EXTRA], m_nDefPerStrip[2][DEF_EXTRA], m_nDefPerStrip[3][DEF_EXTRA], m_nEntireAddedDefect[DEF_EXTRA]);
+		TextOut(hPrtdc, nHorizOffset, 53 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     7         돌기  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PROTRUSION], m_nDefPerStrip[1][DEF_PROTRUSION], m_nDefPerStrip[2][DEF_PROTRUSION], m_nDefPerStrip[3][DEF_PROTRUSION], m_nEntireAddedDefect[DEF_PROTRUSION]);
+		TextOut(hPrtdc, nHorizOffset, 54 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     8         핀홀  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PINHOLE], m_nDefPerStrip[1][DEF_PINHOLE], m_nDefPerStrip[2][DEF_PINHOLE], m_nDefPerStrip[3][DEF_PINHOLE], m_nEntireAddedDefect[DEF_PINHOLE]);
+		TextOut(hPrtdc, nHorizOffset, 55 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("     9       패드결함%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_PAD], m_nDefPerStrip[1][DEF_PAD], m_nDefPerStrip[2][DEF_PAD], m_nDefPerStrip[3][DEF_PAD], m_nEntireAddedDefect[DEF_PAD]);
+		TextOut(hPrtdc, nHorizOffset, 56 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    10        홀오픈 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_OPEN], m_nDefPerStrip[1][DEF_HOLE_OPEN], m_nDefPerStrip[2][DEF_HOLE_OPEN], m_nDefPerStrip[3][DEF_HOLE_OPEN], m_nEntireAddedDefect[DEF_HOLE_OPEN]);
+		TextOut(hPrtdc, nHorizOffset, 57 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    11        홀없음 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_MISS], m_nDefPerStrip[1][DEF_HOLE_MISS], m_nDefPerStrip[2][DEF_HOLE_MISS], m_nDefPerStrip[3][DEF_HOLE_MISS], m_nEntireAddedDefect[DEF_HOLE_MISS]);
+		TextOut(hPrtdc, nHorizOffset, 58 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    12        홀편심 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_POSITION], m_nDefPerStrip[1][DEF_HOLE_POSITION], m_nDefPerStrip[2][DEF_HOLE_POSITION], m_nDefPerStrip[3][DEF_HOLE_POSITION], m_nEntireAddedDefect[DEF_HOLE_POSITION]);
+		TextOut(hPrtdc, nHorizOffset, 59 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    13       홀내불량%10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_HOLE_DEFECT], m_nDefPerStrip[1][DEF_HOLE_DEFECT], m_nDefPerStrip[2][DEF_HOLE_DEFECT], m_nDefPerStrip[3][DEF_HOLE_DEFECT], m_nEntireAddedDefect[DEF_HOLE_DEFECT]);
+		TextOut(hPrtdc, nHorizOffset, 60 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    14          POI  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_POI], m_nDefPerStrip[1][DEF_POI], m_nDefPerStrip[2][DEF_POI], m_nDefPerStrip[3][DEF_POI], m_nEntireAddedDefect[DEF_POI]);
+		TextOut(hPrtdc, nHorizOffset, 61 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    15        VH오픈 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_OPEN], m_nDefPerStrip[1][DEF_VH_OPEN], m_nDefPerStrip[2][DEF_VH_OPEN], m_nDefPerStrip[3][DEF_VH_OPEN], m_nEntireAddedDefect[DEF_VH_OPEN]);
+		TextOut(hPrtdc, nHorizOffset, 62 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    16        VH없음 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_MISS], m_nDefPerStrip[1][DEF_VH_MISS], m_nDefPerStrip[2][DEF_VH_MISS], m_nDefPerStrip[3][DEF_VH_MISS], m_nEntireAddedDefect[DEF_VH_MISS]);
+		TextOut(hPrtdc, nHorizOffset, 63 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    17        VH편심 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_POSITION], m_nDefPerStrip[1][DEF_VH_POSITION], m_nDefPerStrip[2][DEF_VH_POSITION], m_nDefPerStrip[3][DEF_VH_POSITION], m_nEntireAddedDefect[DEF_VH_POSITION]);
+		TextOut(hPrtdc, nHorizOffset, 64 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData.Format(_T("    18        VH결함 %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_VH_DEF], m_nDefPerStrip[1][DEF_VH_DEF], m_nDefPerStrip[2][DEF_VH_DEF], m_nDefPerStrip[3][DEF_VH_DEF], m_nEntireAddedDefect[DEF_VH_DEF]);
+		TextOut(hPrtdc, nHorizOffset, 65 * nCharHight, strFileData, strFileData.GetLength());
+
+		nTot = m_nDefPerStrip[0][DEF_LIGHT] + m_nDefPerStrip[1][DEF_LIGHT] + m_nDefPerStrip[2][DEF_LIGHT] + m_nDefPerStrip[3][DEF_LIGHT];
+		strFileData.Format(_T("    19         노광  %10d%10d%10d%10d%20d"), m_nDefPerStrip[0][DEF_LIGHT], m_nDefPerStrip[1][DEF_LIGHT], m_nDefPerStrip[2][DEF_LIGHT], m_nDefPerStrip[3][DEF_LIGHT], nTot);
+		TextOut(hPrtdc, nHorizOffset, 66 * nCharHight, strFileData, strFileData.GetLength());
+
+		strFileData = _T("    -----------------------------------------------------------------------------");
+		TextOut(hPrtdc, nHorizOffset, 67 * nCharHight, strFileData, strFileData.GetLength());
+	}
 }
 
 void CDlgMenu05::OnCheck1() 
@@ -4551,66 +4473,6 @@ int CDlgMenu05::LoadPCRUpFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 			pView->m_mgrReelmap->m_sItsCode = sItsCode;
 	}
 
-	//BOOL bUpdate = FALSE;
-
-	//if (pDoc->WorkingInfo.LastJob.sLotUp != strLot || pDoc->WorkingInfo.LastJob.sEngItsCode != sItsCode)
-	//{
-	//	bUpdate = TRUE;
-	//	pDoc->WorkingInfo.LastJob.sLotUp = strLot;
-	//	pView->m_mgrReelmap->m_sItsCode = pDoc->WorkingInfo.LastJob.sEngItsCode = sItsCode;
-	//}
-
-	//if (pDoc->WorkingInfo.LastJob.sModelUp != strModel || pDoc->WorkingInfo.LastJob.sLayerUp != strLayer)
-	//{
-	//	bUpdate = TRUE;
-	//	pDoc->WorkingInfo.LastJob.sModelUp = strModel;
-	//	pDoc->WorkingInfo.LastJob.sLayerUp = strLayer;
-
-	//	//if (!WorkingInfo.LastJob.bDualTest)
-	//	{
-	//		pView->ResetMkInfo(0); // CAD 데이터 리로딩   0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
-	//	}
-	//}
-
-	//if (bUpdate)
-	//{
-	//	WriteChangedModel();
-
-	//	if (pView->m_pDlgMenu01)
-	//		pView->m_pDlgMenu01->UpdateData();
-
-	//	if (GetTestMode() == MODE_OUTER)
-	//	{
-	//		BOOL bDualTestInner;
-	//		CString sLot, sLayerUp, sLayerDn, str;
-	//		if (!pDoc->GetItsSerialInfo(nSerial, bDualTestInner, sLot, sLayerUp, sLayerDn))
-	//		{
-	//			str.Format(_T("It is trouble to read GetItsSerialInfo()."));
-	//			pView->MsgBox(str);
-	//			return FALSE; // TRUE: CHANGED, FALSE: NO CHANGED 
-	//		}
-
-	//		if (m_pReelMapInnerUp)
-	//			m_pReelMapInnerUp->ResetReelmapPath();
-
-	//		if (m_pReelMapIts)
-	//			m_pReelMapIts->ResetReelmapPath();
-
-	//		if (bDualTestInner)
-	//		{
-	//			if (m_pReelMapInnerDn)
-	//				m_pReelMapInnerDn->ResetReelmapPath();
-	//			if (m_pReelMapInnerAllUp)
-	//				m_pReelMapInnerAllUp->ResetReelmapPath();
-	//			if (m_pReelMapInnerAllDn)
-	//				m_pReelMapInnerAllDn->ResetReelmapPath();
-	//		}
-	//	}
-
-	//	CString sPath = m_pReelMap->GetIpPath();
-	//	SetMkMenu01(_T("DispDefImg"), _T("ReelmapPath"), sPath);
-	//}
-
 	int nTotDef = _tstoi(strTotalBadPieceNum);
 
 	pView->m_mgrReelmap->m_pPcr[0][nIdx]->Init(nSerial, nTotDef);
@@ -4632,13 +4494,7 @@ int CDlgMenu05::LoadPCRUpFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 			strFileData.Delete(0, nTemp + 1);
 			nFileSize = nFileSize - nTemp - 1;
 
-			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
-			//if (pDoc->WorkingInfo.System.bStripPcsRgnBin)	// DTS용
-			//{
-			//	pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-			//}
-			//else
-				pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
+			pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
 
 			pView->m_mgrReelmap->m_pPcr[0][nIdx]->m_pLayer[i] = 0; // Up
 
@@ -4720,7 +4576,6 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	{
 		strFileData.Format(_T("PCR파일이 설정되지 않았습니다."));
 		pView->MsgBox(strFileData);
-		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -4728,7 +4583,6 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	{
 		strFileData.Format(_T("PCR[1]관련 메모리가 할당되지 않았습니다."));
 		pView->MsgBox(strFileData);
-		//AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -4739,8 +4593,6 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	sPath.Format(_T("%s%s\\%s\\%s\\%04d.pcr"),
 		pDoc->WorkingInfo.System.sPathOldFile, m_sModel, m_sLot, m_sLayer, nSerial);
 
-	//strcpy(FileD, sPath);
-	//_tcscpy(FileD, sPath);
 	StringToChar(sPath, FileD);
 
 	if ((fp = fopen(FileD, "r")) != NULL)
@@ -4763,7 +4615,6 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	{
 		strFileData.Format(_T("PCR[Dn] 파일이 존재하지 않습니다.\r\n%s"), sPath);
 		pView->MsgBox(strFileData);
-		//		AfxMessageBox(strFileData);
 		return(2);
 	}
 
@@ -4839,7 +4690,6 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	{
 		pView->m_mgrReelmap->m_sEngModel = strModel;
 		pView->m_mgrReelmap->m_sEngLotNum = strLot;
-		//pView->m_mgrReelmap->m_sEngLayerUp = strLayer;
 		pView->m_mgrReelmap->m_sEngLayerDn = strLayer;
 		if (pDoc->WorkingInfo.System.bUseITS)
 			pView->m_mgrReelmap->m_sItsCode = sItsCode;
@@ -4874,7 +4724,7 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 
 			pView->m_mgrReelmap->m_pPcr[1][nIdx]->m_pLayer[i] = 1; // Dn
 
-											  // BadPointPosX
+			// BadPointPosX
 			nTemp = strFileData.Find(',', 0);
 			strBadPointPosX = strFileData.Left(nTemp);
 			strFileData.Delete(0, nTemp + 1);
@@ -4930,5 +4780,4 @@ int CDlgMenu05::LoadPCRDnFromMk(int nSerial)	// return : 2(Failed), 1(정상), -1(
 	}
 
 	return (1); // 1(정상)
-				//return(m_pPcr[1][nIdx]->m_nErrPnl);
 }

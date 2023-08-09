@@ -19,7 +19,7 @@ class CDlgMenu05 : public CDialog
 	int m_nCurSelLotIdx, m_nCurSelLayerIdx;
 	int m_nCntModelNames, m_nCntLotNames; 
 	CString m_strLotStartTime, m_strLotEndTime, m_strLotWorkingTime;
-	int m_nEntirePieceNum, m_nGoodPieceNum, m_nDefectPieceNum, m_nEntireStripDef[4];
+	int m_nEntirePieceNum, m_nGoodPieceNum, m_nDefectPieceNum, m_nEntireStripDef[MAX_STRIP];
 	int m_nEntireStripNum;
 
 	//CString m_strDefectTitle[MAX_DEF];

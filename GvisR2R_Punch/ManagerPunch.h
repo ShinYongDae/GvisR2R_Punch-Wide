@@ -156,6 +156,7 @@ public:
 	void MoveMk1InitPos();
 	void ResetMotion();
 	void ResetMotion(int nMsId);
+	void MsClr(int nMsId);
 	BOOL IsRunAxisX();
 	BOOL IsMotionDone(int nAxisId);
 	void EStop();

@@ -2579,6 +2579,54 @@ void CManagerPunch::ResetMotion(int nMsId)
 	}
 }
 
+void CManagerPunch::MsClr(int nMsId)
+{
+	if (m_pMotion)
+	{
+		Sleep(30);
+
+		long lRtn = m_pMotion->GetState(nMsId);  // -1 : MPIStateERROR, 0 : MPIStateIDLE, 1 : MPIStateSTOPPING, 2 : MPIStateMOVING
+		if (lRtn == 2)//lRtn<0 || 
+		{
+			if (nMsId == MS_X0 || nMsId == MS_Y0)
+				m_pMotion->Abort(MS_X0Y0);
+			else if (nMsId == MS_X1 || nMsId == MS_Y1)
+				m_pMotion->Abort(MS_X1Y1);
+			else
+				m_pMotion->Abort(nMsId);
+			Sleep(30);
+		}
+
+		if (nMsId == MS_X0 || nMsId == MS_Y0)
+			m_pMotion->Clear(MS_X0Y0);
+		else if (nMsId == MS_X1 || nMsId == MS_Y1)
+			m_pMotion->Clear(MS_X1Y1);
+		else
+			m_pMotion->Clear(nMsId);
+		Sleep(30);
+
+		if (lRtn == 2)//lRtn<0 || 
+		{
+			if (nMsId == MS_X0Y0 || nMsId == MS_X0 || nMsId == MS_Y0)
+			{
+				m_pMotion->ServoOnOff(AXIS_X0, TRUE);
+				Sleep(30);
+				m_pMotion->ServoOnOff(AXIS_Y0, TRUE);
+			}
+			else if (nMsId == MS_X1Y1 || nMsId == MS_X1 || nMsId == MS_Y1)
+			{
+				m_pMotion->ServoOnOff(AXIS_X1, TRUE);
+				Sleep(30);
+				m_pMotion->ServoOnOff(AXIS_Y1, TRUE);
+			}
+			else
+				m_pMotion->ServoOnOff(nMsId, TRUE);
+
+			Sleep(30);
+		}
+	}
+}
+
 BOOL CManagerPunch::IsRunAxisX()
 {
 	if (m_pMotion->IsMotionDone(MS_X0) && m_pMotion->IsMotionDone(MS_X1))
