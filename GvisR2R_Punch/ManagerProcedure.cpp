@@ -1211,6 +1211,8 @@ UINT CManagerProcedure::ThreadProc3(LPVOID lpContext)	// RunShift2Mk()
 
 void CManagerProcedure::DispDefImg()
 {
+	if (!pView->m_mgrReelmap)
+		return;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	int nSerialL = m_nBufUpSerial[0]; // 좌측 Camera
@@ -1789,31 +1791,43 @@ BOOL CManagerProcedure::CopyDefImg(int nSerial, CString sNewLot)
 
 void CManagerProcedure::DoMark0Its()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->DoMark0Its();
 }
 
 void CManagerProcedure::DoMark1Its()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->DoMark1Its();
 }
 
 void CManagerProcedure::DoMark0()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->DoMark0();
 }
 
 void CManagerProcedure::DoMark1()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->DoMark1();
 }
 
 void CManagerProcedure::DoMark0All()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->DoMark0All();
 }
 
 void CManagerProcedure::DoMark1All()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->DoMark1All();
 }
 
@@ -1834,11 +1848,15 @@ void CManagerProcedure::GetEnc()
 
 BOOL CManagerProcedure::IsRunAxisX()
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	return pView->m_mgrPunch->IsRunAxisX();
 }
 
 void CManagerProcedure::EStop()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->EStop();
 }
 
@@ -2806,6 +2824,8 @@ BOOL CManagerProcedure::SetSerial(int nSerial, BOOL bDumy)
 
 void CManagerProcedure::SetReject()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	return pView->m_mgrPunch->SetReject();
 }
 
@@ -3013,11 +3033,15 @@ void CManagerProcedure::CompletedMk(int nCam) // 0: Only Cam0, 1: Only Cam1, 2: 
 
 BOOL CManagerProcedure::IsInitPos0()
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	return pView->m_mgrPunch->IsInitPos0();
 }
 
 BOOL CManagerProcedure::IsInitPos1()
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	return pView->m_mgrPunch->IsInitPos1();
 }
 
@@ -3028,11 +3052,15 @@ BOOL CManagerProcedure::DoElecChk(CString &sRst)
 
 BOOL CManagerProcedure::IsMoveDone()
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	return pView->m_mgrPunch->IsMoveDone();
 }
 
 BOOL CManagerProcedure::IsMkDone()
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	if (pView->m_mgrPunch->m_bDoneMk[0] && pView->m_mgrPunch->m_bDoneMk[1] && !m_bTHREAD_DISP_DEF)
 		return TRUE;
 
@@ -3094,11 +3122,15 @@ BOOL CManagerProcedure::ChkLotEndDn(int nSerial)
 
 BOOL CManagerProcedure::MoveAlign0(int nPos)
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	return pView->m_mgrPunch->MoveAlign0(nPos);
 }
 
 BOOL CManagerProcedure::MoveAlign1(int nPos)
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	return pView->m_mgrPunch->MoveAlign1(nPos);
 }
 
@@ -3477,6 +3509,8 @@ void CManagerProcedure::DoAutoSetFdOffsetEngrave()
 
 void CManagerProcedure::DoAutoChkCycleStop()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	if (pView->IsCycleStop())
 	{
 		pView->CycleStop(FALSE);
@@ -3508,6 +3542,9 @@ void CManagerProcedure::DoAutoChkCycleStop()
 
 void CManagerProcedure::DoAutoDispMsg()
 {
+	if (!pView->m_mgrPunch)
+		return;
+
 	BOOL bDispMsg = FALSE;
 	int idx, nStepDispMsg;
 
@@ -3634,6 +3671,9 @@ void CManagerProcedure::DoAutoDispMsg()
 
 void CManagerProcedure::DoAutoChkShareFolder()
 {
+	if (!pView->m_mgrPunch || !pView->m_mgrReelmap)
+		return;
+
 	CString sLot, sLayerUp, sLayerDn;
 	BOOL bDualTestInner;
 
@@ -4745,6 +4785,8 @@ void CManagerProcedure::Mk2PtChkSerial()
 
 void CManagerProcedure::Mk2PtInit()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	if (m_bTHREAD_SHIFT2MK)
 		return;
 
@@ -4796,6 +4838,8 @@ void CManagerProcedure::Mk2PtInit()
 
 void CManagerProcedure::Mk2PtAlignPt0()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	if (!IsRun())
 		return;
 
@@ -5102,6 +5146,8 @@ void CManagerProcedure::Mk2PtAlignPt0()
 
 void CManagerProcedure::Mk2PtAlignPt1()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	if (!IsRun())
 		return;
 
@@ -5425,6 +5471,9 @@ void CManagerProcedure::Mk2PtMoveInitPos()
 
 void CManagerProcedure::Mk2PtElecChk()
 {
+	if (!pView->m_mgrPunch)
+		return;
+
 	CString sRst;
 
 	if (m_bMkSt)
@@ -5506,6 +5555,8 @@ void CManagerProcedure::Mk2PtElecChk()
 
 void CManagerProcedure::Mk2PtDoMarking()
 {
+	if (!pView->m_mgrPunch || !pView->m_mgrReelmap)
+		return;
 	int nMaxStrip;
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
@@ -6111,6 +6162,8 @@ void CManagerProcedure::Mk2PtLotDiff()
 
 void CManagerProcedure::Mk2PtReject()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	int a, b;
 
 	if (m_bMkSt)
@@ -6529,6 +6582,8 @@ void CManagerProcedure::Mk4PtInit()
 
 void CManagerProcedure::Mk4PtAlignPt0()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	if (!IsRun())
 		return;
 
@@ -6803,6 +6858,8 @@ void CManagerProcedure::Mk4PtAlignPt0()
 
 void CManagerProcedure::Mk4PtAlignPt1()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	if (!IsRun())
 		return;
 
@@ -7070,6 +7127,8 @@ void CManagerProcedure::Mk4PtAlignPt1()
 
 void CManagerProcedure::Mk4PtAlignPt2()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	if (m_bMkSt)
@@ -7342,6 +7401,8 @@ void CManagerProcedure::Mk4PtAlignPt2()
 
 void CManagerProcedure::Mk4PtAlignPt3()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	if (m_bMkSt)
@@ -7626,6 +7687,8 @@ void CManagerProcedure::Mk4PtAlignPt3()
 
 void CManagerProcedure::Mk4PtMoveInitPos()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	if (m_bMkSt)
 	{
 		switch (m_nMkStAuto)
@@ -7727,6 +7790,9 @@ void CManagerProcedure::Mk4PtElecChk()
 
 void CManagerProcedure::Mk4PtDoMarking()
 {
+	if (!pView->m_mgrPunch)
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	CString sRst, sMsg;
 	int a, b, nSerial, nPrevSerial;
@@ -8038,6 +8104,9 @@ void CManagerProcedure::Mk4PtLotDiff()
 
 void CManagerProcedure::Mk4PtReject()
 {
+	if (!pView->m_mgrPunch)
+		return;
+
 	int a, b;
 
 	if (m_bMkSt)
@@ -8213,25 +8282,176 @@ void CManagerProcedure::MarkingWith4PointAlign()
 
 void CManagerProcedure::MoveInitPos0(BOOL bWait)
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->MoveInitPos0(bWait);
 }
 
 void CManagerProcedure::MoveInitPos1(BOOL bWait)
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->MoveInitPos1(bWait);
 }
 
 void CManagerProcedure::MoveMkEdPos1()
 {
+	if (!pView->m_mgrPunch)
+		return;
 	pView->m_mgrPunch->MoveMkEdPos1();
 }
 
 BOOL CManagerProcedure::ChkLightErr()
 {
+	if (!pView->m_mgrPunch)
+		return FALSE;
 	return pView->m_mgrPunch->ChkLightErr();
 }
 
 CfPoint CManagerProcedure::GetMkPnt(int nSerial, int nMkPcs) // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
 {
 	return pView->GetMkPnt(nSerial, nMkPcs);
+}
+
+BOOL CManagerProcedure::UpdateReelmap(int nSerial)
+{
+	if (nSerial <= 0)
+	{
+		pView->ClrDispMsg();
+		AfxMessageBox(_T("Serial Error.54"));
+		return 0;
+	}
+
+	if (!pDoc->MakeMkDir())
+		return FALSE;
+
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if(pView && pView->m_mgrReelmap)
+		pView->m_mgrReelmap->m_nSerialRmapUpdate = nSerial;
+
+	m_bTHREAD_UPDATE_REELMAP_UP = TRUE;
+	if (bDualTest)
+	{
+		m_bTHREAD_UPDATE_REELMAP_DN = TRUE;
+		m_bTHREAD_UPDATE_REELMAP_ALLUP = TRUE;
+		m_bTHREAD_UPDATE_REELMAP_ALLDN = TRUE;
+	}
+
+	if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
+		UpdateReelmapInner(nSerial);
+
+	Sleep(100);
+	return TRUE;
+}
+
+BOOL CManagerProcedure::UpdateReelmapInner(int nSerial)
+{
+	if (nSerial <= 0)
+	{
+		pView->ClrDispMsg();
+		AfxMessageBox(_T("Serial Error.54"));
+		return 0;
+	}
+
+	if (!pDoc->MakeMkDir())
+		return FALSE;
+
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if(pView && pView->m_mgrReelmap)
+		pView->m_mgrReelmap->m_nSerialRmapInnerUpdate = nSerial;
+
+	m_bTHREAD_UPDATE_REELMAP_INNER_UP = TRUE;
+	if (bDualTest)
+	{
+		m_bTHREAD_UPDATE_REELMAP_INNER_DN = TRUE;
+		m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP = TRUE;
+		m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN = TRUE;
+	}
+
+	m_bTHREAD_UPDATE_REELMAP_ITS = TRUE;
+
+	Sleep(100);
+	return TRUE;
+}
+
+void CManagerProcedure::UpdateYieldOnThread(int nSerial)
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if (m_bLastProc && m_nBufUpSerial[0] == m_nLotEndSerial)
+	{
+		m_nSerialTHREAD_UPDATAE_YIELD[0] = nSerial;
+		m_bTHREAD_UPDATAE_YIELD[0] = TRUE; // Cam[0]
+		Sleep(30);
+	}
+	else
+	{
+		m_nSerialTHREAD_UPDATAE_YIELD[0] = nSerial;
+		m_bTHREAD_UPDATAE_YIELD[0] = TRUE; // Cam[0]
+		Sleep(30);
+
+		if (m_nBufUpSerial[1] > 0)
+		{
+			m_nSerialTHREAD_UPDATAE_YIELD[1] = m_nBufUpSerial[1];
+			m_bTHREAD_UPDATAE_YIELD[1] = TRUE; // Cam[1]
+			Sleep(30);
+		}
+		else if (m_nBufUpSerial[1] < 0)
+		{
+			return;
+		}
+	}
+}
+
+BOOL CManagerProcedure::ReloadReelmap(int nSerial)
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	m_bTHREAD_RELOAD_RST_UP = TRUE;
+	if (bDualTest)
+	{
+		m_bTHREAD_RELOAD_RST_DN = TRUE;
+		m_bTHREAD_RELOAD_RST_ALLUP = TRUE;
+		m_bTHREAD_RELOAD_RST_ALLDN = TRUE;
+	}
+
+	if (pDoc->GetTestMode() == MODE_OUTER)
+	{
+		m_bTHREAD_RELOAD_RST_UP_INNER = TRUE;
+		m_bTHREAD_RELOAD_RST_ITS = TRUE;
+		if (pDoc->WorkingInfo.LastJob.bDualTestInner)
+		{
+			m_bTHREAD_RELOAD_RST_DN_INNER = TRUE;
+			m_bTHREAD_RELOAD_RST_ALLUP_INNER = TRUE;
+			m_bTHREAD_RELOAD_RST_ALLDN_INNER = TRUE;
+		}
+	}
+
+	Sleep(100);
+
+	return TRUE;
+}
+
+BOOL CManagerProcedure::IsVs()
+{
+	if (!m_bChkLastProcVs)
+	{
+		BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+		if (bDualTest)
+		{
+			if (GetAoiDnVsStatus())
+				return TRUE;
+			else if (GetAoiUpVsStatus())
+				return TRUE;
+		}
+		else
+		{
+			if (GetAoiUpVsStatus())
+				return TRUE;
+		}
+	}
+
+	return FALSE;
 }

@@ -836,6 +836,9 @@ void CVision::FreeDispDef(HWND hDispCtrl, CRect rtDispCtrl, int nIdx, int nDispl
 
 void CVision::InitCADBuf(int nLayer)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	REGION_STRIP *pCellRgn[2];
 	if(m_nIdx == 0 || m_nIdx == 1)
 		pCellRgn[nLayer] = pView->m_mgrReelmap->m_Master[nLayer].m_pCellRgn;
@@ -1042,6 +1045,9 @@ void CVision::ShowDispCad(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef) 
 
 void CVision::CropCadImg(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	short cell, cx, cy;
 	int nIdx;
 
@@ -1093,8 +1099,10 @@ void CVision::CropCadImg(int nIdxMkInfo, int nSerial, int nLayer, int nIdxDef)
 
 void CVision::CropCadImg(short cell, short cx, short cy, int BufID, int nLayer)
 {
-	CString str;
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 
+	CString str;
 	int CellX, CellY;
 	BOOL IsLeftSwath, IsRightSwath, IsTopNode, IsBottomNode;	// 패널 이미지의 가장자리부분을 나타냄.
 	BOOL IsUpNode, IsDownNode;									// 스트립의 상하 가장자리부분을 나타냄.
@@ -1549,6 +1557,9 @@ void CVision::CropCadImg(short cell, short cx, short cy, int BufID, int nLayer)
 
 BOOL CVision::SetCADCoord(int CellNum, int StX, int StY, int Coord, int nLayer)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return FALSE;
+
 	BOOL RValue;
 	long OrginalX, OrginalY;
 	long DestX, DestY;
@@ -2292,7 +2303,10 @@ BOOL CVision::SetCADCoord(int CellNum, int StX, int StY, int Coord, int nLayer)
 
 void CVision::LoadCADBuf(int CurrCell, long OrgStX, long OrgStY, long DesStX, long DesStY, long SizeX, long SizeY, int nLayer)
 {
-// 	InitCADBuf();
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
+	//InitCADBuf();
 	MIL_ID MilBufCADCld = M_NULL, MilBufCADTempCld = M_NULL;
 	long OrgX, OrgY, DstX, DstY, SzX, SzY;
 	TiffData tdat;
@@ -2456,7 +2470,9 @@ BOOL CVision::VicFileLoadFromMem(MIL_ID MilImage, UCHAR *pCADImg, TiffData &tdat
 
 void CVision::ShowDispDef(int nIdxMkInfo, int nSerial, int nLayer, int nDefPcs) // From 0 To 12...for Screen display.
 {
-	//char cPath[MAX_PATH];
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	TCHAR cPath[MAX_PATH];
 	if(m_pMilBufDef[nIdxMkInfo])
 	{
@@ -2614,6 +2630,9 @@ void CVision::InitPinBuf()
 
 void CVision::LoadPinBuf(int nLayer)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	InitPinBuf();
 
 	if (!MilPinImgBuf)
@@ -2702,6 +2721,9 @@ void CVision::ShowDispAlign()
 
 void CVision::LoadAlignBuf()
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	InitAlignBuf();
 
 	TiffData tdat;
@@ -2726,10 +2748,8 @@ void CVision::LoadAlignBuf()
 		pAlignImg[3] = pView->m_mgrReelmap->m_MasterInner[0].m_pAlignImg[3];
 	}
 
-	//if (pView->m_mgrReelmap->m_Master[0].m_pAlignImg[0])
 	if (pAlignImg[0])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[0], pView->m_mgrReelmap->m_Master[0].m_pAlignImg[0], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[0], pAlignImg[0], tdat))
 		{
 
@@ -2756,10 +2776,8 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[1])
 		return;
 
-	//if (pView->m_mgrReelmap->m_Master[0].m_pAlignImg[1])
 	if (pAlignImg[1])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[1], pView->m_mgrReelmap->m_Master[0].m_pAlignImg[1], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[1], pAlignImg[1], tdat))
 		{
 
@@ -2786,10 +2804,8 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[2])
 		return;
 
-	//if (pView->m_mgrReelmap->m_Master[0].m_pAlignImg[2])
 	if (pAlignImg[2])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[2], pView->m_mgrReelmap->m_Master[0].m_pAlignImg[2], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[2], pAlignImg[2], tdat))
 		{
 
@@ -2816,10 +2832,8 @@ void CVision::LoadAlignBuf()
 	if (!MilAlignImgBuf[3])
 		return;
 
-	//if (pView->m_mgrReelmap->m_Master[0].m_pAlignImg[3])
 	if (pAlignImg[3])
 	{
-		//if (VicFileLoadFromMem(MilAlignImgBuf[3], pView->m_mgrReelmap->m_Master[0].m_pAlignImg[3], tdat))
 		if (VicFileLoadFromMem(MilAlignImgBuf[3], pAlignImg[3], tdat))
 		{
 
@@ -2844,70 +2858,16 @@ void CVision::LoadAlignBuf()
 	}
 }
 
-// void CVision::LoadAlignBuf()
-// {
-// 	InitAlignBuf();
-// 
-// 	TiffData tdat;
-// 	if(VicFileLoadFromMem(MilAlignImgBuf, pView->m_mgrReelmap->m_Master[m_nIdx].m_pAlignImg[m_nIdx], tdat))
-// 	{
-// 		MIL_ID MilBufAlignCld = M_NULL, MilBufAlignTempCld = M_NULL;
-// 
-// 		MbufChild2d(MilAlignImgBuf, (1024-ALIGN_IMG_DISP_SIZEX)/2, (1024-ALIGN_IMG_DISP_SIZEY)/2, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, &MilBufAlignCld);
-// 		MbufChild2d(MilBufAlignTemp, 0, 0, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, &MilBufAlignTempCld);
-// 
-// // 		CGvisMilBuffer *MilPatRtImg=NULL;
-// // 		MilPatRtImg = new CGvisMilBuffer(m_pMil, ALIGN_IMG_DISP_SIZEX, ALIGN_IMG_DISP_SIZEY, 1L+M_UNSIGNED, M_IMAGE+M_PROC);
-// // 		MimRotate(MilBufAlignCld, MilPatRtImg->m_MilImage, 90.0, M_DEFAULT, M_DEFAULT, M_DEFAULT, M_DEFAULT, M_DEFAULT);
-// // 		if(MilPatRtImg->m_MilImage != M_NULL && MilBufAlignTempCld != M_NULL)
-// // 			MbufCopy(MilPatRtImg->m_MilImage, MilBufAlignTempCld);
-// 
-// 		if(MilBufAlignCld != M_NULL && MilBufAlignTempCld != M_NULL)
-// 			MbufCopy(MilBufAlignCld, MilBufAlignTempCld);
-// 
-// 
-// // 		if(MilPatRtImg != M_NULL)
-// // 		{
-// // 			delete (MilPatRtImg);
-// // 			MilPatRtImg = M_NULL;
-// // 		}
-// 
-// 		if (MilBufAlignTempCld)
-// 		{
-// 			MbufFree(MilBufAlignTempCld);
-// 			MilBufAlignTempCld = M_NULL;
-// 		}
-// 		
-// 		if (MilBufAlignCld)
-// 		{
-// 			MbufFree(MilBufAlignCld);
-// 			MilBufAlignCld = M_NULL;
-// 		}
-// 	}
-// }
-
 
 void CVision::ClearOverlay()
 {
 	if (m_pMil)
 		m_pMil->ClearLiveOverlay();
-// 	switch(nId)
-// 	{
-// 	case -1: // Live View...
-// 		m_pMilDisplay->ClearOverlay();
-// 		break;
-// 	}
 }
 
 void CVision::DrawCenterMark(int nMode) // 0: Cross, 1: Rect, 2: None
 {
 	DrawCross();
-// 	if(nMode == 0)
-// 		DrawCross();
-// 	else if(nMode == 1)
-// 		DrawRect();
-// 	else
-// 		DrawNone();
 }
 
 void CVision::DrawCross()
@@ -3114,493 +3074,6 @@ void CVision::DispAxisPos(BOOL bForceWrite)
 #endif
 	}
 }
-
-//double CVision::CalcCameraPixelSize()
-//{
-//	double dVal = 1.0;
-//
-//	if(!m_pMil)
-//		return dVal;
-//
-//	int nRepeatMeasureNum = 10, nEffectiveMeasureNum = 6;
-//	int nRealMeasureNum = 0;
-//	CfPoint fptMoveDistance;
-//	fptMoveDistance.x = 1.0; fptMoveDistance.y = 1.0;
-//	CfPoint fptCameraPos[2];
-//	fptCameraPos[0].x = 0.0;
-//	fptCameraPos[0].y = 0.0;
-//	fptCameraPos[1].x = 0.0;
-//	fptCameraPos[1].y = 0.0;
-//	int i = 0;
-//
-//	// 1. Move
-//#ifdef USE_IDS
-//	if(!pView->m_mgrPunch->m_pMotion || !m_pIds)
-//	{
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//#endif
-//
-//#ifdef USE_CREVIS
-//	if(!pView->m_mgrPunch->m_pMotion || !m_pCrevis)
-//	{
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//#endif
-//
-//#ifdef USE_IRAYPLE
-//	if (!pView->m_mgrPunch->m_pMotion || !m_pIRayple)
-//	{
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//#endif
-//
-//	double pTgtPos[2], dCurrX, dCurrY;
-//	pTgtPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[m_nIdx];
-//	pTgtPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[m_nIdx];
-//
-//	if(m_nIdx==0)
-//	{
-//		dCurrX = pView->m_dEnc[AXIS_X0];
-//		dCurrY = pView->m_dEnc[AXIS_Y0];
-//		if(dCurrX < -1000.0 || dCurrY < -1000.0)
-//		{
-//			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
-//			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
-//			{
-//				pView->ClrDispMsg();
-//				AfxMessageBox(_T("Move XY Error..."));
-//		}
-//		}
-//		else
-//		{
-//			double fLen, fVel, fAcc, fJerk;
-//			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
-//			if(fLen > 0.001)
-//			{
-//				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-//				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
-//				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel, fAcc, fAcc))
-//				{
-//					pView->ClrDispMsg();
-//					AfxMessageBox(_T("Move XY Error..."));
-//			}
-//		}
-//	}
-//	}
-//	else if(m_nIdx==1)
-//	{
-//		dCurrX = pView->m_dEnc[AXIS_X1];
-//		dCurrY = pView->m_dEnc[AXIS_Y1];
-//		if(dCurrX < -1000.0 || dCurrY < -1000.0)
-//		{
-//			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
-//			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
-//			{
-//				pView->ClrDispMsg();
-//				AfxMessageBox(_T("Move XY Error..."));
-//		}
-//		}
-//		else
-//		{
-//			double fLen, fVel, fAcc, fJerk;
-//			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
-//			if(fLen > 0.001)
-//			{
-//				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-//				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
-//				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel, fAcc, fAcc))
-//				{
-//					pView->ClrDispMsg();
-//					AfxMessageBox(_T("Move XY Error..."));
-//			}
-//		}
-//	}
-//	}
-//
-//	Sleep(500);
-//
-//	// 2-1. Measure set
-//	CLibMilBuf *MilGrabImg = NULL;
-//#ifdef USE_IDS
-//	MilGrabImg = m_pMil->AllocBuf(m_pIds->m_nSizeX, m_pIds->m_nSizeY, 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC);
-//#endif
-//
-//#ifdef USE_CREVIS
-//	MilGrabImg = m_pMil->AllocBuf((long)m_pCrevis[0]->GetImgWidth(), (long)m_pCrevis[0]->GetImgHeight(), 8L+M_UNSIGNED, M_IMAGE+M_DISP+M_PROC);
-//#endif
-//
-//#ifdef USE_IRAYPLE
-//	MilGrabImg = m_pMil->AllocBuf((long)m_pIRayple->GetImgWidth(), (long)m_pIRayple->GetImgHeight(), 8L + M_UNSIGNED, M_IMAGE + M_DISP + M_PROC);
-//#endif
-//
-//
-//	// 2-2. Create Model
-//#ifdef USE_IDS
-//// 	if(m_pIds->OneshotGrab(MilGrabImg, GRAB_COLOR_GREEN) == FALSE)
-//	if(m_pIds->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//	{
-//		if(MilGrabImg)
-//			delete MilGrabImg;
-//
-//		pView->MsgBox(_T("Image Grab Fail !!"));
-//// 		AfxMessageBox(_T("Image Grab Fail !!"));
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//
-//	MilGrabImg->ChildBuffer2d(m_pIds->m_nSizeX*3/8, m_pIds->m_nSizeY*3/8, m_pIds->m_nSizeX*2/8, m_pIds->m_nSizeY*2/8);
-//#endif
-//
-//#ifdef USE_CREVIS
-//	StopLive();
-//	Sleep(100);
-//
-//	if(m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//	{
-//		if(MilGrabImg)
-//			delete MilGrabImg;
-//
-//		pView->MsgBox(_T("Image Grab Fail !!"));
-//// 		AfxMessageBox(_T("Image Grab Fail !!"));
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//
-//	StartLive();
-//	Sleep(100);
-//
-//	int nSizeX = m_pCrevis[0]->GetImgWidth();
-//	int nSizeY = m_pCrevis[0]->GetImgHeight();
-//	MilGrabImg->ChildBuffer2d(nSizeX*3/8, nSizeY*3/8, nSizeX*2/8, nSizeY*2/8);
-//
-//#endif
-//
-//#ifdef USE_IRAYPLE
-//	// 	if(m_pIds->OneshotGrab(MilGrabImg, GRAB_COLOR_GREEN) == FALSE)
-//	if (m_pIRayple->OneshotGrab() == FALSE || m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//	{
-//		if (MilGrabImg)
-//			delete MilGrabImg;
-//
-//		pView->MsgBox(_T("Image Grab Fail !!"));
-//		//AfxMessageBox(_T("Image Grab Fail !!"));
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//
-//	MilGrabImg->ChildBuffer2d(m_pIRayple->GetImgWidth() * 3 / 8, m_pIRayple->GetImgHeight() * 3 / 8, m_pIRayple->GetImgWidth() * 2 / 8, m_pIRayple->GetImgHeight() * 2 / 8);
-//#endif
-//
-////	m_pMil->PatternMatchingAlloc(MilGrabImg->m_MilImageChild);
-//	m_pMil->PatternMatchingAlloc(MilGrabImg->m_MilImageChild);
-//	
-//
-//	// 2. Measure Position
-//	nRealMeasureNum = 0;
-//	for(i=0; i<nRepeatMeasureNum; i++)
-//	{
-//		Sleep(100);
-//#ifdef USE_IDS
-////		if(m_pIds->OneshotGrab(MilGrabImg, GRAB_COLOR_GREEN) == FALSE)
-//		if(m_pIds->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//		{
-//			if(MilGrabImg)
-//				delete MilGrabImg;
-//// 			m_pMil->GmfFree();
-//			m_pMil->PatternMatchingFree();
-//
-//			pView->MsgBox(_T("Image Grab Fail !!"));
-//// 			AfxMessageBox(_T("Image Grab Fail !!"));
-//			dVal = 0.0;
-//			return dVal;
-//		}
-//#endif
-//
-//#ifdef USE_CREVIS
-//		StopLive();
-//		Sleep(100);
-//
-//		if(m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//		{
-//			if(MilGrabImg)
-//				delete MilGrabImg;
-//// 			m_pMil->GmfFree();
-//			m_pMil->PatternMatchingFree();
-//
-//			pView->MsgBox(_T("Image Grab Fail !!"));
-//// 			AfxMessageBox(_T("Image Grab Fail !!"));
-//			dVal = 0.0;
-//			return dVal;
-//		}
-//
-//		StartLive();
-//		Sleep(100);
-//#endif
-//
-//#ifdef USE_IRAYPLE
-//		//if(m_pIds->OneshotGrab(MilGrabImg, GRAB_COLOR_GREEN) == FALSE)
-//		if (m_pIRayple->OneshotGrab() == FALSE || m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//		{
-//			if (MilGrabImg)
-//				delete MilGrabImg;
-//			//m_pMil->GmfFree();
-//			m_pMil->PatternMatchingFree();
-//
-//			pView->MsgBox(_T("Image Grab Fail !!"));
-//			//AfxMessageBox(_T("Image Grab Fail !!"));
-//			dVal = 0.0;
-//			return dVal;
-//		}
-//#endif
-//
-//#ifdef _DEBUG
-// 		// Grab Image Save
-//		//char szFileName[100];
-// 		//sprintf(szFileName, "C:\\CalcCameraPixelSize-target0.tif");
-// 		//MilGrabImg->BufferSave(szFileName);
-//		if(pDoc->m_bDebugGrabAlign)
-//			MbufSave(_T("C:\\CalcCameraPixelSize-target0.tif"), MilGrabImg->m_MilImage);
-//#endif
-//
-//		//m_pMil->GmfFind(MilGrabImg->m_MilImage);
-//		//m_pMil->PatternMatchingAction(MilGrabImg->m_MilImageChild, m_pMilDrawOverlay->m_MilBuffer, m_pMilDrawOverlay->m_MilGraphicContextID);
-// 		if(m_pMil->PatternMatchingAction(MilGrabImg->m_MilImage))//, m_pMilDrawOverlay->m_MilBuffer, m_pMilDrawOverlay->m_MilGraphicContextID))
-//		{
-//			if(i > (nRepeatMeasureNum-nEffectiveMeasureNum-1))
-//			{
-//				fptCameraPos[0].x += m_pMil->m_dPatternMatchingResultSelectPosX;
-//				fptCameraPos[0].y += m_pMil->m_dPatternMatchingResultSelectPosY;
-// 				//fptCameraPos[0].x += m_pMil->m_dGmfResultPositionX[m_pMil->m_nGmfResultSelectNum];
-// 				//fptCameraPos[0].y += m_pMil->m_dGmfResultPositionY[m_pMil->m_nGmfResultSelectNum];
-//
-//				nRealMeasureNum++;
-//			}
-//		}
-//	}
-//	if(nRealMeasureNum > 0)
-//	{
-//		fptCameraPos[0].x = fptCameraPos[0].x / (double)nRealMeasureNum;
-//		fptCameraPos[0].y = fptCameraPos[0].y / (double)nRealMeasureNum;
-//	}
-//	else
-//	{
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//
-//
-//	// 3. Move X,Y 1mm
-//	if(m_nIdx==0)
-//	{
-//		pTgtPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
-//		pTgtPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-//		dCurrX = pView->m_dEnc[AXIS_X0];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
-//		dCurrY = pView->m_dEnc[AXIS_Y0];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
-//		if(dCurrX < -1000.0 || dCurrY < -1000.0)
-//		{
-//			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
-//			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, 0.3, ABS, WAIT))
-//			{
-//				pView->ClrDispMsg();
-//				AfxMessageBox(_T("Move XY Error..."));
-//		}
-//		}
-//		else
-//		{
-//			double fLen, fVel, fAcc, fJerk;
-//			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
-//			if(fLen > 0.001)
-//			{
-//				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X0, fLen, fVel, fAcc, fJerk);
-//				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel/10.0, fAcc/10.0, fAcc/10.0))
-//				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X0Y0, pTgtPos, fVel / 10.0, fAcc / 10.0, fAcc / 10.0))
-//				{
-//					pView->ClrDispMsg();
-//					AfxMessageBox(_T("Move XY Error..."));
-//			}
-//		}
-//	}
-//	}
-//	else if(m_nIdx==1)
-//	{
-//		pTgtPos[1] = pView->m_mgrPunch->m_pMotion->m_dPinPosY[m_nIdx] + fptMoveDistance.y;
-//		pTgtPos[0] = pView->m_mgrPunch->m_pMotion->m_dPinPosX[m_nIdx] + fptMoveDistance.x;
-//		dCurrX = pView->m_dEnc[AXIS_X1];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_X);
-//		dCurrY = pView->m_dEnc[AXIS_Y1];	// pView->m_mgrPunch->m_pMotion->GetActualPosition(AXIS_Y);
-//		if(dCurrX < -1000.0 || dCurrY < -1000.0)
-//		{
-//			//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
-//			if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, 0.3, ABS, WAIT))
-//			{
-//				pView->ClrDispMsg();
-//				AfxMessageBox(_T("Move XY Error..."));
-//		}
-//		}
-//		else
-//		{
-//			double fLen, fVel, fAcc, fJerk;
-//			fLen = sqrt( ((pTgtPos[0] - dCurrX) * (pTgtPos[0] - dCurrX)) + ((pTgtPos[1] - dCurrY) * (pTgtPos[1] - dCurrY)) );
-//			if(fLen > 0.001)
-//			{
-//				pView->m_mgrPunch->m_pMotion->GetSpeedProfile(TRAPEZOIDAL, AXIS_X1, fLen, fVel, fAcc, fJerk);
-//				//if(!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel/10.0, fAcc/10.0, fAcc/10.0))
-//				if (!pView->m_mgrPunch->m_pMotion->Move(MS_X1Y1, pTgtPos, fVel / 10.0, fAcc / 10.0, fAcc / 10.0))
-//				{
-//					pView->ClrDispMsg();
-//					AfxMessageBox(_T("Move XY Error..."));
-//			}
-//		}
-//	}
-//	}
-//	Sleep(500);
-//
-//
-//	// 4. Measure Position
-//	nRealMeasureNum = 0;
-//	for(i=0; i<nRepeatMeasureNum; i++)
-//	{
-//		Sleep(100);
-//#ifdef USE_IDS
-////		if(m_pIds->OneshotGrab(MilGrabImg, GRAB_COLOR_GREEN) == FALSE)
-//		if(m_pIds->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//		{
-//			if(MilGrabImg)
-//				delete MilGrabImg;
-//			m_pMil->PatternMatchingFree();
-//
-//			pView->MsgBox(_T("Image Grab Fail !!"));
-//// 			AfxMessageBox(_T("Image Grab Fail !!"));
-//			dVal = 0.0;
-//			return dVal;
-//		}
-//#endif
-//
-//#ifdef USE_CREVIS
-//		StopLive();
-//		Sleep(100);
-//
-//		if(m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//		{
-//			if(MilGrabImg)
-//				delete MilGrabImg;
-//			m_pMil->PatternMatchingFree();
-//
-//			pView->MsgBox(_T("Image Grab Fail !!"));
-//// 			AfxMessageBox(_T("Image Grab Fail !!"));
-//			dVal = 0.0;
-//			return dVal;
-//		}
-//
-//		StartLive();
-//		Sleep(100);
-//#endif
-//
-//#ifdef USE_IRAYPLE
-//		//if(m_pIds->OneshotGrab(MilGrabImg, GRAB_COLOR_GREEN) == FALSE)
-//		if (m_pIRayple->OneshotGrab() == FALSE || m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
-//		{
-//			if (MilGrabImg)
-//				delete MilGrabImg;
-//			m_pMil->PatternMatchingFree();
-//
-//			pView->MsgBox(_T("Image Grab Fail !!"));
-//			//AfxMessageBox(_T("Image Grab Fail !!"));
-//			dVal = 0.0;
-//			return dVal;
-//		}
-//#endif
-//
-//
-//#ifdef _DEBUG
-//// 		// Grab Image Save
-//// 		sprintf(szFileName, "C:\\CalcCameraPixelSize-target1.tif");
-//// 		MilGrabImg->BufferSave(szFileName);
-//		if (pDoc->m_bDebugGrabAlign)
-//			MbufSave(_T("C:\\CalcCameraPixelSize-target1.tif"), MilGrabImg->m_MilImage);
-//#endif
-//
-//		//m_pMil->GmfFind(MilGrabImg->m_MilImage);
-//		//m_pMil->PatternMatchingAction(MilGrabImg->m_MilImageChild, m_pMilDrawOverlay->m_MilBuffer, m_pMilDrawOverlay->m_MilGraphicContextID);
-// 		if(m_pMil->PatternMatchingAction(MilGrabImg->m_MilImage))//, m_pMilDrawOverlay->m_MilBuffer, m_pMilDrawOverlay->m_MilGraphicContextID))
-//		{
-//			if(i > (nRepeatMeasureNum-nEffectiveMeasureNum-1))
-//			{
-//				fptCameraPos[1].x += m_pMil->m_dPatternMatchingResultSelectPosX;
-//				fptCameraPos[1].y += m_pMil->m_dPatternMatchingResultSelectPosY;
-// 				//fptCameraPos[1].x += m_pMil->m_dGmfResultPositionX[m_pMil->m_nGmfResultSelectNum];
-// 				//fptCameraPos[1].y += m_pMil->m_dGmfResultPositionY[m_pMil->m_nGmfResultSelectNum];
-//				nRealMeasureNum++;
-//			}
-//		}
-//	}
-//	if(nRealMeasureNum > 0)
-//	{
-//		fptCameraPos[1].x = fptCameraPos[1].x / (double)nRealMeasureNum;
-//		fptCameraPos[1].y = fptCameraPos[1].y / (double)nRealMeasureNum;
-//	}
-//	else
-//	{
-//		dVal = 0.0;
-//		return dVal;
-//	}
-//
-//	// 4-2. Measure End
-//	if(MilGrabImg)
-//		delete MilGrabImg;
-//// 	m_pMil->GmfFree();
-//	m_pMil->PatternMatchingFree();
-//
-//	// 5. Calc Pixel Size
-//	double dPixelSizeX = 0.0, dPixelSizeY = 0.0;
-//#ifdef USE_IDS
-//	dPixelSizeX = m_pIds->CalcPixelSize(fabs(fptCameraPos[1].x-fptCameraPos[0].x), fptMoveDistance.x);
-//	dPixelSizeY = m_pIds->CalcPixelSize(fabs(fptCameraPos[1].y-fptCameraPos[0].y), fptMoveDistance.y);
-//	m_pIds->CalcPixelSize(fabs(fptCameraPos[1].x-fptCameraPos[0].x), fabs(fptCameraPos[1].y-fptCameraPos[0].y), fptMoveDistance.x, fptMoveDistance.y);
-//#endif
-//
-//#ifdef USE_CREVIS
-//	dPixelSizeX = fptMoveDistance.x / fabs(fptCameraPos[1].x-fptCameraPos[0].x);
-//	dPixelSizeY = fptMoveDistance.y / fabs(fptCameraPos[1].y-fptCameraPos[0].y);
-//	//m_pIds->CalcPixelSize(fabs(fptCameraPos[1].x-fptCameraPos[0].x), fabs(fptCameraPos[1].y-fptCameraPos[0].y), fptMoveDistance.x, fptMoveDistance.y);
-//#endif
-//
-//#ifdef USE_IRAYPLE
-//	dPixelSizeX = fptMoveDistance.x / fabs(fptCameraPos[1].x-fptCameraPos[0].x);
-//	dPixelSizeY = fptMoveDistance.y / fabs(fptCameraPos[1].y-fptCameraPos[0].y);
-//	//m_pIds->CalcPixelSize(fabs(fptCameraPos[1].x-fptCameraPos[0].x), fabs(fptCameraPos[1].y-fptCameraPos[0].y), fptMoveDistance.x, fptMoveDistance.y);
-//#endif
-//
-//	// 6. Save Cam Resolution
-//	CString sItem, sData, sPath=PATH_WORKING_INFO;
-//
-//	sItem.Format(_T("Vision%d"), m_nIdx);
-//	sData.Format(_T("%f"), dPixelSizeX);
-//	pDoc->WorkingInfo.Vision[m_nIdx].sResX = sData;
-//	::WritePrivateProfileString(sItem, _T("RESOLUTION_X"), sData, sPath);	
-//	sData.Format(_T("%f"), dPixelSizeY);
-//	pDoc->WorkingInfo.Vision[m_nIdx].sResY = sData;
-//	::WritePrivateProfileString(sItem, _T("RESOLUTION_Y"), sData, sPath);
-//
-//// #ifdef USE_IDS
-//// 	if(m_pMeasure)
-//// 		m_pMeasure->SetPixelSize(m_pIds->m_dPixelSizeX, m_pIds->m_dPixelSizeY);
-//// #ifdef _DEBUG
-//// 	TRACE(_T("\n Pixel Size: %.6f,  X: %.6f, Y: %.6f"),m_pIds->m_dPixelSize, dPixelSizeX, dPixelSizeY);
-//// #endif
-//// 
-//// #endif
-//
-//	pView->ClrDispMsg();
-//
-//	SetClrOverlay();
-//
-//	dVal = (dPixelSizeX+dPixelSizeY)/2.0;
-//	return dVal;
-//}
 
 BOOL CVision::GrabIRayple(int nPos, BOOL bDraw)
 {

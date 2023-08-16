@@ -62,7 +62,7 @@ CDlgMenu01::CDlgMenu01(CWnd* pParent /*=NULL*/)
 	m_bLowPartialSpd = FALSE;
 	m_bEnableMkStrip = FALSE;
 
-	if(pView)
+	if(pView && pView->m_mgrProcedure)
 		m_nSelRmapPrev = pView->m_mgrProcedure->m_nSelRmap;
 	else
 		m_nSelRmapPrev = RMAP_ALLUP;
@@ -314,6 +314,9 @@ BOOL CDlgMenu01::OnInitDialog()
 
 void CDlgMenu01::SelMap(int nSel)
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
+
 #ifdef TEST_MODE
 	switch(nSel)
 	{
@@ -396,6 +399,9 @@ void CDlgMenu01::SelMap(int nSel)
 
 void CDlgMenu01::OpenReelmap(int nSelRmap)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	CString sPath;
 	if(pView->m_mgrReelmap->m_pReelMap)
 	{
@@ -417,7 +423,7 @@ void CDlgMenu01::OpenReelmap(int nSelRmap)
 
 BOOL CDlgMenu01::DispReelmap(int nSerial, BOOL bDumy)
 {
-	if(nSerial <= 0)
+	if(!pView || !pView->m_mgrReelmap || nSerial <= 0)
 		return FALSE;
 
 	if (pDoc->WorkingInfo.System.bSaveLog)
@@ -508,6 +514,9 @@ void CDlgMenu01::DispMkInfo()	// m_bTIM_DISP_DEF_IMG == FALSE 일때까지 계속 호출
 
 void CDlgMenu01::DispMkInfoUp()
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	int nIdx = pView->m_mgrReelmap->GetPcrIdx(m_nSerial);
@@ -551,6 +560,9 @@ void CDlgMenu01::DispMkInfoUp()
 
 void CDlgMenu01::DispMkInfoDn()
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	if(!bDualTest)
 		return;
@@ -595,6 +607,9 @@ void CDlgMenu01::InitMkInfo()
 
 void CDlgMenu01::SelDisp()
 {
+	if (!pView || !pView->m_mgrPunch)
+		return;
+
 	CVision* pVision0 = pView->m_mgrPunch->m_pVision[0];
 	CVision* pVision1 = pView->m_mgrPunch->m_pVision[1];
 
@@ -765,6 +780,9 @@ void CDlgMenu01::SelDisp()
 
 void CDlgMenu01::InitMkInfoUp()
 {
+	if (!pView || !pView->m_mgrPunch)
+		return;
+
 	CVision* pVision = pView->m_mgrPunch->m_pVision[0];
 #ifdef USE_VISION
 	if(!pVision)

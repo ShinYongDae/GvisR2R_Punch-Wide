@@ -608,17 +608,18 @@ void CDlgFrameHigh::DispFdOffset()
 
 void CDlgFrameHigh::DispSigAoi()
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
+
 	if(!pView->m_pDlgMenu03)
 		return;
 
 	BOOL bOn;
 	CString sName = pView->GetCurrentDBName();
-// 	bOn	= pView->m_pDlgMenu03->IsAoiTblVac();				// Out - 검사부 검사 테이블 진공 SOL
+ 	//bOn	= pView->m_pDlgMenu03->IsAoiTblVac();				// Out - 검사부 검사 테이블 진공 SOL
 	//bOn	= pView->IsAoiTblVac();								// Out - 검사부 검사 테이블 진공 SOL
 
 	// IDC_STC_SIG01
-	//bOn = (sName.MakeUpper() == _T("GVISDB")) ? TRUE : FALSE;
-	//bOn = (pView->GetAoiUpCamMstInfo() == 1) ? TRUE : FALSE; // AOI상 strpcs.bin 연결
 	bOn = (pView->m_mgrProcedure->m_nAoiCamInfoStrPcs[0] == 1) ? TRUE : FALSE; // AOI상 strpcs.bin 연결
 	if(bOn && myLabel[0].GetImageBk() != LBL_IMG_DN)
 		myLabel[0].SetImageBk(LBL_IMG_DN);
@@ -626,7 +627,6 @@ void CDlgFrameHigh::DispSigAoi()
 		myLabel[0].SetImageBk(LBL_IMG_UP);
 
 	// IDC_STC_SIG01
-// 	bOn	= pView->m_pDlgMenu03->IsAoiTest();					// Out - 검사부 검사 시작
 	bOn	= pView->IsTest();									// Out - 검사부 검사 시작
 	if(bOn && myLabel[1].GetImageBk() != LBL_IMG_DN)
 		myLabel[1].SetImageBk(LBL_IMG_DN);

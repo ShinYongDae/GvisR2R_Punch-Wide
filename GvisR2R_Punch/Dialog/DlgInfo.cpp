@@ -802,15 +802,8 @@ void CDlgInfo::OnStc0016()
 	
 	CString sVal;
 	GetDlgItem(IDC_STC_0016)->GetWindowText(sVal);
-// 	pDoc->WorkingInfo.LastJob.sLotSepLen = sVal;
-// 	if(pView->m_mgrReelmap->m_pReelMap)
-// 		pView->m_mgrReelmap->m_pReelMap->m_dLotLen = _tstof(sVal);
-// 	::WritePrivateProfileString(_T("Last Job"), _T("Lot Seperate Length", sVal, PATH_WORKING_INFO);
 
 	pDoc->SetSeparateDist(_tstof(sVal));
-	//pView->IoWrite(_T("ML45002", long(_tstof(sVal)*1000.0));	// Lot 분리 길이 (단위 M * 1000)
-	//pView->MpeWrite(_T("ML45002", long(_tstof(sVal)*1000.0));
-
 	pView->SetLotLastShot();
 }
 
@@ -855,14 +848,6 @@ void CDlgInfo::OnStc0024()
 	CString sVal;
 	GetDlgItem(IDC_STC_0024)->GetWindowText(sVal);
  	pDoc->SetStopDist(_tstof(sVal));	
-// 
-// 	pDoc->WorkingInfo.LastJob.sTempPauseLen = sVal;
-// 	if(pView->m_mgrReelmap->m_pReelMap)
-// 		pView->m_mgrReelmap->m_pReelMap->m_dTempPauseLen = _tstof(sVal);
-// 	::WritePrivateProfileString(_T("Last Job"), _T("Temporary Pause Length", sVal, PATH_WORKING_INFO);	
-// 
-// 	//pView->IoWrite(_T("ML45006", long(_tstof(sVal)*1000.0));	// 일시정지 길이 (단위 M * 1000)
-// 	pView->MpeWrite(_T("ML45006", long(_tstof(sVal)*1000.0));
 
 #ifdef USE_ENGRAVE
 	if (pView && pView->m_pEngrave)
@@ -992,7 +977,7 @@ void CDlgInfo::OnChk000()
 	myStcData[0].SetText(pDoc->WorkingInfo.LastJob.sSelUserName);
 	myBtn[0].SetCheck(FALSE);
 
-	if(pDoc && pView->m_mgrReelmap->m_pReelMap)
+	if(pDoc && pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 		pView->m_mgrReelmap->m_pReelMap->m_sUser = pDoc->WorkingInfo.LastJob.sSelUserName;
 	if(pDoc)
 		::WritePrivateProfileString(_T("Last Job"), _T("Operator Name"), pDoc->WorkingInfo.LastJob.sSelUserName, PATH_WORKING_INFO);
@@ -1026,7 +1011,7 @@ void CDlgInfo::OnChk001()
 	}
 
 	pDoc->WorkingInfo.LastJob.bLotSep = bUse;
-	if(pView->m_mgrReelmap->m_pReelMap)
+	if (pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 		pView->m_mgrReelmap->m_pReelMap->m_bUseLotSep = bUse;
 
 	CString sData = bUse ? _T("1") : _T("0");
@@ -1041,6 +1026,9 @@ void CDlgInfo::OnChk001()
 void CDlgInfo::OnChk002() 
 {
 	// TODO: Add your control notification handler code here
+	if (pView && pView->m_mgrPunch)
+		return;
+		
 	BOOL bUse = !pDoc->WorkingInfo.LastJob.bTempPause;
 	Sleep(100);
 	if (bUse)
@@ -1072,7 +1060,7 @@ void CDlgInfo::OnChk002()
 	}
 
 	pDoc->WorkingInfo.LastJob.bTempPause = bUse;
-	if(pView->m_mgrReelmap->m_pReelMap)
+	if(pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 		pView->m_mgrReelmap->m_pReelMap->m_bUseTempPause = bUse;
 
 	CString sData = bUse ? _T("1") : _T("0");

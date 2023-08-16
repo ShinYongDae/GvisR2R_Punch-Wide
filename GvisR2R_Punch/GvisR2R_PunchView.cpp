@@ -3579,8 +3579,8 @@ BOOL CGvisR2R_PunchView::IsMkStrip(int nStripIdx)
 {
 	int nMaxStrip;
 #ifdef USE_CAM_MASTER
-	if (pView->m_mgrReelmap)
-		nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+	if (m_mgrReelmap)
+		nMaxStrip = m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 	else
 		nMaxStrip = MAX_STRIP;
 #else
@@ -4079,7 +4079,7 @@ BOOL CGvisR2R_PunchView::IsConnectedSr()
 	if (m_bDestroyedView)
 		return FALSE;
 
-	if (m_mgrPunch->m_pSr1000w)
+	if (m_mgrPunch && m_mgrPunch->m_pSr1000w)
 	{
 		return m_mgrPunch->m_pSr1000w->IsConnected();
 	}
@@ -4089,7 +4089,7 @@ BOOL CGvisR2R_PunchView::IsConnectedSr()
 
 BOOL CGvisR2R_PunchView::Set2dRead(BOOL bRun)	// Marking Start
 {
-	if (!pView || !pView->m_mgrPunch->m_pSr1000w)
+	if (!m_mgrPunch || !m_mgrPunch->m_pSr1000w)
 		return FALSE;
 
 	return (pView->m_mgrPunch->m_pSr1000w->DoRead2DCode());
@@ -4097,10 +4097,10 @@ BOOL CGvisR2R_PunchView::Set2dRead(BOOL bRun)	// Marking Start
 
 BOOL CGvisR2R_PunchView::Is2dReadDone()
 {
-	if (!pView || !pView->m_mgrPunch->m_pSr1000w)
+	if (!m_mgrPunch || !m_mgrPunch->m_pSr1000w)
 		return FALSE;
 
-	return (!pView->m_mgrPunch->m_pSr1000w->IsRunning());
+	return (!m_mgrPunch->m_pSr1000w->IsRunning());
 }
 
 BOOL CGvisR2R_PunchView::Get2dCode(CString &sLot, int &nSerial)
@@ -5008,6 +5008,8 @@ void CGvisR2R_PunchView::SwAoiTqVac()
 
 void CGvisR2R_PunchView::SetPinPos(int nCam, CfPoint ptPnt)
 {
+	if (!pView->m_mgrReelmap || !pView->m_mgrPunch)
+		return;
 	if (pView->m_mgrPunch->m_pMotion)
 		pView->m_mgrPunch->m_pMotion->SetPinPos(nCam, ptPnt.x, ptPnt.y);
 	if (pView->m_mgrReelmap->m_Master[0].m_pPcsRgn)

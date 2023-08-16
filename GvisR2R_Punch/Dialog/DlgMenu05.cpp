@@ -575,10 +575,43 @@ CString CDlgMenu05::DisplayData()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
+	int nLoop = 0;
 	CString strFileData, strData;
 	int nStripNumY = pView->m_mgrReelmap->m_Master[0].GetStripNum();	// 한판넬의 총 스트립의 갯수
 	int nEntireStripPcs = m_nEntirePieceNum / nStripNumY;				// 스트립별 전체작업의 총 피스 갯수
 	int nEntireStripOnRow = m_nEntireStripNum / nStripNumY;				// 열별 전체작업의 총 스트립 갯수
+
+	int nEp = m_nEntirePieceNum;
+	int nEpg = m_nGoodPieceNum;
+	int nEpo = m_nDefectPieceNum;
+	double dEpgr = (m_nEntirePieceNum > 0) ? 100.0*(double)(m_nGoodPieceNum) / (double)m_nEntirePieceNum : 0.0;
+	double dEpor = (m_nEntirePieceNum > 0) ? 100.0*(double)(m_nDefectPieceNum) / (double)m_nEntirePieceNum : 0.0;
+
+	int nEsp = nEntireStripPcs;
+	int nEse = nEntireStripOnRow;
+
+	int nEs = m_nEntireStripNum;
+	int nEso = m_nTotStOut;
+	double dEsor = 100.0*(double)m_nTotStOut / (double)m_nEntireStripNum;
+	int nEsg = m_nEntireStripNum - m_nTotStOut;
+	double dEsgr = 100.0*(double)(m_nEntireStripNum - m_nTotStOut) / (double)m_nEntireStripNum;
+
+	int nEsge[MAX_STRIP] = { 0 }, nEsoe[MAX_STRIP] = { 0 };
+	int nEspge[MAX_STRIP] = { 0 }, nEspoe[MAX_STRIP] = { 0 };
+	double dEsgre[MAX_STRIP] = { 0.0 }, dEsore[MAX_STRIP] = { 0.0 };
+	double dEspgre[MAX_STRIP] = { 0.0 }, dEspore[MAX_STRIP] = { 0.0 };
+
+	for (nLoop = 0; nLoop < nStripNumY; nLoop++)
+	{
+		nEsge[nLoop] = nEntireStripOnRow - m_nStripOut[nLoop];
+		nEsoe[nLoop] = m_nStripOut[nLoop];
+		nEspge[nLoop] = nEntireStripPcs - m_nDefStrip[nLoop];
+		nEspoe[nLoop] = m_nDefStrip[nLoop];
+		dEsgre[nLoop] = 100.0*(double)(nEntireStripOnRow - m_nStripOut[nLoop]) / (double)nEntireStripOnRow;
+		dEsore[nLoop] = 100.0*(double)m_nStripOut[nLoop] / (double)nEntireStripOnRow;
+		dEspgre[nLoop] = 100.0*(double)(nEntireStripPcs - m_nDefStrip[nLoop]) / (double)nEntireStripPcs;
+		dEspore[nLoop] = 100.0*(double)m_nDefStrip[nLoop] / (double)nEntireStripPcs;
+	}
 
 	//리포트 작성. =====================================================================
 
@@ -618,13 +651,10 @@ CString CDlgMenu05::DisplayData()
 	strFileData += _T("\t----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 	strFileData += _T("\t        \t\t총 검 사\t\t양 품 수\t\t불 량 수\t\t양 품 율\t\t불 량 율\t\r\n");
 	strFileData += _T("\t----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-	strData.Format(_T("\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8.2f\t\t%8.2f\t\r\n"), m_nEntireStripNum, m_nEntireStripNum - m_nTotStOut, m_nTotStOut,
-					100.0*(double)(m_nEntireStripNum-m_nTotStOut)/(double)m_nEntireStripNum, 100.0*(double)m_nTotStOut/(double)m_nEntireStripNum);
+	strData.Format(_T("\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8.2f\t\t%8.2f\t\r\n"), nEs, nEsg, nEso, dEsgr, dEsor);
 	strFileData += strData;
 	strFileData += _T("\t----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-	strData.Format(_T("\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8.2f\t\t%8.2f\t\r\n"), m_nEntirePieceNum, m_nGoodPieceNum, m_nDefectPieceNum,
-											(m_nEntirePieceNum>0)?100.0*(double)(m_nGoodPieceNum)/(double)m_nEntirePieceNum:0.0, 
-											(m_nEntirePieceNum>0)?100.0*(double)(m_nDefectPieceNum)/(double)m_nEntirePieceNum:0.0);
+	strData.Format(_T("\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8.2f\t\t%8.2f\t\r\n"), nEp, nEpg, nEpo, dEpgr, dEpor);
 	strFileData += strData;
 	strFileData += _T("\t----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 	strFileData += _T("\r\n");
@@ -638,42 +668,38 @@ CString CDlgMenu05::DisplayData()
 		strFileData += _T("\t\t  구분  \t        \t\t  1 열  \t\t  2 열  \t\t  3 열  \t\t  4 열  \t\t  5 열  \t\t  6 열  \t\r\n");
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t검 사 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripOnRow, nEntireStripOnRow, nEntireStripOnRow, nEntireStripOnRow, nEntireStripOnRow, nEntireStripOnRow);
+		strData.Format(_T("\t검 사 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEse, nEse, nEse, nEse, nEse, nEse);
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripPcs, nEntireStripPcs, nEntireStripPcs, nEntireStripPcs, nEntireStripPcs, nEntireStripPcs);
+		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEsp, nEsp, nEsp, nEsp, nEsp, nEsp);
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t양 품 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripOnRow - m_nStripOut[0], nEntireStripOnRow - m_nStripOut[1], nEntireStripOnRow - m_nStripOut[2], nEntireStripOnRow - m_nStripOut[3], nEntireStripOnRow - m_nStripOut[4], nEntireStripOnRow - m_nStripOut[5]); // MAX_STRIP_NUM
+		strData.Format(_T("\t양 품 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEsge[0], nEsge[1], nEsge[2], nEsge[3], nEsge[4], nEsge[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripPcs - m_nDefStrip[0], nEntireStripPcs - m_nDefStrip[1], nEntireStripPcs - m_nDefStrip[2], nEntireStripPcs - m_nDefStrip[3], nEntireStripPcs - m_nDefStrip[4], nEntireStripPcs - m_nDefStrip[5]); // MAX_STRIP_NUM
+		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEspge[0], nEspge[1], nEspge[2], nEspge[3], nEspge[4], nEspge[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t불 량 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), m_nStripOut[0], m_nStripOut[1], m_nStripOut[2], m_nStripOut[3], m_nStripOut[4], m_nStripOut[5]); // MAX_STRIP_NUM
+		strData.Format(_T("\t불 량 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEsoe[0], nEsoe[1], nEsoe[2], nEsoe[3], nEsoe[4], nEsoe[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), m_nDefStrip[0], m_nDefStrip[1], m_nDefStrip[2], m_nDefStrip[3], m_nDefStrip[4], m_nDefStrip[5]); // MAX_STRIP_NUM
+		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEspoe[0], nEspoe[1], nEspoe[2], nEspoe[3], nEspoe[4], nEspoe[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t양 품 율\t\t Strip  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)(nEntireStripOnRow - m_nStripOut[0]) / (double)nEntireStripOnRow, 100.0*(double)(nEntireStripOnRow - m_nStripOut[1]) / (double)nEntireStripOnRow,
-			100.0*(double)(nEntireStripOnRow - m_nStripOut[2]) / (double)nEntireStripOnRow, 100.0*(double)(nEntireStripOnRow - m_nStripOut[3]) / (double)nEntireStripOnRow, 100.0*(double)(nEntireStripOnRow - m_nStripOut[4]) / (double)nEntireStripOnRow, 100.0*(double)(nEntireStripOnRow - m_nStripOut[5]) / (double)nEntireStripOnRow); // MAX_STRIP_NUM
+		strData.Format(_T("\t양 품 율\t\t Strip  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEsgre[0], dEsgre[1], dEsgre[2], dEsgre[3], dEsgre[4], dEsgre[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[0]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripPcs - m_nDefStrip[1]) / (double)nEntireStripPcs,
-			100.0*(double)(nEntireStripPcs - m_nDefStrip[2]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripPcs - m_nDefStrip[3]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripPcs - m_nDefStrip[4]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripPcs - m_nDefStrip[5]) / (double)nEntireStripPcs); // MAX_STRIP_NUM
+		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEspgre[0], dEspgre[1], dEspgre[2], dEspgre[3], dEspgre[4], dEspgre[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t불 량 율\t\t Strip  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)m_nStripOut[0] / (double)nEntireStripOnRow, 100.0*(double)m_nStripOut[1] / (double)nEntireStripOnRow,
-			100.0*(double)m_nStripOut[2] / (double)nEntireStripOnRow, 100.0*(double)m_nStripOut[3] / (double)nEntireStripOnRow); // MAX_STRIP_NUM
+		strData.Format(_T("\t불 량 율\t\t Strip   \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEsore[0], dEsore[1], dEsore[2], dEsore[3], dEsore[4], dEsore[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)(m_nDefStrip[0]) / (double)nEntireStripPcs, 100.0*(double)(m_nDefStrip[1]) / (double)nEntireStripPcs,
-			100.0*(double)(m_nDefStrip[2]) / (double)nEntireStripPcs, 100.0*(double)(m_nDefStrip[3]) / (double)nEntireStripPcs); // MAX_STRIP_NUM
+		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEspore[0], dEspore[1], dEspore[2], dEspore[3], dEspore[4], dEspore[5]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 	}
@@ -683,42 +709,38 @@ CString CDlgMenu05::DisplayData()
 		strFileData += _T("\t\t  구분  \t        \t\t  1 열  \t\t  2 열  \t\t  3 열  \t\t  4 열  \t\r\n");
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t검 사 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripOnRow, nEntireStripOnRow, nEntireStripOnRow, nEntireStripOnRow);
+		strData.Format(_T("\t검 사 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEse, nEse, nEse, nEse);
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripPcs, nEntireStripPcs, nEntireStripPcs, nEntireStripPcs);
+		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEsp, nEsp, nEsp, nEsp);
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t양 품 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripOnRow - m_nStripOut[0], nEntireStripOnRow - m_nStripOut[1], nEntireStripOnRow - m_nStripOut[2], nEntireStripOnRow - m_nStripOut[3]); // MAX_STRIP_NUM
+		strData.Format(_T("\t양 품 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEsge[0], nEsge[1], nEsge[2], nEsge[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEntireStripPcs - m_nDefStrip[0], nEntireStripPcs - m_nDefStrip[1], nEntireStripPcs - m_nDefStrip[2], nEntireStripPcs - m_nDefStrip[3]); // MAX_STRIP_NUM
+		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEspge[0], nEspge[1], nEspge[2], nEspge[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t불 량 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), m_nStripOut[0], m_nStripOut[1], m_nStripOut[2], m_nStripOut[3]); // MAX_STRIP_NUM
+		strData.Format(_T("\t불 량 수\t\t Strip  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEsoe[0], nEsoe[1], nEsoe[2], nEsoe[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), (m_nDefStrip[0]), (m_nDefStrip[1]), (m_nDefStrip[2]), (m_nDefStrip[3])); // MAX_STRIP_NUM
+		strData.Format(_T("\t        \t\t  Unit  \t\t%8d\t\t%8d\t\t%8d\t\t%8d\t\r\n"), nEspoe[0], nEspoe[1], nEspoe[2], nEspoe[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t양 품 율\t\t Strip  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)(nEntireStripOnRow - m_nStripOut[0]) / (double)nEntireStripOnRow, 100.0*(double)(nEntireStripOnRow - m_nStripOut[1]) / (double)nEntireStripOnRow,
-			100.0*(double)(nEntireStripOnRow - m_nStripOut[2]) / (double)nEntireStripOnRow, 100.0*(double)(nEntireStripOnRow - m_nStripOut[3]) / (double)nEntireStripOnRow); // MAX_STRIP_NUM
+		strData.Format(_T("\t양 품 율\t\t Strip  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEsgre[0], dEsgre[1], dEsgre[2], dEsgre[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)(nEntireStripPcs - m_nDefStrip[0]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripPcs - m_nDefStrip[1]) / (double)nEntireStripPcs,
-			100.0*(double)(nEntireStripPcs - m_nDefStrip[2]) / (double)nEntireStripPcs, 100.0*(double)(nEntireStripPcs - m_nDefStrip[3]) / (double)nEntireStripPcs); // MAX_STRIP_NUM
+		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEspgre[0], dEspgre[1], dEspgre[2], dEspgre[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 
-		strData.Format(_T("\t불 량 율\t\t Strip  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)m_nStripOut[0] / (double)nEntireStripOnRow, 100.0*(double)m_nStripOut[1] / (double)nEntireStripOnRow,
-			100.0*(double)m_nStripOut[2] / (double)nEntireStripOnRow, 100.0*(double)m_nStripOut[3] / (double)nEntireStripOnRow); // MAX_STRIP_NUM
+		strData.Format(_T("\t불 량 율\t\t Strip  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEsore[0], dEsore[1], dEsore[2], dEsore[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t        \t\t-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), 100.0*(double)(m_nDefStrip[0]) / (double)nEntireStripPcs, 100.0*(double)(m_nDefStrip[1]) / (double)nEntireStripPcs,
-			100.0*(double)(m_nDefStrip[2]) / (double)nEntireStripPcs, 100.0*(double)(m_nDefStrip[3]) / (double)nEntireStripPcs); // MAX_STRIP_NUM
+		strData.Format(_T("\t      %%   \t\t  Unit  \t\t%8.2f\t\t%8.2f\t\t%8.2f\t\t%8.2f\t\r\n"), dEspore[0], dEspore[1], dEspore[2], dEspore[3]); // MAX_STRIP_NUM
 		strFileData += strData;
 		strFileData += _T("\t-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n");
 	}
@@ -1862,6 +1884,38 @@ CString CDlgMenu05::TxtDataMDS()
 	double dEntireDefStripRto = 100.0*(double)nEntireDefStrip / (double)nEntireStripNum;	// 전체작업한 총 양품 스트립 율
 	int nTot;
 	
+	int nEp = m_nEntirePieceNum;
+	int nEpg = m_nGoodPieceNum;
+	int nEpo = m_nDefectPieceNum;
+	double dEpgr = (m_nEntirePieceNum > 0) ? 100.0*(double)(m_nGoodPieceNum) / (double)m_nEntirePieceNum : 0.0;
+	double dEpor = (m_nEntirePieceNum > 0) ? 100.0*(double)(m_nDefectPieceNum) / (double)m_nEntirePieceNum : 0.0;
+
+	int nEsp = nEntireStripPcs;
+	int nEse = nEntireStripEachRow;
+
+	int nEs = nEntireStripNum;
+	int nEso = m_nTotStOut;
+	double dEsor = 100.0*(double)m_nTotStOut / (double)nEntireStripNum;
+	int nEsg = nEntireStripNum - m_nTotStOut;
+	double dEsgr = 100.0*(double)(nEntireStripNum - m_nTotStOut) / (double)nEntireStripNum;
+
+	int nEsge[MAX_STRIP] = { 0 }, nEsoe[MAX_STRIP] = { 0 };
+	int nEspge[MAX_STRIP] = { 0 }, nEspoe[MAX_STRIP] = { 0 };
+	double dEsgre[MAX_STRIP] = { 0.0 }, dEsore[MAX_STRIP] = { 0.0 };
+	double dEspgre[MAX_STRIP] = { 0.0 }, dEspore[MAX_STRIP] = { 0.0 };
+
+	int nLoop = 0;
+	for (nLoop = 0; nLoop < nMaxStrip; nLoop++)
+	{
+		nEsge[nLoop] = nEntireStripEachRow - m_nStripOut[nLoop];
+		nEsoe[nLoop] = m_nStripOut[nLoop];
+		nEspge[nLoop] = nEntireStripPcs - m_nDefStrip[nLoop];
+		nEspoe[nLoop] = m_nDefStrip[nLoop];
+		dEsgre[nLoop] = 100.0*(double)(nEntireStripEachRow - m_nStripOut[nLoop]) / (double)nEntireStripEachRow;
+		dEsore[nLoop] = 100.0*(double)m_nStripOut[nLoop] / (double)nEntireStripEachRow;
+		dEspgre[nLoop] = 100.0*(double)(nEntireStripPcs - m_nDefStrip[nLoop]) / (double)nEntireStripPcs;
+		dEspore[nLoop] = 100.0*(double)m_nDefStrip[nLoop] / (double)nEntireStripPcs;
+	}
 
 	//리포트 작성. =====================================================================
 
@@ -1881,57 +1935,57 @@ CString CDlgMenu05::TxtDataMDS()
 	strFileData += _T("\r\n");
 	
 	strFileData += _T("2. 제품 검사 결과\r\n");
-	strData.Format(_T("    총 검 사 Unit 수 : %9d\r\n"), m_nEntirePieceNum);
+	strData.Format(_T("    총 검 사 Unit 수 : %9d\r\n"), nEp);
 	strFileData += strData;
-	strData.Format(_T("    양    품 Unit 수 : %9d        양  품  율(%%) : %9.2f\r\n"), nEntireGoodPcs, dEntireGoodPcsRto);
+	strData.Format(_T("    양    품 Unit 수 : %9d        양  품  율(%%) : %9.2f\r\n"), nEpg, dEpgr);
 	strFileData += strData;
-	strData.Format(_T("    불    량 Unit 수 : %9d        불  량  율(%%) : %9.2f\r\n"), nEntireDefPcs, dEntireDefPcsRto);
+	strData.Format(_T("    불    량 Unit 수 : %9d        불  량  율(%%) : %9.2f\r\n"), nEpo, dEpor);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 
 	strFileData += _T("3. 열별 검사 수율\r\n");
-	strData.Format(_T("    1열 검사 Unit 수 : %9d\r\n"), nEntireStripPcs);
+	strData.Format(_T("    1열 검사 Unit 수 : %9d\r\n"), nEsp);
 	strFileData += strData;
-	strData.Format(_T("    1열 양품 Unit 수 : %9d        1열 양품율(%%) : %9.2f\r\n"), nEntireStripPcs - m_nDefStrip[0], 100.0*(double)(nEntireStripPcs - m_nDefStrip[0])/(double)nEntireStripPcs);
+	strData.Format(_T("    1열 양품 Unit 수 : %9d        1열 양품율(%%) : %9.2f\r\n"), nEspge[0], dEspgre[0]);
 	strFileData += strData;
-	strData.Format(_T("    1열 불량 Unit 수 : %9d        1열 불량율(%%) : %9.2f\r\n"), m_nDefStrip[0], 100.0*(double)m_nDefStrip[0]/(double)nEntireStripPcs);
+	strData.Format(_T("    1열 불량 Unit 수 : %9d        1열 불량율(%%) : %9.2f\r\n"), nEspoe[0], dEspore[0]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	strData.Format(_T("    2열 검사 Unit 수 : %9d\r\n"), m_nEntirePieceNum / nMaxStrip);
 	strFileData += strData;
-	strData.Format(_T("    2열 양품 Unit 수 : %9d        2열 양품율(%%) : %9.2f\r\n"), nEntireStripPcs - m_nDefStrip[1], 100.0*(double)(nEntireStripPcs - m_nDefStrip[1])/(double)nEntireStripPcs);
+	strData.Format(_T("    2열 양품 Unit 수 : %9d        2열 양품율(%%) : %9.2f\r\n"), nEspge[1], dEspgre[1]);
 	strFileData += strData;
-	strData.Format(_T("    2열 불량 Unit 수 : %9d        2열 불량율(%%) : %9.2f\r\n"), m_nDefStrip[1], 100.0*(double)m_nDefStrip[1]/(double)nEntireStripPcs);
+	strData.Format(_T("    2열 불량 Unit 수 : %9d        2열 불량율(%%) : %9.2f\r\n"), nEspoe[1], dEspore[1]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	strData.Format(_T("    3열 검사 Unit 수 : %9d\r\n"), nEntireStripPcs);
 	strFileData += strData;
-	strData.Format(_T("    3열 양품 Unit 수 : %9d        3열 양품율(%%) : %9.2f\r\n"), nEntireStripPcs - m_nDefStrip[2], 100.0*(double)(nEntireStripPcs - m_nDefStrip[2])/(double)nEntireStripPcs);
+	strData.Format(_T("    3열 양품 Unit 수 : %9d        3열 양품율(%%) : %9.2f\r\n"), nEspge[2], dEspgre[2]);
 	strFileData += strData;
-	strData.Format(_T("    3열 불량 Unit 수 : %9d        3열 불량율(%%) : %9.2f\r\n"), m_nDefStrip[2], 100.0*(double)m_nDefStrip[2]/(double)nEntireStripPcs);
+	strData.Format(_T("    3열 불량 Unit 수 : %9d        3열 불량율(%%) : %9.2f\r\n"), nEspoe[2], dEspore[2]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	strData.Format(_T("    4열 검사 Unit 수 : %9d\r\n"), nEntireStripPcs);
 	strFileData += strData;
-	strData.Format(_T("    4열 양품 Unit 수 : %9d        4열 양품율(%%) : %9.2f\r\n"), nEntireStripPcs - m_nDefStrip[3], 100.0*(double)(nEntireStripPcs - m_nDefStrip[3])/(double)nEntireStripPcs);
+	strData.Format(_T("    4열 양품 Unit 수 : %9d        4열 양품율(%%) : %9.2f\r\n"), nEspge[3], dEspgre[3]);
 	strFileData += strData;
-	strData.Format(_T("    4열 불량 Unit 수 : %9d        4열 불량율(%%) : %9.2f\r\n"), m_nDefStrip[3], 100.0*(double)m_nDefStrip[3]/(double)nEntireStripPcs);
+	strData.Format(_T("    4열 불량 Unit 수 : %9d        4열 불량율(%%) : %9.2f\r\n"), nEspoe[3], dEspore[3]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	if (nMaxStrip == 6)
 	{
 		strData.Format(_T("    5열 검사 Unit 수 : %9d\r\n"), nEntireStripPcs);
 		strFileData += strData;
-		strData.Format(_T("    5열 양품 Unit 수 : %9d        5열 양품율(%%) : %9.2f\r\n"), nEntireStripPcs - m_nDefStrip[4], 100.0*(double)(nEntireStripPcs - m_nDefStrip[4]) / (double)nEntireStripPcs);
+		strData.Format(_T("    5열 양품 Unit 수 : %9d        5열 양품율(%%) : %9.2f\r\n"), nEspge[4], dEspgre[4]);
 		strFileData += strData;
-		strData.Format(_T("    5열 불량 Unit 수 : %9d        5열 불량율(%%) : %9.2f\r\n"), m_nDefStrip[4], 100.0*(double)m_nDefStrip[4] / (double)nEntireStripPcs);
+		strData.Format(_T("    5열 불량 Unit 수 : %9d        5열 불량율(%%) : %9.2f\r\n"), nEspoe[4], dEspore[4]);
 		strFileData += strData;
 		strFileData += _T("\r\n");
 		strData.Format(_T("    6열 검사 Unit 수 : %9d\r\n"), nEntireStripPcs);
 		strFileData += strData;
-		strData.Format(_T("    6열 양품 Unit 수 : %9d        6열 양품율(%%) : %9.2f\r\n"), nEntireStripPcs - m_nDefStrip[5], 100.0*(double)(nEntireStripPcs - m_nDefStrip[5]) / (double)nEntireStripPcs);
+		strData.Format(_T("    6열 양품 Unit 수 : %9d        6열 양품율(%%) : %9.2f\r\n"), nEspge[5], dEspgre[5]);
 		strFileData += strData;
-		strData.Format(_T("    6열 불량 Unit 수 : %9d        6열 불량율(%%) : %9.2f\r\n"), m_nDefStrip[5], 100.0*(double)m_nDefStrip[5] / (double)nEntireStripPcs);
+		strData.Format(_T("    6열 불량 Unit 수 : %9d        6열 불량율(%%) : %9.2f\r\n"), nEspoe[5], dEspore[5]);
 		strFileData += strData;
 		strFileData += _T("\r\n");
 	}
@@ -2751,52 +2805,68 @@ CString CDlgMenu05::Sapp3Data()
 	
 	CString strData;//strFileData, 
 	int nSum, nStripPcs;
-	double dRateBeforeVerify, dRateAfterVerify;
+	//double dRateBeforeVerify, dRateAfterVerify;
 	nStripPcs = m_nEntirePieceNum / nMaxStrip;
+
+
+	int nEp = m_nEntirePieceNum;
+	int nEpg = m_nGoodPieceNum;
+	int nEpo = m_nDefectPieceNum;
+	double dEpgr = (m_nEntirePieceNum > 0) ? 100.0*(double)(m_nGoodPieceNum) / (double)m_nEntirePieceNum : 0.0;
+	double dEpor = (m_nEntirePieceNum > 0) ? 100.0*(double)(m_nDefectPieceNum) / (double)m_nEntirePieceNum : 0.0;
+
+	int nEsp = nStripPcs;
+
+	int nEs = m_nEntireStripNum;
+	int nEso = m_nTotStOut;
+	double dEsor = 100.0*(double)m_nTotStOut / (double)m_nEntireStripNum;
+	int nEsg = m_nEntireStripNum - m_nTotStOut;
+	double dEsgr = 100.0*(double)(m_nEntireStripNum - m_nTotStOut) / (double)m_nEntireStripNum;
+
+	int nEspge[MAX_STRIP] = { 0 }, nEspoe[MAX_STRIP] = { 0 };
+	double dEspgre[MAX_STRIP] = { 0.0 }, dEspore[MAX_STRIP] = { 0.0 };
+
+	double dRateBeforeVerify[MAX_STRIP] = { 0.0 }, dRateAfterVerify[MAX_STRIP] = { 0.0 };
+	int nLoop = 0;
+	for (nLoop = 0; nLoop < nMaxStrip; nLoop++)
+	{
+		nEspge[nLoop] = nStripPcs - m_nDefStrip[nLoop];
+		//dEspgre[nLoop] = 100.0*(double)(nStripPcs - m_nDefStrip[nLoop]) / (double)nStripPcs;
+		//dEspore[nLoop] = 100.0*(double)m_nDefStrip[nLoop] / (double)nStripPcs;
+		dRateBeforeVerify[nLoop] = 100.0 * (nStripPcs - m_nDefStrip[nLoop]) / nStripPcs;
+		dRateAfterVerify[nLoop] = 100.0 * (nStripPcs - m_nDefStrip[nLoop]) / nStripPcs;
+	}
 
 	// 파일 이름.
 	strFileData.Format(_T("FileName : %9s_%4s_%5s.txt\r\n\r\n"), m_sLot, m_sProcessNum, pDoc->WorkingInfo.System.sMcName);
-
   
 	if(!pDoc->WorkingInfo.LastJob.bUse2Layer)
 	{
 		// 열별 투입/완성/수율 Data.
 		strFileData += _T("1Q\r\n");
-		dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[0]) / nStripPcs;
-		dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[0]) / nStripPcs;
-		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs-m_nDefStrip[0], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[0], dRateBeforeVerify[0], dRateAfterVerify[0]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 		strFileData += strData;
 
 		strFileData += _T("2Q\r\n");
-		dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[1]) / nStripPcs;
-		dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[1]) / nStripPcs;
-		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs-m_nDefStrip[1], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[1], dRateBeforeVerify[1], dRateAfterVerify[1]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 		strFileData += strData;
 
 		strFileData += _T("3Q\r\n");
-		dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[2]) / nStripPcs;
-		dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[2]) / nStripPcs;
-		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs-m_nDefStrip[2], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[2], dRateBeforeVerify[2], dRateAfterVerify[2]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 		strFileData += strData;
 
 		strFileData += _T("4Q\r\n");
-		dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[3]) / nStripPcs;
-		dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[3]) / nStripPcs;
-		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs-m_nDefStrip[3], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+		strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[3], dRateBeforeVerify[3], dRateAfterVerify[3]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 		strFileData += strData;
 
 		if (nMaxStrip == 6)
 		{
 			strFileData += _T("5Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[4]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[4]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs-m_nDefStrip[4], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[4], dRateBeforeVerify[4], dRateAfterVerify[4]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("6Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[5]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[5]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs-m_nDefStrip[5], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[5], dRateBeforeVerify[5], dRateAfterVerify[5]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 		}
 
@@ -3192,39 +3262,27 @@ CString CDlgMenu05::Sapp3Data()
 		if (nMaxStrip == 6)
 		{
 			strFileData += _T("1Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[5]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[5]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[5], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[5], dRateBeforeVerify[5], dRateAfterVerify[5]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("2Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[4]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[4]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[4], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[4], dRateBeforeVerify[4], dRateAfterVerify[4]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("3Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[3]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[3]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[3], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[3], dRateBeforeVerify[3], dRateAfterVerify[3]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("4Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[2]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[2]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[2], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[2], dRateBeforeVerify[2], dRateAfterVerify[2]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("5Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[1]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[1]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[1], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[1], dRateBeforeVerify[1], dRateAfterVerify[1]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("6Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[0]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[0]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[0], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[0], dRateBeforeVerify[0], dRateAfterVerify[0]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("\r\n");
@@ -3615,27 +3673,19 @@ CString CDlgMenu05::Sapp3Data()
 		else
 		{
 			strFileData += _T("1Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[3]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[3]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[3], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[3], dRateBeforeVerify[3], dRateAfterVerify[3]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("2Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[2]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[2]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[2], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[2], dRateBeforeVerify[2], dRateAfterVerify[2]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("3Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[1]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[1]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[1], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[1], dRateBeforeVerify[1], dRateAfterVerify[1]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("4Q\r\n");
-			dRateBeforeVerify = 100.0 * (nStripPcs - m_nDefStrip[0]) / nStripPcs;
-			dRateAfterVerify = 100.0 * (nStripPcs - m_nDefStrip[0]) / nStripPcs;
-			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nStripPcs, nStripPcs - m_nDefStrip[0], dRateBeforeVerify, dRateAfterVerify); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
+			strData.Format(_T("%d,%d,%.1f,%.1f\r\n"), nEsp, nEspge[0], dRateBeforeVerify[0], dRateAfterVerify[0]); // 투입수량, 완성수량, Verify전 수량, Verify후 수량
 			strFileData += strData;
 
 			strFileData += _T("\r\n");

@@ -183,7 +183,7 @@ public:
 	void SetAlignPos();
 	BOOL GetAoiDnInfo(int nSerial, int *pNewLot = NULL, BOOL bFromBuf = FALSE); // TRUE: CHANGED, FALSE: NO CHANGED
 	void InitInfo();
-	void ResetMkInfo(int nAoi = 0); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
+	//void ResetMkInfo(int nAoi = 0); // 0 : AOI-Up , 1 : AOI-Dn , 2 : AOI-UpDn
 	void ModelChange(int nAoi = 0); // 0 : AOI-Up , 1 : AOI-Dn
 	BOOL ChkLastProcFromEng();
 	BOOL ChkStShotNum();
@@ -392,8 +392,8 @@ public:
 	int m_nNewLot;
 	int m_nSaveMk0Img, m_nSaveMk1Img;
 
-	int m_nSerialRmapUpdate;
-	int m_nSerialRmapInnerUpdate;
+	//int m_nSerialRmapUpdate;
+	//int m_nSerialRmapInnerUpdate;
 
 	BOOL m_bShift2Mk;
 	BOOL m_bSerialDecrese;
@@ -440,6 +440,11 @@ public:
 	BOOL GetCurrentInfoSignal();
 
 	void DoAuto();
+	void UpdateYieldOnThread(int nSerial);
+	BOOL UpdateReelmap(int nSerial);
+	BOOL UpdateReelmapInner(int nSerial);
+	BOOL ReloadReelmap(int nSerial);
+	BOOL IsVs();
 
 protected:
 	DECLARE_MESSAGE_MAP()

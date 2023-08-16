@@ -1724,7 +1724,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.LastJob.sSelUserName = CharToString(SockData.strData);
 
-				if (pDoc && pView->m_mgrReelmap->m_pReelMap)
+				if (pDoc && pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 					pView->m_mgrReelmap->m_pReelMap->m_sUser = pDoc->WorkingInfo.LastJob.sSelUserName;
 				if (pDoc)
 					::WritePrivateProfileString(_T("Last Job"), _T("Operator Name"), pDoc->WorkingInfo.LastJob.sSelUserName, PATH_WORKING_INFO);
@@ -1763,13 +1763,13 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				m_bGetOpInfo = TRUE;
 				pDoc->WorkingInfo.Motion.sMkFdDist = CharToString(SockData.strData);
 
-				if (pView->m_mgrReelmap->m_pReelMap)
+				if (pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 					pView->m_mgrReelmap->m_pReelMap->m_dPnlLen = _tstof(pDoc->WorkingInfo.Motion.sMkFdDist);
 				::WritePrivateProfileString(_T("Last Job"), _T("One Panel Length"), pDoc->WorkingInfo.Motion.sMkFdDist, PATH_WORKING_INFO);
 				::WritePrivateProfileString(_T("Motion"), _T("MARKING_FEEDING_SERVO_DIST"), pDoc->WorkingInfo.Motion.sMkFdDist, PATH_WORKING_INFO);
 				::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_DIST"), pDoc->WorkingInfo.Motion.sMkFdDist, PATH_WORKING_INFO);
 #ifdef USE_MPE
-				if (pView->m_mgrReelmap->m_pReelMap)
+				if (pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 				{
 					lData = (long)(pView->m_mgrReelmap->m_pReelMap->m_dPnlLen * 1000.0);
 					pView->MpeWrite(_T("ML45032"), lData);	// 한 판넬 길이 (단위 mm * 1000)
@@ -1784,7 +1784,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				pDoc->WorkingInfo.LastJob.sTempPauseLen = CharToString(SockData.strData);
 				pDoc->WorkingInfo.Lot.sStopDist = CharToString(SockData.strData);
 
-				if (pView->m_mgrReelmap->m_pReelMap)
+				if (pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 					pView->m_mgrReelmap->m_pReelMap->m_dTempPauseLen = _tstof(pDoc->WorkingInfo.LastJob.sTempPauseLen);
 				::WritePrivateProfileString(_T("Last Job"), _T("Temporary Pause Length"), pDoc->WorkingInfo.LastJob.sTempPauseLen, PATH_WORKING_INFO);
 
@@ -1810,7 +1810,7 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 				pDoc->WorkingInfo.Lot.sCuttingDist = CharToString(SockData.strData);
 
 				::WritePrivateProfileString(_T("Lot"), _T("LOT_CUTTING_DIST"), pDoc->WorkingInfo.LastJob.sLotCutPosLen, PATH_WORKING_INFO);
-				if (pView->m_mgrReelmap->m_pReelMap)
+				if (pView && pView->m_mgrReelmap && pView->m_mgrReelmap->m_pReelMap)
 					pView->m_mgrReelmap->m_pReelMap->m_dLotCutPosLen = _tstof(pDoc->WorkingInfo.LastJob.sLotCutPosLen);
 				::WritePrivateProfileString(_T("Last Job"), _T("Lot Cut Position Length"), pDoc->WorkingInfo.LastJob.sLotCutPosLen, PATH_WORKING_INFO);
 
@@ -3536,7 +3536,7 @@ void CEngrave::SetStripRatio()
 	double dRatio = 0.0;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	if (!pView->m_mgrReelmap->m_pReelMapUp)
+	if (!pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapUp)
 		return;
 
 	if (bDualTest)
@@ -3803,6 +3803,9 @@ void CEngrave::SetStripRatio()
 
 void CEngrave::SetDef()
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 	CString str;
@@ -3810,28 +3813,6 @@ void CEngrave::SetDef()
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	CReelMap* pReelMap=NULL;
-
-	//if (bDualTest)
-	//{
-	//	switch (pView->m_mgrProcedure->m_nSelRmap)
-	//	{
-	//	case RMAP_UP:
-	//		pReelMap = pView->m_mgrReelmap->m_pReelMapUp;
-	//		break;
-	//	case RMAP_DN:
-	//		pReelMap = pView->m_mgrReelmap->m_pReelMapDn;
-	//		break;
-	//	case RMAP_ALLUP:
-	//		pReelMap = pView->m_mgrReelmap->m_pReelMapAllUp;
-	//		break;
-	//	case RMAP_ALLDN:
-	//		pReelMap = pView->m_mgrReelmap->m_pReelMapAllDn;
-	//		break;
-	//	}
-	//}
-	//else
-	//	pReelMap = pView->m_mgrReelmap->m_pReelMapUp;
-
 
 	switch (pView->m_mgrProcedure->m_nSelRmap)
 	{
@@ -4855,7 +4836,7 @@ void CEngrave::SetMkVerfyLen()
 // SetTotRatio()
 void CEngrave::SetDefNumUp()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapUp)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapUp)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -4873,7 +4854,7 @@ void CEngrave::SetDefNumUp()
 
 void CEngrave::SetDefRtoUp()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapUp)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapUp)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -4895,7 +4876,7 @@ void CEngrave::SetDefRtoUp()
 
 void CEngrave::SetGoodNumUp()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapUp)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapUp)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -4911,7 +4892,7 @@ void CEngrave::SetGoodNumUp()
 
 void CEngrave::SetGoodRtoUp()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapUp)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapUp)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -4933,7 +4914,7 @@ void CEngrave::SetGoodRtoUp()
 
 void CEngrave::SetTestNumUp()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapUp)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapUp)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -4950,7 +4931,7 @@ void CEngrave::SetTestNumUp()
 
 void CEngrave::SetDefNumDn()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -4971,7 +4952,7 @@ void CEngrave::SetDefNumDn()
 
 void CEngrave::SetDefRtoDn()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -4998,7 +4979,7 @@ void CEngrave::SetDefRtoDn()
 
 void CEngrave::SetGoodNumDn()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -5018,7 +4999,7 @@ void CEngrave::SetGoodNumDn()
 
 void CEngrave::SetGoodRtoDn()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -5045,7 +5026,7 @@ void CEngrave::SetGoodRtoDn()
 
 void CEngrave::SetTestNumDn()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -5066,7 +5047,7 @@ void CEngrave::SetTestNumDn()
 
 void CEngrave::SetDefNumTot()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -5087,7 +5068,7 @@ void CEngrave::SetDefNumTot()
 
 void CEngrave::SetDefRtoTot()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -5114,7 +5095,7 @@ void CEngrave::SetDefRtoTot()
 
 void CEngrave::SetGoodNumTot()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -5134,7 +5115,7 @@ void CEngrave::SetGoodNumTot()
 
 void CEngrave::SetGoodRtoTot()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;
@@ -5161,7 +5142,7 @@ void CEngrave::SetGoodRtoTot()
 
 void CEngrave::SetTestNumTot()
 {
-	if (!pDoc || !pView->m_mgrReelmap->m_pReelMapDn)
+	if (!pDoc || !pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMapDn)
 		return;
 
 	SOCKET_DATA SocketData;

@@ -52,8 +52,8 @@ CMyGL::CMyGL(CWnd* pParent)
 	Angle[0]=0.0f;
 	Angle[1]=0.0f;
 	Angle[2]=0.0f;
-
-	pView->m_mgrReelmap->m_pReelMap = NULL;
+	
+	m_pReelMap = NULL;
 }
 
 CMyGL::~CMyGL()
@@ -141,7 +141,7 @@ END_MESSAGE_MAP()
 void CMyGL::Init(int nCtrlId, CReelMap* pReelMap)
 {
 	m_nCtrlId = nCtrlId;
-	pView->m_mgrReelmap->m_pReelMap = pReelMap;
+	m_pReelMap = pReelMap;
 
 	const GLubyte *vendor = glGetString(GL_VENDOR);
 	const GLubyte *renderer = glGetString(GL_RENDERER);
@@ -157,11 +157,11 @@ void CMyGL::Init(int nCtrlId, CReelMap* pReelMap)
 	m_rtDispCtrl = rtDispCtrl;
 
 	float fBkR = 0.0, fBkG = 0.0, fBkB = 0.0;
-	if(pView->m_mgrReelmap->m_pReelMap)//pDoc->
+	if(m_pReelMap)
 	{
-		fBkR = (float)pView->m_mgrReelmap->m_pReelMap->m_nBkColor[0] / 256.0;//pDoc->
-		fBkG = (float)pView->m_mgrReelmap->m_pReelMap->m_nBkColor[1] / 256.0;//pDoc->
-		fBkB = (float)pView->m_mgrReelmap->m_pReelMap->m_nBkColor[2] / 256.0;//pDoc->
+		fBkR = (float)m_pReelMap->m_nBkColor[0] / 256.0;//pDoc->
+		fBkG = (float)m_pReelMap->m_nBkColor[1] / 256.0;//pDoc->
+		fBkB = (float)m_pReelMap->m_nBkColor[2] / 256.0;//pDoc->
 	}
 
 	m_hDC =new CClientDC(FromHandle(hDispCtrl));
@@ -216,23 +216,23 @@ void CMyGL::GetPixelInfo(int &nSzCtrlX, int &nSzCtrlY, int &nSzImgX, int &nSzImg
 
 void CMyGL::SetPcsDef()
 {
-	if(!pView->m_mgrReelmap->m_pReelMap)//pDoc->
+	if (!m_pReelMap)
 		return;
 
 	int i;
 	DWORD dwR, dwG, dwB;
 	for(i=0; i<MAX_DEF; i++)
 	{
-		dwR = GetRValue(pView->m_mgrReelmap->m_pReelMap->m_rgbDef[i]);//pDoc->
-		dwG = GetGValue(pView->m_mgrReelmap->m_pReelMap->m_rgbDef[i]);//pDoc->
-		dwB = GetBValue(pView->m_mgrReelmap->m_pReelMap->m_rgbDef[i]);//pDoc->
+		dwR = GetRValue(m_pReelMap->m_rgbDef[i]);
+		dwG = GetGValue(m_pReelMap->m_rgbDef[i]);
+		dwB = GetBValue(m_pReelMap->m_rgbDef[i]);
 		GVGLColorFill(&m_rgbDef[i], (float)dwR/255.0, (float)dwG/255.0, (float)dwB/255.0, 1.0f);  // 색 부여. 1.0 이 최고 값이다.
 	}
 }
 
 void CMyGL::SetPnlNum()
 {
-	if(!pView->m_mgrReelmap->m_pReelMap || !pView->m_mgrReelmap->m_pReelMap->m_pPnlNum)
+	if (!m_pReelMap || !m_pReelMap->m_pPnlNum)
 		return;
 
 	if(!m_pPnlNum)
@@ -244,17 +244,17 @@ void CMyGL::SetPnlNum()
 		if (pDoc->WorkingInfo.System.bSaveLog)
 		{
 			CString strData;
-			strData.Format(_T("SetPnlNum: m_pPnlNum[%d] = %d"), k, pView->m_mgrReelmap->m_pReelMap->m_pPnlNum[k]);//pDoc->
+			strData.Format(_T("SetPnlNum: m_pPnlNum[%d] = %d"), k, m_pReelMap->m_pPnlNum[k]);
 			SaveLog(strData);
 		}
 
-		m_pPnlNum[k] = pView->m_mgrReelmap->m_pReelMap->m_pPnlNum[k];//pDoc->
+		m_pPnlNum[k] = m_pReelMap->m_pPnlNum[k];
 	}
 }
 
 void CMyGL::SetPnlDefNum()
 {
-	if(!pView->m_mgrReelmap->m_pReelMap)//pDoc->
+	if (!m_pReelMap)
 		return;
 
 	if(!m_pPnlDefNum)
@@ -262,16 +262,16 @@ void CMyGL::SetPnlDefNum()
 
 	int k;
 	for(k=0; k<m_nTotPnl; k++)
-		m_pPnlDefNum[k] = pView->m_mgrReelmap->m_pReelMap->m_pPnlDefNum[k];//pDoc->
+		m_pPnlDefNum[k] = m_pReelMap->m_pPnlDefNum[k];
 }
 
 void CMyGL::ResetRgn()
 {
-	if(!pView->m_mgrReelmap->m_pReelMap)//pDoc->
+	if (!m_pReelMap)
 		return;
 
 	int i, k;
-	int nTotPnl = pView->m_mgrReelmap->m_pReelMap->nTotPnl;// pDoc->
+	int nTotPnl = m_pReelMap->nTotPnl;
 	if(m_pPcsPnt)
 	{
 		for(k=0; k<nTotPnl; k++)
@@ -291,12 +291,12 @@ void CMyGL::ResetRgn()
 
 void CMyGL::SetRgn()
 {
-	if(!pView->m_mgrReelmap->m_pReelMap)//pDoc->
+	if(!m_pReelMap)
 		return;
 
 	int i, k;
-	int nTotPnl = pView->m_mgrReelmap->m_pReelMap->nTotPnl;//pDoc->
-	int nTotPcs = pView->m_mgrReelmap->m_pReelMap->nTotPcs;//pDoc->
+	int nTotPnl = m_pReelMap->nTotPnl;
+	int nTotPcs = m_pReelMap->nTotPcs;
 	double fData1, fData2, fData3, fData4;
 
 
@@ -376,19 +376,19 @@ void CMyGL::SetRgn()
 
 	for(k=0; k<nTotPnl; k++)
 	{
-		fData1 = pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].left;		// left pDoc->
-		fData2 = pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].top;		// top pDoc->
-		fData3 = pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].right;		// right pDoc->
-		fData4 = pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].bottom;		// bottom pDoc->
+		fData1 = m_pReelMap->pFrmRgn[k].left;		// left pDoc->
+		fData2 = m_pReelMap->pFrmRgn[k].top;		// top pDoc->
+		fData3 = m_pReelMap->pFrmRgn[k].right;		// right pDoc->
+		fData4 = m_pReelMap->pFrmRgn[k].bottom;		// bottom pDoc->
 		GVertexFill(&m_pFrmRgn[k][0], (GLfloat)fData1, (GLfloat)fData2, 0.0f);
 		GVertexFill(&m_pFrmRgn[k][1], (GLfloat)fData3, (GLfloat)fData4, 0.0f);
 
 		for(i=0; i<nTotPcs; i++)
 		{
-			fData1 = pView->m_mgrReelmap->m_pReelMap->pPcsRgn[k][i].left;		// left pDoc->
-			fData2 = pView->m_mgrReelmap->m_pReelMap->pPcsRgn[k][i].top;			// top  pDoc->
-			fData3 = pView->m_mgrReelmap->m_pReelMap->pPcsRgn[k][i].right;		// right pDoc->
-			fData4 = pView->m_mgrReelmap->m_pReelMap->pPcsRgn[k][i].bottom;		// bottom pDoc->
+			fData1 = m_pReelMap->pPcsRgn[k][i].left;		// left pDoc->
+			fData2 = m_pReelMap->pPcsRgn[k][i].top;			// top  pDoc->
+			fData3 = m_pReelMap->pPcsRgn[k][i].right;		// right pDoc->
+			fData4 = m_pReelMap->pPcsRgn[k][i].bottom;		// bottom pDoc->
 
 			GVertexFill(&m_pPcsPnt[k][i][0], (GLfloat)fData1, (GLfloat)fData2, 0.0f);	// [pnl][pcsIdx][LT]
 			GVertexFill(&m_pPcsPnt[k][i][1], (GLfloat)fData3, (GLfloat)fData4, 0.0f);	// [pnl][pcsIdx][RB]
@@ -397,13 +397,13 @@ void CMyGL::SetRgn()
 
 	m_nWorldW = m_rtDispCtrl.right - m_rtDispCtrl.left;
 	m_nWorldH = m_rtDispCtrl.bottom - m_rtDispCtrl.top;
-	double dScale = pView->m_mgrReelmap->m_pReelMap->GetAdjRatio();//pDoc->
-	GVertexFill(&vtScrSt, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[nTotPnl-1].left, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[nTotPnl-1].top, 0.0f);//pDoc->pDoc->
-	GVertexFill(&vtScrEd, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[0].right, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[0].bottom + (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * dScale, 0.0f);//pDoc->pDoc->
+	double dScale = m_pReelMap->GetAdjRatio();//pDoc->
+	GVertexFill(&vtScrSt, (GLfloat)m_pReelMap->pFrmRgn[nTotPnl-1].left, (GLfloat)m_pReelMap->pFrmRgn[nTotPnl-1].top, 0.0f);//pDoc->pDoc->
+	GVertexFill(&vtScrEd, (GLfloat)m_pReelMap->pFrmRgn[0].right, (GLfloat)m_pReelMap->pFrmRgn[0].bottom + (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * dScale, 0.0f);//pDoc->pDoc->
 // 	GVertexFill(&vtBkSt, (GLfloat)m_rtDispCtrl.left, (GLfloat)m_rtDispCtrl.top, 0.0f);
 // 	GVertexFill(&vtBkEd, (GLfloat)m_rtDispCtrl.right, (GLfloat)m_rtDispCtrl.bottom, 0.0f);
-	GVertexFill(&vtBkSt, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[nTotPnl-1].left - MYGL_SIDE_MARGIN, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[nTotPnl-1].top - (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * 5.0, 0.0f);//pDoc->pDoc->
-	GVertexFill(&vtBkEd, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[0].right + MYGL_SIDE_MARGIN, (GLfloat)pView->m_mgrReelmap->m_pReelMap->pFrmRgn[0].bottom + (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * 5.0, 0.0f);//pDoc->pDoc->
+	GVertexFill(&vtBkSt, (GLfloat)m_pReelMap->pFrmRgn[nTotPnl-1].left - MYGL_SIDE_MARGIN, (GLfloat)m_pReelMap->pFrmRgn[nTotPnl-1].top - (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * 5.0, 0.0f);//pDoc->pDoc->
+	GVertexFill(&vtBkEd, (GLfloat)m_pReelMap->pFrmRgn[0].right + MYGL_SIDE_MARGIN, (GLfloat)m_pReelMap->pFrmRgn[0].bottom + (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * 5.0, 0.0f);//pDoc->pDoc->
 
 	GVGLGotoCentermodel(cameraposmap, vtScrSt, vtScrEd);//카메라를 사각형의 중심으로 이동
 	GVGLSetFit(cameraposmap, vtScrSt, vtScrEd, MYGL_SIDE_MARGIN+(MYGL_SIZE_CHAR)/nTotPnl, m_nWorldW, m_nWorldH, 1);  //카메라를 모델쪽으로 밀어 화면에 꽉 채운다.
@@ -493,7 +493,7 @@ void CMyGL::DrawBack()
 void CMyGL::DrawRgn()
 {	
 	int i, k, nDef;
-	if(!pView->m_mgrReelmap->m_pReelMap || !m_pFrmRgn || !m_pPcsPnt)//pDoc->
+	if(!pView->m_mgrReelmap || !m_pReelMap || !m_pFrmRgn || !m_pPcsPnt)//pDoc->
 		return;
 
 	BOOL bDualTest;
@@ -509,13 +509,13 @@ void CMyGL::DrawRgn()
 			break;
 
 
-		if(k==pView->m_mgrReelmap->m_pReelMap->m_nSelMarkingPnl)//pDoc->
+		if(k==m_pReelMap->m_nSelMarkingPnl)//pDoc->
 		{
 			GVGLDrawInit(GV_LINE, 2, m_rgbRed);
 			GVGLDrawRectF(m_pFrmRgn[k][0], m_pFrmRgn[k][1]);
 			GVGLDrawShow();
 		}
-		else if(k==pView->m_mgrReelmap->m_pReelMap->m_nSelMarkingPnl+1)//pDoc->
+		else if(k==m_pReelMap->m_nSelMarkingPnl+1)//pDoc->
 		{
 			GVGLDrawInit(GV_LINE, 2, m_rgbRed);
 			GVGLDrawRectF(m_pFrmRgn[k][0], m_pFrmRgn[k][1]);
@@ -630,7 +630,7 @@ void CMyGL::DrawRgn()
 
 		for(i=0; i<m_nTotPcs; i++)
 		{
-			if(pView->m_mgrReelmap->m_pReelMap)//pDoc->
+			if(m_pReelMap)//pDoc->
 			{
 				if(m_pPnlNum[k] <= 0)
 				{
@@ -638,7 +638,7 @@ void CMyGL::DrawRgn()
 				}
 				else
 				{
-					nDef = pView->m_mgrReelmap->m_pReelMap->pPcsDef[k][i];//pDoc->
+					nDef = m_pReelMap->pPcsDef[k][i];//pDoc->
 					if(nDef)
 						int iii = i;
 
@@ -653,7 +653,7 @@ void CMyGL::DrawRgn()
 
 void CMyGL::DrawPnlNum()
 {
-	if (!m_pPnlNum || !pView->m_mgrReelmap->m_pReelMap)
+	if (!m_pPnlNum || !pView->m_mgrReelmap || !m_pReelMap)
 		return;
 
 	int k;
@@ -682,17 +682,17 @@ void CMyGL::DrawPnlNum()
 		//strcpy(cPnlNum, sPnlNum);
 		//_stprintf(cPnlNum, _T("%s"), sPnlNum);
 
-		double dScale = pView->m_mgrReelmap->m_pReelMap->GetAdjRatio();//pDoc->
-		double fPosX = (pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].left+pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].right-sPnlNum.GetLength()*(MYGL_GAP_NUM + MYGL_SIZE_CHAR)*dScale)/2.0;	//pDoc->pDoc->
-		double fPosY = pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].bottom + (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * dScale;	//pDoc->
+		double dScale = m_pReelMap->GetAdjRatio();//pDoc->
+		double fPosX = (m_pReelMap->pFrmRgn[k].left+m_pReelMap->pFrmRgn[k].right-sPnlNum.GetLength()*(MYGL_GAP_NUM + MYGL_SIZE_CHAR)*dScale)/2.0;	//pDoc->pDoc->
+		double fPosY = m_pReelMap->pFrmRgn[k].bottom + (MYGL_GAP_NUM + MYGL_SIZE_CHAR) * dScale;	//pDoc->
 		GLfloat fFontSize = MYGL_SIZE_NUM * dScale;
-		if(k==pView->m_mgrReelmap->m_pReelMap->m_nSelMarkingPnl)//pDoc->
+		if(k==m_pReelMap->m_nSelMarkingPnl)//pDoc->
 		{
 			if(fPosX > 0.0 && fPosY > 0.0)
 				GVGLFont(sPnlNum, 1, fPosX, fPosY, 0.0, fFontSize, GVFONT_MONOROMAN, 1.0, 0.0, 0.0);
 				//GVGLFont(TCHARToString(cPnlNum), 1, fPosX, fPosY, 0.0, fFontSize, GVFONT_MONOROMAN, 1.0, 0.0, 0.0);
 		}
-		else if(k==pView->m_mgrReelmap->m_pReelMap->m_nSelMarkingPnl+1)//pDoc->
+		else if(k==m_pReelMap->m_nSelMarkingPnl+1)//pDoc->
 		{
 			if(fPosX > 0.0 && fPosY > 0.0)
 				GVGLFont(sPnlNum, 1, fPosX, fPosY, 0.0, fFontSize, GVFONT_MONOROMAN, 1.0, 0.0, 0.0);
@@ -709,7 +709,7 @@ void CMyGL::DrawPnlNum()
 
 void CMyGL::DrawPnlDefNum()
 {
-	if(!m_pPnlDefNum || !pView->m_mgrReelmap->m_pReelMap)
+	if(!m_pPnlDefNum || !pView->m_mgrReelmap || !m_pReelMap)
 		return;
 
  	int k;
@@ -726,17 +726,17 @@ void CMyGL::DrawPnlDefNum()
 		//strcpy(cPnlDefNum, sPnlDefNum);
 		//_stprintf(cPnlDefNum, _T("%s"), sPnlDefNum);
 
-		double dScale = pView->m_mgrReelmap->m_pReelMap->m_dAdjRatio;//pView->m_mgrReelmap->m_pReelMap->GetAdjRatio();//pDoc->
-		double fPosX = (pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].left+pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].right-sPnlDefNum.GetLength()*(MYGL_GAP_NUM + MYGL_SIZE_CHAR)*dScale)/2.0;	//pDoc->pDoc->
-		double fPosY = pView->m_mgrReelmap->m_pReelMap->pFrmRgn[k].top - MYGL_SIZE_CHAR*dScale; //(MYGL_GAP_NUM + MYGL_SIZE_CHAR) * dScale;	pDoc->
+		double dScale = m_pReelMap->m_dAdjRatio;//m_pReelMap->GetAdjRatio();//pDoc->
+		double fPosX = (m_pReelMap->pFrmRgn[k].left+m_pReelMap->pFrmRgn[k].right-sPnlDefNum.GetLength()*(MYGL_GAP_NUM + MYGL_SIZE_CHAR)*dScale)/2.0;	//pDoc->pDoc->
+		double fPosY = m_pReelMap->pFrmRgn[k].top - MYGL_SIZE_CHAR*dScale; //(MYGL_GAP_NUM + MYGL_SIZE_CHAR) * dScale;	pDoc->
 		GLfloat fFontSize = MYGL_SIZE_DEFNUM * dScale;
-		if(k==pView->m_mgrReelmap->m_pReelMap->m_nSelMarkingPnl)//pDoc->
+		if(k==m_pReelMap->m_nSelMarkingPnl)//pDoc->
 		{
 			if(fPosX > -100.0 && fPosY > -100.0)
 				GVGLFont(sPnlDefNum, 1, fPosX, fPosY, 0.0, fFontSize, GVFONT_MONOROMAN, 1.0, 0.0, 0.0);
 				//GVGLFont(TCHARToString(cPnlDefNum), 1, fPosX, fPosY, 0.0, fFontSize, GVFONT_MONOROMAN, 1.0, 0.0, 0.0);
 		}
-		else if(k==pView->m_mgrReelmap->m_pReelMap->m_nSelMarkingPnl+1)//pDoc->
+		else if(k==m_pReelMap->m_nSelMarkingPnl+1)//pDoc->
 		{
 			if(fPosX > -100.0 && fPosY > -100.0)
 				GVGLFont(sPnlDefNum, 1, fPosX, fPosY, 0.0, fFontSize, GVFONT_MONOROMAN, 1.0, 0.0, 0.0);

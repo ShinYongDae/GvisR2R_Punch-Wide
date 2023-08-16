@@ -363,7 +363,8 @@ void CManagerReelmap::InitMstData()
 		}
 	}
 
-	pView->m_mgrReelmap->InitReelmap();
+	if(pView->m_mgrProcedure)
+		pView->m_mgrReelmap->InitReelmap();
 
 	if (m_Master[0].IsMstSpec(pDoc->WorkingInfo.System.sPathCamSpecDir, pDoc->WorkingInfo.LastJob.sModelUp, pDoc->WorkingInfo.LastJob.sInnerLayerUp))
 	{
@@ -516,7 +517,7 @@ BOOL CManagerReelmap::InitReelmapUp()
 			pMkInfo = new CString[nTotPcs];
 	}
 
-	if (pView->m_pDlgMenu01)
+	if (pView->m_pDlgMenu01 && pView->m_mgrProcedure)
 		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_mgrProcedure->m_nSelRmap);
 
 	return TRUE;
@@ -564,7 +565,7 @@ BOOL CManagerReelmap::InitReelmapDn()
 			pMkInfo = new CString[nTotPcs];
 	}
 
-	if (pView->m_pDlgMenu01)
+	if (pView->m_pDlgMenu01 && pView->m_mgrProcedure)
 		pView->m_pDlgMenu01->SwitchReelmapDisp(pView->m_mgrProcedure->m_nSelRmap);
 
 	return TRUE;
@@ -1222,13 +1223,13 @@ BOOL CManagerReelmap::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) // 
 
 	if (pDoc->WorkingInfo.LastJob.sModelUp != pDoc->Status.PcrShare[0].sModel 
 		|| pDoc->WorkingInfo.LastJob.sLayerUp != pDoc->Status.PcrShare[0].sLayer 
-		|| pView->m_mgrProcedure->m_bInitAutoLoadMstInfo)
+		|| (pView->m_mgrProcedure && pView->m_mgrProcedure->m_bInitAutoLoadMstInfo))
 	{
 		pDoc->m_bUpdateForNewJob[0] = TRUE;
 		pDoc->WorkingInfo.LastJob.sModelUp = pDoc->Status.PcrShare[0].sModel;
 		pDoc->WorkingInfo.LastJob.sLayerUp = pDoc->Status.PcrShare[0].sLayer;
 
-		if (pView->m_mgrProcedure->m_bBufEmptyF[0])
+		if (pView->m_mgrProcedure && pView->m_mgrProcedure->m_bBufEmptyF[0])
 		{
 			if (!pView->m_mgrProcedure->m_bBufEmpty[0])
 				pView->m_mgrProcedure->m_bBufEmptyF[0] = FALSE;
@@ -1250,7 +1251,7 @@ BOOL CManagerReelmap::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) // 
 			return TRUE;
 		}
 
-		if (pView->m_mgrProcedure->m_bInitAutoLoadMstInfo)
+		if (pView->m_mgrProcedure && pView->m_mgrProcedure->m_bInitAutoLoadMstInfo)
 		{
 			pView->m_mgrProcedure->m_bInitAutoLoadMstInfo = FALSE;
 			return TRUE;
@@ -1449,7 +1450,7 @@ BOOL CManagerReelmap::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) // 
 		pDoc->WorkingInfo.LastJob.sModelDn = pDoc->Status.PcrShare[1].sModel;
 		pDoc->WorkingInfo.LastJob.sLayerDn = pDoc->Status.PcrShare[1].sLayer;
 
-		if (pView->m_mgrProcedure->m_bBufEmptyF[1])
+		if (pView->m_mgrProcedure && pView->m_mgrProcedure->m_bBufEmptyF[1])
 		{
 			if (!pView->m_mgrProcedure->m_bBufEmpty[1])
 				pView->m_mgrProcedure->m_bBufEmptyF[1] = FALSE;
@@ -3895,7 +3896,8 @@ BOOL CManagerReelmap::IsFixPcsUp(int nSerial)
 
 			sMsg += str;
 		}
-		pView->m_mgrProcedure->m_sFixMsg[0] = sMsg;
+		if (pView && pView->m_mgrProcedure)
+			pView->m_mgrProcedure->m_sFixMsg[0] = sMsg;
 		// 		TowerLamp(RGB_RED, TRUE);
 		// 		Buzzer(TRUE, 0);
 		// 		MsgBox(sMsg);
@@ -3961,7 +3963,9 @@ BOOL CManagerReelmap::IsFixPcsDn(int nSerial)
 		// 		TowerLamp(RGB_RED, TRUE);
 		// 		Buzzer(TRUE, 0);
 		// 		MsgBox(sMsg);
-		pView->m_mgrProcedure->m_sFixMsg[1] = sMsg;
+		if(pView && pView->m_mgrProcedure)
+			pView->m_mgrProcedure->m_sFixMsg[1] = sMsg;
+
 		return TRUE;
 	}
 
@@ -5259,31 +5263,10 @@ void CManagerReelmap::ReloadReelmapAllDn()
 
 BOOL CManagerReelmap::ReloadReelmap(int nSerial)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	if (!pView || !pView->m_mgrProcedure)
+		return FALSE;
 
-	pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP = TRUE;
-	if (bDualTest)
-	{
-		pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN = TRUE;
-		pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP = TRUE;
-		pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN = TRUE;
-	}
-
-	if (pDoc->GetTestMode() == MODE_OUTER)
-	{
-		pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_UP_INNER = TRUE;
-		pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ITS = TRUE;
-		if (pDoc->WorkingInfo.LastJob.bDualTestInner)
-		{
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_DN_INNER = TRUE;
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLUP_INNER = TRUE;
-			pView->m_mgrProcedure->m_bTHREAD_RELOAD_RST_ALLDN_INNER = TRUE;
-		}
-	}
-
-	Sleep(100);
-
-	return TRUE;
+	return pView->m_mgrProcedure->ReloadReelmap(nSerial);
 }
 
 void CManagerReelmap::ReloadReelmapUpInner()
@@ -6970,7 +6953,7 @@ void CManagerReelmap::UpdateRMapUp()
 {
 	if (m_pReelMapUp)
 	{
-		m_pReelMapUp->Write(pView->m_mgrProcedure->m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		m_pReelMapUp->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//m_pReelMapUp->Write(m_nSerialRmapUpdate, 0, m_sPathRmapUpdate[0]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 
 		if (m_pReelMap == m_pReelMapUp)
@@ -6984,7 +6967,7 @@ void CManagerReelmap::UpdateRMapDn()
 {
 	if (m_pReelMapDn)
 	{
-		m_pReelMapDn->Write(pView->m_mgrProcedure->m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		m_pReelMapDn->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//m_pReelMapDn->Write(m_nSerialRmapUpdate, 1, m_sPathRmapUpdate[1]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
@@ -6993,7 +6976,7 @@ void CManagerReelmap::UpdateRMapAllUp()
 {
 	if (m_pReelMapAllUp)
 	{
-		m_pReelMapAllUp->Write(pView->m_mgrProcedure->m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		m_pReelMapAllUp->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//m_pReelMapAllUp->Write(m_nSerialRmapUpdate, 2, m_sPathRmapUpdate[2]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 
 		if (m_pReelMap == m_pReelMapAllUp)
@@ -7007,15 +6990,15 @@ void CManagerReelmap::UpdateRMapAllDn()
 {
 	if (m_pReelMapAllDn)
 	{
-		m_pReelMapAllDn->Write(pView->m_mgrProcedure->m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		m_pReelMapAllDn->Write(m_nSerialRmapUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		//m_pReelMapAllDn->Write(m_nSerialRmapUpdate, 3, m_sPathRmapUpdate[3]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
 BOOL CManagerReelmap::WriteReelmapIts()
 {
-	//return pDoc->WriteReelmapIts(pView->m_mgrProcedure->m_nSerialRmapUpdate);
-	BOOL bRtn = m_pReelMapIts->WriteIts(pView->m_mgrProcedure->m_nSerialRmapUpdate);
+	//return pDoc->WriteReelmapIts(m_nSerialRmapUpdate);
+	BOOL bRtn = m_pReelMapIts->WriteIts(m_nSerialRmapUpdate);
 
 	if (m_pReelMap == m_pReelMapIts)
 	{
@@ -7059,22 +7042,16 @@ void CManagerReelmap::UpdateRMapInnerUp()
 {
 	if (pDoc->GetTestMode() == MODE_INNER)
 	{
-		//if(m_pReelMapInnerUp)
-		//	m_pReelMapInnerUp->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_INNER_UP);
 		if (m_pReelMapUp)
-			m_pReelMapUp->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_INNER_UP);
+			m_pReelMapUp->MakeItsFile(m_nSerialRmapInnerUpdate, RMAP_INNER_UP);
 	}
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
 		if (m_pReelMapInnerUp)
-			m_pReelMapInnerUp->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-																	  //m_pReelMapInnerUp->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, 0, m_sPathRmapInnerUpdate[0]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-
-																	  //if (m_pReelMapInnerUp)
-																	  //	m_pReelMapInnerUp->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_INNER_UP);
+			m_pReelMapInnerUp->Write(m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		if (m_pReelMapInnerUp)
-			m_pReelMapInnerUp->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_UP);
+			m_pReelMapInnerUp->MakeItsFile(m_nSerialRmapInnerUpdate, RMAP_UP);
 	}
 }
 
@@ -7082,22 +7059,16 @@ void CManagerReelmap::UpdateRMapInnerDn()
 {
 	if (pDoc->GetTestMode() == MODE_INNER)
 	{
-		//if (m_pReelMapInnerDn)
-		//	m_pReelMapInnerDn->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_INNER_DN);
 		if (m_pReelMapDn)
-			m_pReelMapDn->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_INNER_DN);
+			m_pReelMapDn->MakeItsFile(m_nSerialRmapInnerUpdate, RMAP_INNER_DN);
 	}
 
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
 		if (m_pReelMapInnerDn)
-			m_pReelMapInnerDn->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-																	  //m_pReelMapInnerDn->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, 1, m_sPathRmapInnerUpdate[1]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-
-																	  //if (m_pReelMapInnerDn)
-																	  //	m_pReelMapInnerDn->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_INNER_DN);
+			m_pReelMapInnerDn->Write(m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 		if (m_pReelMapInnerDn)
-			m_pReelMapInnerDn->MakeItsFile(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, RMAP_DN);
+			m_pReelMapInnerDn->MakeItsFile(m_nSerialRmapInnerUpdate, RMAP_DN);
 	}
 }
 
@@ -7106,8 +7077,7 @@ void CManagerReelmap::UpdateRMapInnerAllUp()
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
 		if (m_pReelMapInnerAllUp)
-			m_pReelMapInnerAllUp->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-																		 //m_pReelMapInnerAllUp->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, 2, m_sPathRmapInnerUpdate[2]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+			m_pReelMapInnerAllUp->Write(m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
@@ -7116,40 +7086,14 @@ void CManagerReelmap::UpdateRMapInnerAllDn()
 	if (pDoc->GetTestMode() == MODE_OUTER)
 	{
 		if (m_pReelMapInnerAllDn)
-			m_pReelMapInnerAllDn->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-																		 //m_pReelMapInnerAllDn->Write(pView->m_mgrProcedure->m_nSerialRmapInnerUpdate, 3, m_sPathRmapInnerUpdate[3]); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+			m_pReelMapInnerAllDn->Write(m_nSerialRmapInnerUpdate); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
 void CManagerReelmap::UpdateYieldOnThread(int nSerial)
 {
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	if (pView->m_mgrProcedure->m_bLastProc && pView->m_mgrProcedure->m_nBufUpSerial[0] == pView->m_mgrProcedure->m_nLotEndSerial)
-	{
-		pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[0] = nSerial;
-		pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[0] = TRUE; // Cam[0]
-		Sleep(30);
-	}
-	else
-	{
-		pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[0] = nSerial;
-		pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[0] = TRUE; // Cam[0]
-		Sleep(30);
-
-		if (pView->m_mgrProcedure->m_nBufUpSerial[1] > 0)
-		{
-			pView->m_mgrProcedure->m_nSerialTHREAD_UPDATAE_YIELD[1] = pView->m_mgrProcedure->m_nBufUpSerial[1];
-			pView->m_mgrProcedure->m_bTHREAD_UPDATAE_YIELD[1] = TRUE; // Cam[1]
-			Sleep(30);
-		}
-		else if (pView->m_mgrProcedure->m_nBufUpSerial[1] < 0)
-		{
-			//Stop();
-			//MsgBox(_T("Error-UpdateYield() : m_nBufUpSerial[1] < 1"));
-			return;
-		}
-	}
+	if (pView && pView->m_mgrProcedure)
+		pView->m_mgrProcedure->UpdateYieldOnThread(nSerial);
 }
 
 void CManagerReelmap::UpdateYield(int nSerial)
@@ -7388,18 +7332,17 @@ BOOL CManagerReelmap::IsDoneRemakeReelmapInner()
 
 int CManagerReelmap::CopyPcrAll()  // return : Serial
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return FALSE;
+
 	int nS0, nS1;
 	if (pView->m_mgrProcedure->m_bLoadShare[0])
 	{
 		nS0 = CopyPcrUp();
-		// 		if(pView->m_pDlgFrameHigh)
-		// 			pView->m_pDlgFrameHigh->SetAoiLastShot(0, nS0);
 	}
 	if (pView->m_mgrProcedure->m_bLoadShare[1])
 	{
 		nS1 = CopyPcrDn();
-		// 		if(pView->m_pDlgFrameHigh)
-		// 			pView->m_pDlgFrameHigh->SetAoiLastShot(1, nS1);
 	}
 
 	if (pView->m_mgrProcedure->m_bLoadShare[0] && pView->m_mgrProcedure->m_bLoadShare[1])
@@ -7451,6 +7394,9 @@ int CManagerReelmap::CopyPcrDn()  // return : Serial
 
 void CManagerReelmap::DelSharePcr()
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	if (bDualTest)
 	{
@@ -7502,9 +7448,11 @@ void CManagerReelmap::DelPcrAll()
 	DelPcrUp();
 	DelPcrDn();
 
-	pView->m_mgrProcedure->m_bIsBuf[0] = FALSE;
-	pView->m_mgrProcedure->m_bIsBuf[1] = FALSE;
-
+	if (pView && pView->m_mgrProcedure)
+	{
+		pView->m_mgrProcedure->m_bIsBuf[0] = FALSE;
+		pView->m_mgrProcedure->m_bIsBuf[1] = FALSE;
+	}
 }
 
 void CManagerReelmap::DelPcrUp()
@@ -8105,63 +8053,18 @@ CString CManagerReelmap::GetItsReelmapPath()
 
 BOOL CManagerReelmap::UpdateReelmap(int nSerial)
 {
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.54"));
-		return 0;
-	}
-
-	if (!pDoc->MakeMkDir())
+	if (!pView || !pView->m_mgrProcedure)
 		return FALSE;
 
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	pView->m_mgrProcedure->m_nSerialRmapUpdate = nSerial;
-
-	pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP = TRUE;
-	if (bDualTest)
-	{
-		pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN = TRUE;
-		pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP = TRUE;
-		pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN = TRUE;
-	}
-
-	if (pDoc->GetTestMode() == MODE_INNER || pDoc->GetTestMode() == MODE_OUTER)
-		UpdateReelmapInner(nSerial);
-
-	Sleep(100);
-	return TRUE;
+	return pView->m_mgrProcedure->UpdateReelmap(nSerial);
 }
 
 BOOL CManagerReelmap::UpdateReelmapInner(int nSerial)
 {
-	if (nSerial <= 0)
-	{
-		pView->ClrDispMsg();
-		AfxMessageBox(_T("Serial Error.54"));
-		return 0;
-	}
-
-	if (!pDoc->MakeMkDir())
+	if (!pView || !pView->m_mgrProcedure)
 		return FALSE;
 
-	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
-	pView->m_mgrProcedure->m_nSerialRmapInnerUpdate = nSerial;
-
-	pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_UP = TRUE;
-	if (bDualTest)
-	{
-		pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_DN = TRUE;
-		pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLUP = TRUE;
-		pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN = TRUE;
-	}
-
-	pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ITS = TRUE;
-
-	Sleep(100);
-	return TRUE;
+	return pView->m_mgrProcedure->UpdateReelmapInner(nSerial);
 }
 
 void CManagerReelmap::SetFixPcs(int nSerial)
@@ -8407,8 +8310,8 @@ int CManagerReelmap::LoadPCRAllUpInner(int nSerial, BOOL bFromShare)	// return :
 	m_pPcrInner[2][nIdx]->m_sLot = m_pPcrInner[0][nIdx]->m_sLot;
 
 	int nTotDef[3] = { 0 };										// [0]: 상면, [1]: 하면, [2]: 상/하면 Merge
-	nTotDef[0] = pView->m_mgrReelmap->m_pPcrInner[0][nIdx]->m_nTotDef;			// 상면 불량 피스 수
-	nTotDef[1] = pView->m_mgrReelmap->m_pPcrInner[1][nIdx]->m_nTotDef;			// 하면 불량 피스 수
+	nTotDef[0] = m_pPcrInner[0][nIdx]->m_nTotDef;			// 상면 불량 피스 수
+	nTotDef[1] = m_pPcrInner[1][nIdx]->m_nTotDef;			// 하면 불량 피스 수
 
 	int nTotPcs = m_MasterInner[0].m_pPcsRgn->nTotPcs;
 	stPcrMerge *pPcrMgr = new stPcrMerge[nTotPcs];
@@ -9188,6 +9091,9 @@ int CManagerReelmap::LoadPCRDnInner(int nSerial, BOOL bFromShare)	// return : 2(
 
 void CManagerReelmap::UpdateYieldOnRmap()
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP = TRUE;		// UpdateReelmapYieldUp(); // Yield Reelmap

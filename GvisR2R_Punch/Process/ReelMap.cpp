@@ -276,7 +276,7 @@ void CReelMap::LoadConfig()
 BOOL CReelMap::LoadDefectTableDB()
 {
 	BOOL bRtn = FALSE;
-	if (pView && pView->m_mgrPunch->m_pDts)
+	if (pView && pView->m_mgrPunch && pView->m_mgrPunch->m_pDts)
 	{
 		COLORREF rgbDef[MAX_PATH];
 		int nDefCode[MAX_PATH], nMaxR, nMaxC;
@@ -841,6 +841,9 @@ void CReelMap::ClrPcs()
 
 BOOL CReelMap::Disp(int nMkPnl, BOOL bDumy)
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
+
 	if(!bDumy)
 	{
 		if(!pPcsDef || !m_pPnlNum || !m_pPnlDefNum)// || !pMkInfo)
@@ -1290,6 +1293,9 @@ CString CReelMap::GetLotSt()
 
 void CReelMap::SetLotEd()
 {
+	if (!pView->m_mgrProcedure)
+		return;
+
 	CString sData;
 	int nYear, nMonth, nDay, nHour, nMin, nSec;
 	nYear = pDoc->WorkingInfo.Lot.EdTime.nYear; 
@@ -4871,21 +4877,33 @@ CString CReelMap::GetResultTxt()
 	double dEntireGoodPcsRtoEachStrip[MAX_STRIP], dEntireDefPcsRtoEachStrip[MAX_STRIP];
 	int nDefPerStrip[MAX_STRIP][MAX_DEF], nEntirePcsEachDef[MAX_DEF];
 
+	int nEp = m_stResult.nEntirePieceNum;
+	int nEpg = nEntireGoodPcs;
+	int nEpo = nEntireDefPcs;
+	double dEpgr = dEntireGoodPcsRto;
+	double dEpor = dEntireDefPcsRto;
+
+	int nEsp = nEntirePcsEachStrip;
+	int nEspge[MAX_STRIP] = { 0 }, nEspoe[MAX_STRIP] = { 0 };
+	double dEspgre[MAX_STRIP] = { 0.0 }, dEspore[MAX_STRIP] = { 0.0 };
+	int nEsdp[MAX_STRIP][MAX_DEF], nEdp[MAX_DEF];
+
 	for (i = 0; i < nMaxStrip; i++)
 	{
 		nTot += m_stResult.nDefPerStrip[i][DEF_LIGHT];
-		nEntireGoodPcsEachStrip[i] = nEntirePcsEachStrip - m_stResult.nDefStrip[i];
-		nEntireDefPcsEachStrip[i] = m_stResult.nDefStrip[i];
-		dEntireGoodPcsRtoEachStrip[i] = 100.0*(double)nEntireGoodPcsEachStrip[i] / (double)nEntirePcsEachStrip;
-		dEntireDefPcsRtoEachStrip[i] = 100.0*(double)nEntireDefPcsEachStrip[i] / (double)nEntirePcsEachStrip;
+		nEspge[i] = nEntireGoodPcsEachStrip[i] = nEntirePcsEachStrip - m_stResult.nDefStrip[i];
+		nEspoe[i] = nEntireDefPcsEachStrip[i] = m_stResult.nDefStrip[i];
+		dEspgre[i] = dEntireGoodPcsRtoEachStrip[i] = 100.0*(double)nEntireGoodPcsEachStrip[i] / (double)nEntirePcsEachStrip;
+		dEspore[i] = dEntireDefPcsRtoEachStrip[i] = 100.0*(double)nEntireDefPcsEachStrip[i] / (double)nEntirePcsEachStrip;
 		for (k = 0; k < MAX_DEF; k++)
 		{
-			nDefPerStrip[i][k] = m_stResult.nDefPerStrip[i][k];
+			nEsdp[i][k] = nDefPerStrip[i][k] = m_stResult.nDefPerStrip[i][k];
 
 			if (i == 0)
-				nEntirePcsEachDef[k] = m_stResult.nEntireAddedDefect[k];
+				nEdp[k] = nEntirePcsEachDef[k] = m_stResult.nEntireAddedDefect[k];
 		}
 	}
+
 
 	strFileData = _T("");
 	strFileData += _T("1. 일반 정보\r\n");
@@ -4902,57 +4920,57 @@ CString CReelMap::GetResultTxt()
 	strFileData += _T("\r\n");
 
 	strFileData += _T("2. 제품 검사 결과\r\n");
-	strData.Format(_T("    총 검 사 Unit 수 : %9d\r\n"), m_stResult.nEntirePieceNum);
+	strData.Format(_T("    총 검 사 Unit 수 : %9d\r\n"), nEp);
 	strFileData += strData;
-	strData.Format(_T("    양    품 Unit 수 : %9d        양  품  율(%%) : %9.2f\r\n"), nEntireGoodPcs, dEntireGoodPcsRto);
+	strData.Format(_T("    양    품 Unit 수 : %9d        양  품  율(%%) : %9.2f\r\n"), nEpg, dEpgr);
 	strFileData += strData;
-	strData.Format(_T("    불    량 Unit 수 : %9d        불  량  율(%%) : %9.2f\r\n"), nEntireDefPcs, dEntireDefPcsRto);
+	strData.Format(_T("    불    량 Unit 수 : %9d        불  량  율(%%) : %9.2f\r\n"), nEpo, dEpor);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 
 	strFileData += _T("3. 열별 검사 수율\r\n");
 	strData.Format(_T("    1열 검사 Unit 수 : %9d\r\n"), nEntirePcsEachStrip);
 	strFileData += strData;
-	strData.Format(_T("    1열 양품 Unit 수 : %9d        1열 양품율(%%) : %9.2f\r\n"), nEntireGoodPcsEachStrip[0], dEntireGoodPcsRtoEachStrip[0]);
+	strData.Format(_T("    1열 양품 Unit 수 : %9d        1열 양품율(%%) : %9.2f\r\n"), nEspge[0], dEspgre[0]);
 	strFileData += strData;
-	strData.Format(_T("    1열 불량 Unit 수 : %9d        1열 불량율(%%) : %9.2f\r\n"), nEntireDefPcsEachStrip[0], dEntireDefPcsRtoEachStrip[0]);
+	strData.Format(_T("    1열 불량 Unit 수 : %9d        1열 불량율(%%) : %9.2f\r\n"), nEspoe[0], dEspore[0]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	strData.Format(_T("    2열 검사 Unit 수 : %9d\r\n"), nEntirePcsEachStrip);
 	strFileData += strData;
-	strData.Format(_T("    2열 양품 Unit 수 : %9d        2열 양품율(%%) : %9.2f\r\n"), nEntireGoodPcsEachStrip[1], dEntireGoodPcsRtoEachStrip[1]);
+	strData.Format(_T("    2열 양품 Unit 수 : %9d        2열 양품율(%%) : %9.2f\r\n"), nEspge[1], dEspgre[1]);
 	strFileData += strData;
-	strData.Format(_T("    2열 불량 Unit 수 : %9d        2열 불량율(%%) : %9.2f\r\n"), nEntireDefPcsEachStrip[1], dEntireDefPcsRtoEachStrip[1]);
+	strData.Format(_T("    2열 불량 Unit 수 : %9d        2열 불량율(%%) : %9.2f\r\n"), nEspoe[1], dEspore[1]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	strData.Format(_T("    3열 검사 Unit 수 : %9d\r\n"), nEntirePcsEachStrip);
 	strFileData += strData;
-	strData.Format(_T("    3열 양품 Unit 수 : %9d        3열 양품율(%%) : %9.2f\r\n"), nEntireGoodPcsEachStrip[2], dEntireGoodPcsRtoEachStrip[2]);
+	strData.Format(_T("    3열 양품 Unit 수 : %9d        3열 양품율(%%) : %9.2f\r\n"), nEspge[2], dEspgre[2]);
 	strFileData += strData;
-	strData.Format(_T("    3열 불량 Unit 수 : %9d        3열 불량율(%%) : %9.2f\r\n"), nEntireDefPcsEachStrip[2], dEntireDefPcsRtoEachStrip[2]);
+	strData.Format(_T("    3열 불량 Unit 수 : %9d        3열 불량율(%%) : %9.2f\r\n"), nEspoe[2], dEspore[2]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	strData.Format(_T("    4열 검사 Unit 수 : %9d\r\n"), nEntirePcsEachStrip);
 	strFileData += strData;
-	strData.Format(_T("    4열 양품 Unit 수 : %9d        4열 양품율(%%) : %9.2f\r\n"), nEntireGoodPcsEachStrip[3], dEntireGoodPcsRtoEachStrip[3]);
+	strData.Format(_T("    4열 양품 Unit 수 : %9d        4열 양품율(%%) : %9.2f\r\n"), nEspge[3], dEspgre[3]);
 	strFileData += strData;
-	strData.Format(_T("    4열 불량 Unit 수 : %9d        4열 불량율(%%) : %9.2f\r\n"), nEntireDefPcsEachStrip[3], dEntireDefPcsRtoEachStrip[3]);
+	strData.Format(_T("    4열 불량 Unit 수 : %9d        4열 불량율(%%) : %9.2f\r\n"), nEspoe[3], dEspore[3]);
 	strFileData += strData;
 	strFileData += _T("\r\n");
 	if (nMaxStrip == 6)
 	{
 		strData.Format(_T("    5열 검사 Unit 수 : %9d\r\n"), nEntirePcsEachStrip);
 		strFileData += strData;
-		strData.Format(_T("    5열 양품 Unit 수 : %9d        5열 양품율(%%) : %9.2f\r\n"), nEntireGoodPcsEachStrip[4], dEntireGoodPcsRtoEachStrip[4]);
+		strData.Format(_T("    5열 양품 Unit 수 : %9d        5열 양품율(%%) : %9.2f\r\n"), nEspge[4], dEspgre[4]);
 		strFileData += strData;
-		strData.Format(_T("    5열 불량 Unit 수 : %9d        5열 불량율(%%) : %9.2f\r\n"), nEntireDefPcsEachStrip[4], dEntireDefPcsRtoEachStrip[4]);
+		strData.Format(_T("    5열 불량 Unit 수 : %9d        5열 불량율(%%) : %9.2f\r\n"), nEspoe[4], dEspore[4]);
 		strFileData += strData;
 		strFileData += _T("\r\n");
 		strData.Format(_T("    6열 검사 Unit 수 : %9d\r\n"), nEntirePcsEachStrip);
 		strFileData += strData;
-		strData.Format(_T("    6열 양품 Unit 수 : %9d        6열 양품율(%%) : %9.2f\r\n"), nEntireGoodPcsEachStrip[5], dEntireGoodPcsRtoEachStrip[5]);
+		strData.Format(_T("    6열 양품 Unit 수 : %9d        6열 양품율(%%) : %9.2f\r\n"), nEspge[5], dEspgre[5]);
 		strFileData += strData;
-		strData.Format(_T("    6열 불량 Unit 수 : %9d        6열 불량율(%%) : %9.2f\r\n"), nEntireDefPcsEachStrip[5], dEntireDefPcsRtoEachStrip[5]);
+		strData.Format(_T("    6열 불량 Unit 수 : %9d        6열 불량율(%%) : %9.2f\r\n"), nEspoe[5], dEspore[5]);
 		strFileData += strData;
 		strFileData += _T("\r\n");
 	}
@@ -4963,43 +4981,43 @@ CString CReelMap::GetResultTxt()
 		strFileData += _T("    -------------------------------------------------------------------------------------------------\r\n");
 		strFileData += _T("    번호     불량유형       1열       2열       3열       4열       5열       6열       유형별 불량수\r\n");
 		strFileData += _T("    -------------------------------------------------------------------------------------------------\r\n");
-		strData.Format(_T("     1         오픈  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_OPEN], nDefPerStrip[1][DEF_OPEN], nDefPerStrip[2][DEF_OPEN], nDefPerStrip[3][DEF_OPEN], nDefPerStrip[4][DEF_OPEN], nDefPerStrip[5][DEF_OPEN], nEntirePcsEachDef[DEF_OPEN]);
+		strData.Format(_T("     1         오픈  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_OPEN], nEsdp[1][DEF_OPEN], nEsdp[2][DEF_OPEN], nEsdp[3][DEF_OPEN], nEsdp[4][DEF_OPEN], nEsdp[5][DEF_OPEN], nEdp[DEF_OPEN]);
 		strFileData += strData;
-		strData.Format(_T("     2         쇼트  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_SHORT], nDefPerStrip[1][DEF_SHORT], nDefPerStrip[2][DEF_SHORT], nDefPerStrip[3][DEF_SHORT], nDefPerStrip[4][DEF_SHORT], nDefPerStrip[5][DEF_SHORT], nEntirePcsEachDef[DEF_SHORT]);
+		strData.Format(_T("     2         쇼트  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_SHORT], nEsdp[1][DEF_SHORT], nEsdp[2][DEF_SHORT], nEsdp[3][DEF_SHORT], nEsdp[4][DEF_SHORT], nEsdp[5][DEF_SHORT], nEdp[DEF_SHORT]);
 		strFileData += strData;
-		strData.Format(_T("     3        U-쇼트 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_USHORT], nDefPerStrip[1][DEF_USHORT], nDefPerStrip[2][DEF_USHORT], nDefPerStrip[3][DEF_USHORT], nDefPerStrip[4][DEF_USHORT], nDefPerStrip[5][DEF_USHORT], nEntirePcsEachDef[DEF_USHORT]);
+		strData.Format(_T("     3        U-쇼트 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_USHORT], nEsdp[1][DEF_USHORT], nEsdp[2][DEF_USHORT], nEsdp[3][DEF_USHORT], nEsdp[4][DEF_USHORT], nEsdp[5][DEF_USHORT], nEdp[DEF_USHORT]);
 		strFileData += strData;
-		strData.Format(_T("     4         결손  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_NICK], nDefPerStrip[1][DEF_NICK], nDefPerStrip[2][DEF_NICK], nDefPerStrip[3][DEF_NICK], nDefPerStrip[4][DEF_NICK], nDefPerStrip[5][DEF_NICK], nEntirePcsEachDef[DEF_NICK]);
+		strData.Format(_T("     4         결손  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_NICK], nEsdp[1][DEF_NICK], nEsdp[2][DEF_NICK], nEsdp[3][DEF_NICK], nEsdp[4][DEF_NICK], nEsdp[5][DEF_NICK], nEdp[DEF_NICK]);
 		strFileData += strData;
-		strData.Format(_T("     5        선간폭 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_SPACE], nDefPerStrip[1][DEF_SPACE], nDefPerStrip[2][DEF_SPACE], nDefPerStrip[3][DEF_SPACE], nDefPerStrip[4][DEF_SPACE], nDefPerStrip[5][DEF_SPACE], nEntirePcsEachDef[DEF_SPACE]);
+		strData.Format(_T("     5        선간폭 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_SPACE], nEsdp[1][DEF_SPACE], nEsdp[2][DEF_SPACE], nEsdp[3][DEF_SPACE], nEsdp[4][DEF_SPACE], nEsdp[5][DEF_SPACE], nEdp[DEF_SPACE]);
 		strFileData += strData;
-		strData.Format(_T("     6         잔동  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_EXTRA], nDefPerStrip[1][DEF_EXTRA], nDefPerStrip[2][DEF_EXTRA], nDefPerStrip[3][DEF_EXTRA], nDefPerStrip[4][DEF_EXTRA], nDefPerStrip[5][DEF_EXTRA], nEntirePcsEachDef[DEF_EXTRA]);
+		strData.Format(_T("     6         잔동  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_EXTRA], nEsdp[1][DEF_EXTRA], nEsdp[2][DEF_EXTRA], nEsdp[3][DEF_EXTRA], nEsdp[4][DEF_EXTRA], nEsdp[5][DEF_EXTRA], nEdp[DEF_EXTRA]);
 		strFileData += strData;
-		strData.Format(_T("     7         돌기  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_PROTRUSION], nDefPerStrip[1][DEF_PROTRUSION], nDefPerStrip[2][DEF_PROTRUSION], nDefPerStrip[3][DEF_PROTRUSION], nDefPerStrip[4][DEF_PROTRUSION], nDefPerStrip[5][DEF_PROTRUSION], nEntirePcsEachDef[DEF_PROTRUSION]);
+		strData.Format(_T("     7         돌기  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_PROTRUSION], nEsdp[1][DEF_PROTRUSION], nEsdp[2][DEF_PROTRUSION], nEsdp[3][DEF_PROTRUSION], nEsdp[4][DEF_PROTRUSION], nEsdp[5][DEF_PROTRUSION], nEdp[DEF_PROTRUSION]);
 		strFileData += strData;
-		strData.Format(_T("     8         핀홀  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_PINHOLE], nDefPerStrip[1][DEF_PINHOLE], nDefPerStrip[2][DEF_PINHOLE], nDefPerStrip[3][DEF_PINHOLE], nDefPerStrip[4][DEF_PINHOLE], nDefPerStrip[5][DEF_PINHOLE], nEntirePcsEachDef[DEF_PINHOLE]);
+		strData.Format(_T("     8         핀홀  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_PINHOLE], nEsdp[1][DEF_PINHOLE], nEsdp[2][DEF_PINHOLE], nEsdp[3][DEF_PINHOLE], nEsdp[4][DEF_PINHOLE], nEsdp[5][DEF_PINHOLE], nEdp[DEF_PINHOLE]);
 		strFileData += strData;
-		strData.Format(_T("     9       패드결함%10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_PAD], nDefPerStrip[1][DEF_PAD], nDefPerStrip[2][DEF_PAD], nDefPerStrip[3][DEF_PAD], nDefPerStrip[4][DEF_PAD], nDefPerStrip[5][DEF_PAD], nEntirePcsEachDef[DEF_PAD]);
+		strData.Format(_T("     9       패드결함%10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_PAD], nEsdp[1][DEF_PAD], nEsdp[2][DEF_PAD], nEsdp[3][DEF_PAD], nEsdp[4][DEF_PAD], nEsdp[5][DEF_PAD], nEdp[DEF_PAD]);
 		strFileData += strData;
-		strData.Format(_T("    10        홀오픈 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_OPEN], nDefPerStrip[1][DEF_HOLE_OPEN], nDefPerStrip[2][DEF_HOLE_OPEN], nDefPerStrip[3][DEF_HOLE_OPEN], nDefPerStrip[4][DEF_HOLE_OPEN], m_stResult.nDefPerStrip[5][DEF_HOLE_OPEN], nEntirePcsEachDef[DEF_HOLE_OPEN]);
+		strData.Format(_T("    10        홀오픈 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_OPEN], nEsdp[1][DEF_HOLE_OPEN], nEsdp[2][DEF_HOLE_OPEN], nEsdp[3][DEF_HOLE_OPEN], nEsdp[4][DEF_HOLE_OPEN], nEsdp[5][DEF_HOLE_OPEN], nEdp[DEF_HOLE_OPEN]);
 		strFileData += strData;
-		strData.Format(_T("    11        홀없음 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_MISS], nDefPerStrip[1][DEF_HOLE_MISS], nDefPerStrip[2][DEF_HOLE_MISS], nDefPerStrip[3][DEF_HOLE_MISS], nDefPerStrip[4][DEF_HOLE_MISS], m_stResult.nDefPerStrip[5][DEF_HOLE_MISS], nEntirePcsEachDef[DEF_HOLE_MISS]);
+		strData.Format(_T("    11        홀없음 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_MISS], nEsdp[1][DEF_HOLE_MISS], nEsdp[2][DEF_HOLE_MISS], nEsdp[3][DEF_HOLE_MISS], nEsdp[4][DEF_HOLE_MISS], nEsdp[5][DEF_HOLE_MISS], nEdp[DEF_HOLE_MISS]);
 		strFileData += strData;
-		strData.Format(_T("    12        홀편심 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_POSITION], nDefPerStrip[1][DEF_HOLE_POSITION], nDefPerStrip[2][DEF_HOLE_POSITION], nDefPerStrip[3][DEF_HOLE_POSITION], nDefPerStrip[4][DEF_HOLE_POSITION], nDefPerStrip[5][DEF_HOLE_POSITION], nEntirePcsEachDef[DEF_HOLE_POSITION]);
+		strData.Format(_T("    12        홀편심 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_POSITION], nEsdp[1][DEF_HOLE_POSITION], nEsdp[2][DEF_HOLE_POSITION], nEsdp[3][DEF_HOLE_POSITION], nEsdp[4][DEF_HOLE_POSITION], nEsdp[5][DEF_HOLE_POSITION], nEdp[DEF_HOLE_POSITION]);
 		strFileData += strData;
-		strData.Format(_T("    13       홀내불량%10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_DEFECT], nDefPerStrip[1][DEF_HOLE_DEFECT], nDefPerStrip[2][DEF_HOLE_DEFECT], nDefPerStrip[3][DEF_HOLE_DEFECT], nDefPerStrip[4][DEF_HOLE_DEFECT], nDefPerStrip[5][DEF_HOLE_DEFECT], nEntirePcsEachDef[DEF_HOLE_DEFECT]);
+		strData.Format(_T("    13       홀내불량%10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_DEFECT], nEsdp[1][DEF_HOLE_DEFECT], nEsdp[2][DEF_HOLE_DEFECT], nEsdp[3][DEF_HOLE_DEFECT], nEsdp[4][DEF_HOLE_DEFECT], nEsdp[5][DEF_HOLE_DEFECT], nEdp[DEF_HOLE_DEFECT]);
 		strFileData += strData;
-		strData.Format(_T("    14          POI  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_POI], m_stResult.nDefPerStrip[1][DEF_POI], nDefPerStrip[2][DEF_POI], nDefPerStrip[3][DEF_POI], nDefPerStrip[4][DEF_POI], nDefPerStrip[5][DEF_POI], nEntirePcsEachDef[DEF_POI]);
+		strData.Format(_T("    14          POI  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_POI], nEsdp[1][DEF_POI], nEsdp[2][DEF_POI], nEsdp[3][DEF_POI], nEsdp[4][DEF_POI], nEsdp[5][DEF_POI], nEdp[DEF_POI]);
 		strFileData += strData;
-		strData.Format(_T("    15        VH오픈 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_OPEN], nDefPerStrip[1][DEF_VH_OPEN], nDefPerStrip[2][DEF_VH_OPEN], nDefPerStrip[3][DEF_VH_OPEN], nDefPerStrip[4][DEF_VH_OPEN], nDefPerStrip[5][DEF_VH_OPEN], nEntirePcsEachDef[DEF_VH_OPEN]);
+		strData.Format(_T("    15        VH오픈 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_OPEN], nEsdp[1][DEF_VH_OPEN], nEsdp[2][DEF_VH_OPEN], nEsdp[3][DEF_VH_OPEN], nEsdp[4][DEF_VH_OPEN], nEsdp[5][DEF_VH_OPEN], nEdp[DEF_VH_OPEN]);
 		strFileData += strData;
-		strData.Format(_T("    16        VH없음 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_MISS], nDefPerStrip[1][DEF_VH_MISS], nDefPerStrip[2][DEF_VH_MISS], nDefPerStrip[3][DEF_VH_MISS], nDefPerStrip[4][DEF_VH_MISS], nDefPerStrip[5][DEF_VH_MISS], nEntirePcsEachDef[DEF_VH_MISS]);
+		strData.Format(_T("    16        VH없음 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_MISS], nEsdp[1][DEF_VH_MISS], nEsdp[2][DEF_VH_MISS], nEsdp[3][DEF_VH_MISS], nEsdp[4][DEF_VH_MISS], nEsdp[5][DEF_VH_MISS], nEdp[DEF_VH_MISS]);
 		strFileData += strData;
-		strData.Format(_T("    17        VH편심 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_POSITION], nDefPerStrip[1][DEF_VH_POSITION], nDefPerStrip[2][DEF_VH_POSITION], nDefPerStrip[3][DEF_VH_POSITION], nDefPerStrip[4][DEF_VH_POSITION], nDefPerStrip[5][DEF_VH_POSITION], nEntirePcsEachDef[DEF_VH_POSITION]);
+		strData.Format(_T("    17        VH편심 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_POSITION], nEsdp[1][DEF_VH_POSITION], nEsdp[2][DEF_VH_POSITION], nEsdp[3][DEF_VH_POSITION], nEsdp[4][DEF_VH_POSITION], nEsdp[5][DEF_VH_POSITION], nEdp[DEF_VH_POSITION]);
 		strFileData += strData;
-		strData.Format(_T("    18        VH결함 %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_DEF], nDefPerStrip[1][DEF_VH_DEF], nDefPerStrip[2][DEF_VH_DEF], nDefPerStrip[3][DEF_VH_DEF], nDefPerStrip[4][DEF_VH_DEF], nDefPerStrip[5][DEF_VH_DEF], nEntirePcsEachDef[DEF_VH_DEF]);
+		strData.Format(_T("    18        VH결함 %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_DEF], nEsdp[1][DEF_VH_DEF], nEsdp[2][DEF_VH_DEF], nEsdp[3][DEF_VH_DEF], nEsdp[4][DEF_VH_DEF], nEsdp[5][DEF_VH_DEF], nEdp[DEF_VH_DEF]);
 		strFileData += strData;
-		strData.Format(_T("    19         노광  %10d%10d%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_LIGHT], nDefPerStrip[1][DEF_LIGHT], nDefPerStrip[2][DEF_LIGHT], nDefPerStrip[3][DEF_LIGHT], nDefPerStrip[4][DEF_LIGHT], nDefPerStrip[5][DEF_LIGHT], nTot);
+		strData.Format(_T("    19         노광  %10d%10d%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_LIGHT], nEsdp[1][DEF_LIGHT], nEsdp[2][DEF_LIGHT], nEsdp[3][DEF_LIGHT], nEsdp[4][DEF_LIGHT], nEsdp[5][DEF_LIGHT], nTot);
 		strFileData += strData;
 		strFileData += _T("    -------------------------------------------------------------------------------------------------\r\n");
 	}
@@ -5008,43 +5026,43 @@ CString CReelMap::GetResultTxt()
 		strFileData += _T("    -----------------------------------------------------------------------------\r\n");
 		strFileData += _T("    번호     불량유형       1열       2열       3열       4열       유형별 불량수\r\n");
 		strFileData += _T("    -----------------------------------------------------------------------------\r\n");
-		strData.Format(_T("     1         오픈  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_OPEN], nDefPerStrip[1][DEF_OPEN], nDefPerStrip[2][DEF_OPEN], nDefPerStrip[3][DEF_OPEN], nEntirePcsEachDef[DEF_OPEN]);
+		strData.Format(_T("     1         오픈  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_OPEN], nEsdp[1][DEF_OPEN], nEsdp[2][DEF_OPEN], nEsdp[3][DEF_OPEN], nEdp[DEF_OPEN]);
 		strFileData += strData;
-		strData.Format(_T("     2         쇼트  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_SHORT], nDefPerStrip[1][DEF_SHORT], nDefPerStrip[2][DEF_SHORT], nDefPerStrip[3][DEF_SHORT], nEntirePcsEachDef[DEF_SHORT]);
+		strData.Format(_T("     2         쇼트  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_SHORT], nEsdp[1][DEF_SHORT], nEsdp[2][DEF_SHORT], nEsdp[3][DEF_SHORT], nEdp[DEF_SHORT]);
 		strFileData += strData;
-		strData.Format(_T("     3        U-쇼트 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_USHORT], nDefPerStrip[1][DEF_USHORT], nDefPerStrip[2][DEF_USHORT], nDefPerStrip[3][DEF_USHORT], nEntirePcsEachDef[DEF_USHORT]);
+		strData.Format(_T("     3        U-쇼트 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_USHORT], nEsdp[1][DEF_USHORT], nEsdp[2][DEF_USHORT], nEsdp[3][DEF_USHORT], nEdp[DEF_USHORT]);
 		strFileData += strData;
-		strData.Format(_T("     4         결손  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_NICK], nDefPerStrip[1][DEF_NICK], nDefPerStrip[2][DEF_NICK], nDefPerStrip[3][DEF_NICK], nEntirePcsEachDef[DEF_NICK]);
+		strData.Format(_T("     4         결손  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_NICK], nEsdp[1][DEF_NICK], nEsdp[2][DEF_NICK], nEsdp[3][DEF_NICK], nEdp[DEF_NICK]);
 		strFileData += strData;
-		strData.Format(_T("     5        선간폭 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_SPACE], nDefPerStrip[1][DEF_SPACE], nDefPerStrip[2][DEF_SPACE], nDefPerStrip[3][DEF_SPACE], nEntirePcsEachDef[DEF_SPACE]);
+		strData.Format(_T("     5        선간폭 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_SPACE], nEsdp[1][DEF_SPACE], nEsdp[2][DEF_SPACE], nEsdp[3][DEF_SPACE], nEdp[DEF_SPACE]);
 		strFileData += strData;
-		strData.Format(_T("     6         잔동  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_EXTRA], nDefPerStrip[1][DEF_EXTRA], nDefPerStrip[2][DEF_EXTRA], nDefPerStrip[3][DEF_EXTRA], nEntirePcsEachDef[DEF_EXTRA]);
+		strData.Format(_T("     6         잔동  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_EXTRA], nEsdp[1][DEF_EXTRA], nEsdp[2][DEF_EXTRA], nEsdp[3][DEF_EXTRA], nEdp[DEF_EXTRA]);
 		strFileData += strData;
-		strData.Format(_T("     7         돌기  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_PROTRUSION], nDefPerStrip[1][DEF_PROTRUSION], nDefPerStrip[2][DEF_PROTRUSION], nDefPerStrip[3][DEF_PROTRUSION], nEntirePcsEachDef[DEF_PROTRUSION]);
+		strData.Format(_T("     7         돌기  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_PROTRUSION], nEsdp[1][DEF_PROTRUSION], nEsdp[2][DEF_PROTRUSION], nEsdp[3][DEF_PROTRUSION], nEdp[DEF_PROTRUSION]);
 		strFileData += strData;
-		strData.Format(_T("     8         핀홀  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_PINHOLE], nDefPerStrip[1][DEF_PINHOLE], nDefPerStrip[2][DEF_PINHOLE], nDefPerStrip[3][DEF_PINHOLE], nEntirePcsEachDef[DEF_PINHOLE]);
+		strData.Format(_T("     8         핀홀  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_PINHOLE], nEsdp[1][DEF_PINHOLE], nEsdp[2][DEF_PINHOLE], nEsdp[3][DEF_PINHOLE], nEdp[DEF_PINHOLE]);
 		strFileData += strData;
-		strData.Format(_T("     9       패드결함%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_PAD], nDefPerStrip[1][DEF_PAD], nDefPerStrip[2][DEF_PAD], nDefPerStrip[3][DEF_PAD], nEntirePcsEachDef[DEF_PAD]);
+		strData.Format(_T("     9       패드결함%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_PAD], nEsdp[1][DEF_PAD], nEsdp[2][DEF_PAD], nEsdp[3][DEF_PAD], nEdp[DEF_PAD]);
 		strFileData += strData;
-		strData.Format(_T("    10        홀오픈 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_OPEN], nDefPerStrip[1][DEF_HOLE_OPEN], nDefPerStrip[2][DEF_HOLE_OPEN], nDefPerStrip[3][DEF_HOLE_OPEN], nEntirePcsEachDef[DEF_HOLE_OPEN]);
+		strData.Format(_T("    10        홀오픈 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_OPEN], nEsdp[1][DEF_HOLE_OPEN], nEsdp[2][DEF_HOLE_OPEN], nEsdp[3][DEF_HOLE_OPEN], nEdp[DEF_HOLE_OPEN]);
 		strFileData += strData;
-		strData.Format(_T("    11        홀없음 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_MISS], nDefPerStrip[1][DEF_HOLE_MISS], nDefPerStrip[2][DEF_HOLE_MISS], nDefPerStrip[3][DEF_HOLE_MISS], nEntirePcsEachDef[DEF_HOLE_MISS]);
+		strData.Format(_T("    11        홀없음 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_MISS], nEsdp[1][DEF_HOLE_MISS], nEsdp[2][DEF_HOLE_MISS], nEsdp[3][DEF_HOLE_MISS], nEdp[DEF_HOLE_MISS]);
 		strFileData += strData;
-		strData.Format(_T("    12        홀편심 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_POSITION], nDefPerStrip[1][DEF_HOLE_POSITION], nDefPerStrip[2][DEF_HOLE_POSITION], nDefPerStrip[3][DEF_HOLE_POSITION], nEntirePcsEachDef[DEF_HOLE_POSITION]);
+		strData.Format(_T("    12        홀편심 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_POSITION], nEsdp[1][DEF_HOLE_POSITION], nEsdp[2][DEF_HOLE_POSITION], nEsdp[3][DEF_HOLE_POSITION], nEdp[DEF_HOLE_POSITION]);
 		strFileData += strData;
-		strData.Format(_T("    13       홀내불량%10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_HOLE_DEFECT], nDefPerStrip[1][DEF_HOLE_DEFECT], nDefPerStrip[2][DEF_HOLE_DEFECT], nDefPerStrip[3][DEF_HOLE_DEFECT], nEntirePcsEachDef[DEF_HOLE_DEFECT]);
+		strData.Format(_T("    13       홀내불량%10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_HOLE_DEFECT], nEsdp[1][DEF_HOLE_DEFECT], nEsdp[2][DEF_HOLE_DEFECT], nEsdp[3][DEF_HOLE_DEFECT], nEdp[DEF_HOLE_DEFECT]);
 		strFileData += strData;
-		strData.Format(_T("    14          POI  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_POI], nDefPerStrip[1][DEF_POI], nDefPerStrip[2][DEF_POI], nDefPerStrip[3][DEF_POI], nEntirePcsEachDef[DEF_POI]);
+		strData.Format(_T("    14          POI  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_POI], nEsdp[1][DEF_POI], nEsdp[2][DEF_POI], nEsdp[3][DEF_POI], nEdp[DEF_POI]);
 		strFileData += strData;
-		strData.Format(_T("    15        VH오픈 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_OPEN], nDefPerStrip[1][DEF_VH_OPEN], nDefPerStrip[2][DEF_VH_OPEN], nDefPerStrip[3][DEF_VH_OPEN], nEntirePcsEachDef[DEF_VH_OPEN]);
+		strData.Format(_T("    15        VH오픈 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_OPEN], nEsdp[1][DEF_VH_OPEN], nEsdp[2][DEF_VH_OPEN], nEsdp[3][DEF_VH_OPEN], nEdp[DEF_VH_OPEN]);
 		strFileData += strData;
-		strData.Format(_T("    16        VH없음 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_MISS], nDefPerStrip[1][DEF_VH_MISS], nDefPerStrip[2][DEF_VH_MISS], nDefPerStrip[3][DEF_VH_MISS], nEntirePcsEachDef[DEF_VH_MISS]);
+		strData.Format(_T("    16        VH없음 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_MISS], nEsdp[1][DEF_VH_MISS], nEsdp[2][DEF_VH_MISS], nEsdp[3][DEF_VH_MISS], nEdp[DEF_VH_MISS]);
 		strFileData += strData;
-		strData.Format(_T("    17        VH편심 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_POSITION], nDefPerStrip[1][DEF_VH_POSITION], nDefPerStrip[2][DEF_VH_POSITION], nDefPerStrip[3][DEF_VH_POSITION], nEntirePcsEachDef[DEF_VH_POSITION]);
+		strData.Format(_T("    17        VH편심 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_POSITION], nEsdp[1][DEF_VH_POSITION], nEsdp[2][DEF_VH_POSITION], nEsdp[3][DEF_VH_POSITION], nEdp[DEF_VH_POSITION]);
 		strFileData += strData;
-		strData.Format(_T("    18        VH결함 %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_VH_DEF], nDefPerStrip[1][DEF_VH_DEF], nDefPerStrip[2][DEF_VH_DEF], nDefPerStrip[3][DEF_VH_DEF], nEntirePcsEachDef[DEF_VH_DEF]);
+		strData.Format(_T("    18        VH결함 %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_VH_DEF], nEsdp[1][DEF_VH_DEF], nEsdp[2][DEF_VH_DEF], nEsdp[3][DEF_VH_DEF], nEdp[DEF_VH_DEF]);
 		strFileData += strData;
-		strData.Format(_T("    19         노광  %10d%10d%10d%10d%20d\r\n"), nDefPerStrip[0][DEF_LIGHT], nDefPerStrip[1][DEF_LIGHT], nDefPerStrip[2][DEF_LIGHT], nDefPerStrip[3][DEF_LIGHT], nTot);
+		strData.Format(_T("    19         노광  %10d%10d%10d%10d%20d\r\n"), nEsdp[0][DEF_LIGHT], nEsdp[1][DEF_LIGHT], nEsdp[2][DEF_LIGHT], nEsdp[3][DEF_LIGHT], nTot);
 		strFileData += strData;
 		strFileData += _T("    -----------------------------------------------------------------------------\r\n");
 	}

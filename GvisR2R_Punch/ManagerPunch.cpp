@@ -1586,6 +1586,9 @@ void CManagerPunch::MonDispMain()
 
 void CManagerPunch::PlcAlm(BOOL bMon, BOOL bClr)
 {
+	if (!pView->m_mgrProcedure)
+		return;
+
 	if (bMon && !pView->m_mgrProcedure->m_nMonAlmF)
 	{
 		pView->m_mgrProcedure->m_nMonAlmF = 1;
@@ -1913,6 +1916,8 @@ BOOL CManagerPunch::InitAct()
 	if (!m_pFluck)
 		return FALSE;
 #endif
+	if (!pView->m_mgrReelmap)
+		return FALSE;
 
 	int nAxis;
 
@@ -2176,6 +2181,8 @@ BOOL CManagerPunch::MovePinPos()
 
 BOOL CManagerPunch::MoveAlign0(int nPos)
 {
+	if (!pView->m_mgrReelmap)
+		return FALSE;
 	if (!m_pMotion)
 		return FALSE;
 
@@ -2227,6 +2234,8 @@ BOOL CManagerPunch::MoveAlign0(int nPos)
 
 BOOL CManagerPunch::MoveAlign1(int nPos)
 {
+	if (!pView->m_mgrReelmap)
+		return FALSE;
 	if (!m_pMotion)
 		return FALSE;
 
@@ -2671,6 +2680,8 @@ void CManagerPunch::EStop()
 
 void CManagerPunch::SetAlignPos()
 {
+	if (!pView->m_mgrReelmap)
+		return;
 	if (m_pMotion)
 	{
 		CfPoint ptPos1, ptPos2;
@@ -2690,6 +2701,8 @@ void CManagerPunch::SetAlignPos()
 
 void CManagerPunch::SetAlignPosUp()
 {
+	if (!pView->m_mgrReelmap)
+		return;
 	if (m_pMotion)
 	{
 		CfPoint ptPos1, ptPos2;
@@ -2704,6 +2717,8 @@ void CManagerPunch::SetAlignPosUp()
 
 void CManagerPunch::SetAlignPosDn()
 {
+	if (!pView->m_mgrReelmap)
+		return;
 	if (m_pMotion)
 	{
 		CfPoint ptPos1, ptPos2;
@@ -2735,6 +2750,9 @@ void CManagerPunch::ChkTempStop(BOOL bChk)
 
 BOOL CManagerPunch::MoveMeasPos(int nId)
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
+
 	if (!m_pMotion)
 		return FALSE;
 
@@ -3007,6 +3025,9 @@ BOOL CManagerPunch::StopLive1()
 
 BOOL CManagerPunch::ChkLightErr()
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
+
 	int nSerial, nErrCode;
 	BOOL bError = FALSE;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
@@ -3073,6 +3094,9 @@ BOOL CManagerPunch::ChkLightErr()
 //===> Punching
 void CManagerPunch::DoMark0()
 {
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
+
 #ifdef TEST_MODE
 	return;
 #endif
@@ -3646,6 +3670,9 @@ void CManagerPunch::DoMark0()
 
 void CManagerPunch::DoMark1()
 {
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
+
 #ifdef TEST_MODE
 	return;
 #endif
@@ -4215,6 +4242,9 @@ void CManagerPunch::DoMark1()
 
 void CManagerPunch::DoMark0All()
 {
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
+
 	CfPoint ptPnt;
 
 	if (!pView->IsRun())
@@ -4368,6 +4398,9 @@ void CManagerPunch::DoMark0All()
 
 void CManagerPunch::DoMark1All()
 {
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
+
 	CfPoint ptPnt;
 
 	if (!pView->IsRun())
@@ -4551,6 +4584,9 @@ void CManagerPunch::DoMark1All()
 
 void CManagerPunch::DoAllMk(int nCam)
 {
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
+
 	if (nCam == CAM_LF)
 	{
 		double dCurrX = m_dEnc[AXIS_X1];
@@ -4676,6 +4712,9 @@ BOOL CManagerPunch::IsMk1Done()
 
 BOOL CManagerPunch::IsOnMarking0()
 {
+	if (!pView->m_mgrReelmap)
+		return FALSE;
+
 	if (m_nMkPcs[0] < pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs)	// 마킹완료Check
 		return TRUE;
 
@@ -4684,6 +4723,9 @@ BOOL CManagerPunch::IsOnMarking0()
 
 BOOL CManagerPunch::IsOnMarking1()
 {
+	if (!pView->m_mgrReelmap)
+		return FALSE;
+
 	if (m_nMkPcs[1] < pView->m_mgrReelmap->m_Master[0].m_pPcsRgn->nTotPcs)	// 마킹완료Check
 		return TRUE;
 
@@ -4695,6 +4737,8 @@ void CManagerPunch::DoMark0Its()
 #ifdef TEST_MODE
 	return;
 #endif
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
 
 	if (!m_bAuto)
 		return;
@@ -5259,6 +5303,9 @@ void CManagerPunch::DoMark0Its()
 
 void CManagerPunch::DoMark1Its()
 {
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
+
 #ifdef TEST_MODE
 	return;
 #endif
@@ -5834,6 +5881,8 @@ void CManagerPunch::DoReject0()
 #ifdef TEST_MODE
 	return;
 #endif
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
 
 	//BOOL bOn;
 	int nIdx, nRtn;//nSerial, 
@@ -6094,6 +6143,8 @@ void CManagerPunch::DoReject1()
 #ifdef TEST_MODE
 	return;
 #endif
+	if (!pView->m_mgrProcedure || !pView->m_mgrReelmap)
+		return;
 
 	//BOOL bOn;
 	int nIdx, nRtn;//nSerial, 
@@ -8555,6 +8606,9 @@ void CManagerPunch::DoEmgSw()
 
 void CManagerPunch::DoAuto()
 {
+	if (!pView->m_mgrProcedure)
+		return;
+
 	if (!IsAuto())
 		return;
 
@@ -8572,6 +8626,9 @@ void CManagerPunch::DoAuto()
 
 BOOL CManagerPunch::DoAutoGetLotEndSignal()
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
+
 	int nSerial;
 
 	if (pView->m_pDlgMenu01)
@@ -8644,6 +8701,9 @@ BOOL CManagerPunch::DoAutoGetLotEndSignal()
 
 void CManagerPunch::DoInterlock()
 {
+	if (!pView->m_mgrProcedure)
+		return;
+
 	if (m_dEnc[AXIS_Y0] < 20.0 && m_dEnc[AXIS_Y1] < 20.0)
 	{
 		if (pView->m_mgrProcedure->m_bStopFeeding)
@@ -9863,6 +9923,9 @@ CString CManagerPunch::GetAoiUpAlarmRestartMsg()
 
 void CManagerPunch::ChkReTestAlarmOnAoiUp()
 {
+	if (!pView->m_mgrProcedure)
+		return;
+
 	int nSerial = pView->m_mgrProcedure->m_pBufSerial[0][pView->m_mgrProcedure->m_nBufTot[0] - 1];
 
 	if (pView->m_mgrProcedure->m_bSerialDecrese)
@@ -9917,6 +9980,9 @@ CString CManagerPunch::GetAoiDnAlarmRestartMsg()
 
 void CManagerPunch::ChkReTestAlarmOnAoiDn()
 {
+	if (!pView->m_mgrProcedure)
+		return;
+
 	int nSerial = pView->m_mgrProcedure->m_pBufSerial[1][pView->m_mgrProcedure->m_nBufTot[1] - 1];
 
 	if (pView->m_mgrProcedure->m_bSerialDecrese)
@@ -10439,6 +10505,9 @@ BOOL CManagerPunch::IsReMk()
 
 void CManagerPunch::SetReMk(BOOL bMk0, BOOL bMk1)
 {
+	if (!pView->m_mgrProcedure)
+		return;
+
 	CfPoint ptPnt;
 	int nSerial, nTot;
 
@@ -10527,6 +10596,9 @@ void CManagerPunch::SetReMk(BOOL bMk0, BOOL bMk1)
 
 BOOL CManagerPunch::InitMk()
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
+
 	m_nStepElecChk = 0;
 	int nRSer = pView->ChkSerial(); // (nSerial0 - nLastShot) -> 0: Same Serial, -: Decrese Serial, +: Increase Serial 
 	int nSerial = pView->m_mgrProcedure->GetBuffer0();
@@ -10569,6 +10641,9 @@ void CManagerPunch::Mk1()
 
 BOOL CManagerPunch::SetMk(BOOL bRun)	// Marking Start
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
+
 	CfPoint ptPnt;
 	int nSerial, nTot, a, b;
 
@@ -10678,6 +10753,9 @@ BOOL CManagerPunch::SetMk(BOOL bRun)	// Marking Start
 
 BOOL CManagerPunch::SetMkIts(BOOL bRun)	// Marking Start
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
+
 	CfPoint ptPnt;
 	int nSerial, nTot, a, b;
 
@@ -10787,6 +10865,8 @@ BOOL CManagerPunch::SaveMk0Img(int nMkPcsIdx) // Cam0
 {
 	if (!pDoc->WorkingInfo.System.bSaveMkImg)
 		return TRUE;
+	if (!pView->m_mgrProcedure)
+		return FALSE;
 
 	int nSerial;
 	nSerial = pView->m_mgrProcedure->m_nBufUpSerial[0]; // Cam0
@@ -10835,6 +10915,8 @@ BOOL CManagerPunch::SaveMk1Img(int nMkPcsIdx) // Cam1
 {
 	if (!pDoc->WorkingInfo.System.bSaveMkImg)
 		return TRUE;
+	if (!pView->m_mgrProcedure)
+		return FALSE;
 
 	int nSerial;
 	nSerial = pView->m_mgrProcedure->m_nBufUpSerial[1]; // Cam1
@@ -11088,33 +11170,23 @@ BOOL CManagerPunch::IsReview1()
 
 BOOL CManagerPunch::IsVs()
 {
-	if (!pView->m_mgrProcedure->m_bChkLastProcVs)
-	{
-		BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-		if (bDualTest)
-		{
-			if (pView->m_mgrProcedure->GetAoiDnVsStatus())
-				return TRUE;
-			else if (pView->m_mgrProcedure->GetAoiUpVsStatus())
-				return TRUE;
-		}
-		else
-		{
-			if (pView->m_mgrProcedure->GetAoiUpVsStatus())
-				return TRUE;
-		}
-	}
+	if (pView->m_mgrProcedure)
+		return pView->m_mgrProcedure->IsVs();
 
 	return FALSE;
 }
 
 BOOL CManagerPunch::IsVsUp()
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
 	return pView->m_mgrProcedure->GetAoiUpVsStatus();
 }
 
 BOOL CManagerPunch::IsVsDn()
 {
+	if (!pView->m_mgrProcedure)
+		return FALSE;
 	return pView->m_mgrProcedure->GetAoiDnVsStatus();
 }
 
@@ -11521,7 +11593,7 @@ int CManagerPunch::GetTotDefPcs(int nSerial)
 void CManagerPunch::DoAtuoGetEngStSignal()
 {
 #ifdef USE_MPE
-	if ((pDoc->m_pMpeSignal[0] & (0x01 << 3) || pView->m_mgrProcedure->m_bEngStSw) && !pDoc->BtnStatus.EngAuto.MkStF)// 2D(GUI) 각인 동작 Start신호(PLC On->PC Off)
+	if ((pDoc->m_pMpeSignal[0] & (0x01 << 3) || (pView->m_mgrProcedure && pView->m_mgrProcedure->m_bEngStSw)) && !pDoc->BtnStatus.EngAuto.MkStF)// 2D(GUI) 각인 동작 Start신호(PLC On->PC Off)
 	{
 		pDoc->BtnStatus.EngAuto.MkStF = TRUE;
 		pView->m_mgrProcedure->m_bEngStSw = FALSE;
@@ -11536,9 +11608,8 @@ void CManagerPunch::DoAtuoGetEngStSignal()
 		//if (m_pMpe)
 		{
 			MpeWrite(_T("MB440103"), 0);			// 2D(GUI) 각인 동작 Start신호(PLC On->PC Off)
-
-													//if (pDoc->m_pMpeSignal[0] & (0x01 << 2))	// 각인부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)
-													//	MpeWrite(_T("MB440102"), 0);		// 각인부 Feeding완료
+			//if (pDoc->m_pMpeSignal[0] & (0x01 << 2))	// 각인부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)
+			//	MpeWrite(_T("MB440102"), 0);		// 각인부 Feeding완료
 		}
 	}
 
@@ -11553,10 +11624,7 @@ void CManagerPunch::DoAtuoGetEngStSignal()
 	{
 		pDoc->BtnStatus.EngAuto.FdDoneF = FALSE;
 		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqFdDone, FALSE);
-		//if (m_pMpe)
-		{
-			MpeWrite(_T("MB440102"), 0);		// 각인부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)
-		}
+		MpeWrite(_T("MB440102"), 0);		// 각인부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)
 	}
 
 #endif
@@ -11564,7 +11632,7 @@ void CManagerPunch::DoAtuoGetEngStSignal()
 
 void CManagerPunch::DoAtuoGet2dReadStSignal()
 {
-	if ((pDoc->m_pMpeSignal[0] & (0x01 << 5) || pView->m_mgrProcedure->m_bEng2dStSw) && !pDoc->BtnStatus.EngAuto.Read2dStF)// 각인부 2D 리더 시작신호(PLC On->PC Off)
+	if ((pDoc->m_pMpeSignal[0] & (0x01 << 5) || (pView->m_mgrProcedure && pView->m_mgrProcedure->m_bEng2dStSw)) && !pDoc->BtnStatus.EngAuto.Read2dStF)// 각인부 2D 리더 시작신호(PLC On->PC Off)
 	{
 		pDoc->BtnStatus.EngAuto.Read2dStF = TRUE;
 		pView->m_mgrProcedure->m_bEng2dStSw = FALSE;

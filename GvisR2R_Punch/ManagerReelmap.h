@@ -48,6 +48,9 @@ public:
 	CManagerReelmap(CWnd* pParent = NULL);
 	virtual ~CManagerReelmap();
 
+	int m_nSerialRmapUpdate;
+	int m_nSerialRmapInnerUpdate;
+
 	CString GetMkInfo(int nSerial, int nMkPcs); // return Cam0 : "Serial_Strip_Col_Row"
 	CfPoint GetMkPnt(int nSerial, int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스
 	CfPoint GetMkPnt(int nMkPcs); // pcr 시리얼, pcr 불량 피스 읽은 순서 인덱스

@@ -13,6 +13,14 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+#include "../MainFrm.h"
+#include "../GvisR2R_PunchDoc.h"
+#include "../GvisR2R_PunchView.h"
+
+extern CMainFrame* pFrm;
+extern CGvisR2R_PunchDoc* pDoc;
+extern CGvisR2R_PunchView* pView;
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -46,9 +54,10 @@ void CYield::SetDef(int nSerial, int *pDef)	// int pDef[4];
 		return;
 	}
 
-	int nMaxStrip;
+	int nMaxStrip = MAX_STRIP;
 #ifdef USE_CAM_MASTER
-	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+	if(pView->m_mgrReelmap)
+		nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
 	nMaxStrip = MAX_STRIP;
 #endif
@@ -102,9 +111,10 @@ int CYield::GetGood()
 
 int CYield::GetGood(int nStrip)
 {
-	int nMaxStrip;
+	int nMaxStrip = MAX_STRIP;
 #ifdef USE_CAM_MASTER
-	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
+	if(pView->m_mgrReelmap)
+		nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
 	nMaxStrip = MAX_STRIP;
 #endif

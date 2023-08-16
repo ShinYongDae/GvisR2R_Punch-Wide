@@ -373,7 +373,7 @@ void CGvisR2R_PunchDoc::Dump(CDumpContext& dc) const
 
 void CGvisR2R_PunchDoc::UpdateData()
 {
-	if (!pView->m_mgrReelmap->m_pReelMap)
+	if (!pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMap)
 		return;
 
 	pView->m_mgrReelmap->m_pReelMap->m_sMc = WorkingInfo.System.sMcName;
@@ -3933,6 +3933,8 @@ int CGvisR2R_PunchDoc::GetLastSerial()
 
 int CGvisR2R_PunchDoc::GetLastShotMk()	// m_pDlgFrameHigh에서 얻거나 없으면, sPathOldFile폴더의 ReelMapDataDn.txt에서 _T("Info"), _T("Marked Shot") 찾음.
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return 0;
 	int nLastShot = 0;
 	nLastShot = pView->GetLastShotMk();
 	//if (pView->m_pDlgFrameHigh)
@@ -4013,6 +4015,8 @@ int CGvisR2R_PunchDoc::GetLastShotMk()	// m_pDlgFrameHigh에서 얻거나 없으면, sPa
 
 int CGvisR2R_PunchDoc::GetLotSerial()
 {
+	if (!pView || !pView->m_mgrReelmap || !pView->m_mgrReelmap->m_pReelMap)
+		return 0;
 	int nLotSerial;
 
 	double dLen = _tstof(pDoc->WorkingInfo.LastJob.sOnePnlLen) * (pView->m_mgrReelmap->m_pReelMap->m_nSerial - 1);
@@ -4026,12 +4030,15 @@ int CGvisR2R_PunchDoc::GetLotSerial()
 
 void CGvisR2R_PunchDoc::SetOnePnlLen(double dLen)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	CString sPath = PATH_WORKING_INFO;
 	CString sVal;
 	sVal.Format(_T("%.3f"), dLen);
 	WorkingInfo.LastJob.sOnePnlLen = sVal;
 	WorkingInfo.Motion.sMkFdDist = WorkingInfo.Motion.sAoiFdDist = sVal;
-	pView->m_mgrReelmap->m_pReelMap->m_dPnlLen = dLen;
+	if(pView->m_mgrReelmap->m_pReelMap)
+		pView->m_mgrReelmap->m_pReelMap->m_dPnlLen = dLen;
 	::WritePrivateProfileString(_T("Last Job"), _T("One Panel Length"), sVal, sPath);
 	::WritePrivateProfileString(_T("Motion"), _T("MARKING_FEEDING_SERVO_DIST"), sVal, sPath);
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_FEEDING_SERVO_DIST"), sVal, sPath);
@@ -4850,6 +4857,8 @@ double CGvisR2R_PunchDoc::GetAverDist2()
 
 void CGvisR2R_PunchDoc::SetTotalReelDist(double dDist)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	CString sData, sPath = PATH_WORKING_INFO;
 	sData.Format(_T("%.3f"), dDist);
 	WorkingInfo.Lot.sTotalReelDist = sData;
@@ -4880,6 +4889,8 @@ double CGvisR2R_PunchDoc::GetTotalReelDist()
 
 void CGvisR2R_PunchDoc::SetSeparateDist(double dDist)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	CString sData, sPath = PATH_WORKING_INFO;
 	sData.Format(_T("%.3f"), dDist);
 	WorkingInfo.Lot.sSeparateDist = sData;
@@ -4908,6 +4919,8 @@ double CGvisR2R_PunchDoc::GetSeparateDist()
 
 void CGvisR2R_PunchDoc::SetCuttingDist(double dDist)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	CString sData, sPath = PATH_WORKING_INFO;
 	sData.Format(_T("%.3f"), dDist);
 	WorkingInfo.Lot.sCuttingDist = sData;
@@ -4939,6 +4952,8 @@ double CGvisR2R_PunchDoc::GetCuttingDist()
 
 void CGvisR2R_PunchDoc::SetStopDist(double dDist)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	CString sData, sPath = PATH_WORKING_INFO;
 	sData.Format(_T("%.3f"), dDist);
 	WorkingInfo.Lot.sStopDist = sData;
@@ -5078,6 +5093,9 @@ void CGvisR2R_PunchDoc::SaveLotTime(DWORD dwStTick)
 
 BOOL CGvisR2R_PunchDoc::Shift2Mk(int nSerial)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return FALSE;
+
 	if (nSerial <= 0)
 	{
 		pView->ClrDispMsg();
@@ -5157,6 +5175,8 @@ BOOL CGvisR2R_PunchDoc::Shift2Mk(int nSerial)
 
 void CGvisR2R_PunchDoc::SetLastSerial(int nSerial)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	if (nSerial <= 0)
 	{
 		pView->ClrDispMsg();
@@ -5199,6 +5219,9 @@ void CGvisR2R_PunchDoc::SetLastSerial(int nSerial)
 
 void CGvisR2R_PunchDoc::SetCompletedSerial(int nSerial)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
+
 	if (nSerial <= 0)
 	{
 		pView->ClrDispMsg();
@@ -5312,6 +5335,8 @@ BOOL CGvisR2R_PunchDoc::MakeMkDir(CString sModel, CString sLot, CString sLayer)
 
 BOOL CGvisR2R_PunchDoc::MakeMkDir()
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return FALSE;
 	pView->m_mgrReelmap->OpenReelmap();
 	pView->m_mgrReelmap->OpenReelmapInner();
 	return TRUE;
@@ -5670,14 +5695,20 @@ BOOL CGvisR2R_PunchDoc::MakeMkDir(stModelInfo stInfo)
 
 void CGvisR2R_PunchDoc::UpdateProcessNum(CString sProcessNum)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
-	pView->m_mgrReelmap->m_pReelMapUp->UpdateProcessNum(sProcessNum, 0); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+	if(pView->m_mgrReelmap->m_pReelMapUp)
+		pView->m_mgrReelmap->m_pReelMapUp->UpdateProcessNum(sProcessNum, 0); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	if (bDualTest)
 	{
-		pView->m_mgrReelmap->m_pReelMapDn->UpdateProcessNum(sProcessNum, 1); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-		pView->m_mgrReelmap->m_pReelMapAllUp->UpdateProcessNum(sProcessNum, 2); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
-		pView->m_mgrReelmap->m_pReelMapAllDn->UpdateProcessNum(sProcessNum, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		if (pView->m_mgrReelmap->m_pReelMapDn)
+			pView->m_mgrReelmap->m_pReelMapDn->UpdateProcessNum(sProcessNum, 1); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		if (pView->m_mgrReelmap->m_pReelMapAllUp)
+			pView->m_mgrReelmap->m_pReelMapAllUp->UpdateProcessNum(sProcessNum, 2); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
+		if (pView->m_mgrReelmap->m_pReelMapAllDn)
+			pView->m_mgrReelmap->m_pReelMapAllDn->UpdateProcessNum(sProcessNum, 3); // [0]:AOI-Up , [1]:AOI-Dn , [2]:AOI-AllUp , [3]:AOI-AllDn
 	}
 }
 
@@ -5952,6 +5983,8 @@ int CGvisR2R_PunchDoc::GetLastShotEngrave()
 
 void CGvisR2R_PunchDoc::WriteElecData(CString sData)
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	CString strDestPath, sLot, sPnl;
@@ -6205,6 +6238,8 @@ BOOL CGvisR2R_PunchDoc::GetEngOffset(CfPoint &OfSt)
 
 void CGvisR2R_PunchDoc::SetEngItsCode(CString sItsCode)
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return;
 	pView->m_mgrReelmap->m_sItsCode = WorkingInfo.LastJob.sEngItsCode = sItsCode;
 	::WritePrivateProfileString(_T("Last Job"), _T("Engrave Its Code"), sItsCode, PATH_WORKING_INFO);
 
@@ -6262,6 +6297,8 @@ void CGvisR2R_PunchDoc::SetLastSerialEng(int nSerial)
 
 BOOL CGvisR2R_PunchDoc::GetCurrentInfoEng()
 {
+	if (!pView || !pView->m_mgrReelmap)
+		return FALSE;
 	return pView->m_mgrReelmap->GetCurrentInfoEng();
 }
 
@@ -6281,6 +6318,8 @@ int CGvisR2R_PunchDoc::GetCurrentInfoEngShotNum()
 
 void CGvisR2R_PunchDoc::SetCurrentInfoBufUpTot(int nTotal)
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
 	if (pView->m_mgrProcedure->m_bShift2Mk)
 		return;
 
@@ -6297,6 +6336,8 @@ void CGvisR2R_PunchDoc::SetCurrentInfoBufUpTot(int nTotal)
 
 void CGvisR2R_PunchDoc::SetCurrentInfoBufUp(int nIdx, int nData)
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
 	if (pView->m_mgrProcedure->m_bShift2Mk)
 		return;
 
@@ -6315,6 +6356,8 @@ void CGvisR2R_PunchDoc::SetCurrentInfoBufUp(int nIdx, int nData)
 
 void CGvisR2R_PunchDoc::SetCurrentInfoBufDnTot(int nTotal)
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
 	if (pView->m_mgrProcedure->m_bShift2Mk)
 		return;
 
@@ -6331,6 +6374,8 @@ void CGvisR2R_PunchDoc::SetCurrentInfoBufDnTot(int nTotal)
 
 void CGvisR2R_PunchDoc::SetCurrentInfoBufDn(int nIdx, int nData)
 {
+	if (!pView || !pView->m_mgrProcedure)
+		return;
 	if (pView->m_mgrProcedure->m_bShift2Mk)
 		return;
 
@@ -6380,7 +6425,7 @@ void CGvisR2R_PunchDoc::GetMkMenu01()
 
 	int nMaxStrip;
 #ifdef USE_CAM_MASTER
-	if(pView->m_mgrReelmap)
+	if(pView && pView->m_mgrReelmap)
 		nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 	else
 		nMaxStrip = MAX_STRIP;
