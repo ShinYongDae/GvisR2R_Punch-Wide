@@ -9,10 +9,14 @@
 #include "Global/MySpec.h"
 #include "Process/MyFile.h"
 
+#define PATH_LOG		_T("C:\R2RSet\Log")
+#define PATH_LOG_AUTO	_T("C:\R2RSet\Log\Auto")
+
 class CGvisR2R_PunchDoc : public CDocument
 {
 	void DeleteFileInFolder(CString sPathDir);
 	int CheckPath(CString strPath);
+	void StringToChar(CString str, char* pCh); // char* returned must be deleted... 
 
 protected: // serialization에서만 만들어집니다.
 	CGvisR2R_PunchDoc();
@@ -20,6 +24,7 @@ protected: // serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
+	BOOL m_bOffLogAuto;
 	BOOL m_bUpdateForNewJob[2]; // [0]: Up, [1]: Dn
 	int m_nDelayShow;
 
@@ -93,6 +98,7 @@ public:
 
 // 작업입니다.
 public:
+	void Log(CString strMsg, int nType = 0);
 	CString GetProcessNum();
 	BOOL LoadWorkingInfo();
 	void SaveWorkingInfo();

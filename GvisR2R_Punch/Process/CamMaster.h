@@ -18,7 +18,11 @@
 
 #define MAX_PCS					10000
 #ifndef MAX_STRIP
-	#define MAX_STRIP				6
+	#ifdef TEST_MODE
+		#define MAX_STRIP				6
+	#else
+		#define MAX_STRIP				6
+	#endif
 #endif
 
 //#define MAX_PIECE_NODE_X_NUM	600		// 130319 jsy edit

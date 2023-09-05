@@ -3525,7 +3525,11 @@ void CEngrave::SetStripRatio()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
-	nMaxStrip = MAX_STRIP;
+	#ifdef TEST_MODE
+		nMaxStrip = 4;
+	#else
+		nMaxStrip = MAX_STRIP;
+	#endif
 #endif
 
 	SOCKET_DATA SocketData;

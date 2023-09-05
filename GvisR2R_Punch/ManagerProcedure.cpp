@@ -417,7 +417,7 @@ void CManagerProcedure::ChkShare()
 
 void CManagerProcedure::ChkShareUp()
 {
-	CString str;
+	CString str, str2;
 	int nSerial;
 	if (ChkShareUp(nSerial))
 	{
@@ -426,8 +426,10 @@ void CManagerProcedure::ChkShareUp()
 		pDoc->Status.PcrShare[0].nSerial = nSerial;
 		if (pView)
 		{
+			str2.Format(_T("PCR파일 Received - US: %d"), nSerial);
+			pDoc->Log(str2);
 			pView->MpeWrite(_T("ML45112"), (long)nSerial);	// 검사한 Panel의 AOI 상 Serial
-			pView->MpeWrite(_T("MB44012B"), 1); // AOI 상 : PCR파일 Received
+			pView->MpeWrite(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 		}
 	}
 	else
@@ -448,15 +450,17 @@ void CManagerProcedure::ChkShareUp()
 
 void CManagerProcedure::ChkShareDn()
 {
-	CString str;
+	CString str, str2;
 	int nSerial;
 	if (ChkShareDn(nSerial))
 	{
-		str.Format(_T("DS: %d"), nSerial);
+		str2.Format(_T("DS: %d"), nSerial);
 		pDoc->Status.PcrShare[1].bExist = TRUE;
 		pDoc->Status.PcrShare[1].nSerial = nSerial;
 		if (pView)
 		{
+			str2.Format(_T("PCR파일 Received - DS: %d"), nSerial);
+			pDoc->Log(str2);
 			pView->MpeWrite(_T("ML45114"), (long)nSerial);	// 검사한 Panel의 AOI 하 Serial
 			pView->MpeWrite(_T("MB44012C"), 1); // AOI 하 : PCR파일 Received
 		}
@@ -3187,11 +3191,15 @@ void CManagerProcedure::DoAtuoGetMkStSignal()
 		{
 			if (pDoc->m_pMpeSignal[1] & (0x01 << 0) || m_bMkStSw) // AlignTest		// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
 			{
+				pDoc->Log(_T("PLC: 마킹시작(PC가 확인하고 Reset시킴.)"));
 				m_bMkStSw = FALSE;
 				pView->MpeWrite(_T("MB440110"), 0);			// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
 
 				if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
+				{
+					pDoc->Log(_T("PLC: Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)"));
 					pView->MpeWrite(_T("MB440101"), 0);		// 마킹부 Feeding완료
+				}
 
 				m_bMkSt = TRUE;
 				m_nMkStAuto = MK_ST;
@@ -3218,29 +3226,41 @@ void CManagerProcedure::DoAutoSetLastProcAtPlc()
 				{
 					if (pView->ChkLastProcFromUp())
 					{
+						pDoc->Log(_T("PC: 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 						pView->MpeWrite(_T("MB440185"), 1);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->MpeWrite(_T("MB44012B"), 1);			// AOI 상 : PCR파일 Received
 					}
 					else
+					{
+						pDoc->Log(_T("PC: 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 						pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					}
 				}
 				else
 				{
 					if (pView->ChkLastProcFromEng())
+					{
+						pDoc->Log(_T("PC: 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 						pView->MpeWrite(_T("MB44019D"), 1);			// 잔량처리 각인부 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					}
 					else if (pView->ChkLastProcFromUp())
 					{
+						pDoc->Log(_T("PC: 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 						pView->MpeWrite(_T("MB440185"), 1);			// 잔량처리 AOI(상) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->MpeWrite(_T("MB44012B"), 1);			// AOI 상 : PCR파일 Received
 					}
 					else
+					{
+						pDoc->Log(_T("PC: 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 						pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
+					}
 				}
 
 				m_nLastProcAuto++;
 			}
 			break;
 		case LAST_PROC + 1:
+			pDoc->Log(_T("PC: 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 			pView->MpeWrite(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 			m_nLastProcAuto++;
 			break;
@@ -3271,6 +3291,7 @@ void CManagerProcedure::DoAutoSetFdOffsetLastProc()
 		m_bAoiTestF[0] = FALSE;
 		m_bAoiFdWriteF[0] = FALSE;
 		pView->MpeWrite(_T("MB440111"), 0); // 검사부(상) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+		pDoc->Log(_T("PLC: 검사부(상) Feeding Offset Write 완료(PC가 확인하고 MB440111 Reset시킴.)"));
 	}
 
 	if (bOn1 && !(m_Flag & (0x01 << 3)))
@@ -3286,6 +3307,7 @@ void CManagerProcedure::DoAutoSetFdOffsetLastProc()
 		m_bAoiTestF[1] = FALSE;
 		m_bAoiFdWriteF[1] = FALSE;
 		pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+		pDoc->Log(_T("PLC: 검사부(하) Feeding Offset Write 완료(PC가 확인하고 MB440112 Reset시킴.)"));
 	}
 #endif
 }
@@ -3310,6 +3332,7 @@ void CManagerProcedure::DoAutoSetFdOffset()
 		m_bAoiFdWriteF[0] = FALSE;
 
 		pView->MpeWrite(_T("MB440111"), 0); // 검사부(상) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+		pDoc->Log(_T("PLC: 검사부(상) Feeding Offset Write 완료(PC가 확인하고 MB440111 Reset시킴.)"));
 	}
 
 	if (pDoc->m_pMpeSignal[1] & (0x01 << 4) && !m_bAoiTestF[1])		// 검사부(하) 검사중-20141103
@@ -3324,6 +3347,7 @@ void CManagerProcedure::DoAutoSetFdOffset()
 		m_bAoiTest[1] = FALSE;//
 		m_bAoiFdWriteF[1] = FALSE;
 		pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+		pDoc->Log(_T("PLC: 검사부(하) Feeding Offset Write 완료(PC가 확인하고 MB440112 Reset시킴.)"));
 	}
 
 
@@ -3346,22 +3370,24 @@ void CManagerProcedure::DoAutoSetFdOffset()
 			m_bAoiFdWriteF[0] = TRUE;
 			m_bAoiFdWriteF[1] = TRUE;
 
-pView->GetAoiUpOffset(OfStUp);
-pView->GetAoiDnOffset(OfStDn);
+			pView->GetAoiUpOffset(OfStUp);
+			pView->GetAoiDnOffset(OfStDn);
 
-dAveX = OfStUp.x;
-dAveY = OfStUp.y; // syd - 20230327
-				  //dAveX = (OfStUp.x + OfStDn.x) / 2.0;
-				  //dAveY = (OfStUp.y + OfStDn.y) / 2.0;
+			dAveX = OfStUp.x;
+			dAveY = OfStUp.y; // syd - 20230327
+							  //dAveX = (OfStUp.x + OfStDn.x) / 2.0;
+							  //dAveY = (OfStUp.y + OfStDn.y) / 2.0;
 
-pView->m_dAoiUpFdOffsetX = OfStUp.x;
-pView->m_dAoiUpFdOffsetY = OfStUp.y;
-pView->m_dAoiDnFdOffsetX = OfStDn.x;
-pView->m_dAoiDnFdOffsetY = OfStDn.y;
+			pView->m_dAoiUpFdOffsetX = OfStUp.x;
+			pView->m_dAoiUpFdOffsetY = OfStUp.y;
+			pView->m_dAoiDnFdOffsetX = OfStDn.x;
+			pView->m_dAoiDnFdOffsetY = OfStDn.y;
 
-pView->MpeWrite(_T("ML45064"), (long)(-1.0*dAveX*1000.0));
-pView->MpeWrite(_T("MB440111"), 0); // 검사부(상) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
-pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+			pView->MpeWrite(_T("ML45064"), (long)(-1.0*dAveX*1000.0));
+			pView->MpeWrite(_T("MB440111"), 0); // 검사부(상) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+			pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+			pDoc->Log(_T("PLC: 검사부(상MB440111,하MB440112) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)"));
+
 		}
 		else if ((!m_bAoiFdWrite[0] && !m_bAoiFdWrite[1])
 			&& (m_bAoiFdWriteF[0] && m_bAoiFdWriteF[1]))
@@ -3387,6 +3413,7 @@ pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가
 
 				pView->MpeWrite(_T("ML45064"), (long)(-1.0*OfStUp.x*1000.0));
 				pView->MpeWrite(_T("MB440111"), 0); // 검사부(상) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+				pDoc->Log(_T("PLC: 검사부(상MB440111) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)"));
 			}
 			else if (!m_bAoiFdWrite[0] && m_bAoiFdWriteF[0])
 			{
@@ -3410,6 +3437,7 @@ pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가
 
 				pView->MpeWrite(_T("ML45064"), (long)(-1.0*OfStDn.x*1000.0));
 				pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
+				pDoc->Log(_T("PLC: 검사부(하MB440112) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)"));
 			}
 			else if (!m_bAoiFdWrite[1] && m_bAoiFdWriteF[1])
 			{
@@ -3435,6 +3463,7 @@ pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가
 			pView->MpeWrite(_T("ML45064"), (long)(-1.0*dAveX*1000.0));	// 검사부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
 			pView->MpeWrite(_T("MB440111"), 0); // 검사부(상) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103
 			pView->MpeWrite(_T("MB440112"), 0); // 검사부(하) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)-20141103  // 20160721-syd-temp
+			pDoc->Log(_T("PLC: 검사부(상MB440111,하MB440112) Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)"));
 		}
 		else if (!m_bAoiFdWrite[0] && m_bAoiFdWriteF[0])
 		{
@@ -3466,6 +3495,7 @@ void CManagerProcedure::DoAutoSetFdOffsetEngrave()
 		m_bEngFdWriteF = FALSE;
 #ifdef USE_MPE
 		pView->MpeWrite(_T("MB44011A"), 0);							// 각인부 Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)
+		pDoc->Log(_T("PC: 각인부 Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)"));
 #endif
 	}
 
@@ -3493,7 +3523,7 @@ void CManagerProcedure::DoAutoSetFdOffsetEngrave()
 
 		pView->m_dEngFdOffsetX = OfSt.x;
 		pView->m_dEngFdOffsetY = OfSt.y;
-
+		pDoc->Log(_T("PC: 각인부 Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)"));
 #ifdef USE_MPE
 		pView->MpeWrite(_T("ML45078"), (long)(dAveX*1000.0));	// 각인부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄, PC가 쓰고 PLC에서 지움)
 		pView->MpeWrite(_T("MB44011A"), 0);						// 각인부 Feeding Offset Write 완료(PC가 확인하고 Reset시킴.)
@@ -3519,6 +3549,7 @@ void CManagerProcedure::DoAutoChkCycleStop()
 		//MyMsgBox(pDoc->m_sAlmMsg);
 		if (!pDoc->m_sAlmMsg.IsEmpty())
 		{
+			pDoc->Log(pDoc->m_sAlmMsg);
 			pView->MsgBox(pDoc->m_sAlmMsg, 0, 0, DEFAULT_TIME_OUT, FALSE);
 
 			if (pDoc->m_sAlmMsg == pView->m_mgrPunch->GetAoiUpAlarmRestartMsg())
@@ -3526,12 +3557,14 @@ void CManagerProcedure::DoAutoChkCycleStop()
 				pView->SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				pView->MpeWrite(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+				pDoc->Log(_T("PC: 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off"));
 			}
 			else if (pDoc->m_sAlmMsg == pView->m_mgrPunch->GetAoiDnAlarmRestartMsg())
 			{
 				pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				pView->MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+				pDoc->Log(_T("PC: 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off"));
 			}
 		}
 		pDoc->m_sAlmMsg = _T("");
@@ -4412,6 +4445,7 @@ void CManagerProcedure::DoAutoMarkingEngrave()
 		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnMkIng, TRUE);
 #ifdef USE_MPE
 		pView->MpeWrite(_T("MB440173"), 1); // 2D(GUI) 각인 동작Running신호(PC On->PC Off)
+		pDoc->Log(_T("PC: 2D(GUI) 각인 동작Running신호 ON (PC On->PC Off)"));
 #endif
 	}
 	else if (!pDoc->BtnStatus.EngAuto.IsOnMking && (pDoc->m_pMpeSignal[6] & (0x01 << 3)))
@@ -4419,6 +4453,7 @@ void CManagerProcedure::DoAutoMarkingEngrave()
 		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnMkIng, FALSE);
 #ifdef USE_MPE
 		pView->MpeWrite(_T("MB440173"), 0); // 2D(GUI) 각인 동작Running신호(PC On->PC Off)
+		pDoc->Log(_T("PC: 2D(GUI) 각인 동작Running신호 OFF (PC On->PC Off)"));
 #endif
 	}
 
@@ -4428,6 +4463,7 @@ void CManagerProcedure::DoAutoMarkingEngrave()
 		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqMkDone, TRUE);
 #ifdef USE_MPE
 		pView->MpeWrite(_T("MB440174"), 1); // 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
+		pDoc->Log(_T("PC: 각인부 작업완료 ON (PC가 On, PLC가 확인 후 Off)"));
 #endif
 	}
 	else if (!pDoc->BtnStatus.EngAuto.IsMkDone && (pDoc->m_pMpeSignal[6] & (0x01 << 4))) // 각인부 작업완료.(PC가 On, PLC가 확인 후 Off)
@@ -4444,6 +4480,7 @@ void CManagerProcedure::DoAutoMarkingEngrave()
 		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnReading2d, TRUE);
 #ifdef USE_MPE
 		pView->MpeWrite(_T("MB440178"), 1); // 각인부 2D 리더 작업중 신호(PC On->PC Off)
+		pDoc->Log(_T("PC: 각인부 2D 리더 작업중 신호 ON (PC On->PC Off)"));
 #endif
 	}
 	else if (!pDoc->BtnStatus.EngAuto.IsOnRead2d && (pDoc->m_pMpeSignal[6] & (0x01 << 8)))
@@ -4451,6 +4488,7 @@ void CManagerProcedure::DoAutoMarkingEngrave()
 		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeqOnReading2d, FALSE);
 #ifdef USE_MPE
 		pView->MpeWrite(_T("MB440178"), 0); // 각인부 2D 리더 작업중 신호(PC On->PC Off)
+		pDoc->Log(_T("PC: 각인부 2D 리더 작업중 신호 OFF (PC On->PC Off)"));
 #endif
 	}
 
@@ -4460,6 +4498,7 @@ void CManagerProcedure::DoAutoMarkingEngrave()
 		pDoc->SetCurrentInfoSignal(_SigInx::_EngAutoSeq2dReadDone, TRUE);
 #ifdef USE_MPE
 		pView->MpeWrite(_T("MB440179"), 1); // 각인부 2D 리더 작업완료 신호.(PC가 On, PLC가 확인 후 Off)
+		pDoc->Log(_T("PC: 각인부 2D 리더 작업완료 신호 ON (PC가 On, PLC가 확인 후 Off)"));
 #endif
 	}
 	else if (!pDoc->BtnStatus.EngAuto.IsRead2dDone && (pDoc->m_pMpeSignal[6] & (0x01 << 9)))
@@ -4498,6 +4537,7 @@ void CManagerProcedure::Mk2PtReady()
 		case MK_ST:	// PLC MK 신호 확인	
 			if (IsRun())
 			{
+				pDoc->Log(_T("PC: 마킹부 마킹중 ON (PC가 ON, OFF)"));
 				pView->MpeWrite(_T("MB440150"), 1);// 마킹부 마킹중 ON (PC가 ON, OFF)
 				if (!pView->CheckConectionSr1000w())
 					break;
@@ -4548,6 +4588,7 @@ void CManagerProcedure::Mk2PtReady()
 						pView->SetLastProc();
 						pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->MpeWrite(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						pDoc->Log(_T("PC: 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 					}
 				}
 			}
@@ -4581,6 +4622,7 @@ void CManagerProcedure::Mk2PtReady()
 						pView->SetLastProc();
 						pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->MpeWrite(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						pDoc->Log(_T("PC: 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 					}
 				}
 			}
@@ -4804,14 +4846,20 @@ void CManagerProcedure::Mk2PtInit()
 					if ((m_nBufUpSerial[0] <= m_nLotEndSerial
 						|| m_nBufUpSerial[1] <= m_nLotEndSerial)
 						&& m_nLotEndSerial > 0)
+					{
 						pView->MpeWrite(_T("MB440171"), 1); // 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off) - 20160718
+						pDoc->Log(_T("PC: 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off)"));
+					}
 				}
 				else
 				{
 					if ((m_nBufUpSerial[0] >= m_nLotEndSerial
 						|| m_nBufUpSerial[1] >= m_nLotEndSerial)
 						&& m_nLotEndSerial > 0)
+					{
 						pView->MpeWrite(_T("MB440171"), 1); // 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off) - 20160718
+						pDoc->Log(_T("PC: 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off)"));
+					}
 				}
 			}
 			else // Same Serial
@@ -5561,7 +5609,11 @@ void CManagerProcedure::Mk2PtDoMarking()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
@@ -5746,6 +5798,7 @@ void CManagerProcedure::Mk2PtDoMarking()
 
 			pView->MpeWrite(_T("MB440150"), 0);	// 마킹부 마킹중 ON (PC가 ON, OFF)
 			pView->MpeWrite(_T("MB440170"), 1);	// 마킹완료(PLC가 확인하고 Reset시킴.)-20141029
+			pDoc->Log(_T("PC: 마킹완료(PLC가 확인하고 Reset시킴.)"));
 			if (pView->IsNoMk() || IsShowLive())
 				ShowLive(FALSE);
 
@@ -5755,6 +5808,7 @@ void CManagerProcedure::Mk2PtDoMarking()
 		case MK_ST + (Mk2PtIdx::DoneMk) + 2:
 			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
+				pDoc->Log(_T("PLC: 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)"));
 				m_nMkStAuto++;
 			}
 			break;
@@ -5766,6 +5820,7 @@ void CManagerProcedure::Mk2PtDoMarking()
 			if (!m_bTHREAD_SHIFT2MK)
 			{
 				pView->MpeWrite(_T("MB440101"), 0);	// 마킹부 Feeding완료
+				pDoc->Log(_T("PC: 마킹부 Feeding완료 OFF"));
 
 													//Shift2Mk();			// PCR 이동(Buffer->Marked) // 기록(WorkingInfo.LastJob.sSerial)
 				m_bShift2Mk = TRUE;
@@ -5978,12 +6033,14 @@ void CManagerProcedure::Mk2PtShift2Mk() // MODE_INNER
 		case MK_ST + (Mk2PtIdx::Shift2Mk) :
 			pView->MpeWrite(_T("MB440150"), 0);	// 마킹부 마킹중 ON (PC가 ON, OFF)
 			pView->MpeWrite(_T("MB440170"), 1);	// 마킹완료(PLC가 확인하고 Reset시킴.)-20141029
+			pDoc->Log(_T("PC: 마킹완료(PLC가 확인하고 Reset시킴.)"));
 			m_nMkStAuto++;
 			break;
 
 		case MK_ST + (Mk2PtIdx::Shift2Mk) + 1:
 			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
+				pDoc->Log(_T("PLC: 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)"));
 				m_nMkStAuto++;
 				//if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
 				//{
@@ -5999,6 +6056,7 @@ void CManagerProcedure::Mk2PtShift2Mk() // MODE_INNER
 		{
 			if (!m_bTHREAD_SHIFT2MK)
 			{
+				pDoc->Log(_T("PC: 마킹부 Feeding완료 OFF"));
 				pView->MpeWrite(_T("MB440101"), 0);	// 마킹부 Feeding완료
 				m_bShift2Mk = TRUE;
 				DoShift2Mk();
@@ -6353,6 +6411,7 @@ void CManagerProcedure::Mk4PtReady()
 			}
 			break;
 		case MK_ST + 1:
+			pDoc->Log(_T("PC: 마킹부 마킹중 ON (PC가 ON, OFF)"));
 			pView->MpeWrite(_T("MB440150"), 1);// 마킹부 마킹중 ON (PC가 ON, OFF)
 			m_nMkStAuto++;
 			break;
@@ -6395,6 +6454,7 @@ void CManagerProcedure::Mk4PtReady()
 						pView->SetLastProc();
 						pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->MpeWrite(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						pDoc->Log(_T("PC: 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 					}
 				}
 			}
@@ -6428,6 +6488,7 @@ void CManagerProcedure::Mk4PtReady()
 						pView->SetLastProc();
 						pView->MpeWrite(_T("MB440186"), 1);			// 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)-20141112
 						pView->MpeWrite(_T("MB440181"), 1);			// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
+						pDoc->Log(_T("PC: 잔량처리 AOI(하) 부터(PC가 On시키고, PLC가 확인하고 Off시킴)"));
 					}
 				}
 			}
@@ -6553,14 +6614,20 @@ void CManagerProcedure::Mk4PtInit()
 					if ((m_nBufUpSerial[0] <= m_nLotEndSerial
 						|| m_nBufUpSerial[1] <= m_nLotEndSerial)
 						&& m_nLotEndSerial > 0)
+					{
 						pView->MpeWrite(_T("MB440171"), 1); // 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off) - 20160718
+						pDoc->Log(_T("PC: 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off)"));
+					}
 				}
 				else
 				{
 					if ((m_nBufUpSerial[0] >= m_nLotEndSerial
 						|| m_nBufUpSerial[1] >= m_nLotEndSerial)
 						&& m_nLotEndSerial > 0)
+					{
 						pView->MpeWrite(_T("MB440171"), 1); // 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off) - 20160718
+						pDoc->Log(_T("PC: 마킹부 작업완료.(PC가 On, PLC가 확인 후 Off)"));
+					}
 				}
 			}
 			else
@@ -7904,6 +7971,7 @@ void CManagerProcedure::Mk4PtDoMarking()
 		case MK_ST + (Mk4PtIdx::DoneMk) + 2:
 			pView->MpeWrite(_T("MB440150"), 0);	// 마킹부 마킹중 ON (PC가 ON, OFF)
 			pView->MpeWrite(_T("MB440170"), 1);	// 마킹완료(PLC가 확인하고 Reset시킴.)-20141029
+			pDoc->Log(_T("PC: 마킹완료(PLC가 확인하고 Reset시킴.)"));
 			if (pView->IsNoMk() || IsShowLive())
 				ShowLive(FALSE);
 
@@ -7914,6 +7982,7 @@ void CManagerProcedure::Mk4PtDoMarking()
 #ifdef USE_MPE
 			if (pDoc->m_pMpeSignal[0] & (0x01 << 1))	// 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)-20141030
 			{
+				pDoc->Log(_T("PLC: 마킹부 Feeding완료(PLC가 On시키고 PC가 확인하고 Reset시킴.)"));
 				pView->MpeWrite(_T("MB440101"), 0);	// 마킹부 Feeding완료
 
 				Shift2Mk();			// PCR 이동(Buffer->Marked) // 기록(WorkingInfo.LastJob.sSerial)

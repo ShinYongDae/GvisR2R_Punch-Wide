@@ -13,12 +13,24 @@
 //#define TEST_MODE		1
 
 #ifndef MAX_STRIP
-	#define MAX_STRIP				6
+	#ifdef TEST_MODE
+		#define MAX_STRIP				6
+	#else
+		#define MAX_STRIP				6
+	#endif
 #endif
+
+#ifndef MAX_STRIP_NUM
+	#ifdef TEST_MODE
+		#define MAX_STRIP_NUM			6
+	#else
+		#define MAX_STRIP_NUM			6
+	#endif
+#endif
+
 
 #define MSG_BOX_PATH				_T("C:\\R2RSet\\MsgBox.exe")
 
-#define MAX_STRIP_NUM				6
 #define MAX_PCE_COL					100
 #define MAX_PCE_ROW					100
 

@@ -3239,7 +3239,11 @@ void CDlgMenu06::DispStripRatio()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	for(int i=0; i<2; i++)

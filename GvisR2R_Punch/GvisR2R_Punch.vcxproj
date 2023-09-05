@@ -262,6 +262,7 @@
     <ClInclude Include="Dialog\DlgMyMsgSub01.h" />
     <ClInclude Include="Dialog\DlgMyMsgSub02.h" />
     <ClInclude Include="Dialog\DlgMyPassword.h" />
+    <ClInclude Include="Dialog\DlgOption01.h" />
     <ClInclude Include="Dialog\DlgProgress.h" />
     <ClInclude Include="Dialog\DlgUser.h" />
     <ClInclude Include="Dialog\DlgUtil01.h" />
@@ -321,6 +322,7 @@
     <ClInclude Include="Process\stdafx.h" />
     <ClInclude Include="Process\ThreadTask.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="safelockdoc.h" />
     <ClInclude Include="SingleInstance.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -377,6 +379,7 @@
     <ClCompile Include="Dialog\DlgMyMsgSub01.cpp" />
     <ClCompile Include="Dialog\DlgMyMsgSub02.cpp" />
     <ClCompile Include="Dialog\DlgMyPassword.cpp" />
+    <ClCompile Include="Dialog\DlgOption01.cpp" />
     <ClCompile Include="Dialog\DlgProgress.cpp" />
     <ClCompile Include="Dialog\DlgUser.cpp" />
     <ClCompile Include="Dialog\DlgUtil01.cpp" />

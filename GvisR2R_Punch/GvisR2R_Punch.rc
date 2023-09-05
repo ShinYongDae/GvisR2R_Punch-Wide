@@ -121,6 +121,7 @@ BEGIN
     END
     MENUITEM "Test IO List",                ID_TEST_IO
     MENUITEM "Database Connection",         ID_DATABASE_CONNECTION
+    MENUITEM "Option 01",                   ID_OPTION01
 END
 
 
@@ -2105,6 +2106,14 @@ BEGIN
     CTEXT           "Last Shot을 입력하세요.",IDC_STC_MSG,5,4,119,45,SS_CENTERIMAGE | WS_BORDER
 END
 
+IDD_DLG_OPTION_01 DIALOGEX 0, 0, 309, 176
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Option01"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Off Log Auto",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,14,143,16
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2294,6 +2303,14 @@ BEGIN
     BEGIN
         BOTTOMMARGIN, 176
     END
+
+    IDD_DLG_OPTION_01, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -2454,6 +2471,11 @@ BEGIN
 END
 
 IDD_DLG_KEY_NUM1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DLG_OPTION_01 AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

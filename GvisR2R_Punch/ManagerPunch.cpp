@@ -1740,6 +1740,7 @@ void CManagerPunch::DoIO()
 		Buzzer(TRUE);
 		if (!pDoc->m_sAlmMsg.IsEmpty())
 		{
+			pDoc->Log(pDoc->m_sAlmMsg);
 			MsgBox(pDoc->m_sAlmMsg, 0, 0, DEFAULT_TIME_OUT, FALSE);
 
 			if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
@@ -3108,7 +3109,11 @@ void CManagerPunch::DoMark0()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	int nSerial, nIdx, nErrCode, nRtn;
@@ -3684,7 +3689,11 @@ void CManagerPunch::DoMark1()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	int nSerial, nIdx, nErrCode, nRtn;
@@ -4747,7 +4756,11 @@ void CManagerPunch::DoMark0Its()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	int nSerial, nIdx, nErrCode, nRtn;
@@ -5317,7 +5330,11 @@ void CManagerPunch::DoMark1Its()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	//BOOL bOn;

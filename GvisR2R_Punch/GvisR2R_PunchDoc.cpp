@@ -30,6 +30,9 @@ extern CMainFrame* pFrm;
 CGvisR2R_PunchDoc* pDoc;
 extern CGvisR2R_PunchView* pView;
 
+#include "safelockdoc.h"
+CCriticalSection g_LogLockDoc;
+
 // CGvisR2R_PunchDoc
 
 IMPLEMENT_DYNCREATE(CGvisR2R_PunchDoc, CDocument)
@@ -45,6 +48,7 @@ CGvisR2R_PunchDoc::CGvisR2R_PunchDoc()
 	// TODO: 여기에 일회성 생성 코드를 추가합니다.
 	int i, k;
 	pDoc = this;
+	m_bOffLogAuto = FALSE;
 	m_strUserNameList = _T("");
 
 	m_bUpdateForNewJob[0] = FALSE;
@@ -811,12 +815,17 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	CString sVal, sPath = PATH_WORKING_INFO;
 	pView->ClrDispMsg();
 
-	// [System]
-
 	if (0 < ::GetPrivateProfileString(_T("DTS"), _T("UseDts"), NULL, szData, sizeof(szData), PATH_WORKING_INFO))
 		m_bUseDts = _ttoi(szData) ? TRUE : FALSE;
 	else
 		m_bUseDts = FALSE;
+
+	// [System]
+
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("OffLogAuto"), NULL, szData, sizeof(szData), PATH_WORKING_INFO))
+		m_bOffLogAuto = _ttoi(szData) ? TRUE : FALSE;
+	else
+		m_bOffLogAuto = FALSE;
 
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("DebugGrabAlign"), NULL, szData, sizeof(szData), PATH_WORKING_INFO))
 		m_bDebugGrabAlign = _ttoi(szData) ? TRUE : FALSE;
@@ -6428,9 +6437,17 @@ void CGvisR2R_PunchDoc::GetMkMenu01()
 	if(pView && pView->m_mgrReelmap)
 		nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 	else
+#ifdef TEST_MODE
+		nMaxStrip = 4;
+#else
 		nMaxStrip = MAX_STRIP;
+#endif
+#else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
 #else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 
@@ -7024,4 +7041,79 @@ void CGvisR2R_PunchDoc::WriteChangedModel()
 
 	if (pView->m_pDlgMenu01)
 		pView->m_pDlgMenu01->DispChangedModel();
+}
+
+
+
+
+// Write Log for Auto
+
+void CGvisR2R_PunchDoc::Log(CString strMsg, int nType)
+{
+	if (m_bOffLogAuto)
+		return;
+
+	CSafeLockDoc lock(&g_LogLockDoc);
+
+	TCHAR szFile[MAX_PATH] = { 0, };
+	TCHAR szPath[MAX_PATH] = { 0, };
+	TCHAR* pszPos = NULL;
+
+	_stprintf(szPath, PATH_LOG);
+	if (!DirectoryExists(szPath))
+		CreateDirectory(szPath, NULL);
+
+	_stprintf(szPath, PATH_LOG_AUTO);
+	if (!DirectoryExists(szPath))
+		CreateDirectory(szPath, NULL);
+
+	COleDateTime time = COleDateTime::GetCurrentTime();
+
+	switch (nType)
+	{
+	case 0:
+		_stprintf(szFile, _T("%s\\%s.txt"), szPath, COleDateTime::GetCurrentTime().Format(_T("%Y%m%d")));
+		break;
+	}
+
+	CString strDate;
+	CString strContents;
+	CTime now;
+
+	strDate.Format(_T("%s: "), COleDateTime::GetCurrentTime().Format(_T("%Y/%m/%d %H:%M:%S")));
+	strContents = strDate;
+	strContents += strMsg;
+	strContents += _T("\r\n");
+	strContents += _T("\r\n");
+
+	CFile file;
+
+	if (file.Open(szFile, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone) == 0)
+		return;
+
+	char cameraKey[1024];
+	StringToChar(strContents, cameraKey);
+
+	file.SeekToEnd();
+	int nLenth = strContents.GetLength();
+	file.Write(cameraKey, nLenth);
+	file.Flush();
+	file.Close();
+}
+
+void CGvisR2R_PunchDoc::StringToChar(CString str, char* pCh) // char* returned must be deleted... 
+{
+	wchar_t*	wszStr;
+	int				nLenth;
+
+	USES_CONVERSION;
+	//1. CString to wchar_t* conversion
+	wszStr = T2W(str.GetBuffer(str.GetLength()));
+
+	//2. wchar_t* to char* conversion
+	nLenth = WideCharToMultiByte(CP_ACP, 0, wszStr, -1, NULL, 0, NULL, NULL); //char* 형에 대한길이를 구함 
+
+																			  //3. wchar_t* to char* conversion
+	WideCharToMultiByte(CP_ACP, 0, wszStr, -1, pCh, nLenth, 0, 0);
+	return;
 }

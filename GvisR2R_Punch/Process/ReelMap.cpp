@@ -515,7 +515,11 @@ BOOL CReelMap::Write(int nSerial)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	int nIdx = GetPcrIdx(nSerial, pDoc->m_bNewLotShare[1]);
@@ -1662,7 +1666,11 @@ BOOL CReelMap::UpdateReelmapYield()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	m_nGoodPcs = m_stYield.nGood;
@@ -3083,7 +3091,11 @@ BOOL CReelMap::ReloadReelmap(int nTo)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	int nPnl, nRow, nCol, nDefCode, nStrip, nC, nR;
@@ -3387,7 +3399,11 @@ BOOL CReelMap::ReadYield(int nSerial, CString sPath)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	int i, k;
@@ -3567,7 +3583,11 @@ BOOL CReelMap::WriteYield(int nSerial, CString sPath)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	int nNodeX = 0, nNodeY = 0;
@@ -3815,7 +3835,11 @@ BOOL CReelMap::MakeHeader(CString sPath)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	MakeDirRmap();
@@ -3946,7 +3970,11 @@ BOOL CReelMap::MakeItsReelmapHeader()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	sPath = _T("");
@@ -4081,7 +4109,11 @@ BOOL CReelMap::WriteIts(int nItsSerial)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	CString str, sPath;
@@ -4267,7 +4299,11 @@ CString CReelMap::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN, R
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	CString sPath = GetItsPath(nSerial, nLayer);
@@ -4706,7 +4742,11 @@ BOOL CReelMap::GetResult() // TRUE: Make Result, FALSE: Load Result or Failed.
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	//ÆÄÀÏÀ» ÀÐ¾î¿È. ======================================================================
@@ -4860,7 +4900,11 @@ CString CReelMap::GetResultTxt()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	CString strFileData, strData;
@@ -5085,7 +5129,11 @@ CString CReelMap::GetSapp3Txt()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	nStripPcs = m_stResult.nEntirePieceNum / nMaxStrip;
@@ -5542,7 +5590,11 @@ CString CReelMap::GetSapp3TxtReverse()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = ((CManagerReelmap*)m_pParent)->m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	nStripPcs = m_stResult.nEntirePieceNum / nMaxStrip;

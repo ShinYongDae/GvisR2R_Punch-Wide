@@ -405,6 +405,12 @@
     <ClInclude Include="ManagerPunch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="safelockdoc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog\DlgOption01.h">
+      <Filter>Dialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GvisR2R_Punch.cpp">
@@ -712,6 +718,9 @@
     </ClCompile>
     <ClCompile Include="ManagerPunch.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog\DlgOption01.cpp">
+      <Filter>Dialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

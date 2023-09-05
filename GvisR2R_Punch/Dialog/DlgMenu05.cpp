@@ -158,6 +158,150 @@ void CDlgMenu05::OnSelchangeListLot()
 	{
 		((CListBox*)GetDlgItem(IDC_LIST_LOT))->GetText(nIndex, m_sLot);
 		ModifyLayerData();
+		nIndex = GetIdxTopLayer();
+		if (nIndex > -1)
+		{
+			SelchangeComboLayer(nIndex);
+		}
+	}
+}
+
+int CDlgMenu05::GetIdxTopLayer()
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	int nIdx = 0;
+	((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->GetLBText(nIdx, m_sLayer);
+
+	CFileFind finder;
+	CString sPath, sVal, sLayer;
+	sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+		m_sModel, m_sLot, m_sLayer);
+	if (bDualTest)
+	{
+		m_sRmapPath.Format(_T("%s\\ReelMapDataAll.txt"), sPath);
+		if (finder.FindFile(sPath))
+		{
+			TCHAR szData[MAX_PATH];
+			if (0 < ::GetPrivateProfileString(_T("Info"), _T("상면레이어"), NULL, szData, sizeof(szData), m_sRmapPath))
+				sLayer = CString(szData);
+			else
+				sLayer = _T("");
+
+			if (m_sLayer == sLayer)
+			{
+				return 0;
+			}
+			else if (sLayer.IsEmpty())
+			{
+				return -1;
+			}
+			else
+			{
+				nIdx = 1;
+				((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->GetLBText(nIdx, m_sLayer);
+				if (m_sLayer == sLayer)
+					return 1;
+
+				m_sLayer = _T("");
+				return -1;
+			}
+		}
+	}
+	else
+	{
+		m_sRmapPath.Format(_T("%s\\ReelMapDataUp.txt"), sPath);
+		if (finder.FindFile(sPath))
+		{
+			return 0;
+		}
+		else
+			return -1;
+	}
+
+	return nIdx;
+}
+
+void CDlgMenu05::SelchangeComboLayer(int nIndex)
+{
+	// TODO: Add your control notification handler code here
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	//int nIndex = m_nCurSelLayerIdx = ((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->GetCurSel();
+	m_nCurSelLayerIdx = nIndex;
+	((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->SetCurSel(nIndex);
+
+	if (nIndex != LB_ERR)
+	{
+		((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->GetLBText(nIndex, m_sLayer);
+
+		CString sPath, sVal;
+		sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile,
+			m_sModel, m_sLot, m_sLayer);
+
+		if (bDualTest)
+			m_sRmapPath.Format(_T("%s\\ReelMapDataAll.txt"), sPath);
+		else
+			m_sRmapPath.Format(_T("%s\\ReelMapDataUp.txt"), sPath);
+
+		//char szData[MAX_PATH];
+		TCHAR szData[MAX_PATH];
+		if (0 < ::GetPrivateProfileString(_T("Info"), _T("Start Serial"), NULL, szData, sizeof(szData), m_sRmapPath))
+			m_nSerialSt = _tstoi(szData);
+		else
+			m_nSerialSt = 1;
+
+		sVal = _T("");
+		if (m_nSerialSt > 0)
+			sVal.Format(_T("%d"), m_nSerialSt);
+		myStcSerialSt.SetText(sVal);
+
+		if (0 < ::GetPrivateProfileString(_T("Info"), _T("Completed Shot"), NULL, szData, sizeof(szData), m_sRmapPath))
+			m_nCompletedShot = _tstoi(szData);
+		else
+			m_nCompletedShot = 0; // Failed.
+
+		if (0 < ::GetPrivateProfileString(_T("Info"), _T("Marked Shot"), NULL, szData, sizeof(szData), m_sRmapPath))
+			m_nMarkedShot = _tstoi(szData);
+		else
+			m_nMarkedShot = 0; // Failed.
+
+		if (0 < ::GetPrivateProfileString(_T("Info"), _T("End Serial"), NULL, szData, sizeof(szData), m_sRmapPath))
+			m_nSerialEd = _tstoi(szData);
+		else
+			m_nSerialEd = (m_nMarkedShot > m_nCompletedShot) ? m_nMarkedShot : m_nCompletedShot;
+
+		sVal = _T("");
+		if (m_nSerialEd > 0)
+			sVal.Format(_T("%d"), m_nSerialEd);
+		myStcSerialEd.SetText(sVal);
+
+		ReloadReelmap();
+		DispProcCode(m_sRmapPath);
+
+		if (((CButton*)GetDlgItem(IDC_CHK_REELMAP))->GetCheck())
+		{
+			if (m_nCurSelLotIdx < 0)
+			{
+				pView->MsgBox(_T("로트를 선택해 주세요."));
+				//AfxMessageBox(_T("로트를 선택해 주세요."));
+				((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
+				return;
+			}
+			if (m_nCurSelLayerIdx < 0)
+			{
+				pView->MsgBox(_T("레이어를 선택해 주세요."));
+				//AfxMessageBox(_T("레이어를 선택해 주세요."));
+				((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
+				return;
+			}
+			((CListBox*)GetDlgItem(IDC_LIST_LOT))->SetCurSel(m_nCurSelLotIdx);
+			((CComboBox*)GetDlgItem(IDC_COMBO_LAYER))->SetCurSel(m_nCurSelLayerIdx);
+			//DisplayReelMapData();
+			DisplayReelMapUser();
+		}
+		else
+		{
+			DisplayResultData();
+		}
 	}
 }
 
@@ -447,7 +591,11 @@ BOOL CDlgMenu05::GetResult() // TRUE: Make Result, FALSE: Load Result or Failed.
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	//파일을 읽어옴. ======================================================================
@@ -2103,7 +2251,11 @@ BOOL CDlgMenu05::ReloadReelmap()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	sPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile, 
@@ -2576,7 +2728,11 @@ CString CDlgMenu05::GetItsFileData(int nSerial, int nLayer) // RMAP_UP, RMAP_DN,
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	CString str = _T(""), sSide = _T(""), sTemp = _T(""), sItsData = _T("");
@@ -2777,7 +2933,11 @@ CString CDlgMenu05::Sapp3Data()
 #ifdef USE_CAM_MASTER
 	nMaxStrip = pView->m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	// 공종코드를 AOI에서 받아옴.

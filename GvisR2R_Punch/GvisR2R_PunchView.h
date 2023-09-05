@@ -288,6 +288,7 @@ public:
 	void ShowDlg(int nID);
 	void DispIo();
 	void DispDatabaseConnection();
+	void Option01();
 
 	int MyPassword(CString strMsg, int nCtrlId = 0);
 	void SetAoiFdPitch(double dPitch);

@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_TEST_IO, &CMainFrame::OnTestIo)
 	ON_COMMAND(ID_DATABASE_CONNECTION, &CMainFrame::OnDatabaseConnection)
+	ON_COMMAND(ID_OPTION01, &CMainFrame::OnOption01)
 	ON_COMMAND(ID_APP_MINIMIZE, &CMainFrame::OnAppMinimize)
 	ON_COMMAND(ID_APP_EXIT, &CMainFrame::OnAppExit)
 	ON_WM_SIZE()
@@ -268,6 +269,12 @@ void CMainFrame::OnDatabaseConnection()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	pView->DispDatabaseConnection();
+}
+
+void CMainFrame::OnOption01()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	pView->Option01();
 }
 
 

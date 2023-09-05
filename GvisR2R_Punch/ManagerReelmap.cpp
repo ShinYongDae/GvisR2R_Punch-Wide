@@ -3621,7 +3621,11 @@ int CManagerReelmap::GetMkStripIdx(int nDefPcsId) // 0 : Fail , 1~4 : Strip Idx
 #ifdef USE_CAM_MASTER
 	nMaxStrip = m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 	int nNodeX = m_Master[0].m_pPcsRgn->nCol;
 	int nNodeY = m_Master[0].m_pPcsRgn->nRow;
@@ -3651,7 +3655,11 @@ int CManagerReelmap::GetMkStripIdx(int nSerial, int nMkPcs) // 0 : Fail , 1~4 : 
 #ifdef USE_CAM_MASTER
 	nMaxStrip = m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 	int nIdx = GetPcrIdx0(nSerial);
@@ -3786,7 +3794,11 @@ int CManagerReelmap::GetMkStripIdxIts(int nSerial, int nMkPcs) // 0 : Fail , 1~4
 #ifdef USE_CAM_MASTER
 	nMaxStrip = m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
@@ -3857,7 +3869,11 @@ BOOL CManagerReelmap::IsFixPcsUp(int nSerial)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	CString sMsg = _T(""), str = _T("");
@@ -3920,7 +3936,11 @@ BOOL CManagerReelmap::IsFixPcsDn(int nSerial)
 #ifdef USE_CAM_MASTER
 	nMaxStrip = m_Master[0].GetStripNum(); // ÃÑ ½ºÆ®¸³ÀÇ °¹¼ö
 #else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
+#else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	CString sMsg = _T(""), str = _T("");

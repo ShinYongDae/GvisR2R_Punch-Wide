@@ -81,6 +81,8 @@ public:
 	int LoadPCRUpFromMk(int nSerial);
 	int LoadPCRDnFromMk(int nSerial);
 
+	int GetIdxTopLayer();
+	void SelchangeComboLayer(int nIndex);
 
 // Dialog Data
 	//{{AFX_DATA(CDlgMenu05)

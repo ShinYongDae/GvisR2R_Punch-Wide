@@ -213,3 +213,4 @@ BOOL CDlgUtil01::PreTranslateMessage(MSG* pMsg)
 	
 	return CDialog::PreTranslateMessage(pMsg);
 }
+

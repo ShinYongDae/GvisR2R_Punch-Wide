@@ -18,6 +18,7 @@
 
 #include "MainFrm.h"
 
+#include "Dialog/DlgOption01.h"
 #include "Dialog/DlgUtil04.h"
 #include "Dialog/DlgUtil07.h"
 #include "Dialog/DlgMyPassword.h"
@@ -648,6 +649,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 #ifdef USE_MPE
 		if (!(pDoc->m_pMpeSignal[7] & (0x01 << 3)))	// 일시정지사용(PC가 On시키고, PLC가 확인하고 Off시킴)-20141031
 		{
+			pDoc->Log(_T("PC: 일시정지 OFF"));
 			m_bTIM_CHK_TEMP_STOP = FALSE;
 			m_pDlgMenu01->SetTempStop(FALSE);
 		}
@@ -1248,6 +1250,13 @@ void CGvisR2R_PunchView::DispDatabaseConnection()
 	//Dlg.DoModal();
 }
 
+void CGvisR2R_PunchView::Option01()
+{
+	ClrDispMsg();
+	CDlgOption01 Dlg;
+	Dlg.DoModal();
+}
+
 void CGvisR2R_PunchView::Buzzer(BOOL bOn, int nCh)
 {
 	m_mgrPunch->Buzzer(bOn, nCh);
@@ -1729,7 +1738,10 @@ BOOL CGvisR2R_PunchView::IsMkFd()
 		{
 #ifdef USE_MPE
 			if (pDoc->m_pMpeSignal[5] & (0x01 << 1))	// 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF)
+			{
+				pDoc->Log(_T("PLC: 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF)"));
 				return TRUE;
+			}
 #endif
 			return FALSE;
 		}
@@ -1742,7 +1754,10 @@ BOOL CGvisR2R_PunchView::IsMkFd()
 			{
 #ifdef USE_MPE
 				if (pDoc->m_pMpeSignal[5] & (0x01 << 1))	// 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF)
+				{
+					pDoc->Log(_T("PLC: 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF)"));
 					return TRUE;
+				}
 #endif
 				return FALSE;
 			}
@@ -1777,7 +1792,10 @@ BOOL CGvisR2R_PunchView::IsMkFdDone()
 	}
 #ifdef USE_MPE
 	if (!(pDoc->m_pMpeSignal[5] & (0x01 << 1)))	// 마킹부 피딩 ON (PLC가 피딩완료 후 OFF)
+	{
+		pDoc->Log(_T("PLC: 마킹부 피딩 OFF (PLC가 피딩완료 후 OFF)"));
 		return TRUE;
+	}
 #endif
 	return FALSE;
 }
@@ -1786,7 +1804,10 @@ BOOL CGvisR2R_PunchView::IsAoiFdDone()
 {
 #ifdef USE_MPE
 	if (!(pDoc->m_pMpeSignal[5] & (0x01 << 0)))	// 검사부 피딩 ON (PLC가 피딩완료 후 OFF)
+	{
+		pDoc->Log(_T("PLC: 검사부 피딩 ON (PLC가 피딩완료 후 OFF)"));
 		return TRUE;
+	}
 #endif
 	return FALSE;
 }
@@ -2075,12 +2096,18 @@ BOOL CGvisR2R_PunchView::IsTestDone()
 	if (bDualTest)
 	{
 		if (bOn0 && bOn1)
+		{
+			pDoc->Log(_T("PLC: 검사부 상(X4328) & 하(X4428) 검사 완료"));
 			return TRUE;
+		}
 	}
 	else
 	{
 		if (bOn0)
+		{
+			pDoc->Log(_T("PLC: 검사부 상(X4328) 검사 완료"));
 			return TRUE;
+		}
 	}
 
 	double dCurPosMkFd = (double)pDoc->m_pMpeData[0][0];	// 마킹부 Feeding 엔코더 값(단위 mm )
@@ -2103,12 +2130,18 @@ BOOL CGvisR2R_PunchView::IsAoiTblVacDone()
 	if (bDualTest)
 	{
 		if (bOn0 && bOn1)
+		{
+			pDoc->Log(_T("PLC: 검사부 상(X4329) & 하(X4329) 테이블 진공 완료"));
 			return TRUE;
+		}
 	}
 	else
 	{
 		if (bOn0)
+		{
+			pDoc->Log(_T("PLC: 검사부 상(X4329) 테이블 진공 완료"));
 			return TRUE;
+		}
 	}
 
 	double dCurPosMkFd = (double)pDoc->m_pMpeData[0][0];	// 마킹부 Feeding 엔코더 값(단위 mm )
@@ -2127,7 +2160,10 @@ BOOL CGvisR2R_PunchView::IsTestDoneUp()
 #ifdef USE_MPE
 	BOOL bOn0 = (pDoc->m_pMpeIb[10] & (0x01 << 8)) ? TRUE : FALSE;	// 검사부 상 검사 완료 <-> X4328 I/F
 	if (bOn0)
+	{
+		pDoc->Log(_T("PLC: 검사부 상(X4328) 검사 완료"));
 		return TRUE;
+	}
 #endif
 	return TRUE;
 }
@@ -2141,7 +2177,10 @@ BOOL CGvisR2R_PunchView::IsTestDoneDn()
 
 	BOOL bOn1 = (pDoc->m_pMpeIb[14] & (0x01 << 8)) ? TRUE : FALSE;	// 검사부 하 검사 완료 <-> X4428 I/F
 	if (bOn1)
+	{
+		pDoc->Log(_T("PLC: 검사부 하(X4428) 검사 완료"));
 		return TRUE;
+	}
 #endif
 	return TRUE;
 }
@@ -3395,7 +3434,10 @@ BOOL CGvisR2R_PunchView::IsRdyTest0()
 	BOOL bOn1 = (pDoc->m_pMpeIb[10] & (0x01 << 9)) ? TRUE : FALSE;		// 검사부 상 테이블 진공 완료 <-> X4329 I/F
 
 	if (bOn0 && bOn1)
+	{
+		pDoc->Log(_T("PLC: 검사부 상 자동(X432B) 운전 & 테이블 진공(X4329) 완료"));
 		return TRUE;
+	}
 #endif
 	return FALSE;
 }
@@ -3413,13 +3455,20 @@ BOOL CGvisR2R_PunchView::IsRdyTest1()
 		if (bDualTest)
 		{
 			if (bOn0 && bOn1)
+			{
+				pDoc->Log(_T("PLC: 검사부 하 자동(X442B) 운전 & 테이블 진공(X4329) 완료"));
 				return TRUE;
+			}
 		}
 		else
-		{
-			if (bOn0)
-				return TRUE;
-		}
+			return TRUE;
+		//else
+		//{
+		//	if (bOn0)
+		//	{
+		//		return TRUE;
+		//	}
+		//}
 	}
 #endif
 	return FALSE;
@@ -3582,9 +3631,17 @@ BOOL CGvisR2R_PunchView::IsMkStrip(int nStripIdx)
 	if (m_mgrReelmap)
 		nMaxStrip = m_mgrReelmap->m_Master[0].GetStripNum(); // 총 스트립의 갯수
 	else
+#ifdef TEST_MODE
+		nMaxStrip = 4;
+#else
 		nMaxStrip = MAX_STRIP;
+#endif
+#else
+#ifdef TEST_MODE
+	nMaxStrip = 4;
 #else
 	nMaxStrip = MAX_STRIP;
+#endif
 #endif
 
 	if (!m_pDlgMenu01 || nStripIdx < 1 || nStripIdx > nMaxStrip)
@@ -3831,8 +3888,11 @@ BOOL CGvisR2R_PunchView::IsEngraveFd()
 		if (!(m_mgrProcedure->m_nShareDnCnt % 2))
 		{
 #ifdef USE_MPE
-			if (pDoc->m_pMpeSignal[5] & (0x01 << 1))	// 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF)
+			if ((pDoc->m_pMpeSignal[7] & (0x01 << 13)) || (pDoc->m_pMpeSignal[7] & (0x01 << 15)))	// 각인부 피딩 CW ON (PLC가 피딩완료 후 OFF)
+			{
+				pDoc->Log(_T("PLC: 각인부 피딩 CW ON (PLC가 피딩완료 후 OFF)"));
 				return TRUE;
+			}
 #endif
 			return FALSE;
 		}
@@ -3844,8 +3904,11 @@ BOOL CGvisR2R_PunchView::IsEngraveFd()
 			if (!(m_mgrProcedure->m_nShareUpCnt % 2))
 			{
 #ifdef USE_MPE
-				if (pDoc->m_pMpeSignal[5] & (0x01 << 1))	// 마킹부 피딩 CW ON (PLC가 피딩완료 후 OFF)
+				if ((pDoc->m_pMpeSignal[7] & (0x01 << 13)) || (pDoc->m_pMpeSignal[7] & (0x01 << 15)))	// 각인부 피딩 CW ON (PLC가 피딩완료 후 OFF)
+				{
+					pDoc->Log(_T("PLC: 각인부 피딩 CW ON (PLC가 피딩완료 후 OFF)"));
 					return TRUE;
+				}
 #endif
 				return FALSE;
 			}
