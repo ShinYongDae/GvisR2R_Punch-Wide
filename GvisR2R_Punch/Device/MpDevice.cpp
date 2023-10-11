@@ -54,7 +54,7 @@ void CMpDevice::CloseMpDevice()
 #ifdef USE_MPE
 	if(m_hController)	
 	{
-		ymcClearDevice(m_hDevice);
+		//ymcClearDevice(m_hDevice);
 		ymcCloseController(m_hController);
 	}
 #endif

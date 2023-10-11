@@ -152,7 +152,6 @@ typedef struct _DispMain
 typedef CArray<stDispMain, stDispMain> CArDispMain;
 
 
-
 class CGvisR2R_PunchView : public CFormView
 {
 	CDlgMyMsg* m_pDlgMyMsg;
@@ -256,6 +255,7 @@ public:
 	BOOL m_bDispMain;
 	CArDispMain  m_ArrayDispMain;
 	int m_nWatiDispMain;
+
 
 // 작업입니다.
 public:

@@ -3991,6 +3991,18 @@ void CManagerProcedure::DoAutoChkShareFolder()
 		if (!IsRun())
 			break;
 
+		if (m_bTHREAD_UPDATE_REELMAP_UP) // Write Reelmap
+		{
+			Sleep(100);
+			break;
+		}
+
+		if (m_bTHREAD_REELMAP_YIELD_UP) // Write Reelmap
+		{
+			Sleep(100);
+			break;
+		}
+
 		if (!bDualTest)
 		{
 			if (pDoc->GetTestMode() == MODE_OUTER)
@@ -4004,11 +4016,6 @@ void CManagerProcedure::DoAutoChkShareFolder()
 						|| m_bTHREAD_UPDATE_REELMAP_INNER_ALLDN) // Write Reelmap
 						break;
 				}
-			}
-			else
-			{
-				if (m_bTHREAD_UPDATE_REELMAP_UP) // Write Reelmap
-					break;
 			}
 		}
 
@@ -4163,9 +4170,17 @@ void CManagerProcedure::DoAutoChkShareFolder()
 			break;
 		}
 
-		if (m_bTHREAD_UPDATE_REELMAP_DN || m_bTHREAD_UPDATE_REELMAP_ALLUP
-			|| m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
+		if (m_bTHREAD_UPDATE_REELMAP_DN || m_bTHREAD_UPDATE_REELMAP_ALLUP || m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
+		{
+			Sleep(100);
 			break;
+		}
+
+		if (m_bTHREAD_REELMAP_YIELD_DN || m_bTHREAD_REELMAP_YIELD_ALLUP || m_bTHREAD_REELMAP_YIELD_ALLDN) // Write Reelmap
+		{
+			Sleep(100);
+			break;
+		}
 
 		m_nStepAuto++;
 
@@ -5654,20 +5669,26 @@ void CManagerProcedure::Mk2PtDoMarking()
 		case MK_ST + (Mk2PtIdx::DoMk) + 2:
 			if (!m_bTHREAD_UPDATAE_YIELD[0] && !m_bTHREAD_UPDATAE_YIELD[1])
 			{
-				if (m_bUpdateYieldOnRmap)
+				if (!m_bUpdateYieldOnRmap)
 				{
-					if (!m_bTHREAD_UPDATE_YIELD_UP && !m_bTHREAD_UPDATE_YIELD_DN
-						&& !m_bTHREAD_UPDATE_YIELD_ALLUP && !m_bTHREAD_UPDATE_YIELD_ALLDN)
+					if (!m_bTHREAD_UPDATE_REELMAP_UP && !m_bTHREAD_UPDATE_REELMAP_DN && !m_bTHREAD_UPDATE_REELMAP_ALLUP && !m_bTHREAD_UPDATE_REELMAP_ALLDN)
 					{
-						m_bUpdateYieldOnRmap = TRUE;
-						pView->UpdateYieldOnRmap(); // 20230614
-						m_nMkStAuto++;
+						if (!m_bTHREAD_UPDATE_YIELD_UP && !m_bTHREAD_UPDATE_YIELD_DN && !m_bTHREAD_UPDATE_YIELD_ALLUP && !m_bTHREAD_UPDATE_YIELD_ALLDN)
+						{
+							m_bUpdateYieldOnRmap = TRUE;
+							pView->UpdateYieldOnRmap(); // 20230614
+							m_nMkStAuto++;
+						}
+						else
+							Sleep(100);
 					}
+					else
+						Sleep(100);
 				}
 				else
 				{
 					Sleep(100);
-					m_nMkStAuto++;
+					m_nMkStAuto++; // 마킹 및 verify가 완전히 끝나지 않은 경우.
 				}
 			}
 			break;

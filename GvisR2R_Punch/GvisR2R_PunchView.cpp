@@ -5100,3 +5100,4 @@ void CGvisR2R_PunchView::SetPinPos(int nCam, CfPoint ptPnt)
 
 	SetAlignPos();
 }
+

@@ -6542,6 +6542,12 @@ void CManagerPunch::DoMainSw()
 		m_bSwStopNow = FALSE;
 		if (pView->m_pDlgMenu03)
 			pView->m_pDlgMenu03->SwReady();
+
+
+		//void (CManagerPunch::*fp)();
+		//fp = &CManagerPunch::SwReady;
+		//m_arFunc.Add(fp);
+		//m_vecFunc.push_back(fp);
 	}
 	else if (!(usIn & (0x01 << 3)) && (*usInF & (0x01 << 3)))
 	{
@@ -11671,3 +11677,37 @@ void CManagerPunch::DoAtuoGet2dReadStSignal()
 #endif
 	}
 }
+
+
+//void CManagerPunch::CallArFunc()
+//{
+//	//int nCount = m_arFunc.GetSize();
+//	//while (nCount > 0)
+//	//{
+//	//	void (CManagerPunch::*fp)();
+//	//	fp = m_arFunc.GetAt(0);
+//	//	m_arFunc.RemoveAt(0);
+//	//	(((CManagerPunch*)this)->*fp)(); //함수 포인터로 함수 호출
+//	//	nCount = m_arFunc.GetSize();
+//	//}
+//
+//	// vector를 iterator로 반복한다.
+//	//for (auto ptr = m_vecFunc.begin(); ptr < m_vecFunc.end(); ptr++)
+//	//{
+//	//	(*ptr)();
+//	//}
+//
+//	void (CManagerPunch::*ptr)();
+//	for (std::vector<void(CManagerPunch::*)()>::iterator it = m_vecFunc.begin(); it < m_vecFunc.end(); it++ )
+//	{		
+//		
+//		ptr = (*it);
+//		(((CManagerPunch*)this)->*ptr)(); //함수 포인터로 함수 호출
+//	}
+//}
+
+
+//void CManagerPunch::SwReady()
+//{
+//	pView->m_pDlgMenu03->SwReady();
+//}

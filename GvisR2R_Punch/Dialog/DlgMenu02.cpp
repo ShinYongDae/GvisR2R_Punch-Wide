@@ -4903,21 +4903,28 @@ double CDlgMenu02::CalcCameraPixelSize(int nCamId)
 	//m_pIds->CalcPixelSize(fabs(fptCameraPos[1].x-fptCameraPos[0].x), fabs(fptCameraPos[1].y-fptCameraPos[0].y), fptMoveDistance.x, fptMoveDistance.y);
 #endif
 
-	// 6. Save Cam Resolution
-	CString sItem, sData, sPath = PATH_WORKING_INFO;
+	if (IDYES == pView->MsgBox(_T("카메라 해상도를 변경하시겠습니까?"), 0, MB_YESNO))
+	{
+		// 6. Save Cam Resolution
+		CString sItem, sData, sPath = PATH_WORKING_INFO;
 
-	sItem.Format(_T("Vision%d"), nCamId);
-	sData.Format(_T("%f"), dPixelSizeX);
-	pDoc->WorkingInfo.Vision[nCamId].sResX = sData;
-	::WritePrivateProfileString(sItem, _T("RESOLUTION_X"), sData, sPath);
-	sData.Format(_T("%f"), dPixelSizeY);
-	pDoc->WorkingInfo.Vision[nCamId].sResY = sData;
-	::WritePrivateProfileString(sItem, _T("RESOLUTION_Y"), sData, sPath);
+		sItem.Format(_T("Vision%d"), nCamId);
+		sData.Format(_T("%f"), dPixelSizeX);
+		pDoc->WorkingInfo.Vision[nCamId].sResX = sData;
+		::WritePrivateProfileString(sItem, _T("RESOLUTION_X"), sData, sPath);
+		sData.Format(_T("%f"), dPixelSizeY);
+		pDoc->WorkingInfo.Vision[nCamId].sResY = sData;
+		::WritePrivateProfileString(sItem, _T("RESOLUTION_Y"), sData, sPath);
+		dVal = (dPixelSizeX + dPixelSizeY) / 2.0;
+	}
+	else
+	{
+		dVal = (_tstof(pDoc->WorkingInfo.Vision[nCamId].sResX) + _tstof(pDoc->WorkingInfo.Vision[nCamId].sResY)) / 2.0;
+	}
 
 	pView->ClrDispMsg();
 	pVision->SetClrOverlay();
 
-	dVal = (dPixelSizeX + dPixelSizeY) / 2.0;
 	return dVal;
 }
 
