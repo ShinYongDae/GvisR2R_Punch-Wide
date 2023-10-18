@@ -6007,7 +6007,7 @@ UINT CManagerReelmap::ThreadProc6(LPVOID lpContext)	// UpdateReelmapYieldDn()
 		{
 			if (pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN) // Yield Reelmap
 			{
-				if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN) // Write Reelmap
+				if (!pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP && !pView->m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
 				{
 					pThread->UpdateReelmapYieldDn(); // Yield Reelmap
 					pView->m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN = FALSE;

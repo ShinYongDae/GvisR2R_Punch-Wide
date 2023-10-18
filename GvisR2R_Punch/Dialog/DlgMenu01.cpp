@@ -4081,8 +4081,22 @@ void CDlgMenu01::OnChkEjectBuffer()
 					//pView->MpeWrite(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 					sLastShot = ShowKeypad1();
+
+					long lLastShot = 0;
+					try
+					{
+						lLastShot = (long)_ttoi(sLastShot);
+					}
+					catch (_com_error e)
+					{
+						pView->DispMsg(_T("입력 범위를 벗어났습니다."), _T("주의"), RGB_YELLOW);
+						ResetLastProc();
+						sLastShot = _T("");
+						myBtn[3].SetCheck(TRUE);
+					}
+
 #ifdef USE_MPE
-					pView->MpeWrite(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
+					pView->MpeWrite(_T("ML45110"), lLastShot);	// 잔량처리 Last Serial
 					pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
 
 #endif
@@ -4120,6 +4134,25 @@ void CDlgMenu01::OnChkEjectBuffer()
 						//pView->MpeWrite(_T("MB44012B"), 1);				// AOI 상 : PCR파일 Received
 #endif
 						sLastShot = ShowKeypad1();
+
+
+						long lLastShot = 0;
+						try
+						{
+							lLastShot = (long)_ttoi(sLastShot);
+						}
+						catch (_com_error e)
+						{
+							pView->DispMsg(_T("입력 범위를 벗어났습니다."), _T("주의"), RGB_YELLOW);
+							ResetLastProc();
+							sLastShot = _T("");
+							myBtn[3].SetCheck(TRUE);
+						}
+
+#ifdef USE_MPE					
+						pView->MpeWrite(_T("ML45110"), lLastShot);			// 잔량처리 Last Serial
+						pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
+#endif
 					}
 				}
 				else // 각인부부터 잔량처리
@@ -4134,8 +4167,22 @@ void CDlgMenu01::OnChkEjectBuffer()
 #endif
 
 					sLastShot = ShowKeypad1(_T("각인부 Last Shot 번호 입력"));
+
+					long lLastShot = 0;
+					try
+					{
+						lLastShot = (long)_ttoi(sLastShot);
+					}
+					catch (_com_error e)
+					{
+						pView->DispMsg(_T("입력 범위를 벗어났습니다."), _T("주의"), RGB_YELLOW);
+						ResetLastProc();
+						sLastShot = _T("");
+						myBtn[3].SetCheck(TRUE);
+					}
+
 #ifdef USE_MPE
-					pView->MpeWrite(_T("ML45110"), (long)_ttoi(sLastShot));	// 잔량처리 Last Serial
+					pView->MpeWrite(_T("ML45110"), lLastShot);	// 잔량처리 Last Serial
 					pView->MpeWrite(_T("MB440181"), 1);				// 잔량처리(PC가 On시키고, PLC가 확인하고 Off시킴)
 
 #endif

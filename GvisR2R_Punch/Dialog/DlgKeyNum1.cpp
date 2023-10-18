@@ -333,8 +333,8 @@ void CDlgKeyNum1::OnButtonBs()
 void CDlgKeyNum1::OnButtonDel() 
 {
 	// TODO: Add your control notification handler code here
-	SendDlgItemMessage(IDC_EDIT_DISPLAY,WM_KEYDOWN,VK_DELETE,0);
 	GetDlgItem(IDC_EDIT_DISPLAY)->SetFocus();
+	SendDlgItemMessage(IDC_EDIT_DISPLAY,WM_KEYDOWN,VK_DELETE,0);
 	myEdit.Refresh();
 }
 
