@@ -1282,7 +1282,12 @@ void CGvisR2R_PunchView::DispThreadTick()
 		return;
 
 	CString str;
-	str.Format(_T("%d"), pDoc->m_nShotNum); // "m_sOrderNum-m_sShotNum" : "9-3"
+	//str.Format(_T("%d"), pDoc->m_nShotNum); // "m_sOrderNum-m_sShotNum" : "9-3"
+	str.Format(_T("%d%d%d%d:%d%d%d%d"), 
+		m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_UP ? 1 : 0, m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_DN ? 1 : 0, 
+		m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLUP ? 1 : 0, m_mgrProcedure->m_bTHREAD_UPDATE_REELMAP_ALLDN ? 1 : 0,
+		m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_UP, m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_DN, 
+		m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLUP, m_mgrProcedure->m_bTHREAD_REELMAP_YIELD_ALLDN);
 	pFrm->DispStatusBar(str, 5);
 #ifdef USE_IDS
 	double dFPS[2];

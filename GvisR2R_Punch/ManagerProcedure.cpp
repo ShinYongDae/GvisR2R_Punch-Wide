@@ -3991,13 +3991,13 @@ void CManagerProcedure::DoAutoChkShareFolder()
 		if (!IsRun())
 			break;
 
-		if (m_bTHREAD_UPDATE_REELMAP_UP) // Write Reelmap
+		if (m_bTHREAD_UPDATE_YIELD_UP || m_bTHREAD_UPDATE_YIELD_DN || m_bTHREAD_UPDATE_YIELD_ALLUP || m_bTHREAD_UPDATE_YIELD_ALLDN) // Write Reelmap
 		{
 			Sleep(100);
 			break;
 		}
 
-		if (m_bTHREAD_REELMAP_YIELD_UP) // Write Reelmap
+		if (m_bTHREAD_UPDATE_REELMAP_UP || m_bTHREAD_UPDATE_REELMAP_DN || m_bTHREAD_UPDATE_REELMAP_ALLUP || m_bTHREAD_UPDATE_REELMAP_ALLDN) // Write Reelmap
 		{
 			Sleep(100);
 			break;
@@ -4007,7 +4007,7 @@ void CManagerProcedure::DoAutoChkShareFolder()
 		{
 			if (pDoc->GetTestMode() == MODE_OUTER)
 			{
-				if (m_bTHREAD_UPDATE_REELMAP_UP || m_bTHREAD_UPDATE_REELMAP_INNER_UP) // Write Reelmap
+				if (m_bTHREAD_UPDATE_REELMAP_INNER_UP) // Write Reelmap
 					break;
 
 				if (pDoc->WorkingInfo.LastJob.bDualTestInner)
@@ -5742,6 +5742,9 @@ void CManagerProcedure::Mk2PtDoMarking()
 		case MK_ST + (Mk2PtIdx::DoneMk) :	 // Align변수 초기화
 			if (!IsRun())
 				break;
+
+			//if (m_bTHREAD_UPDATE_YIELD_UP || m_bTHREAD_UPDATE_YIELD_DN || m_bTHREAD_UPDATE_YIELD_ALLUP || m_bTHREAD_UPDATE_YIELD_ALLDN)
+			//	break;
 
 			if (m_bInitAuto)
 			{
