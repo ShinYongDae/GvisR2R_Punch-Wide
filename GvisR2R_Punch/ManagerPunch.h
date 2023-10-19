@@ -1,4 +1,7 @@
 #pragma once
+
+//#include <vector>
+
 #include "Global/GlobalDefine.h"
 #include "Process/ThreadTask.h"
 
@@ -39,6 +42,15 @@ class CManagerPunch : public CWnd
 public:
 	CManagerPunch(CWnd* pParent = NULL);
 	virtual ~CManagerPunch();
+
+	//typedef void(CManagerPunch::*PtrFunc)();
+	//typedef CArray<CManagerPunch::PtrFunc, CManagerPunch::PtrFunc> CArFunc;
+	//CArFunc m_arFunc;
+	//void CallArFunc();
+
+	//typedef void(CManagerPunch::*PtrFunc)();
+	//std::vector<void(CManagerPunch::*)()> m_vecFunc;
+	//void CallArFunc();
 
 	CMpDevice* m_pMpe;
 	CMotion* m_pMotion;
@@ -293,6 +305,8 @@ public:
 	void SwAoiTblBlw();
 	void SwAoiFdVac();
 	void SwAoiTqVac();
+
+	//void SwReady();
 
 	//afx_msg LRESULT wmClientReceived(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT wmClientReceivedSr(WPARAM wParam, LPARAM lParam);
