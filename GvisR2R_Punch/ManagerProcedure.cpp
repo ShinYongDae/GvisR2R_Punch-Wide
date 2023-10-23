@@ -365,6 +365,11 @@ void CManagerProcedure::ChkBufUp()
 			pDoc->SetCurrentInfoBufUpTot(m_nBufTot[0]);
 			for (int k = 0; k < m_nBufTot[0]; k++)
 				pDoc->SetCurrentInfoBufUp(k, m_pBufSerial[0][k]);
+
+			if (m_nBufTot[0] == 1)
+			{
+				m_nAoiCamInfoStrPcs[0] = pView->GetAoiUpCamMstInfo();
+			}
 		}
 	}
 }
@@ -405,6 +410,11 @@ void CManagerProcedure::ChkBufDn()
 			pDoc->SetCurrentInfoBufDnTot(m_nBufTot[1]);
 			for (int k = 0; k < m_nBufTot[1]; k++)
 				pDoc->SetCurrentInfoBufDn(k, m_pBufSerial[1][k]);
+
+			if (m_nBufTot[1] == 1)
+			{
+				m_nAoiCamInfoStrPcs[1] = pView->GetAoiDnCamMstInfo();
+			}
 		}
 	}
 }
