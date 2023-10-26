@@ -1554,23 +1554,25 @@ void CEngrave::GetOpInfo(SOCKET_DATA SockData)
 			}
 			break;
 		case _SigInx::_RecoilerCcw:
-			if(pDoc->WorkingInfo.LastJob.bOneMetal != (SockData.nData1 > 0) ? TRUE : FALSE)	// OneMetal : TRUE -> SetTwoMetal(FALSE);
+			if (pDoc->WorkingInfo.LastJob.bOneMetal != (SockData.nData1 > 0) ? TRUE : FALSE)	// OneMetal : TRUE -> SetTwoMetal(FALSE);
 			{
 				m_bGetOpInfo = TRUE;
 				pDoc->BtnStatus.Induct.Rc = pDoc->WorkingInfo.LastJob.bOneMetal = (SockData.nData1 > 0) ? TRUE : FALSE;	// OneMetal : TRUE -> SetTwoMetal(FALSE);
 #ifdef USE_MPE
-				pView->MpeWrite(_T("MB44017D"), 1);
+				pView->m_pMpe->Write(_T("MB44017D"), (SockData.nData1 > 0) ? 1 : 0);
 #endif
+				::WritePrivateProfileString(_T("Last Job"), _T("One Metal On"), (SockData.nData1 > 0) ? _T("1") : _T("0"), PATH_WORKING_INFO);// IDC_CHK_ONE_METAL - Recoiler\r정방향 CW : FALSE
 			}
 			break;
 		case _SigInx::_UncoilerCcw:
-			if(pDoc->WorkingInfo.LastJob.bTwoMetal != (SockData.nData1 > 0) ? TRUE : FALSE)	// TwoMetal : TRUE -> SetTwoMetal(TRUE);
+			if (pDoc->WorkingInfo.LastJob.bTwoMetal != (SockData.nData1 > 0) ? TRUE : FALSE)	// TwoMetal : TRUE -> SetTwoMetal(TRUE);
 			{
 				m_bGetOpInfo = TRUE;
 				pDoc->BtnStatus.Induct.Uc = pDoc->WorkingInfo.LastJob.bTwoMetal = (SockData.nData1 > 0) ? TRUE : FALSE;	// TwoMetal : TRUE -> SetTwoMetal(TRUE);
 #ifdef USE_MPE
-				pView->MpeWrite(_T("MB44017C"), 1);
+				pView->m_pMpe->Write(_T("MB44017C"), (SockData.nData1 > 0) ? 1 : 0);
 #endif
+				::WritePrivateProfileString(_T("Last Job"), _T("Two Metal On"), (SockData.nData1 > 0) ? _T("1") : _T("0"), PATH_WORKING_INFO);// IDC_CHK_TWO_METAL - Uncoiler\r역방향 ON : TRUE	
 			}
 			break;
 		case _SigInx::_AlignMethode:

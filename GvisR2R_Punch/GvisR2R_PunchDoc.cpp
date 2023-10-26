@@ -6199,6 +6199,10 @@ void CGvisR2R_PunchDoc::SetTestMode(int nMode)
 {
 	WorkingInfo.LastJob.nTestMode = nMode; // MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2 .
 
+	// For test on 20231025
+	//if(nMode == MODE_OUTER)
+	//	pView->m_bLoadMstInfo = TRUE;
+
 	CString sData;
 	sData.Format(_T("%d"), nMode);
 	::WritePrivateProfileString(_T("Last Job"), _T("Test Mode"), sData, PATH_WORKING_INFO);
