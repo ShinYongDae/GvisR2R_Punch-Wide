@@ -3562,19 +3562,23 @@ void CManagerProcedure::DoAutoChkCycleStop()
 			pDoc->Log(pDoc->m_sAlmMsg);
 			pView->MsgBox(pDoc->m_sAlmMsg, 0, 0, DEFAULT_TIME_OUT, FALSE);
 
-			if (pDoc->m_sAlmMsg == pView->m_mgrPunch->GetAoiUpAlarmRestartMsg())
+			//if (pDoc->m_sAlmMsg == pView->m_mgrPunch->GetAoiUpAlarmRestartMsg())
+			if (pDoc->m_sAlmMsg == pView->m_sAoiUpAlarmReStartMsg || pDoc->m_sAlmMsg == pView->m_sAoiUpAlarmReTestMsg)
 			{
-				pView->SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
-				Sleep(300);
-				pView->MpeWrite(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
-				pDoc->Log(_T("PC: 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off"));
+				pView->m_mgrPunch->ChkReTestAlarmOnAoiUp();
+				//pView->SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
+				//Sleep(300);
+				//pView->MpeWrite(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+				//pDoc->Log(_T("PC: 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off"));
 			}
-			else if (pDoc->m_sAlmMsg == pView->m_mgrPunch->GetAoiDnAlarmRestartMsg())
+			//else if (pDoc->m_sAlmMsg == pView->m_mgrPunch->GetAoiDnAlarmRestartMsg())
+			else if (pDoc->m_sAlmMsg == pView->m_sAoiDnAlarmReStartMsg || pDoc->m_sAlmMsg == pView->m_sAoiDnAlarmReTestMsg)
 			{
-				pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
-				Sleep(300);
-				pView->MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
-				pDoc->Log(_T("PC: 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off"));
+				pView->m_mgrPunch->ChkReTestAlarmOnAoiDn();
+				//pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
+				//Sleep(300);
+				//pView->MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
+				//pDoc->Log(_T("PC: 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off"));
 			}
 		}
 		pDoc->m_sAlmMsg = _T("");

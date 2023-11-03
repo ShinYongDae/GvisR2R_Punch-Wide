@@ -55,6 +55,11 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	int nCam, nPoint;
 
 	pView = this;
+
+
+	m_sAoiUpAlarmReStartMsg = _T(""); m_sAoiDnAlarmReStartMsg = _T("");
+	m_sAoiUpAlarmReTestMsg = _T(""); m_sAoiDnAlarmReTestMsg = _T("");
+
 	m_mgrReelmap = NULL;
 	m_mgrProcedure = NULL;
 	m_mgrPunch = NULL;
@@ -1324,6 +1329,28 @@ int CGvisR2R_PunchView::ChkSerial() // // 0: Continue, -: Previous, +: Discontin
 	return (nSerial0 - nLastShot);
 }
 
+int CGvisR2R_PunchView::GetAoiUpAutoSerial()
+{
+	int nSerial = 0;
+	CString sPath = pDoc->WorkingInfo.System.sPathAoiUpStatusInfo;
+	TCHAR szData[512];
+
+	if (0 < ::GetPrivateProfileString(_T("Auto"), _T("nSerial"), NULL, szData, sizeof(szData), sPath))
+		nSerial = _ttoi(szData);
+	else
+		nSerial = -1;
+
+	return nSerial;
+}
+
+void CGvisR2R_PunchView::SetAoiUpAutoSerial(int nSerial)
+{
+	CString sPath = pDoc->WorkingInfo.System.sPathAoiUpStatusInfo;
+	CString str;
+	str.Format(_T("%d"), nSerial);
+	::WritePrivateProfileString(_T("Auto"), _T("nSerial"), str, sPath);
+}
+
 int CGvisR2R_PunchView::GetAoiUpAutoStep()
 {
 	TCHAR szData[512];
@@ -1340,6 +1367,28 @@ void CGvisR2R_PunchView::SetAoiUpAutoStep(int nStep)
 	CString str;
 	str.Format(_T("%d"), nStep);
 	::WritePrivateProfileString(_T("Set"), _T("nStep"), str, sPath);
+}
+
+int CGvisR2R_PunchView::GetAoiDnAutoSerial()
+{
+	int nSerial = 0;
+	CString sPath = pDoc->WorkingInfo.System.sPathAoiDnStatusInfo;
+	TCHAR szData[512];
+
+	if (0 < ::GetPrivateProfileString(_T("Auto"), _T("nSerial"), NULL, szData, sizeof(szData), sPath))
+		nSerial = _ttoi(szData);
+	else
+		nSerial = -1;
+
+	return nSerial;
+}
+
+void CGvisR2R_PunchView::SetAoiDnAutoSerial(int nSerial)
+{
+	CString sPath = pDoc->WorkingInfo.System.sPathAoiDnStatusInfo;
+	CString str;
+	str.Format(_T("%d"), nSerial);
+	::WritePrivateProfileString(_T("Auto"), _T("nSerial"), str, sPath);
 }
 
 int CGvisR2R_PunchView::GetAoiDnAutoStep()
@@ -2417,6 +2466,11 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 {
 	int nCam, nPoint, kk, a, b;
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	m_sAoiUpAlarmReStartMsg = m_mgrPunch->GetAoiUpAlarmRestartMsg();
+	m_sAoiDnAlarmReStartMsg = m_mgrPunch->GetAoiDnAlarmRestartMsg();
+	m_sAoiUpAlarmReTestMsg = m_mgrPunch->GetAoiUpAlarmReTestMsg();
+	m_sAoiDnAlarmReTestMsg = m_mgrPunch->GetAoiDnAlarmReTestMsg();
 
 	m_mgrProcedure->InitAuto(bInit);
 	m_mgrPunch->InitAuto(bInit);

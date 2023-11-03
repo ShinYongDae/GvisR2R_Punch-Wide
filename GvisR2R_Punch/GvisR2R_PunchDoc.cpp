@@ -2271,6 +2271,14 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.Motion.sMkFdBarcodeOffset = CString(_T(""));
 	}
 
+	if (0 < ::GetPrivateProfileString(_T("Motion"), _T("INIT_POSITION_OFFSET"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.Motion.sOffsetInitPos = CString(szData);
+	else
+	{
+		//AfxMessageBox(_T("각인부, 검사부, 마킹부 offset 이송 값이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.Motion.sOffsetInitPos = CString(_T("0.0"));
+	}
+
 	if (0 < ::GetPrivateProfileString(_T("Motion"), _T("2DREADER_FEEDING_SERVO_VEL"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.Motion.sFdBarcodeOffsetVel = CString(szData);
 	else
@@ -3705,6 +3713,9 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 
 	sData = WorkingInfo.Motion.sMkFdBarcodeOffset;
 	::WritePrivateProfileString(_T("Motion"), _T("PUNCHING_BARCODE_OFFSET"), sData, sPath);
+
+	sData = WorkingInfo.Motion.sOffsetInitPos;
+	::WritePrivateProfileString(_T("Motion"), _T("INIT_POSITION_OFFSET"), sData, sPath);
 
 	sData = WorkingInfo.Motion.sFdBarcodeOffsetVel;
 	::WritePrivateProfileString(_T("Motion"), _T("2DREADER_FEEDING_SERVO_VEL"), sData, sPath);
@@ -6080,6 +6091,34 @@ double CGvisR2R_PunchDoc::GetMkReaderDist()
 {
 	return (_tstof(WorkingInfo.Motion.sMkFdBarcodeOffset));
 }
+
+void CGvisR2R_PunchDoc::SetOffsetInitPos(double dLen)
+{
+	CString sData, sPath = PATH_WORKING_INFO;
+	sData.Format(_T("%.3f"), dLen);
+	WorkingInfo.Motion.sOffsetInitPos = sData;
+	::WritePrivateProfileString(_T("Motion"), _T("INIT_POSITION_OFFSET"), sData, sPath);
+#ifdef USE_MPE
+	long lData = (long)(_tstof(WorkingInfo.Motion.sOffsetInitPos) * 1000.0);
+	pView->MpeWrite(_T("ML44040"), lData);	// 각인부, 검사부, 마킹부 offset 이송 값 (단위 mm * 1000)
+#endif
+}
+
+double CGvisR2R_PunchDoc::GetOffsetInitPos()
+{
+	TCHAR szData[200];
+	CString sPath = PATH_WORKING_INFO;
+	if (0 < ::GetPrivateProfileString(_T("Motion"), _T("INIT_POSITION_OFFSET"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.Motion.sOffsetInitPos = CString(szData);
+	else
+	{
+		//AfxMessageBox(_T("각인부, 검사부, 마킹부 offset 이송 값이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.Motion.sOffsetInitPos = CString(_T("0.0"));
+	}
+
+	return (_tstof(WorkingInfo.Motion.sOffsetInitPos));
+}
+
 
 void CGvisR2R_PunchDoc::Set2DReaderPosMoveVel(double dVel)
 {

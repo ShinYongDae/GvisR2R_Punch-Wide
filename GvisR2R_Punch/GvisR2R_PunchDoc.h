@@ -307,6 +307,8 @@ public:
 	double GetAoiReaderDist();
 	void SetMkReaderDist(double dLen);
 	double GetMkReaderDist();
+	void SetOffsetInitPos(double dLen);
+	double GetOffsetInitPos();
 	void Set2DReaderPosMoveVel(double dVel);
 	void Set2DReaderPosMoveAcc(double dAcc);
 	double Get2DReaderPosMoveVel();
