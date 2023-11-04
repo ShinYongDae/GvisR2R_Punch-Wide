@@ -1244,7 +1244,7 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.System.bSaveGrabImg = FALSE;
 
 	if (0 < ::GetPrivateProfileString(_T("System"), _T("UseStripPcsRgnBin"), NULL, szData, sizeof(szData), sPath))
-		WorkingInfo.System.bStripPcsRgnBin = _ttoi(szData);
+		WorkingInfo.System.bStripPcsRgnBin = _ttoi(szData) ? TRUE : FALSE;
 	else
 		WorkingInfo.System.bStripPcsRgnBin = FALSE;
 

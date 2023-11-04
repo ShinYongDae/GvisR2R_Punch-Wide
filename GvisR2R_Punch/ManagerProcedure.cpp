@@ -4060,7 +4060,7 @@ void CManagerProcedure::DoAutoChkShareFolder()
 					m_nAoiCamInfoStrPcs[0] = pView->GetAoiUpCamMstInfo();
 					if ((m_nAoiCamInfoStrPcs[0] == 1 ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
 					{
-						if (m_nAoiCamInfoStrPcs[0])
+						if (m_nAoiCamInfoStrPcs[0] == 1 ? TRUE : FALSE)
 							pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n상면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
 						else
 							pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n상면 AOI는 일반 모드에서 검사를 진행하였습니다."));
@@ -4240,7 +4240,7 @@ void CManagerProcedure::DoAutoChkShareFolder()
 					m_nAoiCamInfoStrPcs[1] = pView->GetAoiDnCamMstInfo();
 					if ((m_nAoiCamInfoStrPcs[1] == 1 ? TRUE : FALSE) != pDoc->WorkingInfo.System.bStripPcsRgnBin)
 					{
-						if (m_nAoiCamInfoStrPcs[1])
+						if (m_nAoiCamInfoStrPcs[1] == 1 ? TRUE : FALSE)
 							pView->MsgBox(_T("현재 마킹부는 일반 모드 인데, \r\n하면 AOI는 DTS 모드에서 검사를 진행하였습니다."));
 						else
 							pView->MsgBox(_T("현재 마킹부는 DTS 모드 인데, \r\n하면 AOI는 일반 모드에서 검사를 진행하였습니다."));
