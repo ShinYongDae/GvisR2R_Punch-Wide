@@ -154,6 +154,9 @@ typedef CArray<stDispMain, stDispMain> CArDispMain;
 
 class CGvisR2R_PunchView : public CFormView
 {
+	//BOOL m_bDestroyedView;
+	BOOL m_bBufEmpty[2];
+
 	CDlgMyMsg* m_pDlgMyMsg;
 	CCriticalSection m_csMyMsgBox;
 	CCriticalSection m_csDispMain;
@@ -202,6 +205,9 @@ public:
 	CManagerReelmap *m_mgrReelmap;
 	CManagerProcedure *m_mgrProcedure;
 	CManagerPunch *m_mgrPunch;
+
+	CString m_sAoiUpAlarmReStartMsg, m_sAoiDnAlarmReStartMsg;
+	CString m_sAoiUpAlarmReTestMsg, m_sAoiDnAlarmReTestMsg;
 
 	BOOL m_bTIM_CHK_TEMP_STOP;
 	BOOL m_bTIM_SAFTY_STOP;
@@ -541,9 +547,14 @@ public:
 
 	int GetAoiUpAutoStep();
 	void SetAoiUpAutoStep(int nStep);
+	int GetAoiUpAutoSerial();
+	void SetAoiUpAutoSerial(int nSerial);
 
 	int GetAoiDnAutoStep();
 	void SetAoiDnAutoStep(int nStep);
+	int GetAoiDnAutoSerial();
+	void SetAoiDnAutoSerial(int nSerial);
+
 	void ShowMsgBox();
 	BOOL FinalCopyItsFiles();
 

@@ -1745,11 +1745,13 @@ void CManagerPunch::DoIO()
 			pDoc->Log(pDoc->m_sAlmMsg);
 			MsgBox(pDoc->m_sAlmMsg, 0, 0, DEFAULT_TIME_OUT, FALSE);
 
-			if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
+			//if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
+			if (pDoc->m_sAlmMsg == pView->m_sAoiUpAlarmReStartMsg || pDoc->m_sAlmMsg == pView->m_sAoiUpAlarmReTestMsg)
 			{
 				ChkReTestAlarmOnAoiUp();
 			}
-			else if (pDoc->m_sAlmMsg == GetAoiDnAlarmRestartMsg())
+			//else if (pDoc->m_sAlmMsg == GetAoiDnAlarmRestartMsg())
+			else if (pDoc->m_sAlmMsg == pView->m_sAoiDnAlarmReStartMsg || pDoc->m_sAlmMsg == pView->m_sAoiDnAlarmReTestMsg)
 			{
 				ChkReTestAlarmOnAoiDn();
 			}
@@ -9946,10 +9948,26 @@ CString CManagerPunch::GetAoiUpAlarmRestartMsg()
 	return sMsg;
 }
 
+CString CManagerPunch::GetAoiUpAlarmReTestMsg()
+{
+	CString sMsg = _T("Not Find Message.");
+	TCHAR szData[512];
+	CString sPath = PATH_ALARM;
+	if (0 < ::GetPrivateProfileString(_T("20"), _T("9"), NULL, szData, sizeof(szData), sPath))
+		sMsg = CString(szData);
+
+	return sMsg;
+}
+
 void CManagerPunch::ChkReTestAlarmOnAoiUp()
 {
 	if (!pView->m_mgrProcedure)
 		return;
+
+	CString sMsg;
+	sMsg.Format(_T("U%03d"), pView->GetAoiUpAutoSerial());
+	pView->DispStsBar(sMsg, 0);
+
 
 	int nSerial = pView->m_mgrProcedure->m_pBufSerial[0][pView->m_mgrProcedure->m_nBufTot[0] - 1];
 
@@ -9957,13 +9975,10 @@ void CManagerPunch::ChkReTestAlarmOnAoiUp()
 	{
 		if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial > pView->m_mgrProcedure->m_nLotEndSerial)
 		{
-			//if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
-			{
 				pView->SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				if (m_pMpe)
 					MpeWrite(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
-			}
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial <= pView->m_mgrProcedure->m_nLotEndSerial)
 		{
@@ -9975,13 +9990,10 @@ void CManagerPunch::ChkReTestAlarmOnAoiUp()
 	{
 		if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial < pView->m_mgrProcedure->m_nLotEndSerial)
 		{
-			//if (pDoc->m_sAlmMsg == GetAoiUpAlarmRestartMsg())
-			{
 				pView->SetAoiUpAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				if (m_pMpe)
 					MpeWrite(_T("MB44013B"), 1); // 검사부 상부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
-			}
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial >= pView->m_mgrProcedure->m_nLotEndSerial)
 		{
@@ -10003,10 +10015,25 @@ CString CManagerPunch::GetAoiDnAlarmRestartMsg()
 	return sMsg;
 }
 
+CString CManagerPunch::GetAoiDnAlarmReTestMsg()
+{
+	CString sMsg = _T("Not Find Message.");
+	TCHAR szData[512];
+	CString sPath = PATH_ALARM;
+	if (0 < ::GetPrivateProfileString(_T("20"), _T("10"), NULL, szData, sizeof(szData), sPath))
+		sMsg = CString(szData);
+
+	return sMsg;
+}
+
 void CManagerPunch::ChkReTestAlarmOnAoiDn()
 {
 	if (!pView->m_mgrProcedure)
 		return;
+
+	CString sMsg;
+	sMsg.Format(_T("D%03d"), pView->GetAoiDnAutoSerial());
+	pView->DispStsBar(sMsg, 0);
 
 	int nSerial = pView->m_mgrProcedure->m_pBufSerial[1][pView->m_mgrProcedure->m_nBufTot[1] - 1];
 
@@ -10014,13 +10041,10 @@ void CManagerPunch::ChkReTestAlarmOnAoiDn()
 	{
 		if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial > pView->m_mgrProcedure->m_nLotEndSerial)
 		{
-			//if (pDoc->m_sAlmMsg == GetAoiDnAlarmRestartMsg())
-			{
 				pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
 				Sleep(300);
 				if (m_pMpe)
 					MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
-			}
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial <= pView->m_mgrProcedure->m_nLotEndSerial)
 		{
@@ -10032,13 +10056,10 @@ void CManagerPunch::ChkReTestAlarmOnAoiDn()
 	{
 		if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial < pView->m_mgrProcedure->m_nLotEndSerial)
 		{
-			//if (pDoc->m_sAlmMsg == GetAoiDnAlarmRestartMsg())
-			{
-				pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
-				Sleep(300);
-				if (m_pMpe)
-					MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
-			}
+			pView->SetAoiDnAutoStep(2); // Wait for AOI 검사시작 신호.
+			Sleep(300);
+			if (m_pMpe)
+				MpeWrite(_T("MB44013C"), 1); // 검사부 하부 재작업 (시작신호) : PC가 On시키고 PLC가 Off
 		}
 		else if (pView->m_mgrProcedure->m_nLotEndSerial > 0 && nSerial >= pView->m_mgrProcedure->m_nLotEndSerial)
 		{

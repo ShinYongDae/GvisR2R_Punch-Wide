@@ -269,8 +269,10 @@ public:
 	unsigned long ChkDoor(); // 0: All Closed , Open Door Index : Doesn't all closed. (Bit3: F, Bit2: L, Bit1: R, Bit0; B)
 	void Buzzer(BOOL bOn, int nCh = 0);
 	CString GetAoiUpAlarmRestartMsg();
+	CString GetAoiUpAlarmReTestMsg();
 	void ChkReTestAlarmOnAoiUp();
 	CString GetAoiDnAlarmRestartMsg();
+	CString GetAoiDnAlarmReTestMsg();
 	void ChkReTestAlarmOnAoiDn();
 	void DoAutoEng();
 	BOOL IsPinData();

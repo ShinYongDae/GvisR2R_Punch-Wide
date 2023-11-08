@@ -1643,6 +1643,21 @@ struct stBtnEngAuto
 	}
 };
 
+struct stBtnSettingEng
+{
+	BOOL OffsetInitPosMove;
+
+	stBtnSettingEng()
+	{
+		_Init();
+	}
+
+	void _Init()
+	{
+		OffsetInitPosMove = FALSE;
+	}
+};
+
 struct stBtnStatus
 {
 	stBtnMsg Msg;
@@ -1659,6 +1674,7 @@ struct stBtnStatus
 	stBtnEngrave Eng;
 	stBtnUncoiler Uc;
 	stBtnEngAuto EngAuto;
+	stBtnSettingEng SettingEng;
 };
 
 
